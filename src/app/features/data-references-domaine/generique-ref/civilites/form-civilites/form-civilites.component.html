@@ -1,0 +1,32 @@
+<button class="close" mat-button mat-dialog-close><mat-icon >close</mat-icon></button>
+<h1 mat-dialog-title class="modifier-text"><span *ngIf="!civilite.id">Créer une civilité</span><span *ngIf="civilite.id">Modifier: {{civilite.libelle}}</span></h1>
+<div class="sycad-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+<form [formGroup]="formulaire" class="role-form" (ngSubmit)="onSubmit()">
+    <div class="sycad-zone-modal-form-edition" mat-dialog-content perfectScrollbar>
+        <mat-grid-list cols="1" rowHeight="100px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <mat-form-field appearance="outline" fxFlex="90">
+                    <mat-label>Libellé</mat-label>
+                    <input matInput placeholder="Libellé" [attr.autocomplete]="'off'" formControlName="libelle" />
+
+                    <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && libelle.errors?.required">
+                        Le libellé est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && ( libelle.errors?.minlength || libelle.errors?.maxlength )">
+                        La taille du libellé est limité entre 2 et 150 caractères
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+    <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
+        <button mat-raised-button color="warn" type="button" (click)="closeFormModal()">Annuler</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+      <span *ngIf="!civilite.id">Enregistrer</span><span *ngIf="civilite.id">Mettre à jour</span>
+    </button>
+
+    </div>
+
+</form>

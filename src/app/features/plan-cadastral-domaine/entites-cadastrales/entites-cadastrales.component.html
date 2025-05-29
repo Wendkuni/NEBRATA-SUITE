@@ -1,0 +1,64 @@
+<mat-tab-group >
+
+  <mat-tab *ngIf="authentificatedUser?.typeUser==='AGENT'">
+    <mat-tab-group #tabGroup>
+      <ng-template mat-tab-label>
+        <mat-icon>layers
+        </mat-icon>
+        Entités cadastrales
+      </ng-template>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon >list_alt
+          </mat-icon>
+          Parcelles
+        </ng-template>
+        <app-parcelle (navigateToDetails)="onNavigateToDetails($event)" ></app-parcelle>
+      </mat-tab>
+
+      <mat-tab>
+        <form>
+        <ng-template mat-tab-label>
+          <mat-icon>terrain
+          </mat-icon>
+          Détails
+        </ng-template>
+        <app-parcelle-visualiser *ngIf="attribution" [attribution]="attribution"></app-parcelle-visualiser>
+          </form>
+        <app-cycledevie-parcelle *ngIf="attribution" [icad]="attribution.parcelle?.icad"></app-cycledevie-parcelle>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="profile-tab-icon">
+            filter_b_and_w
+          </mat-icon>
+          Ilots
+        </ng-template>
+
+        <app-ilot></app-ilot>
+
+
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon >grid_on
+          </mat-icon>
+          Sections
+        </ng-template>
+        <app-sections></app-sections>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>map</mat-icon>
+      Plan numérique
+    </ng-template>
+    <app-plan-numeric></app-plan-numeric>
+  </mat-tab>
+</mat-tab-group>
+
+

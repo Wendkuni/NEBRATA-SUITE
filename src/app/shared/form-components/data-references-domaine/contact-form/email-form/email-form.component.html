@@ -1,0 +1,48 @@
+<form [formGroup]="emailForm" class="form-container">
+
+
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+        <div class="sycad-form-email-ng-select sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="25" [fxFlex.lg]="25" [fxFlex.xl]="25">
+            <ng-select formControlName="level" placeholder="Type de mail (*)" appendTo="body" [searchable]="false" [clearable]="false">
+                <ng-option value="PROFESSIONAL">
+                    Professionnel
+                </ng-option>
+                <ng-option value="PERSONNAL">
+                    Personnel
+                </ng-option>
+            </ng-select>
+            <mat-error *ngIf="emailForm.controls.level.invalid && (emailForm.controls.level.dirty || emailForm.controls.level.touched) && emailForm.controls.level.errors?.required">
+                Le type est obligatoire
+            </mat-error>
+        </div>
+
+        <mat-form-field appearance="outline" class="sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="40" [fxFlex.lg]="40" [fxFlex.xl]="30">
+            <mat-label>Email (*) </mat-label>
+            <input matInput placeholder="Email" [attr.autocomplete]="'off'" formControlName="email">
+            <mat-error *ngIf="emailForm.controls.email.invalid && (emailForm.controls.email.dirty || emailForm.controls.email.touched) && emailForm.controls.email.errors?.required">
+                La valeur de l'email est obligatoire
+            </mat-error>
+            <mat-error *ngIf="emailForm.controls.email.invalid && (emailForm.controls.email.dirty || emailForm.controls.email.touched) && emailForm.controls.email.errors?.required">
+                L'email est invalide
+            </mat-error>
+            <mat-error *ngIf="emailForm.controls.email.invalid && (emailForm.controls.email.dirty || emailForm.controls.email.touched) && emailForm.controls.email.errors?.emailExist ">
+                Ce email est indisponible
+            </mat-error>
+            <mat-hint class="lds-ellipsis" *ngIf="email.status === 'PENDING'">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </mat-hint>
+        </mat-form-field>
+
+
+        <div class="container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="20" [fxFlex.lg]="20" [fxFlex.xl]="15">
+            <mat-slide-toggle formControlName="principal" (change)="onChangeTelephonePrincipal(emailForm)" fxFlex="100">Principale ?</mat-slide-toggle>
+        </div>
+
+    </div>
+
+</form>

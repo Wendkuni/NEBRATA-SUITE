@@ -1,0 +1,35 @@
+<form [formGroup]="formulaire" (ngSubmit)="onSubmit()">
+
+
+
+
+    <div fxLayout="row" [formGroup]="documents" fxLayoutAlign="start">
+        <div fxLayout="column" class="flex-p" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="50">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button type="button" mat-flat-button color="primary" (click)="addDocument()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10" [fxFlex.lg]="50" [fxFlexOffset.md]="10" [fxFlex.xl]="50"
+                    [fxFlexOffset]="10">
+                    <mat-icon class="icon-sm">add</mat-icon> Ajouter un document
+                </button>
+            </div>
+            <ng-template ngFor let-document [ngForOf]="documents.controls" let-i="index">
+                <div class="card-container-form-element y-1" fxLayout="row" fxLayoutAlign="start">
+                    <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+                        <button mat-icon-button matSuffix color="warn" class="delete-icons" type="button">
+                            <mat-icon (click)="removeDocument(i)">remove_circle</mat-icon>
+                        </button>
+
+                        <app-document-scan-form [formGroup]="document" [typeDocuments]="processus.typeDocuments"></app-document-scan-form>
+
+                    </mat-card>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+
+  <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+  </div>
+
+
+</form>

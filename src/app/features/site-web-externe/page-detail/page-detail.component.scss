@@ -1,0 +1,95 @@
+.titre-general{
+  margin-top: -40px;
+  margin-bottom: 50px;
+  padding: 10px;
+  width: 80%;
+  margin-left: 10%;
+  background-color: white;
+  color: rgb(3, 88, 3);
+  h1{
+    font-size: 40px;
+  }
+}
+
+.element-list{
+  ul, ol{
+   margin-left: 30px;
+   padding-top: 10px;
+   margin-bottom: 20px;
+   li{
+     padding: 3px;
+   }
+  }
+
+ }
+mat-expansion-panel{
+  margin: 20px;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.example-headers-align .mat-form-field + .mat-form-field {
+  margin-left: 8px;
+}
+
+.titre-element{
+  color: rgba(255, 255, 255, 0.911);
+}
+
+mat-icon{
+  color: white;
+}
+
+.header-titre{
+  color: rgb(255, 255, 255);
+}
+.contenu{
+  color: black;
+  text-align: justify;
+  font-size: 17px;
+  padding: 5px;
+  padding-top: 15px;
+}
+
+.description{
+  width: 95%;
+  margin: 2.5%;
+  font-size: 17px;
+}
+.description-element{
+  margin-top: 15px;
+  font-weight: bold;
+}
+@media all and (min-width: 100px) and (max-width: 959px){
+  .titre-general{
+    margin-top: -40px;
+    margin-bottom: 50px;
+    padding: 10px;
+    width: 80%;
+    margin-left: 10%;
+    background-color: white;
+    color: rgb(3, 88, 3);
+    h1{
+      font-size: 20px;
+    }
+  }
+  .titre-element{
+    font-size: 15px;
+  }
+}
+
+mat-expansion-panel-header:hover{
+ background: red;
+  .titre-element{
+    color: rgb(3, 88, 3);
+
+  }
+}
+.header-titre:focus{
+  .titre-element{
+    color: rgb(43, 224, 67);
+  }
+}

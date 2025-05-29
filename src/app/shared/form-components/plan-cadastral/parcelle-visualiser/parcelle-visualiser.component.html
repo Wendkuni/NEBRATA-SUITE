@@ -1,0 +1,149 @@
+<div fxLayout="row"  fxLayout.lt-lg="row wrap"  fxLayoutGap="20px">
+  <div [fxFlex]="100" [fxFlex.xs]="100"
+       [fxFlex.sm]="100" [fxFlex.md]="100"
+       [fxFlex.lg]="30" [fxFlex.xl]="30" >
+    <div *ngIf="attribution.parcelleInexistante">
+      <h3>La parcelle n'existe pas</h3>
+      <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+          <mat-label>Commune </mat-label>
+          <input matInput value="{{attribution.parcelleInexistante.commune}}" [readonly]="true">
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+          <mat-label>Numéro section</mat-label>
+          <input matInput value="{{attribution.parcelleInexistante?.section}}" [readonly]="true">
+
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+          <mat-label>Numéro ilot </mat-label>
+          <input matInput value="{{attribution.parcelleInexistante?.ilot}}" [readonly]="true">
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+          <mat-label>Numero parcelle</mat-label>
+          <input matInput value="{{attribution.parcelle?.libelle}}" [readonly]="true">
+
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="50">
+          <mat-label>Superficie</mat-label>
+          <input matInput value="{{attribution.parcelleInexistante?.superficie}} m² environ" [readonly]="true">
+        </mat-form-field>
+
+      </div>
+    </div>
+    <div *ngIf="attribution.parcelle">
+      <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="10px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex]="100" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="55" [fxFlex.lg]="55" [fxFlex.xl]="50">
+          <mat-label>Commune</mat-label>
+          <input matInput value="{{attribution.parcelle?.arrondissement?.commune?.nom}}"
+                 [readonly]="true">
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex]="100" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="45" [fxFlex.xl]="50">
+          <mat-label>Arrondissement </mat-label>
+          <input matInput value="{{attribution.parcelle?.arrondissement?.nom}}" [readonly]="true">
+        </mat-form-field>
+
+      </div>
+      <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="10px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex]="100" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="55" [fxFlex.lg]="55" [fxFlex.xl]="50">
+          <mat-label>Localité</mat-label>
+          <input matInput value="{{attribution.parcelle?.localite?.nom}}" [readonly]="true">
+
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex]="100" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="45" [fxFlex.xl]="50">
+          <mat-label>Numéro section </mat-label>
+          <input matInput value="{{attribution.parcelle?.ilot?.section?.numero}}" [readonly]="true">
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="10px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex]="100" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="55" [fxFlex.lg]="55" [fxFlex.xl]="50">
+          <mat-label>Numéro Ilot</mat-label>
+          <input matInput value="{{attribution.parcelle?.ilot?.numero}}" [readonly]="true">
+
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex]="100" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="45" [fxFlex.xl]="50">
+          <mat-label>Numéro Parcelle</mat-label>
+          <input matInput value="{{attribution.parcelle?.numero}}" [readonly]="true">
+
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="10px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex]="100" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="55" [fxFlex.lg]="55" [fxFlex.xl]="50">
+          <mat-label>ICAD </mat-label>
+          <input matInput value="{{attribution.parcelle?.icad}}" [readonly]="true">
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex]="100" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="45" [fxFlex.xl]="50">
+          <mat-label>Superficie </mat-label>
+          <input matInput value="{{attribution.parcelle?.superficie}}" [readonly]="true">
+        </mat-form-field>
+
+      </div>
+      <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="10px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex]="100" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="55" [fxFlex.lg]="55" [fxFlex.xl]="50">
+          <mat-label>Destination</mat-label>
+          <input matInput value="{{attribution.parcelle?.destination?.libelle}}"
+                 [readonly]="true">
+
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex]="100" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="45" [fxFlex.xl]="50">
+          <mat-label>libelle</mat-label>
+          <input matInput value="{{attribution.parcelle?.libelle}}" [readonly]="true">
+
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="10px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex]="100" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="55" [fxFlex.lg]="55" [fxFlex.xl]="50">
+          <mat-label>Etat attribution</mat-label>
+          <input matInput value="{{attribution.parcelle?.etatAttribution}}" [readonly]="true">
+
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex]="100" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="45" [fxFlex.xl]="50">
+          <mat-label>Etat mise en valeur </mat-label>
+          <input matInput value="{{attribution.parcelle?.etatMev}}" [readonly]="true">
+        </mat-form-field>
+
+      </div>
+      <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="10px" fxLayoutAlign="start">
+        <mat-form-field appearance="outline"
+                        [fxFlex]="100"
+                        [fxFlex.xs]="100"
+                        [fxFlex.sm]="100"
+                        [fxFlex.md]="100"
+                        [fxFlex.lg]="55"
+                        [fxFlex.xl]="40">
+          <mat-label>Délais de mise en valeur </mat-label>
+          <input matInput
+                 value="{{attribution.parcelle?.delaiDeMiseEnValeur | date:'dd/MM/yyyy'}}"
+                 [readonly]="true">
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <div [fxFlex]="100" [fxFlex.xs]="100"
+       [fxFlex.sm]="100" [fxFlex.md]="100"
+       [fxFlex.lg]="70" [fxFlex.xl]="70"  fxFlex="60" fxLayout="column" fxLayoutAlign="start" class="map-container">
+
+        <app-parcelle-map class="map-content" [parcelleChoisie]="attribution.parcelle"></app-parcelle-map>
+  </div>
+</div>

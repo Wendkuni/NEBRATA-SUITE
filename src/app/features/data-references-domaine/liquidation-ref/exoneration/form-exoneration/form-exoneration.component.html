@@ -1,0 +1,151 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <form [formGroup]="formulaire" class="exoneration-form" (ngSubmit)="onSubmit()">
+        <mat-card-header>
+            <mat-card-subtitle>
+                <h3>
+                    <span *ngIf="!exoneration.id">Créer un nouveau exoneration</span>
+                    <span *ngIf="exoneration.id">Modifier: {{exoneration.refExterne}}</span>
+                </h3>
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <ng-select [items]="parcelleRemoteAutocomplete.listRessource$ | async" [typeahead]="parcelleRemoteAutocomplete.term" [loading]="parcelleRemoteAutocomplete.loading" (search)="onSearchParcelle($event)" appendTo="body" [selectOnTab]="true" bindLabel="icad"
+                        bindValue="id" placeholder="Parcelle" formControlName="parcelle">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <ng-select [items]="categorieRemoteAutocomplete.listRessource$ | async" [typeahead]="categorieRemoteAutocomplete.term" [loading]="categorieRemoteAutocomplete.loading" (search)="onSearchCategorie($event)" appendTo="body" [selectOnTab]="true" bindLabel="code"
+                        bindValue="id" placeholder="Catégorie de l'exoneration" formControlName="categorie">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                        <mat-error *ngIf="categorie.invalid && (categorie.dirty || categorie.touched) && categorie.errors?.required">
+                            La catégorie de l'exoneration est obligatoire
+                        </mat-error>
+                    </ng-select>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <ng-select [items]="natureImpotRemoteAutocomplete.listRessource$ | async" [typeahead]="natureImpotRemoteAutocomplete.term" [loading]="natureImpotRemoteAutocomplete.loading" (search)="onSearchNatureImpot($event)" appendTo="body" [selectOnTab]="true" bindLabel="refExterne"
+                        bindValue="id" placeholder="Nature d'impôt" formControlName="natureImpot">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                    <mat-error *ngIf="natureImpot.invalid && (natureImpot.dirty || natureImpot.touched) && natureImpot.errors?.required">
+                        La parcelle est obligatoire
+                    </mat-error>
+                </div>
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <mat-label>Référence externe</mat-label>
+                    <input matInput placeholder="Référence externe" [attr.autocomplete]="'off'" formControlName="refExterne" />
+                    <mat-error *ngIf="refExterne.invalid && (refExterne.dirty || refExterne.touched) && refExterne.errors?.required">
+                        La référence externe est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="refExterne.invalid && (refExterne.dirty || refExterne.touched) && ( refExterne.errors?.minlength || refExterne.errors?.maxlength)">
+                        La taille du référence externe est limité entre 2 et 150 caractères
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <mat-label>Montant</mat-label>
+                    <input matInput placeholder="montant" [attr.autocomplete]="'off'" formControlName="montant" type="number" />
+                    <mat-error *ngIf="montant.invalid && (montant.dirty || montant.touched) && montant.errors?.required">
+                        Le montant est obligatoire
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <mat-label>Taux</mat-label>
+                    <input matInput placeholder="Taux" [attr.autocomplete]="'off'" formControlName="taux" type="number" />
+                    <mat-error *ngIf="taux.invalid && (taux.dirty || taux.touched) && taux.errors?.required">
+                        Le taux externe est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="taux.invalid && (taux.dirty || taux.touched) && ( taux.errors?.minlength || taux.errors?.maxlength)">
+                        La taille du taux est limité entre 2 et 150 caractères
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <mat-label>Date de début</mat-label>
+                    <input matInput [matDatepicker]="dateDebut" formControlName="dateDebut">
+                    <mat-datepicker-toggle matSuffix [for]="dateDebut"></mat-datepicker-toggle>
+                    <mat-datepicker #dateDebut></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <mat-label>Date de fin</mat-label>
+                    <input matInput [matDatepicker]="dateFin" formControlName="dateFin">
+                    <mat-datepicker-toggle matSuffix [for]="dateFin"></mat-datepicker-toggle>
+                    <mat-datepicker #dateFin></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <mat-label>Motif</mat-label>
+                    <input matInput placeholder="Motif" [attr.autocomplete]="'off'" formControlName="motif" />
+                    <mat-error *ngIf="motif.invalid && (motif.dirty || motif.touched) && motif.errors?.required">
+                        Le motif est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="motif.invalid && (motif.dirty || motif.touched) && ( motif.errors?.minlength || motif.errors?.maxlength)">
+                        La taille du motif est limité entre 2 et 150 caractères
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <mat-label>Observation</mat-label>
+                    <input matInput placeholder="Observation" [attr.autocomplete]="'off'" formControlName="observation" />
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <div class="content-container" [ngStyle]="{'background': (exoneration.modifDoc)? 'url('+(exoneration.modifDoc | generalDownload)+')no-repeat':'initial'}" [ngClass]="{'logo-exist-bg':exoneration.modifDoc}" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45"
+                    [fxFlex.lg]="25" [fxFlex.xl]="20">
+                    <dropzone class="dropzone-container" fxLayout="row" fxLayoutAlign="start strech" fxFlex="auto" [config]="config" [message]="'Cliquez ou faites glisser les images ici pour les télécharger'" (init)="onUploadInit($event)" (error)="onUploadError($event)"
+                        (success)="onUploadSuccess($event)">
+                    </dropzone>
+                    <input type="hidden" id="name" formControlName="modifDoc">
+                </div>
+                <button mat-icon-button color="warn" type="button" [fxFlex.lg]="5" [fxFlex.xl]="20">
+          <mat-icon (click)="resetDropZone()">remove_circle</mat-icon>
+        </button>
+            </div>
+            <mat-card-actions [ngClass]="{'card-action-form': (activeMediaQuery === 'lg' || activeMediaQuery === 'xl' ), 'card-action-form-small': (activeMediaQuery === 'sm') }">
+                <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+            <span *ngIf="!exoneration.id">Enregistrer</span><span *ngIf="exoneration.id">Mettre à
+                        jour</span>
+          </button>
+                </div>
+            </mat-card-actions>
+        </mat-card-content>
+    </form>
+</mat-card>

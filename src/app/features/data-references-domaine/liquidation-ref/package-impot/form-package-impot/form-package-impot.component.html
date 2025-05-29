@@ -1,0 +1,227 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <form [formGroup]="formulaire" class="batiment-form" (ngSubmit)="onSubmit()">
+        <mat-card-header>
+            <mat-card-subtitle>
+                <h3>
+                    <span *ngIf="!packageImpot.id">Créer un nouvel packageImpot</span>
+                    <span *ngIf="packageImpot.id">Modifier : {{packageImpot.libelle}}</span>
+                </h3>
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-tab-group>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon>business</mat-icon>
+                        Informations de bases
+                    </ng-template>
+                    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                        <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="50" [fxFlex.xl]="20">
+                            <ng-select [items]="processusRemoteAutocomplete.listRessource$ | async" [typeahead]="processusRemoteAutocomplete.term" [loading]="processusRemoteAutocomplete.loading" (search)="onSearchProcessus($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle"
+                                bindValue="code" placeholder="Processus(*)" formControlName="codeProcessus">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                            <mat-error *ngIf="codeProcessus.invalid && (codeProcessus.dirty || codeProcessus.touched) && codeProcessus.errors?.required">
+                                Le processus est obligatoire
+                            </mat-error>
+                        </div>
+                        <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="50" [fxFlex.xl]="20">
+                            <ng-select [items]="natureImpotRemoteAutocomplete.listRessource$ | async" [typeahead]="natureImpotRemoteAutocomplete.term" [loading]="natureImpotRemoteAutocomplete.loading" (search)="onSearchNatureImpot($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle"
+                                bindValue="id" placeholder="Nature de l'impôt" formControlName="natureImpot">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                          <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="50" [fxFlex.xl]="20">
+                            <ng-select [items]="cessionSourceRemoteAutocomplte.listRessource$ | async" [typeahead]="cessionSourceRemoteAutocomplte.term" [loading]="cessionSourceRemoteAutocomplte.loading" (search)="onSearchCessionSource($event)" appendTo="body" [selectOnTab]="true"
+                                       bindLabel="libelle" bindValue="id" placeholder="Mode de cession" formControlName="cessionSource">
+                              <ng-template ng-loadingspinner-tmp>
+                                <div class="lds-ellipsis">
+                                  <div></div>
+                                  <div></div>
+                                  <div></div>
+                                  <div></div>
+                                </div>
+                              </ng-template>
+                            </ng-select>
+                          </div>
+                        <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="50" [fxFlex.xl]="20">
+                            <ng-select [items]="typeTireRecetteRemoteAutocomplte.listRessource$ | async" [typeahead]="typeTireRecetteRemoteAutocomplte.term" [loading]="typeTireRecetteRemoteAutocomplte.loading" (search)="onSearchTypeTitreRecette($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle"
+                                bindValue="id" placeholder="Type titre recette" formControlName="typeTitreRecette">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                            <mat-label>Code(*)</mat-label>
+                            <input matInput placeholder="Code(*)" [attr.autocomplete]="'off'" formControlName="code" />
+                            <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && code.errors?.required">
+                                Le code est obligatoire
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                            <mat-label>Libelle(*)</mat-label>
+                            <input matInput placeholder="libelle(*) " [attr.autocomplete]="'off'" formControlName="libelle" />
+                            <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && libelle.errors?.required">
+                                Le libelle du package Impot est obligatoire
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                            <mat-label>Date de début (*)</mat-label>
+                            <input matInput [matDatepicker]="dateDebut" placeholder="Date début" formControlName="dateDebut">
+                            <mat-datepicker-toggle matSuffix [for]="dateDebut"></mat-datepicker-toggle>
+                            <mat-datepicker #dateDebut></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                            <mat-label>Date de fin (*)</mat-label>
+                            <input matInput [matDatepicker]="dateFin" placeholder="Date fin " formControlName="dateFin">
+                            <mat-datepicker-toggle matSuffix [for]="dateFin"></mat-datepicker-toggle>
+                            <mat-datepicker #dateFin></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="sycad-form-line" fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                        <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                            <mat-label>Type Contribuable</mat-label>
+                            <mat-select formControlName="typeContribuable">
+                                <mat-option [value]="typeContribuable" *ngFor="let typeContribuable of contribuableTypes">
+                                    {{typeContribuable}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                            <mat-label>Référence loi</mat-label>
+                            <input matInput placeholder="Référence loi" [attr.autocomplete]="'off'" formControlName="refLoi" />
+                        </mat-form-field>
+
+
+
+                    </div>
+
+                    <div class="sycad-form-line" fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                        <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                            <mat-label>Délais règlement (*)</mat-label>
+                            <input matInput placeholder="Délais règlement" [attr.autocomplete]="'off'" formControlName="delaiReglementMois" type="number" />
+                            <mat-hint>En nombre de mois (depuis début du package)</mat-hint>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                            <mat-label>Taux penalité hors délais (*)</mat-label>
+                            <input matInput placeholder="Taux de pénalité hors délais" [attr.autocomplete]="'off'" formControlName="tauxPenaliteHorsDelai" type="number" />
+                            <mat-hint>Applicable au 1er mois de retard</mat-hint>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div class="sycad-form-line" fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+
+                        <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                            <mat-label>Taux interêt sur pénalité (*)</mat-label>
+                            <input matInput [attr.autocomplete]="'off'" formControlName="tauxInteretSurPenalite" type="number" />
+                            <mat-hint>Applicable à partir du 2em mois de retard</mat-hint>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                            <mat-label>Période interêt sur pénalité (*)</mat-label>
+                            <input matInput placeholder="Délais règlement" [attr.autocomplete]="'off'" formControlName="periodeInteretSurPenalite" type="number" />
+                            <mat-hint>En nombre de mois</mat-hint>
+                        </mat-form-field>
+
+
+                    </div>
+
+                    <div class="sycad-form-line" fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                        <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                            <mat-label>Observation</mat-label>
+                            <textarea matInput placeholder="Observation" [attr.autocomplete]="'off'" formControlName="observation"></textarea>
+                        </mat-form-field>
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                            <mat-label>Unité(*)</mat-label>
+                            <input matInput placeholder="Unité" [attr.autocomplete]="'off'" formControlName="unite" />
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="50" [fxFlex.xl]="20">
+                            <mat-label>Ordre trie</mat-label>
+                            <input matInput placeholder="Ordre" [attr.autocomplete]="'off'" formControlName="ordreTri" type="number" />
+                        </mat-form-field>
+                        <div class="sycad-form-line container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                            <label id="actif">Actif</label>
+                            <mat-slide-toggle formControlName="actif" aria-labelledby="actif"></mat-slide-toggle>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                        <div class="sycad-form-line container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                            <label id="par-defaut">Par défaut</label>
+                            <mat-slide-toggle formControlName="parDefaut" aria-labelledby="par-defaut"></mat-slide-toggle>
+                        </div>
+                      <div class="sycad-form-line container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                        <label id="estObligatoire">Est Obligatoire</label>
+                        <mat-slide-toggle formControlName="estObligatoire" aria-labelledby="estObligatoire"></mat-slide-toggle>
+                      </div>
+                    </div>
+                </mat-tab>
+
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon>exposure</mat-icon>
+                        Calcul element impôt
+                    </ng-template>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <button type="button" mat-flat-button color="primary" (click)="addNewElementImpot()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10" [fxFlex.lg]="50" [fxFlexOffset.md]="10" [fxFlex.xl]="50"
+                            [fxFlexOffset]="10">
+          <mat-icon class="icon-sm">add</mat-icon> Ajouter un élément impôt
+        </button>
+                    </div>
+                    <ng-container *ngIf="getElementImpot.controls.length>0">
+                        <ng-template ngFor let-elementsImpot [ngForOf]="getElementImpot.controls" let-i="index">
+                            <mat-card>
+                                <button type="button" mat-icon-button matSuffix color="warn" class="delete-icons">
+              <mat-icon (click)="removeElementImpot(i)">remove_circle</mat-icon>
+            </button>
+                                <mat-card-header>
+                                </mat-card-header>
+                                <app-element-impot-form [formGroup]="elementsImpot"></app-element-impot-form>
+                            </mat-card>
+                        </ng-template>
+                    </ng-container>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card-content>
+        <mat-card-actions [ngClass]="{'card-action-form': (activeMediaQuery === 'lg' || activeMediaQuery === 'xl' ), 'card-action-form-small': (activeMediaQuery === 'sm') }">
+            <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+          <span *ngIf="!packageImpot.id">Enregistrer</span><span *ngIf="packageImpot.id">Mettre à
+                        jour</span>
+        </button>
+            </div>
+        </mat-card-actions>
+    </form>
+</mat-card>

@@ -1,0 +1,106 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+
+
+    <mat-card-header>
+        <mat-card-subtitle>
+            <h3>
+                <span *ngIf="!sdMaj">Démarrer une saisie différée d'un dossier de mise à jour de lotissement plan cadastral </span>
+                <span *ngIf="sdMaj?.numero">{{transition.libelle}} : sur le dossier {{sdMaj.numero}}</span>
+            </h3>
+
+
+            <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+                La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+            </mat-error>
+
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+         <mat-tab-group>
+          <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="sycad-form-tab-label-icon">face</mat-icon>
+
+                <ng-container *ngIf="sdMaj?.numero">Formulaire transition {{transition.libelle}}</ng-container>
+                <ng-container *ngIf="!sdMaj">Création d'une affectation</ng-container>
+            </ng-template>
+
+            <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+                <ng-container [ngSwitch]="true">
+
+                    <ng-template [ngSwitchCase]=" transition?.code === 'SAISIE_DIFFEREE_MAJ_PLAN_TRANSMISSION_BROUILLON' || transition?.code === 'SAISIE_DIFFEREE_MAJ_PLAN_TRANSMISSION_VALIDE'">
+                        <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)"  [codeCommune]="sdMaj?.parcellesAAjouter[0]?.ilot?.section?.commune?.code
+                        || sdMaj?.parcellesAAjouter[0]?.ilot?.section?.commune?.code
+                        || sdMaj?.parcellesADesactive[0]?.ilot?.section?.commune?.code
+                        || sdMaj?.sectionsADesactive[0]?.commune?.code
+                        || sdMaj?.ilotsADesactive[0]?.section?.commune?.code
+                        || sdMaj?.commune.code
+                        || sdMaj?.parcellesAModifier[0]?.ilot?.section?.commune?.code" [dossierProcessus]="sdMaj" [fixedStructures]="false" [processusService]="sdMajService" [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                    </ng-template>
+
+                     <ng-template [ngSwitchCase]="transition?.code==='SAISIE_DIFFEREE_MAJ_PLAN_BROUILLON_TO_BROUILLON'">
+                        <pc-saisie-sd-maj  (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [sdMaj]="sdMaj" [transition]="transition" [processus]="processus"></pc-saisie-sd-maj>
+                    </ng-template>
+
+                    <ng-template [ngSwitchCase]="transition?.code==='SAISIE_DIFFEREE_MAJ_PLAN_BROUILLON_TO_VALIDE'">
+                        <pc-saisie-sd-maj  (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [sdMaj]="sdMaj" [transition]="transition" [processus]="processus"></pc-saisie-sd-maj>
+                    </ng-template>
+                  <ng-template [ngSwitchCase]="transition?.code=='SAISIE_DIFFEREE_MAJ_PLAN_EDITION_DOCUMENT'" >
+                    <app-archiver-document (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [planCadastral]="sdMaj" [transition]="transition" [processus]="processus" ></app-archiver-document>
+                  </ng-template>
+                  <ng-template [ngSwitchCase]="transition?.code=='SAISIE_DIFFEREE_MAJ_PLAN_EDITION_DOCUMENT_TO_EDITION_DOCUMENT'">
+                    <app-archiver-document (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [planCadastral]="sdMaj" [transition]="transition" [processus]="processus" ></app-archiver-document>
+                  </ng-template>
+
+                    <ng-template [ngSwitchCase]=" transition?.code === 'SAISIE_DIFFEREE_MAJ_PLAN_BROUILLON_TO_ANNULER'">
+                        <app-annulation-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="sdMaj" [transition]="transition" [processusService]="sdMajService" [frontendUrl]="getFrontendTemplate()"></app-annulation-dossier-transition>
+                    </ng-template>
+
+                    <ng-template [ngSwitchDefault]>
+                        <pc-creation-sd-maj (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus"></pc-creation-sd-maj>
+                    </ng-template>
+
+                </ng-container>
+
+            </div>
+        </mat-tab>
+
+            <mat-tab *ngIf="sdMaj?.numero">
+                <ng-template mat-tab-label>
+                    <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                </ng-template>
+                <div fxLayout="column" class="flex-p">
+                    <app-historique [numero]="sdMaj?.numero"></app-historique>
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="sdMaj">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Entête de dossier
+                </ng-template>
+
+                 <div fxLayout="column" class="flex-p">
+
+                    <app-entete [numero]="sdMaj?.numero" [processus]="'WRKFProcessSaisieDiffereeMaj'"></app-entete>
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="sdMaj" >
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Détail du dossier
+                </ng-template>
+
+                <div  fxLayout="column" class="flex-p">
+
+                    <app-vue-vue-sd-maj-plan [noOpenActions]="true"></app-vue-vue-sd-maj-plan>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+</mat-card-content>
+
+</mat-card>

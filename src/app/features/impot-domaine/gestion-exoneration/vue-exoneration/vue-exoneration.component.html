@@ -1,0 +1,232 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{exonerationDossier?.etat.libelle}}</mat-card-title>
+        <mat-card-subtitle>{{exonerationDossier?.etat.description}}</mat-card-subtitle>
+        <ng-container *ngIf="exonerationDossier && !noOpenActions && exonerationDossier?.transitions?.length>0">
+            <app-action-detail-dossier [numero]="exonerationDossier.numero" [url]="urlAction" [transitions]="exonerationDossier.transitions"></app-action-detail-dossier>
+        </ng-container>
+    </mat-card-header>
+    <form class="user-form" *ngIf="exonerationDossier ">
+        <mat-card-content>
+            <mat-tab-group>
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>content_paste</mat-icon>
+                            Informations de base
+                        </ng-template>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Numéro </mat-label>
+                                <input matInput value="{{exonerationDossier.numero}}" [readonly]="true">
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Date dossier (*)</mat-label>
+                                <input matInput value="{{exonerationDossier.dateCreationDossier | date:'dd/MM/yyyy'}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Objet </mat-label>
+                                <input matInput [attr.autocomplete]="'off'" value="{{exonerationDossier.objet}}" [readonly]="true" />
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Date externe (*)</mat-label>
+                                <input matInput value="{{exonerationDossier.dateExterne | date:'dd/MM/yyyy'}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Référence externe </mat-label>
+                                <input matInput [attr.autocomplete]="'off'" value="{{exonerationDossier.refExterne}}" [readonly]="true" />
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Statut actif du dossier </mat-label>
+                                <input matInput value="{{exonerationDossier.etatDossier | showBooleanValue}}" [readonly]="true">
+                            </mat-form-field>
+                        </div>
+                    </form>
+                </mat-tab>
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>list_alt</mat-icon>
+                            Parcelle
+                        </ng-template>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>ICAD </mat-label>
+                                <input matInput value="{{exonerationDossier.exoneration.parcelle?.icad}}" [readonly]="true">
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Numéro</mat-label>
+                                <input matInput value="{{exonerationDossier.exoneration.parcelle?.numero}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Numéro ancien </mat-label>
+                                <input matInput value="{{exonerationDossier.exoneration.parcelle?.numeroAncien}}" [readonly]="true">
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>libelle</mat-label>
+                                <input matInput value="{{exonerationDossier.exoneration.parcelle?.libelle}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Etat mise en valeur </mat-label>
+                                <input matInput value="{{exonerationDossier.exoneration.parcelle?.etatMev}}" [readonly]="true">
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Destination</mat-label>
+                                <input matInput value="{{exonerationDossier.exoneration.parcelle?.destination?.libelle}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Superficie </mat-label>
+                                <input matInput value="{{exonerationDossier.exoneration.parcelle?.superficie}}" [readonly]="true">
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Etat exonerationDossier </mat-label>
+                                <input matInput value="{{exonerationDossier.exoneration.parcelle?.etatAttribution}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Numéro Ilot </mat-label>
+                                <input matInput value="{{exonerationDossier.exoneration.parcelle?.ilot?.numero}}" [readonly]="true">
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Numéro ancien Ilot</mat-label>
+                                <input matInput value="{{exonerationDossier.exoneration.parcelle?.ilot?.numeroAncien}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Arrondissement </mat-label>
+                                <input matInput value="{{exonerationDossier.exoneration.parcelle?.arrondissement?.nom}}" [readonly]="true">
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Commune</mat-label>
+                                <input matInput value="{{exonerationDossier.exoneration.parcelle?.arrondissement?.commune?.nom}}" [readonly]="true">
+
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Localité</mat-label>
+                                <input matInput value="{{exonerationDossier.exoneration.parcelle?.localite?.nom}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+                    </form>
+                    <app-cycledevie-parcelle [icad]="exonerationDossier.exoneration.parcelle?.icad"></app-cycledevie-parcelle>
+
+                </mat-tab>
+
+                <mat-tab>
+
+                    <ng-template mat-tab-label>
+                        <mat-icon>person</mat-icon>
+                       Contribuable
+                    </ng-template>
+                    <!-- Affiche les information du carde exonerationDossier  -->
+                    <div *ngIf="exonerationDossier.exoneration.contribuable" fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                        <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+                            <mat-card-header>
+                                <mat-card-title>
+                                    Détail contribuable
+                                </mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <app-card-general-contribuable-form [contribuable]="exonerationDossier.exoneration.contribuable"></app-card-general-contribuable-form>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                          <mat-icon>content_paste</mat-icon>
+                          Infos exoneration
+                        </ng-template>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="50" [fxFlex.xl]="80">
+                                <mat-label>Catégorie exoneration</mat-label>
+                                <input matInput [attr.autocomplete]="'off'" value="{{exonerationDossier.exoneration.categorie.motif}}" [readonly]="true" />
+                              </mat-form-field>
+                              </div>
+                              <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                          <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="50" [fxFlex.xl]="20">
+                            <mat-label>Nature impot</mat-label>
+                            <input matInput [attr.autocomplete]="'off'" value="{{exonerationDossier.exoneration.natureImpot.libelle}}" [readonly]="true" />
+                          </mat-form-field>
+                        </div>
+            
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                          <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                            <mat-label>Référence </mat-label>
+                            <input matInput [attr.autocomplete]="'off'" value="{{exonerationDossier.exoneration.refExterne}}" [readonly]="true" />
+                          </mat-form-field>
+                          <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                            <mat-label>Motif</mat-label>
+                            <input matInput [attr.autocomplete]="'off'" value="{{exonerationDossier.exoneration.motif}}" [readonly]="true" />
+                          </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                              <mat-label>Montant</mat-label>
+                              <input matInput [attr.autocomplete]="'off'" value="{{exonerationDossier.exoneration?.montant}}" [readonly]="true" />
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                              <mat-label>Taux</mat-label>
+                              <input matInput [attr.autocomplete]="'off'" value="{{exonerationDossier.exoneration?.taux}}" [readonly]="true" />
+                            </mat-form-field>
+                          </div>
+            
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                          <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                            <mat-label>Date début</mat-label>
+                            <input matInput value="{{exonerationDossier.exoneration?.dateDebut | date:'dd/MM/yyyy'}}" [readonly]="true">
+            
+                          </mat-form-field>
+                          <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                            <mat-label>Date fin</mat-label>
+                            <input matInput value="{{exonerationDossier.exoneration?.dateFin | date:'dd/MM/yyyy'}}" [readonly]="true">
+                          </mat-form-field>
+                        </div>
+            
+            
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <a *ngIf="exonerationDossier.exoneration?.modifDoc" href="{{exonerationDossier.exoneration?.modifDoc| generalDownload}}" target="_blank" color="primary">
+                              Télécharger le document</a>
+                            <span *ngIf="!exonerationDossier.exoneration?.modifDoc">Aucune pièce jointe</span>
+            
+                        </div>
+                      </form>
+                </mat-tab>
+
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                    </ng-template>
+                    <div fxLayout="row" fxLayoutAlign="start">
+                        <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="50" [fxFlex.xl]="60">
+                            <app-historique [numero]="exonerationDossier.numero"></app-historique>
+                        </div>
+
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card-content>
+    </form>
+</mat-card>

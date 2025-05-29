@@ -1,0 +1,54 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "objet": "IM01",
+      "modeCeion": "Arreté de cession",
+      "numeroDocumentCession": "Vente",
+      "dateDocumentCession": "Mutation",
+      "observation": "",
+      "contribuable": "",
+      "commune": "",
+      "arrondissement": "",
+      "section": "",
+      "ilot": "",
+      "parcelle": ""
+    },
+    {
+      "id": 2,
+      "objet": "IM01",
+      "modeCeion": "Arreté de cession",
+      "numeroDocumentCession": "Vente",
+      "dateDocumentCession": "Mutation",
+      "observation": "",
+      "contribuable": "",
+      "commune": "",
+      "arrondissement": "",
+      "section": "",
+      "ilot": "",
+      "parcelle": ""
+    },
+    {
+      "id": 3,
+      "objet": "IM01",
+      "modeCeion": "Arreté de cession",
+      "numeroDocumentCession": "Vente",
+      "dateDocumentCession": "Mutation",
+      "observation": "",
+      "contribuable": "",
+      "commune": "",
+      "arrondissement": "",
+      "section": "",
+      "ilot": "",
+      "parcelle": ""
+    }
+  ]
+}

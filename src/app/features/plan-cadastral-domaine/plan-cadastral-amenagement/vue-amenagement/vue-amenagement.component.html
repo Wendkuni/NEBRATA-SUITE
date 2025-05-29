@@ -1,0 +1,338 @@
+<mat-card>
+  <mat-card-header>
+  <mat-card-title>{{planCadastral.etat.libelle}}</mat-card-title>
+  <mat-card-subtitle>{{planCadastral.etat.description}}</mat-card-subtitle>
+  <ng-container *ngIf="planCadastral && !noOpenActions && planCadastral?.transitions?.length>0">
+    <app-action-detail-dossier [numero]="planCadastral.numero" [url]="urlAction" [transitions]="planCadastral.transitions"></app-action-detail-dossier>
+  </ng-container>
+  </mat-card-header>
+    <form class="user-form" *ngIf="planCadastral">
+        <mat-card-content>
+            <mat-tab-group>
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>content_paste</mat-icon>
+                        Informations de base
+                        </ng-template>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Numéro </mat-label>
+                                <input matInput value="{{planCadastral.numero}}" [readonly]="true">
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Date dossier (*)</mat-label>
+                                <input matInput value="{{planCadastral.dateCreationDossier | date:'dd/MM/yyyy'}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Objet </mat-label>
+                                <input matInput [attr.autocomplete]="'off'" value="{{planCadastral.objet}}" [readonly]="true" />
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Date externe (*)</mat-label>
+                                <input matInput value="{{planCadastral.dateExterne | date:'dd/MM/yyyy'}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Référence externe </mat-label>
+                                <input matInput [attr.autocomplete]="'off'" value="{{planCadastral.refExterne}}" [readonly]="true" />
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Statut actif du dossier </mat-label>
+                                <input matInput value="{{planCadastral.etatDossier | showBooleanValue}}" [readonly]="true">
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Date mise à jour </mat-label>
+                                <input matInput value="{{planCadastral.dateMajPlan | date:'dd/MM/yyyy HH:mm:ss'}}" [readonly]="true">
+                            </mat-form-field>
+
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Zone</mat-label>
+                                <input matInput placeholder="Zone" value="{{planCadastral.zone}}" [readonly]="true">
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Domaine</mat-label>
+                                <input matInput placeholder="Domaine" value="{{planCadastral.domaine}}" [readonly]="true">
+                            </mat-form-field>
+                        </div>
+
+                    </form>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon>attach_file</mat-icon>
+                        Pièces fournies
+                    </ng-template>
+                    <table mat-table [dataSource]="dataSourcePiece" class="mat-elevation-z8" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+                        <ng-container matColumnDef="categorie">
+                            <th mat-header-cell *matHeaderCellDef> Catégorie</th>
+                            <td mat-cell *matCellDef="let listPiece"> {{listPiece.categorie?.categoriePiece?.libelle}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="reference">
+                            <th mat-header-cell *matHeaderCellDef> Référence </th>
+                            <td mat-cell *matCellDef="let listPiece"> {{listPiece.reference}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="autorite">
+                            <th mat-header-cell *matHeaderCellDef> Autorité de délivrance </th>
+                            <td mat-cell *matCellDef="let listPiece"> {{listPiece.autoriteDeDelivrance}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="dateDelivrance">
+                            <th mat-header-cell *matHeaderCellDef> Date de délivrance </th>
+                            <td mat-cell *matCellDef="let listPiece"> {{listPiece.dateDelivrance | date: 'dd/MM/yyyy'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="dateExpiration">
+                            <th mat-header-cell *matHeaderCellDef> Date d'expiration </th>
+                            <td mat-cell *matCellDef="let listPiece"> {{listPiece.dateExpiration| date: 'dd/MM/yyyy'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="imageUrl">
+                            <th mat-header-cell *matHeaderCellDef> Pièce jointe </th>
+                            <td mat-cell *matCellDef="let listPiece">
+
+                              <span *ngIf="!listPiece.pieceJointe">Aucune pièce jointe</span>
+                              <ng-container *ngIf="listPiece.pieceJointe">
+                                <span *ngFor="let piece of listPiece.pieceJointe; let i = index"  class="piece-telechargeable"> <a   href="{{piece | generalDownload}}">Télécharger {{i+1}}</a></span>
+                              </ng-container>
+                          </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsPiece"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsPiece;"></tr>
+
+
+                    </table>
+
+                </mat-tab>
+
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>business</mat-icon>
+                            Structure
+                        </ng-template>
+                        <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                                <mat-label>Structure</mat-label>
+                                <input matInput value="{{planCadastral.transmission?.structure?.nom}}" [readonly]="true">
+                            </mat-form-field>
+
+                        </div>
+                        <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                                <mat-label>Service</mat-label>
+                                <input matInput value="{{planCadastral.transmission?.service?.nom}}" [readonly]="true">
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                                <mat-label>Bureau</mat-label>
+                                <input matInput value="{{planCadastral.transmission?.bureau?.nom}}" [readonly]="true">
+                            </mat-form-field>
+                        </div>
+                    </form>
+                </mat-tab>
+
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>list_alt</mat-icon>
+                            Les Ilots et parcelles
+                        </ng-template>
+                        <div class="p-0">
+
+                            <div fxLayout="row" fxLayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="start">
+
+                                <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="35" [fxFlex.lg]="35" [fxFlex.xl]="35">
+                                    <mat-label>Région</mat-label>
+                                    <input matInput value="{{planCadastral.arrondissement?.commune?.province?.region?.nom}}" [readonly]="true">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="35" [fxFlex.lg]="35" [fxFlex.xl]="35">
+                                    <mat-label>Province</mat-label>
+                                    <input matInput value="{{planCadastral.arrondissement?.commune?.province?.nom}}" [readonly]="true">
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="35" [fxFlex.lg]="35" [fxFlex.xl]="35">
+                                    <mat-label>Commune</mat-label>
+                                    <input matInput value="{{planCadastral.arrondissement?.commune?.nom}}" [readonly]="true">
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="60" [fxFlex.xl]="70">
+                                    <mat-label>Arrondissement</mat-label>
+                                    <input matInput value="{{planCadastral.arrondissement?.nom}}" [readonly]="true">
+                                </mat-form-field>
+
+
+
+                                <mat-form-field [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="60" [fxFlex.lg]="40" [fxFlex.xl]="50">
+                                    <mat-label>Filtre </mat-label>
+                                    <input matInput (keyup)="applyFilterIlot($event)" #input>
+                                    <mat-icon matSuffix (click)="input.value='';clearFilterIlot()" class="sycad-element-clickable">clear</mat-icon>
+                                </mat-form-field>
+
+
+
+
+                                <table mat-table [dataSource]="dataSourceIlot" #outerSort="matSort" multiTemplateDataRows class="mat-elevation-z8" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70" matSort>
+
+                                    <ng-container matColumnDef="numero">
+                                        <th mat-header-cell *matHeaderCellDef> Numéro </th>
+                                        <td mat-cell *matCellDef="let ilot"> {{ilot.numero}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="numeroAncien">
+                                        <th mat-header-cell *matHeaderCellDef> Numéro ancien </th>
+                                        <td mat-cell *matCellDef="let ilot"> {{ilot.numeroAncien}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="numeroSection">
+                                        <th mat-header-cell *matHeaderCellDef> Numéro section </th>
+                                        <td mat-cell *matCellDef="let ilot"> {{ilot.section?.numero}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="numeroAncienSection">
+                                        <th mat-header-cell *matHeaderCellDef> Numéro ancien section </th>
+                                        <td mat-cell *matCellDef="let ilot"> {{ilot.section?.numeroAncien}} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="expandedDetail">
+                                        <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumnsIlots?.length">
+                                            <div class="nested-table-element-detail" *ngIf="element.parcelles?.data?.length" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                                                <div class="inner-table mat-elevation-z8" *ngIf="expandedElement">
+                                                    <mat-form-field>
+
+                                                        <input matInput placeholder="Rechercher une parcelle" (keyup)="applyFilterParcelle($event.target.value)" #inputFilterParcelle>
+                                                        <mat-icon matSuffix (click)="inputFilterParcelle.value='';clearFilterParcelle()" class="sycad-element-clickable">clear</mat-icon>
+                                                    </mat-form-field>
+                                                    <table #innerTables mat-table #innerSort="matSort" [dataSource]="element.parcelles" matSort>
+                                                        <ng-container matColumnDef="numero">
+                                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Numéro </th>
+                                                            <td mat-cell *matCellDef="let element"> {{element.numero}} </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="numeroAncien">
+                                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Numéro ancien </th>
+                                                            <td mat-cell *matCellDef="let element"> {{element.numeroAncien}} </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="icad">
+                                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> ICAD </th>
+                                                            <td mat-cell *matCellDef="let element"> {{element.icad}} </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="superficie">
+                                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Superficie </th>
+                                                            <td mat-cell *matCellDef="let element"> {{element.superficie}} </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="etatAttribution">
+                                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Etat attribution </th>
+                                                            <td mat-cell *matCellDef="let element"> {{element.etatAttribution}} </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="etatMev">
+                                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Etat Mise en valeur </th>
+                                                            <td mat-cell *matCellDef="let element"> {{element.etatMev}} </td>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="destination">
+                                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Destination </th>
+                                                            <td mat-cell *matCellDef="let element"> {{element.destination?.libelle}} </td>
+                                                        </ng-container>
+
+
+
+                                                        <ng-container matColumnDef="localite">
+                                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Localité </th>
+                                                            <td mat-cell *matCellDef="let element"> {{element.localite?.nom}} </td>
+                                                        </ng-container>
+
+
+                                                        <tr mat-header-row *matHeaderRowDef="displayedColumnsParcelle"></tr>
+                                                        <tr mat-row *matRowDef="let row; columns: displayedColumnsParcelle;"></tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </ng-container>
+
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumnsIlots"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumnsIlots;" [class.nested-element-row]="row.parcelles?.data?.length" (click)="toggleRow(row)"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="nested-detail-row"></tr>
+
+                                </table>
+
+                            </div>
+                        </div>
+
+                    </form>
+                </mat-tab>
+
+
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>list_alt</mat-icon>
+                            Document
+                        </ng-template>
+                        <div fxLayout="row" fxLayout="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start" *ngIf="document">
+                            <table mat-table [dataSource]="dataSourceDocument" class="mat-elevation-z8" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+                                <ng-container matColumnDef="code">
+                                    <th mat-header-cell *matHeaderCellDef> Numéro </th>
+                                    <td mat-cell *matCellDef="let document"> {{document.numero}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="libelle">
+                                    <th mat-header-cell *matHeaderCellDef> Libelle </th>
+                                    <td mat-cell *matCellDef="let document"> {{document.libelle}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="dateEdition">
+                                    <th mat-header-cell *matHeaderCellDef> Date d'édition </th>
+                                    <td mat-cell *matCellDef="let document"> {{document.dateDoc | date : 'dd/MM/yyyy'}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="dateValidite">
+                                    <th mat-header-cell *matHeaderCellDef> Date de validité </th>
+                                    <td mat-cell *matCellDef="let document"> {{document.dateValidite | date : 'dd/MM/yyyy'}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="typeDocument">
+                                    <th mat-header-cell *matHeaderCellDef>Type de document </th>
+                                    <td mat-cell *matCellDef="let document"> {{document.documentType.libelle}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="action">
+                                    <th mat-header-cell *matHeaderCellDef> Pièce jointe </th>
+                                    <td mat-cell *matCellDef="let document">
+                                      <span *ngIf="!document.pieceJointe">Aucune pièce jointe</span>
+                                      <ng-container *ngIf="document.pieceJointe">
+                                        <span *ngFor="let piece of document.pieceJointe; let i = index"  class="piece-telechargeable"> <a   href="{{piece | generalDownload}}">Télécharger {{i+1}}</a></span>
+                                      </ng-container>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumnsDocument"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumnsDocument;"></tr>
+
+
+                            </table>
+
+
+                        </div>
+                    </form>
+                </mat-tab>
+
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                    </ng-template>
+                    <div fxLayout="row" fxLayoutAlign="start">
+                        <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="50" [fxFlex.xl]="60">
+                            <app-historique [numero]="planCadastral.numero"></app-historique>
+                        </div>
+
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card-content>
+    </form>
+</mat-card>

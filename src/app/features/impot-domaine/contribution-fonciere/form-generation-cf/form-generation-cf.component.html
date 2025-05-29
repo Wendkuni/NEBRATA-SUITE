@@ -1,0 +1,56 @@
+<button class="close" mat-button mat-dialog-close><mat-icon >close</mat-icon></button>
+
+<h1 mat-dialog-title class="modifier-text">Génération de la contribution foncière</h1>
+
+<div class="sycad-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
+
+<form [formGroup]="formulaire" class="role-form" (ngSubmit)="onSubmit()">
+    <div class="sycad-zone-modal-form-edition" mat-dialog-content perfectScrollbar>
+        <mat-grid-list cols="1" rowHeight="100px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div fxFlex="90" class="container-form-field-radio">
+                    <ng-select [items]="remoteAutocompleteExerciceFiscale.listRessource$ | async" [typeahead]="remoteAutocompleteExerciceFiscale.term" [loading]="remoteAutocompleteExerciceFiscale.loading" (search)="onSearchExerciceFiscale($event)" appendTo="body" [selectOnTab]="true"
+                        bindLabel="libelle" bindValue="id" placeholder="Exercice fiscale (*)" formControlName="exerciceFiscale">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                    <mat-error *ngIf="exerciceFiscale.invalid && (exerciceFiscale.dirty || exerciceFiscale.touched) && exerciceFiscale.errors?.required">
+                        L'exercice fiscale est obligatoire
+                    </mat-error>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div fxFlex="90" class="container-form-field-radio">
+                    <ng-select [items]="remoteAutocompleteCalendrierFiscale.listRessource$ | async" [typeahead]="remoteAutocompleteCalendrierFiscale.term" [loading]="remoteAutocompleteCalendrierFiscale.loading" (search)="onSearchCalendrierFiscale($event)" appendTo="body"
+                        [selectOnTab]="true" bindLabel="libelle" bindValue="id" placeholder="Calendrier fiscal (*)" formControlName="calendrierFiscale">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                    <mat-error *ngIf="calendrierFiscale.invalid && (calendrierFiscale.dirty || calendrierFiscale.touched) && calendrierFiscale.errors?.required">
+                        Le calendrier fiscal est obligatoire
+                    </mat-error>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+    <div mat-dialog-actions fxLayout="row" align="end">
+        <button mat-raised-button color="warn" type="button" (click)="closeFormModal()">Annuler</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">Lancer</button>
+
+    </div>
+
+</form>

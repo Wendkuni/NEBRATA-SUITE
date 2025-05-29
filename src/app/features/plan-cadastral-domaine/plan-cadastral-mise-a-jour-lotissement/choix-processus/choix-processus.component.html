@@ -1,0 +1,41 @@
+<button class="close" mat-button mat-dialog-close>
+  <mat-icon>close</mat-icon>
+</button>
+<h1 mat-dialog-title class="modifier-text">
+  Choisir le processus à traiter
+</h1>
+
+<div
+  class="sycad-zone-modal-form-edition"
+  mat-dialog-content
+  perfectScrollbar
+>
+  <div fxLayout="row wrap" fxLayoutAlign="start center"  >
+    <button
+      type="button"
+      (click)="routeVersLive()"
+      mat-flat-button
+      color="primary"
+      [fxFlex.xs]="100"
+      [fxFlex.sm]="70"
+      [fxFlex]="60"
+      [fxFlexOffset]="5"
+    >
+      <mat-icon class="icon-sm">add</mat-icon> En Live
+    </button>
+
+    <button
+      type="button"
+        (click)="routeVersSaisieDifferee()"
+      mat-flat-button
+      color="primary"
+      [fxFlex.xs]="100"
+      [fxFlex.sm]="70"
+      [fxFlex]="60"
+      [fxFlexOffset]="5"
+    >
+      <mat-icon class="icon-sm">add</mat-icon> En Saisie
+      différée
+    </button>
+  </div>
+</div>

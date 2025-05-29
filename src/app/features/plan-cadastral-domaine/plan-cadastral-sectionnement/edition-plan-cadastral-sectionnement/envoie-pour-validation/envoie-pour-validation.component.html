@@ -1,0 +1,12 @@
+<form [formGroup]="formulaire" (ngSubmit)="onSubmit()">
+
+
+
+    <div fxLayout="row" fxLayoutAlign="start">
+        <app-observation-form [formGroup]="dossier"></app-observation-form>
+    </div>
+  <div fxLayout="row"  [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+  </div>
+</form>

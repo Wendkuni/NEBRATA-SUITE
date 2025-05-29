@@ -1,0 +1,43 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+        "code": "SYS01",
+      "libelle": "L'Impôt sur les Bénéfices Industriels, Commerciaux et Agricoles (IBICA),"
+
+    },
+    {
+      "id": 2,
+      "code": "SYS02",
+      "libelle": "l'Impôt sur les Bénéfices non Commerciaux (IBNC)"
+    },
+    {
+      "id": 3,
+      "code": "SYS03",
+      "libelle": "l'Impôt sur les Sociétés (IS)"
+    },
+    {
+      "id": 4,
+      "code": "SYS04",
+      "libelle": "l'Impôt Unique sur le Traitement des Salaires (IUTS),"
+    },
+    {
+      "id": 5,
+      "code": "SYS05",
+      "libelle": "la Contribution du Secteur Informel"
+    },
+    {
+      "id": 6,
+      "code": "SYS06",
+      "libelle": "la patente"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+.sycad-table-container {
+    td,
+    th {
+        &.mat-column-parcelle-icad {
+            min-width: 200px;
+            //border: 2px solid red!important;
+        }
+    }
+}

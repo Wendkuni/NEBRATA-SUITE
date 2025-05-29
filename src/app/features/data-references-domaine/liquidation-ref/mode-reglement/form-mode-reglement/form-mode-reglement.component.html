@@ -1,0 +1,45 @@
+<button class="close" mat-button mat-dialog-close><mat-icon >close</mat-icon></button>
+<h1 mat-dialog-title class="modifier-text"><span *ngIf="!modeReglement.id">Créer un nouveau mode de règlement</span><span *ngIf="modeReglement.id">Modifier: {{modeReglement.libelle}}</span></h1>
+<div class="sycad-loading-shade" *ngIf="isLoadingResults">
+  <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
+<form [formGroup]="formulaire" class="role-form" (ngSubmit)="onSubmit()">
+  <div class="sycad-zone-modal-form-edition" mat-dialog-content perfectScrollbar>
+    <mat-grid-list cols="1" rowHeight="100px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="outline" fxFlex="90">
+          <mat-label>Code</mat-label>
+          <input matInput placeholder="Code" [attr.autocomplete]="'off'" formControlName="code" />
+          <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && code.errors?.required">
+            Le code est obligatoire
+          </mat-error>
+          <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && ( code.errors?.minlength || code.errors?.maxlength )">
+            La taille du code est limité entre 4 et 50 caractères
+          </mat-error>
+          <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && ( code.errors?.minlength || code.errors?.pattern )">
+            Ce champ doit ne doit contenir que des caractères majuscules et undercore
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="outline" fxFlex="90">
+          <mat-label>libelle</mat-label>
+          <input matInput placeholder="libelle" [attr.autocomplete]="'off'" formControlName="libelle" />
+          <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && libelle.errors?.required">
+            Le libelle est obligatoire
+          </mat-error>
+          <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && ( libelle.errors?.minlength || libelle.errors?.maxlength )">
+            Le libelle est limité entre 2 et 150 caractères
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <div mat-dialog-actions fxLayout="row" align="end">
+    <button mat-raised-button color="warn" (click)="closeFormModal()">Annuler</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+      <span *ngIf="!modeReglement.id">Enregistrer</span><span *ngIf="modeReglement.id">Mettre à jour</span>
+    </button>
+  </div>
+</form>
+

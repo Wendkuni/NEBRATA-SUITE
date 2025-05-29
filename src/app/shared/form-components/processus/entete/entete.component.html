@@ -1,0 +1,109 @@
+<div  fxLayout="column" fxLayout.gt-sm="row wrap" *ngIf="entete">
+      <div fxFlex="33.3" class="flex-p">
+        <mat-card class="custom-card">
+            <mat-card-header class="bg-primary p-1" fxLayoutAlign="space-between center">
+                <mat-card-title class="m-0">
+                    <h3>Information de base</h3>
+                    <h3></h3>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div fxFlex="70" fxLayout="column" class="user-details transition-2">
+                      <p fxLayout="row" fxLayoutAlign="start center">
+                      <mat-icon mat-list-icon>label</mat-icon>
+                        <span><strong>Libellé:</strong>  {{entete.libelle}}</span>
+                      </p>
+                      <p fxLayout="row" fxLayoutAlign="start center">
+                      <mat-icon mat-list-icon>filter_1</mat-icon>
+                        <span><strong>Nombre de jours:</strong>   {{entete.nbJours}}</span>
+                      </p>
+                </div>
+            </mat-card-content>
+        </mat-card>
+      </div>
+  <div fxFlex="33.3" class="flex-p">
+    <mat-card class="custom-card">
+      <mat-card-header class="bg-primary p-1" fxLayoutAlign="space-between center">
+        <mat-card-title class="m-0">
+          <h3>Destinations</h3>
+          <h3></h3>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div fxFlex="90" fxLayout="column" class="user-details transition-4">
+          <table>
+            <tr>
+              <th>Destination parcelle</th>
+            </tr>
+            <tr *ngFor="let destination of entete.destinations">
+              <td> {{destination.libelle}}</td>
+            </tr>
+          </table>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="33.3" class="flex-p">
+    <mat-card class="custom-card">
+      <mat-card-header class="bg-primary p-1" fxLayoutAlign="space-between center">
+        <mat-card-title class="m-0">
+          <h3>Pièces à fournir</h3>
+          <h3></h3>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div fxFlex="90" fxLayout="column" class="user-details transition-4">
+          <table>
+            <tr>
+              <th>Catégorie pièce</th>
+              <th>Exemplaire</th>
+              <th>Obligatoire</th>
+            </tr>
+            <tr *ngFor="let categorie of entete.categoriePieces">
+              <td> {{categorie.categoriePiece?.libelle}}</td>
+              <td>{{categorie.nbExemplaire}}</td>
+              <td>
+              <span *ngIf="categorie.obligatoire">OUI</span>
+                <span *ngIf="!categorie.obligatoire">NON</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="33.3" class="flex-p">
+      <mat-card class="custom-card">
+        <mat-card-header class="bg-primary p-1" fxLayoutAlign="space-between center">
+          <mat-card-title class="m-0">
+            <h3>Documents de sortie</h3>
+            <h3></h3>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div fxFlex="90" fxLayout="column" class="user-details transition-4">
+            <table>
+              <tr>
+                <th>Code</th>
+                <th>Libellé</th>
+                <th>Titre foncier</th>
+                <th>Titre parcelle</th>
+              </tr>
+              <tr *ngFor="let typeDocument of entete.typeDocuments">
+                <td> {{typeDocument.code}}</td>
+                <td> {{typeDocument.libelle}}</td>
+                <td>
+                <span *ngIf="typeDocument.estTitreFoncier">OUI</span>
+                <span *ngIf="!typeDocument.estTitreFoncier">NON</span>
+                </td>
+                <td>
+                  <span *ngIf="typeDocument.estTitreParcelle">OUI</span>
+                  <span *ngIf="!typeDocument.estTitreParcelle">NON</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    </div>

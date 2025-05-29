@@ -1,0 +1,101 @@
+<form [formGroup]="formulaire">
+
+    <mat-horizontal-stepper linear #stepper>
+        <mat-step [editable]="true">
+            <ng-template matStepLabel>Informations de base</ng-template>
+
+
+            <div class="step-creationstep-creation sycad-form-line" fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+                <h4 [fxFlex]="100">
+                    Il s'agit ici de trouver le contribuable qui correspondrait aux informations décrites dans ce dossier. Pour celà :
+                    <ul>
+                        <li> On regarde une correspondance par rapport à la pièce officielle et pièces complémentaires (numéro et nip)</li>
+                        <li> On regarde la parcelle si elle existe alors on regarde qui détient cette parcelle selon une attribution ou une mutation</li>
+                        <li> On regarde le contribuabe dans SYCAD avec le numéro IFU et s'il n'existe pas alors on le charge dans l'application IFU</li>
+                    </ul>
+                </h4>
+
+
+
+            </div>
+            <hr/>
+
+            <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+                <div [fxFlex]="100">
+                    <button mat-raised-button color="primary" type="button" (click)="runSearchContribuable()" matStepperNext>Trouver les correspondants</button>
+                </div>
+
+            </div>
+
+
+
+            <div class="zone-list-contribuable" fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="45" [fxFlex.xl]="20">
+                    <app-field-remote-autocomplete [dataForm]="contribuableMatcheRemoteAutocomplete" (subjectCompleteEvent)="receiveSubjectContribuable($event)">
+                    </app-field-remote-autocomplete>
+                </div>
+            </div>
+           <!--  <div class="zone-list-contribuable" fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="60" [fxFlex.xl]="40">
+                    <ng-select [items]="contribuableMatcheRemoteAutocomplete.listRessource$ | async" [typeahead]="contribuableMatcheRemoteAutocomplete.term" [loading]="contribuableMatcheRemoteAutocomplete.loading" (change)="onChangeContribuable($event)" appendTo="body" [selectOnTab]="true"
+                        bindLabel="contribuable.libelle" bindValue="contribuable.guid" labelForId="contribuableMatche" placeholder="Le contribuable pouvant correspondre" formControlName="contribuableMatche">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            <span> {{item.contribuable.libelle}} - ( {{item.modeCorrespondance}} )</span>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                            <span> {{item.contribuable.libelle}} - ( {{item.modeCorrespondance}} ) </span>
+
+                        </ng-template>
+                    </ng-select>
+
+                </div>
+
+
+
+            </div> -->
+            <div *ngIf="contribuableMatcheChoisie" fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="60">
+                    <mat-card-header>
+                        <mat-card-title>
+                            Détail contribuable
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <app-card-general-contribuable-form [contribuable]="contribuableMatcheChoisie"></app-card-general-contribuable-form>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+
+            <div fxLayout="row" fxLayoutAlign="start">
+                <app-observation-form [formGroup]="formulaire"></app-observation-form>
+            </div>
+            <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                <button mat-raised-button color="primary" type="button" matStepperNext>Suivant</button>
+                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+            </div>
+
+        </mat-step>
+
+
+
+
+
+
+    </mat-horizontal-stepper>
+
+</form>

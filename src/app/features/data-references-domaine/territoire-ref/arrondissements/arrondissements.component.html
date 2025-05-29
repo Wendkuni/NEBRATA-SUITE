@@ -1,0 +1,14 @@
+<div fxLayout="column">
+  <div class="flex-p">
+    <ng-template #datatable1></ng-template>
+  </div>
+</div>
+<ng-template #templateArrondissement let-arrondissement="data">
+  <div class="list-arrondissement"  [ngStyle]="{'padding': arrondissement.zones.length>0?'15px':'0'}">
+    <mat-chip-list>
+      <mat-chip *ngFor="let zone of arrondissement.zones">
+        <div class="custom-structure-classe">zone: {{zone.libelle}}</div>
+      </mat-chip>
+    </mat-chip-list>
+  </div>
+</ng-template>

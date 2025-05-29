@@ -1,0 +1,146 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <mat-card-header>
+        <mat-card-subtitle>
+            <h3>
+                <span *ngIf="!mandat">Démarrer un dossier de mandat</span>
+                <span *ngIf="mandat?.numero">{{transition.libelle}} : sur le dossier {{mandat.numero}}</span>
+            </h3>
+
+
+            <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+                La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+            </mat-error>
+
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+
+        <mat-tab-group #tabGroup>
+          <mat-tab *ngIf="!mandat">
+            <ng-template mat-tab-label>
+                <mat-icon class="sycad-form-tab-label-icon">info</mat-icon>
+
+                 <ng-container  >Details du processus</ng-container>
+            </ng-template>
+
+            <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+
+                <ng-container [ngSwitch]="true">
+                  <!-- header -->
+
+                <app-details-processus-tab-pane [processus]="processus"> </app-details-processus-tab-pane>
+
+
+                <!-- button commencer, id tabGroup -> mat-tab-group -->
+                  <div style="display: flex;justify-content: space-between; align-items: end;">
+                    <button mat-raised-button color="primary" style=" margin-left: auto;padding:5px 5px" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1">
+                      Commencer
+                      <mat-icon>keyboard_arrow_right</mat-icon>
+                    </button>
+                  </div>
+
+                </ng-container>
+
+            </div>
+        </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">face</mat-icon>
+
+                    <ng-container *ngIf="mandat?.numero">Formulaire transition {{transition.libelle}}</ng-container>
+                    <ng-container *ngIf="!mandat">Création d'une demande de mandat</ng-container>
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+                    <ng-container [ngSwitch]="true">
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'GESTION_MANDAT_TRANSMIS_TO_ANNULER' || transition?.code === 'GESTION_MANDAT_BROUILLON_TO_ANNULER'">
+                            <ng-container>
+                                <app-annuler-mandat (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [mandat]="mandat" [transition]="transition" [processus]="processus">
+                                </app-annuler-mandat>
+                            </ng-container>
+                        </ng-template>
+
+                        <ng-template [ngSwitchDefault]>
+                            <ng-container *ngIf="authentificatedUser?.typeUser==='AGENT' && hasPermissionNumerotation(); else autreContribuableGeneral">
+                                <app-creation-mandat-par-agent (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus">
+                                </app-creation-mandat-par-agent>
+                            </ng-container>
+
+
+                            <ng-template #autreContribuableGeneral>
+                                <ng-container>
+                                    <app-creer-par-contribuable (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [authentificatedUser]="authentificatedUser" [processus]="processus">
+                                    </app-creer-par-contribuable>
+                                </ng-container>
+                            </ng-template>
+
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'GESTION_MANDAT_BROUILLON_TO_BROUILLON' ">
+                            <ng-container *ngIf="authentificatedUser?.typeUser==='AGENT' && hasPermissionNumerotation(); else autreContribuableGeneral">
+                                <app-saisi-mandat-par-agent (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [mandat]="mandat" [transition]="transition" [authentificatedUser]="authentificatedUser">
+                                </app-saisi-mandat-par-agent>
+                            </ng-container>
+
+                            <ng-template #autreContribuableGeneral>
+                                <ng-container>
+                                    <app-saisie-par-contribuable (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [mandat]="mandat" [transition]="transition" [authentificatedUser]="authentificatedUser">
+                                    </app-saisie-par-contribuable>
+                                </ng-container>
+                            </ng-template>
+
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="transition?.code==='GESTION_MANDAT_TRANSMIS_TO_VALIDE' ||  transition?.code === 'GESTION_MANDAT_BROUILLON_TO_VALIDE'">
+
+                            <app-valider-mandat (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [mandat]="mandat" [transition]="transition">
+                            </app-valider-mandat>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'GESTION_MANDAT_BROUILLON_TO_TRANSMIS' || transition?.code === 'GESTION_MANDAT_TRANSMISSION_BROUILLON'">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [avecPiece]="false" [codeCommune]="" [dossierProcessus]="mandat" [fixedStructures]="false" [processusService]="mandatService" [transition]="transition"
+                                [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                        </ng-template>
+                    </ng-container>
+
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="mandat?.numero">
+                <ng-template mat-tab-label>
+                    <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                </ng-template>
+                <div fxLayout="column" class="flex-p">
+                    <app-historique [numero]="mandat?.numero"></app-historique>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="mandat">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Entête de dossier
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+
+                    <app-entete [numero]="mandat?.numero" [processus]="'WRKFProcessMandat'"></app-entete>
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="mandat">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Détail du dossier
+                </ng-template>
+
+                <div  fxLayout="column" class="flex-p">
+                    <app-vue-mandat [noOpenActions]="true"></app-vue-mandat>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>

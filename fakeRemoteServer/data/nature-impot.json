@@ -1,0 +1,48 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "code": "IM01",
+      "libelle": "Parcelle",
+      "typeNatureImpot": "PERSONNELLE",
+      "codeSI": "0002541",
+      "libelleCourt": "Pénalité",
+      "ordre": 2
+    },
+    {
+      "id": 2,
+      "code": "IM01",
+      "libelle": "Parcelle",
+      "typeNatureImpot": "PERSONNELLE",
+      "codeSI": "0002541",
+      "libelleCourt": "Pénalité",
+      "ordre": 2
+    },
+    {
+      "id": 3,
+      "code": "IM01",
+      "libelle": "Parcelle",
+      "typeNatureImpot": "PROFESSIONELLE",
+      "codeSI": "0002541",
+      "libelleCourt": "Pénalité",
+      "ordre": 2
+    },
+    {
+      "id": 4,
+      "code": "IM01",
+      "libelle": "Parcelle",
+      "typeNatureImpot": "PROFESSIONELLE",
+      "codeSI": "0002541",
+      "libelleCourt": "Pénalité",
+      "ordre": 2
+    }
+  ]
+}

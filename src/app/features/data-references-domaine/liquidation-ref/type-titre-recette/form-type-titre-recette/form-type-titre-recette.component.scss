@@ -1,0 +1,21 @@
+.typeTitreRecette-form {
+  .ng-select {
+    width: 100%;
+  }
+}
+.mat-dialog-content {
+  overflow: hidden;
+}
+.mat-grid-list {
+  overflow: hidden;
+}
+
+.modifier-text {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+}
+.sycad-zone-modal-form-edition {
+  height: 40vh;
+}

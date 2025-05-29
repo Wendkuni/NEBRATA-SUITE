@@ -1,0 +1,36 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "rang": "1",
+      "libelle": "Degré successoral 1"
+
+    },
+    {
+      "id": 2,
+      "rang": "2",
+      "libelle": "Degré successoral 2"
+
+    },
+    {
+      "id": 3,
+      "rang": "3",
+      "libelle": "Degré successoral 2"
+
+    },
+    {
+      "id": 4,
+      "rang": "4",
+      "libelle": "Degré successoral 2"
+
+    }
+  ]
+}

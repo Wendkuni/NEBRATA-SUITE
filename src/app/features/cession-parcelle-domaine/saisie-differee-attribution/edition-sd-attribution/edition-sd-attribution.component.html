@@ -1,0 +1,137 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+
+
+    <mat-card-header>
+        <mat-card-subtitle>
+            <h3>
+                <span *ngIf="!attribution">Démarrer une saisie différée d'un dossier d'attribution </span>
+                <span *ngIf="attribution?.numero">{{transition.libelle}} : sur le dossier {{attribution.numero}}</span>
+            </h3>
+
+
+            <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+                La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+            </mat-error>
+
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+
+        <mat-tab-group #tabGroup>
+          <mat-tab *ngIf="!attribution">
+            <ng-template mat-tab-label>
+                <mat-icon class="sycad-form-tab-label-icon">info</mat-icon>
+
+                 <ng-container  >Details du processus</ng-container>
+            </ng-template>
+
+            <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+
+                <ng-container [ngSwitch]="true">
+                  <!-- header -->
+
+                <app-details-processus-tab-pane [processus]="processus"> </app-details-processus-tab-pane>
+
+
+                <!-- button commencer, id tabGroup -> mat-tab-group -->
+                  <div style="display: flex;justify-content: space-between; align-items: end;">
+                    <button mat-raised-button color="primary" style=" margin-left: auto;padding:5px 5px" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1">
+                      Commencer
+                      <mat-icon>keyboard_arrow_right</mat-icon>
+                    </button>
+                  </div>
+
+                </ng-container>
+
+            </div>
+        </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">face</mat-icon>
+
+                    <ng-container *ngIf="attribution?.numero">Formulaire transition {{transition.libelle}}</ng-container>
+                    <ng-container *ngIf="!attribution">Création d'une attribution</ng-container>
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+                    <ng-container [ngSwitch]="true">
+
+
+                        <ng-template [ngSwitchCase]="transition?.code === 'SAISIE_DIFFEREE_ATTRIBUTION_TRANSMISSION_VALIDE' || transition?.code ==='SAISIE_DIFFEREE_ATTRIBUTION_TRANSMISSION_BROUILLON' || transition?.code ==='SAISIE_DIFFEREE_ATTRIBUTION_TRANSMISSION_BLOQUE'">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="attribution" [codeCommune]="attribution?.parcelle?.ilot?.section?.commune?.code"  [fixedStructures]="false" [processusService]="attributionService" [transition]="transition" [frontendUrl]="getFrontendTemplate()">
+
+                            </app-transmission-dossier>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="transition?.code==='SAISIE_DIFFEREE_ATTRIBUTION_BROUILLON_TO_BROUILLON' || transition?.code==='SAISIE_DIFFEREE_ATTRIBUTION_BLOQUE_TO_BLOQUE'">
+                            <pc-saisie-sd-attribution (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [attribution]="attribution" [transition]="transition" [processus]="processus"></pc-saisie-sd-attribution>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="transition?.code==='SAISIE_DIFFEREE_ATTRIBUTION_BROUILLON_TO_VALIDE' || transition?.code==='SAISIE_DIFFEREE_ATTRIBUTION_BLOQUE_TO_VALIDE' ">
+                            <pc-saisie-sd-attribution (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [attribution]="attribution" [transition]="transition" [processus]="processus"></pc-saisie-sd-attribution>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'SAISIE_DIFFEREE_ATTRIBUTION_BROUILLON_TO_ANNULER' || transition?.code === 'SAISIE_DIFFEREE_ATTRIBUTION_BLOQUE_TO_ANNULER'">
+                            <app-annulation-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="attribution" [transition]="transition" [processusService]="attributionService" [frontendUrl]="getFrontendTemplate()"></app-annulation-dossier-transition>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'SAISIE_DIFFEREE_ATTRIBUTION_BROUILLON_BLOQUE'">
+                          <app-blocage-saisie-attribution (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [attribution]="attribution" [transition]="transition" ></app-blocage-saisie-attribution>
+                       </ng-template>
+
+                        <ng-template [ngSwitchDefault]>
+                            <pc-creation-sd-attribution (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus"></pc-creation-sd-attribution>
+                        </ng-template>
+
+
+                    </ng-container>
+
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="attribution?.numero">
+                <ng-template mat-tab-label>
+                    <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                </ng-template>
+                <div fxLayout="column" class="flex-p">
+                    <app-historique [numero]="attribution?.numero"></app-historique>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="attribution">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Entête de dossier
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+
+                    <app-entete [numero]="attribution?.numero" [processus]="'WRKFProcessSaisieDiffereeAttribution'"></app-entete>
+                </div>
+            </mat-tab>
+
+          <mat-tab *ngIf="attribution">
+            <ng-template mat-tab-label>
+              <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+              Détail du dossier
+            </ng-template>
+            <div fxLayout="column" class="flex-p">
+              <app-vue-sd-attribution [noOpenActions]="true"></app-vue-sd-attribution>
+            </div>
+          </mat-tab>
+
+
+        </mat-tab-group>
+    </mat-card-content>
+
+
+
+
+
+
+
+</mat-card>

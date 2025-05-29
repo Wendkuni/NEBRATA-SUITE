@@ -1,0 +1,50 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+
+    <form [formGroup]="formulaire" (ngSubmit)="onSubmit()">
+        <mat-card-header>
+            <mat-card-subtitle>
+                <h1 mat-dialog-title class="modifier-text">
+                    <span *ngIf="templateEmail.id">Modifier le template email    {{templateEmail.subject}}</span>
+                </h1>
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="45" [fxFlex.xl]="40">
+                    <mat-label>Objet</mat-label>
+                    <input matInput placeholder="Objet" [attr.autocomplete]="'off'" formControlName="subject" />
+                    <mat-error *ngIf="subject.invalid && (subject.dirty || subject.touched) && subject.errors?.required">
+                        Le subject est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="subject.invalid && (subject.dirty || subject.touched) && ( subject.errors?.minlength || subject.errors?.maxlength )">
+                        La subject est limité entre 2 et 150 caractères
+                    </mat-error>
+                    <mat-hint>{{templateEmail.contexte}}</mat-hint>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <mat-grid-list cols="1">
+                    <div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+                        <angular-editor [placeholder]="'Enter text here...'" formControlName="textRich" [config]="editorConfig">
+                        </angular-editor>
+                    </div>
+                    <span *ngIf="templateEmail.id">{{templateEmail.contexte}}</span>
+                </mat-grid-list>
+            </div>
+
+            <br>
+            <mat-card-actions [ngClass]="{'card-action-form': (activeMediaQuery === 'lg' || activeMediaQuery === 'xl' ), 'card-action-form-small': (activeMediaQuery === 'sm') }">
+                <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button color="warn" type="button" (click)="resetForm()">Annuler</button>
+
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+            <span *ngIf="templateEmail.id">Mettre à jour</span>
+        </button>
+                </div>
+            </mat-card-actions>
+        </mat-card-content>
+    </form>
+</mat-card>

@@ -1,0 +1,19 @@
+<mat-accordion class="list-profil-infos profil-panel">
+  <mat-expansion-panel>
+      <mat-expansion-panel-header>
+          <mat-panel-title class="panel-header-parents" fxLayout="row" fxLayoutAlign="start start">
+              <mat-icon>supervisor_account</mat-icon> <span>Membres</span>
+          </mat-panel-title>
+      </mat-expansion-panel-header>
+      <!-- <mat-card style=""> -->
+        <mat-card-content>
+          <mat-list>
+            <ng-container  *ngFor="let membre of membres">
+              <app-profil-list-item-icon *ngIf="membre.designation" [value]="membre?.designation" label="Désignation" icon="apartment"></app-profil-list-item-icon>
+              <app-profil-list-item-icon *ngIf="!membre.designation" [value]="membre?.nom ? membre?.nom : '' + ' ' + membre?.prenoms ? membre?.prenoms : ''" label="Nom et prénoms" icon="perm_identity"></app-profil-list-item-icon>
+            </ng-container>
+          </mat-list>
+        </mat-card-content>
+      <!-- </mat-card> -->
+  </mat-expansion-panel>
+</mat-accordion>

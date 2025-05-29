@@ -1,0 +1,71 @@
+<button class="close" mat-button mat-dialog-close><mat-icon >close</mat-icon></button>
+<h1 mat-dialog-title class="modifier-text"><span *ngIf="!province.id">Créer une nouvelle province</span><span *ngIf="province.id">Modifier: {{province.nom}}</span></h1>
+<div class="sycad-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div> 
+<form [formGroup]="formulaire" class="province-form" (ngSubmit)="onSubmit()">
+    <div class="sycad-zone-modal-form-edition" mat-dialog-content perfectScrollbar>
+        <mat-grid-list cols="1" rowHeight="100px">
+
+            <!--
+
+       <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div fxFlex="90" class="container-form-field-radio">
+          <app-field-remote-autocomplete [dataForm]="remoteAutocompleteRegion"  ></app-field-remote-autocomplete>
+        </div>
+      </mat-grid-tile>
+     -->
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div fxFlex="90" class="container-form-field-radio">
+                    <ng-select [items]="regionRemoteAutocomplete.listRessource$ | async" [typeahead]="regionRemoteAutocomplete.term"  [loading]="regionRemoteAutocomplete.loading" (search)="onSearchRegion($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom" bindValue="id" placeholder="Région (*)"
+                        formControlName="region">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                    <mat-error *ngIf="region.invalid && (region.dirty || region.touched) && region.errors?.required">
+                        Une faut au moins une région
+                    </mat-error>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <mat-form-field appearance="outline" fxFlex="90">
+                    <mat-label>Code (*)</mat-label>
+                    <input matInput placeholder="Code" [attr.autocomplete]="'off'" formControlName="code" />
+                    <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && code.errors?.required">
+                        Le code est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && ( code.errors?.minlength || code.errors?.maxlength )">
+                        La taille du code est limité entre 2 et 50 caractères
+                    </mat-error>
+                    <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && ( code.errors?.minlength || code.errors?.pattern )">
+                        Ce champ doit ne doit contenir que des caractères majuscules et undercore
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <mat-form-field appearance="outline" fxFlex="90">
+                    <mat-label>Nom (*)</mat-label>
+                    <input matInput placeholder="Nom de la région" [attr.autocomplete]="'off'" formControlName="nom" />
+                    <mat-error *ngIf="nom.invalid && (nom.dirty || nom.touched) && nom.errors?.required">
+                        Le nom de la région est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="nom.invalid && (nom.dirty || nom.touched) && ( nom.errors?.minlength || nom.errors?.maxlength )">
+                        La taille du nom de la région est limité entre 4 et 150 caractères
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+    <div mat-dialog-actions fxLayout="row" align="end">
+        <button mat-raised-button color="warn" type="button" (click)="closeFormModal()">Annuler</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+      <span *ngIf="!province.id">Enregistrer</span><span *ngIf="province.id">Mettre à jour</span>
+    </button>
+    </div>
+</form>

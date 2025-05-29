@@ -1,0 +1,147 @@
+<h3>
+    Les parcelles à fusionner doivent avoir la même destination
+</h3>
+<div fxLayout="row" fxLayoutAlign="start">
+    <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+        <ng-select [items]="communeRemoteAutocomplete.listRessource$ | async" [typeahead]="communeRemoteAutocomplete.term" [loading]="communeRemoteAutocomplete.loading" (search)="onSearchCommune($event)" (change)="onChangeCommune($event)" appendTo="body" [selectOnTab]="true"
+            bindLabel="nom" bindValue="id" labelForId="commune" [(ngModel)]="communeId" [ngModelOptions]="{standalone: true}" placeholder="Commune">
+            <ng-template ng-loadingspinner-tmp>
+                <div class="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </ng-template>
+        </ng-select>
+
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="start">
+    <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+        <ng-select [items]="sectionRemoteAutocomplete.listRessource$ | async" [typeahead]="sectionRemoteAutocomplete.term" [virtualScroll]="true" [loading]="sectionRemoteAutocomplete.loading" (search)="onSearchSection($event)" (change)="onChangeSection($event)"
+            appendTo="body" [selectOnTab]="true" bindLabel="libelle" bindValue="id" [(ngModel)]="sectionChoisieId" [ngModelOptions]="{standalone: true}" labelForId="section" placeholder="Section">
+            <ng-template ng-loadingspinner-tmp>
+                <div class="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </ng-template>
+            <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                <span *ngIf="item.numeroAncien">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span>{{item.numero}}</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                <span *ngIf="item.numeroAncien" [ngOptionHighlight]="search">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span [ngOptionHighlight]="search">{{item.numero}}</span>
+            </ng-template>
+        </ng-select>
+
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="start">
+    <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+        <ng-select [items]="ilotRemoteAutocomplete.listRessource$ | async" [typeahead]="ilotRemoteAutocomplete.term" [(ngModel)]="ilotChoisieId" (change)="onChangeIlot($event)" [ngModelOptions]="{standalone: true}" [loading]="ilotRemoteAutocomplete.loading" (search)="onSearchIlot($event)"
+            appendTo="body" [selectOnTab]="true" bindLabel="nom" bindValue="id" labelForId="ilot" placeholder="Ilot">
+            <ng-template ng-loadingspinner-tmp>
+                <div class="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </ng-template>
+            <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                <span *ngIf="item.numeroAncien">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span>{{item.numero}}</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                <span *ngIf="item.numeroAncien" [ngOptionHighlight]="search">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span [ngOptionHighlight]="search">{{item.numero}}</span>
+            </ng-template>
+        </ng-select>
+
+    </div>
+</div>
+
+<div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+    <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+        <ng-select [items]="parcelleRemoteAutocomplte.listRessource$ | async" [typeahead]="parcelleRemoteAutocomplte.term" (change)="onChangeParcelle($event)" [loading]="parcelleRemoteAutocomplte.loading" (search)="onSearchParcelle($event)" appendTo="body" [selectOnTab]="true"
+            bindLabel="numero" bindValue="id" labelForId="parcelles" [(ngModel)]="parcelleChoisieId" placeholder="Parcelles" [multiple]="true">
+
+            <ng-template ng-loadingspinner-tmp>
+                <div class="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </ng-template>
+            <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                <span *ngIf="item.numeroAncien">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span>{{item.numero}}</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                <span *ngIf="item.numeroAncien" [ngOptionHighlight]="search">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span [ngOptionHighlight]="search">{{item.numero}}</span>
+            </ng-template>
+
+            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                <div class="ng-value" *ngFor="let item of items | slice:0:2">
+                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">× </span>
+
+                    <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                    <span *ngIf="item.numeroAncien">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span>{{item.numero}}</span>
+
+                </div>
+
+
+
+                <div class="ng-value" *ngIf="items.length > 2">
+                    <span class="ng-value-label">{{items.length - 2}} plus...</span>
+                </div>
+            </ng-template>
+
+        </ng-select>
+        <!--
+        <mat-error *ngIf=" parcelle.invalid && ( parcelle.dirty ||  parcelle.touched) &&  parcelle.errors?.required">
+        Un dossier d'attribution doit obligatoire être associé à une parcelle
+    </mat-error>
+    -->
+    </div>
+
+</div>
+
+
+<div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+    <table mat-table [dataSource]="dataSourceParcelles" class="mat-elevation-z8 sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+        <ng-container matColumnDef="numero">
+            <th mat-header-cell *matHeaderCellDef> Numero </th>
+            <td mat-cell *matCellDef="let element"> {{element?.numero}} </td>
+        </ng-container>
+        <ng-container matColumnDef="numeroAncien">
+            <th mat-header-cell *matHeaderCellDef> Numero ancien</th>
+            <td mat-cell *matCellDef="let element"> {{element?.numeroAncien}} </td>
+        </ng-container>
+        <ng-container matColumnDef="libelle">
+            <th mat-header-cell *matHeaderCellDef>libelle</th>
+            <td mat-cell *matCellDef="let element"> {{element?.libelle}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="superficie">
+            <th mat-header-cell *matHeaderCellDef>Superficie</th>
+            <td mat-cell *matCellDef="let element"> {{element?.superficie}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="destination">
+            <th mat-header-cell *matHeaderCellDef>Destination</th>
+            <td mat-cell *matCellDef="let element"> {{element?.destination?.libelle}}</td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>

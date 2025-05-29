@@ -1,0 +1,40 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "coefficient": "12",
+      "libelle": "Test 1",
+      "categorie": "categorie 1",
+      "typeImmeuble": "Parcelle"
+    },
+    {
+      "id": 2,
+      "coefficient": "02",
+      "libelle": "test 2",
+      "categorie": "categorie 5",
+      "typeImmeuble": "Batiment"
+    },
+    {
+      "id": 3,
+      "coefficient": "5",
+      "libelle": "Test 3",
+      "categorie": "categorie B21",
+      "typeImmeuble": "Clôture"
+    },
+    {
+      "id": 4,
+      "coefficient": "10",
+      "libelle": "test 4",
+      "categorie": " Categorie 9",
+      "typeImmeuble": "Aménagement particulier"
+    }
+  ]
+}

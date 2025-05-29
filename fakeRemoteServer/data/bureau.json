@@ -1,0 +1,41 @@
+[{
+        "id": 1,
+        "libelle": "bureau 1",
+        "service": "service 4"
+    },
+    {
+        "id": 2,
+        "libelle": "bureau 2",
+        "service": "service 4"
+    },
+    {
+        "id": 3,
+        "libelle": "bureau 3",
+        "service": "service 6"
+    },
+    {
+        "id": 4,
+        "libelle": "bureau 4",
+        "service": "service 5"
+    },
+    {
+        "id": 5,
+        "libelle": "bureau 5",
+        "service": "service 7"
+    },
+    {
+        "id": 6,
+        "libelle": "bureau 6",
+        "service": "service 8"
+    },
+    {
+        "id": 7,
+        "libelle": "bureau 7",
+        "service": "service 8"
+    },
+    {
+        "id": 8,
+        "libelle": "bureau 8",
+        "service": "service 7"
+    }
+]

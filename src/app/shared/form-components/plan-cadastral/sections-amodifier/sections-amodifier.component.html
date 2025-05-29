@@ -1,0 +1,85 @@
+<h3>
+    La liste des sections à modifier
+</h3>
+<div fxLayout="row" fxLayoutAlign="start">
+    <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+        <ng-select [items]="communeRemoteAutocomplete.listRessource$ | async" [typeahead]="communeRemoteAutocomplete.term" [loading]="communeRemoteAutocomplete.loading" (search)="onSearchCommune($event)" (change)="onChangeCommune($event)" appendTo="body" [selectOnTab]="true"
+            bindLabel="nom" bindValue="id" labelForId="communeIS" [(ngModel)]="communeIdIlotMo" [ngModelOptions]="{standalone: true}" placeholder="Commune">
+            <ng-template ng-loadingspinner-tmp>
+                <div class="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </ng-template>
+        </ng-select>
+
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="start">
+    <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+        <ng-select [items]="sectionRemoteAutocomplete.listRessource$ | async" [typeahead]="sectionRemoteAutocomplete.term" [virtualScroll]="true" [loading]="sectionRemoteAutocomplete.loading" (search)="onSearchSection($event)" (change)="onChangeSection($event)"
+            appendTo="body" [selectOnTab]="true" bindLabel="libelle" bindValue="id" [(ngModel)]="sectionChoisieIdIlotMo" labelForId="sectionsM" placeholder="Section" [multiple]="true">
+            <ng-template ng-loadingspinner-tmp>
+                <div class="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </ng-template>
+            <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                <span *ngIf="item.numeroAncien">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span>{{item.numero}}</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                <span *ngIf="item.numeroAncien" [ngOptionHighlight]="search">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span [ngOptionHighlight]="search">{{item.numero}}</span>
+            </ng-template>
+        </ng-select>
+
+    </div>
+</div>
+
+
+<form [formGroup]="sectionsAModifier" class="form-container">
+    <div fxLayout="row" fxLayoutAlign="start">
+
+        <div class="form-table-ilot-container mat-elevation-z8">
+
+            <table mat-table [dataSource]="dataSource">
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
+
+
+                <ng-container matColumnDef="numero" sticky>
+                    <th mat-header-cell *matHeaderCellDef> Numéro </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+                        <mat-form-field appearance="outline">
+                            <input matInput [attr.autocomplete]="'off'" formControlName="numero">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="numeroAncien">
+                    <th mat-header-cell *matHeaderCellDef> Numéro ancien </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+
+                        <mat-form-field appearance="outline">
+                            <input matInput [attr.autocomplete]="'off'" formControlName="numeroAncien">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element;let i = index">
+                        <mat-icon class="sycad-element-clickable" (click)="supprimerSection(i)">delete_forever</mat-icon>
+                    </td>
+                </ng-container>
+
+            </table>
+        </div>
+    </div>
+</form>

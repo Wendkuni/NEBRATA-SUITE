@@ -1,0 +1,408 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="loading">
+        <mat-spinner *ngIf="loading"></mat-spinner>
+    </div>
+    <form [formGroup]="formulaire" class="user-form" (ngSubmit)="update()">
+        <mat-card-header>
+            <mat-card-subtitle>
+                <h3>
+                    <span *ngIf="processus.id">Modification de : {{processus.libelle}}</span>
+                </h3>
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-tab-group>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon>content_paste</mat-icon>&nbsp; Infos de bases
+                    </ng-template>
+                    <div fxLayout="column" class="flex-p">
+                        <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                            <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>libelle </mat-label>
+                                <input matInput placeholder="libelle" formControlName="libelle">
+                                <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && (libelle.errors?.minlength ||libelle.errors?.maxlength )">
+                                    La libelle est limité entre 2 et 150 caractères
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Nombre de jours (*)</mat-label>
+                                <input matInput placeholder="Nombre de jours(*)" formControlName="nbJours" type="number">
+                                <mat-error *ngIf="nbJours.invalid && (nbJours.dirty || nbJours.touched)">
+                                    Le nombre de jours est obligatoire
+                                </mat-error>
+                            </mat-form-field>
+                            <div class="sycad-form-line container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                              <label id="etatDossier-active">Actif</label>
+                              <mat-slide-toggle formControlName="actif" aria-labelledby="etatDossier-active"></mat-slide-toggle>
+
+                          </div>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+
+
+                          <angular-editor [fxFlex]="100" formControlName="description" [config]="editorConfig">
+                          </angular-editor>
+
+
+
+
+
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <form [formGroup]="formulaire">
+                        <ng-template mat-tab-label>
+                            <mat-icon>tab</mat-icon>&nbsp; Etats
+                        </ng-template>
+                        <div fxLayout="column" class="flex-p">
+                            <ng-container *ngIf="etats.controls.length>0">
+                                <ng-template ngFor let-etat [ngForOf]="etats.controls" let-i="index">
+                                    <div class="card-container-form-element">
+                                        <mat-card-header>
+                                        </mat-card-header>
+                                        <div fxLayout="column" class="flex-p">
+                                            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center" [formGroup]="etat">
+                                                <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                                                    <mat-label>libelle </mat-label>
+                                                    <input matInput placeholder="libelle" formControlName="libelle">
+                                                </mat-form-field>
+                                                <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                                                    <mat-label>Description</mat-label>
+                                                    <textarea matInput placeholder="Description" formControlName="description"></textarea>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </ng-template>
+                            </ng-container>
+                        </div>
+                    </form>
+                </mat-tab>
+                <mat-tab>
+                    <form [formGroup]="formulaire">
+                        <ng-template mat-tab-label>
+                            <mat-icon>tune</mat-icon>&nbsp; Transitions
+                        </ng-template>
+                        <div fxLayout="column" class="flex-p">
+                            <ng-container *ngIf="transitions.controls.length>0">
+                                <ng-template ngFor let-transition [ngForOf]="transitions.controls" let-indexTransition="index">
+                                    <div class="card-container-form-element">
+                                        <div fxLayout="column" class="flex-p" [formGroup]="transition">
+                                            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                                                <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                                                    <mat-label>libelle </mat-label>
+                                                    <input matInput placeholder="libelle" formControlName="libelle">
+                                                </mat-form-field>
+                                                <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="100" [fxFlex.xl]="20">
+                                                    <mat-label>Description</mat-label>
+                                                    <textarea matInput placeholder="Description" formControlName="description"></textarea>
+                                                </mat-form-field>
+                                              <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="100" [fxFlex.xl]="20">
+                                                <mat-label>Nombre de jours</mat-label>
+                                                <input matInput formControlName="nbJours" type="number" />
+                                              </mat-form-field>
+                                            </div>
+                                          <app-transition-fonctionnelle-form [formGroup]="transition.get('transitionFonctionnelle')">
+                                          </app-transition-fonctionnelle-form>
+                                            <mat-accordion>
+                                                <mat-expansion-panel>
+                                                    <mat-expansion-panel-header>
+                                                        <mat-panel-title>
+                                                            Categories pièces transition
+                                                        </mat-panel-title>
+                                                        <mat-panel-description>
+                                                        </mat-panel-description>
+                                                    </mat-expansion-panel-header>
+                                                    <div fxLayout="column" class="flex-p">
+                                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                                            <button type="button" mat-flat-button color="primary" (click)="addCategoriePiecesTransition(indexTransition)" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10" [fxFlex.lg]="50" [fxFlexOffset.md]="10"
+                                                                [fxFlex.xl]="20" [fxFlexOffset]="10">
+                                <mat-icon class="icon-sm">add</mat-icon> Ajouter une categorie pièce transition
+                              </button>
+                                                        </div>
+                                                        <ng-container *ngIf="getCategoriePieceTransition(transition).controls.length>0" formArrayName="categoriePieces">
+                                                            <ng-template ngFor let-categoriePieces [ngForOf]="getCategoriePieceTransition(transition).controls" let-indexPieceTransition="index">
+                                                                <div class="card-container-form-element">
+                                                                    <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="100">
+                                                                        <button type="button" mat-icon-button matSuffix color="warn" class="delete-icons">
+                                      <mat-icon
+                                        (click)="removeCategoriePieceTransition(indexTransition,indexPieceTransition)">
+                                        remove_circle</mat-icon>
+                                    </button>
+                                                                        <mat-card-header>
+                                                                        </mat-card-header>
+                                                                        <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center" [formGroup]="categoriePieces">
+                                                                            <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="25">
+                                                                                <ng-select [items]="typePieceIdentiteRemoteAutocomplete.listRessource$ | async" [typeahead]="typePieceIdentiteRemoteAutocomplete.term" [loading]="typePieceIdentiteRemoteAutocomplete.loading" (search)="onSearchCategoriePiece($event)" appendTo="body" [clearable]="isNotFixedValue"
+                                                                                    [searchable]="isNotFixedValue" notFoundText="Aucun element trouvé" loadingText="Chargement en cours ..." [selectOnTab]="true" bindLabel="libelle" bindValue="id" formControlName="categoriePiece">
+                                                                                    <ng-template ng-loadingspinner-tmp>
+                                                                                        <div>
+                                                                                            <div></div>
+                                                                                            <div></div>
+                                                                                            <div></div>
+                                                                                            <div></div>
+                                                                                        </div>
+                                                                                    </ng-template>
+                                                                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                                                        <div class="ng-value" *ngFor="let categoriePiece of items | slice:0:5">
+                                                                                            <span class="ng-value-icon right" (click)="clear(categoriePiece)" aria-hidden="true">× </span>
+                                                                                            <span class="ng-value-label"> {{categoriePiece.libelle}}</span>
+                                                                                        </div>
+                                                                                        <div class="ng-value" *ngIf="items.length > 4">
+                                                                                            <span class="ng-value-label">{{items.length - 4}} plus...</span>
+                                                                                        </div>
+                                                                                    </ng-template>
+                                                                                </ng-select>
+                                                                            </div>
+
+
+
+                                                                          <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                                                                            <mat-label></mat-label>
+                                                                            <input matInput formControlName="ordre" type="number" />
+                                                                          </mat-form-field>
+                                                                          <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                                                                            <mat-label>Nombre d'exemplaire</mat-label>
+                                                                            <input matInput formControlName="nbExemplaire" type="number" />
+                                                                          </mat-form-field>
+
+                                                                          <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="70" [fxFlex.md]="70" [fxFlex.lg]="60" [fxFlex.xl]="30">
+                                                                            <mat-label>Libellé</mat-label>
+                                                                            <input matInput placeholder="Libellé" [attr.autocomplete]="'off'" formControlName="libelle" />
+                                                                          </mat-form-field>
+                                                                          <div class="container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                                                                            <label id="estAffiche">Est Affiché</label>
+                                                                            <mat-slide-toggle formControlName="estAffiche" aria-labelledby="estAffiche">
+                                                                            </mat-slide-toggle>
+                                                                          </div>
+
+                                                                            <div class="container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                                                                                <label id="obligatoire">Obligatoire</label>
+                                                                                <mat-slide-toggle formControlName="obligatoire" aria-labelledby="obligatoire">
+                                                                                </mat-slide-toggle>
+                                                                            </div>
+                                                                        </div>
+                                                                    </mat-card>
+                                                                </div>
+                                                            </ng-template>
+                                                        </ng-container>
+                                                    </div>
+                                                </mat-expansion-panel>
+                                            </mat-accordion>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ng-container>
+                        </div>
+                    </form>
+                </mat-tab>
+                <mat-tab>
+                    <form [formGroup]="formulaire">
+                        <ng-template mat-tab-label>
+                            <mat-icon>attach_file</mat-icon>&nbsp; Pièces d'entrées au processus
+                        </ng-template>
+                        <div fxLayout="column" class="flex-p">
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                                <button type="button" mat-flat-button color="primary" (click)="addCategoriePiecesProcessus()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10" [fxFlex.lg]="50" [fxFlexOffset.md]="10"
+                                    [fxFlex.xl]="20" [fxFlexOffset]="10">
+                  <mat-icon class="icon-sm">add</mat-icon> Ajouter une categorie pièce
+                </button>
+                            </div>
+                            <ng-container *ngIf="getCategoriePiece.controls.length>0">
+                                <ng-template ngFor let-categoriePieces [ngForOf]="getCategoriePiece.controls" let-i="index">
+                                    <div class="card-container-form-element">
+                                        <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="100">
+                                            <button type="button" mat-icon-button matSuffix color="warn" class="delete-icons">
+                        <mat-icon (click)="removeCategoriePieceProcessus(i)">remove_circle</mat-icon>
+                      </button>
+                                            <mat-card-header>
+                                            </mat-card-header>
+                                            <div fxLayout="column" class="flex-p" [formGroup]="categoriePieces">
+
+                                                <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="25">
+                                                    <ng-select [items]="typePieceIdentiteRemoteAutocomplete.listRessource$ | async" [typeahead]="typePieceIdentiteRemoteAutocomplete.term" [loading]="typePieceIdentiteRemoteAutocomplete.loading" (search)="onSearchCategoriePiece($event)" appendTo="body" [clearable]="isNotFixedValue"
+                                                        [searchable]="isNotFixedValue" (change)="onChangeCategoriePiece($event, i)" notFoundText="Aucun element trouvé" loadingText="Chargement en cours ..." [selectOnTab]="true" bindLabel="libelle" bindValue="id" formControlName="categoriePiece">
+                                                        <ng-template ng-loadingspinner-tmp>
+                                                            <div>
+                                                                <div></div>
+                                                                <div></div>
+                                                                <div></div>
+                                                                <div></div>
+                                                            </div>
+                                                        </ng-template>
+                                                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                            <div class="ng-value" *ngFor="let categoriePiece of items | slice:0:5">
+                                                                <span class="ng-value-icon right" (click)="clear(categoriePiece)" aria-hidden="true">×</span>
+                                                                <span class="ng-value-label"> {{categoriePiece.libelle}}</span>
+                                                            </div>
+                                                            <div class="ng-value" *ngIf="items.length > 4">
+                                                                <span class="ng-value-label">{{items.length - 4}} plus...</span>
+                                                            </div>
+                                                        </ng-template>
+                                                    </ng-select>
+                                                </div>
+                                                <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="25" fxLayoutGap.gt-xs="20px">
+
+                                                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="70" [fxFlex.md]="70" [fxFlex.lg]="60" [fxFlex.xl]="30">
+                                                        <mat-label>L'ordre de la pièce</mat-label>
+                                                        <input matInput [attr.autocomplete]="'off'" formControlName="ordre" type="number"/>
+                                                    </mat-form-field>
+
+                                                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="70" [fxFlex.md]="70" [fxFlex.lg]="60" [fxFlex.xl]="30">
+                                                        <mat-label>Nombre d'exemplaire</mat-label>
+                                                        <input matInput formControlName="nbExemplaire" type="number" />
+                                                    </mat-form-field>
+                                                  <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="70" [fxFlex.md]="70" [fxFlex.lg]="60" [fxFlex.xl]="30">
+                                                    <mat-label>Libellé</mat-label>
+                                                    <input matInput formControlName="libelle"  />
+                                                  </mat-form-field>
+
+                                                </div>
+                                                <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="25">
+                                                    <div class="container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                                                        <label id="estAffiche">Est Affiché</label>
+                                                        <mat-slide-toggle formControlName="estAffiche" aria-labelledby="estAffiche">
+                                                        </mat-slide-toggle>
+                                                    </div>
+
+                                                    <div class="container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                                                        <label id="obligatoire">Obligatoire</label>
+                                                        <mat-slide-toggle formControlName="obligatoire" aria-labelledby="obligatoire">
+                                                        </mat-slide-toggle>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </mat-card>
+                                    </div>
+                                </ng-template>
+                            </ng-container>
+                        </div>
+                    </form>
+                </mat-tab>
+
+                <mat-tab>
+                    <form [formGroup]="formulaire">
+                        <ng-template mat-tab-label>
+                            <mat-icon>list_alt</mat-icon>&nbsp; Type documents sorties
+                        </ng-template>
+                        <div fxLayout="row wrap" fxLayoutAlign="start center">
+                            <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="60" [fxFlex.xl]="60">
+                                <ng-select [items]="typeDocumentsRemoteAutocomplete.listRessource$ | async" [typeahead]="typeDocumentsRemoteAutocomplete.term" (change)="onChangeTypeDocuments($event)" [loading]="typeDocumentsRemoteAutocomplete.loading" (search)="onSearchTypeDocuments($event)"
+                                    appendTo="body" [selectOnTab]="true" [multiple]="true" notFoundText="Aucun element trouvé" loadingText="Chargement en cours ..." bindLabel="libelle" labelForId="typeDocuments" bindValue="id" placeholder="Type de document"
+                                    formControlName="typeDocuments">
+                                    <ng-template ng-loadingspinner-tmp>
+                                        <div class="lds-ellipsis">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                        <div class="ng-value" *ngFor="let typeDocument of items | slice:0:5">
+                                            <span class="ng-value-icon right" (click)="clear(typeDocument)" aria-hidden="true">× </span>
+                                            <span class="ng-value-label"> {{typeDocument.libelle}}</span>
+                                        </div>
+                                        <div class="ng-value" *ngIf="items.length > 5">
+                                            <span class="ng-value-label">{{items.length - 5}} plus...</span>
+                                        </div>
+                                    </ng-template>
+                                </ng-select>
+                            </div>
+                            <table mat-table [dataSource]="dataSourceTypeDocuments" class="mat-elevation-z8  " [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+                                <ng-container matColumnDef="code">
+                                    <th mat-header-cell *matHeaderCellDef> Code </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.code}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="libelle">
+                                    <th mat-header-cell *matHeaderCellDef> Libelle</th>
+                                    <td mat-cell *matCellDef="let element"> {{element.libelle}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="estTitreFoncier">
+                                    <th mat-header-cell *matHeaderCellDef> Titre foncier</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span *ngIf="element.estTitreFoncier">OUI</span>
+                                        <span *ngIf="!element.estTitreFoncier">NON</span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="estTitreParcelle">
+                                    <th mat-header-cell *matHeaderCellDef> Titre parcelle</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span *ngIf="element.estTitreParcelle">OUI</span>
+                                        <span *ngIf="!element.estTitreParcelle">NON</span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="actif">
+                                    <th mat-header-cell *matHeaderCellDef>Actif</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span *ngIf="element.actif">OUI</span>
+                                        <span *ngIf="!element.actif">NON</span>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumnsTypeDocuements"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumnsTypeDocuements;"></tr>
+                            </table>
+                        </div>
+                    </form>
+                </mat-tab>
+                <mat-tab>
+                    <form [formGroup]="formulaire">
+                        <ng-template mat-tab-label>
+                            <mat-icon>launch</mat-icon>&nbsp; Destinations
+                        </ng-template>
+                        <div fxLayout="row wrap" fxLayoutAlign="start center">
+                            <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="60" [fxFlex.xl]="60">
+                                <ng-select [items]="destinationsRemoteAutocomplete.listRessource$ | async" [typeahead]="destinationsRemoteAutocomplete.term" (change)="onChangeDestination($event)" [loading]="destinationsRemoteAutocomplete.loading" (search)="onSearchDestination($event)"
+                                    appendTo="body" [selectOnTab]="true" [multiple]="true" notFoundText="Aucun element trouvé" loadingText="Chargement en cours ..." bindLabel="libelle" labelForId="destinations" bindValue="id" placeholder="Destination" formControlName="destinations">
+                                    <ng-template ng-loadingspinner-tmp>
+                                        <div class="lds-ellipsis">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                        <div class="ng-value" *ngFor="let destination of items | slice:0:5">
+                                            <span class="ng-value-icon right" (click)="clear(destination)" aria-hidden="true">× </span>
+                                            <span class="ng-value-label"> {{destination.libelle}}</span>
+                                        </div>
+                                        <div class="ng-value" *ngIf="items.length > 5">
+                                            <span class="ng-value-label">{{items.length - 5}} plus...</span>
+                                        </div>
+                                    </ng-template>
+                                </ng-select>
+                            </div>
+                            <table mat-table [dataSource]="dataSourceDestinations" class="mat-elevation-z8 sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+                                <ng-container matColumnDef="code">
+                                    <th mat-header-cell *matHeaderCellDef> Code </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.code}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="libelle">
+                                    <th mat-header-cell *matHeaderCellDef> Libelle</th>
+                                    <td mat-cell *matCellDef="let element"> {{element.libelle}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="tutelle.nom">
+                                    <th mat-header-cell *matHeaderCellDef> Ministère de tutelle</th>
+                                    <td mat-cell *matCellDef="let element"> {{element.tutelle?.nom}}</td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumnsDestination"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumnsDestination;"></tr>
+                            </table>
+                        </div>
+                    </form>
+                </mat-tab>
+
+            </mat-tab-group>
+        </mat-card-content>
+        <mat-card-actions [ngClass]="{'card-action-form': (activeMediaQuery === 'lg' || activeMediaQuery === 'xl' ), 'card-action-form-small': (activeMediaQuery === 'sm') }">
+            <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                <button mat-raised-button color="warn" type="button" (click)="annuler()">Annuler</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">Valider</button>
+            </div>
+        </mat-card-actions>
+    </form>
+</mat-card>

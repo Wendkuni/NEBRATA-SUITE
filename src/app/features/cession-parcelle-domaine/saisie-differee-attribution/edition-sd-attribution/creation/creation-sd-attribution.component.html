@@ -1,0 +1,300 @@
+<form [formGroup]="formulaire">
+
+    <mat-horizontal-stepper linear #stepper>
+
+        <mat-step [editable]="true">
+
+            <ng-template matStepLabel>Informations de cession</ng-template>
+
+
+          <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+            <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="45" [fxFlex.xl]="40">
+              <ng-select [items]="typeDocuments" (change)="onChangeTypeDocuments($event)" appendTo="body" [selectOnTab]="true"
+                         bindLabel="libelle" placeholder="Type de document" formControlName="documentType">
+                <ng-template ng-loadingspinner-tmp>
+                  <div class="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                </ng-template>
+              </ng-select>
+            </div>
+
+          </div>
+          <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+            <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="45" [fxFlex.xl]="40">
+                    <ng-select [items]="cessionSourceRemoteAutocomplte.listRessource$ | async" [typeahead]="cessionSourceRemoteAutocomplte.term" [loading]="cessionSourceRemoteAutocomplte.loading" (search)="onSearchCessionSource($event)" appendTo="body" [selectOnTab]="true"
+                        bindLabel="libelle" bindValue="id" placeholder="Mode de cession" formControlName="cessionSource">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+
+            </div>
+          <br>
+            <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="45" [fxFlex.xl]="40">
+                    <mat-label>Numéro de page</mat-label>
+                    <input matInput type="number"  [attr.autocomplete]="'off'" formControlName="numeroDePage" />
+                </mat-form-field>
+            </div>
+
+          <form [formGroup]="dossier">
+
+
+            <div fxLayout="row" fxLayoutAlign="start">
+              <app-observation-form
+                [formGroup]="dossier"></app-observation-form>
+
+            </div>
+          </form>
+          <mat-form-field class="hidden-field" >
+            <input matInput formControlName="numeroDePV" />
+          </mat-form-field>
+
+
+
+            <div class="card-action-form">
+                <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                    <button mat-raised-button color="primary" type="button" matStepperNext>Suivant</button>
+                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid" >Créer</button>
+                </div>
+            </div>
+
+        </mat-step>
+      <mat-step [editable]="true">
+
+        <ng-template matStepLabel>Document d'attribution</ng-template>
+
+
+
+        <div [formGroup]="formulaire"
+             fxLayout="row"
+             fxLayout.sm="row wrap"
+             fxLayout.md="row wrap"
+             fxLayoutGap.gt-sm="20px"
+             fxLayoutAlign="start"
+             [fxFlex.xs]="100"
+             [fxFlex.sm]="100"
+             [fxFlex.md]="100"
+             [fxFlex.lg]="100"
+             [fxFlex.xl]="100">
+
+          <ng-template matStepLabel>Document à charger</ng-template>
+
+          <div fxLayout="column"
+               class="flex-p"
+               [fxFlex.xs]="100"
+               [fxFlex.sm]="100"
+               [fxFlex.md]="100"
+               [fxFlex.lg]="70"
+               [fxFlex.xl]="50">
+
+            <app-document-pv-form
+              [formGroup]="documentDeSortie"
+              [typeDocuments]="selectedDocumentType">
+            </app-document-pv-form>
+          </div>
+
+          <div class="card-action-form">
+            <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+              <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+              <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+              <button mat-raised-button color="primary" type="button" matStepperNext>Suivant</button>
+              <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">Créer</button>
+            </div>
+          </div>
+
+
+
+        </div>
+      </mat-step>
+        <mat-step [editable]="true"  >
+
+            <ng-template matStepLabel>Référence de la parcelle</ng-template>
+
+
+            <app-choix-parcelle-form formControlName="parcelle"
+                                     [parcelleChoisie]="parcelleContextInit"
+                                     [callbackAutocompleteParcelle]="autocompletionByIlotAndLibre"
+                                     [touched]="parcelle.touched" (change)="changeParcelle($event)"></app-choix-parcelle-form>
+
+
+          <div *ngIf="icad">
+            <app-cycledevie-parcelle [icad]="icad"></app-cycledevie-parcelle>
+          </div>
+
+  <mat-spinner *ngIf="isloading"></mat-spinner>
+
+
+<!-- Si une parcelle est sélectionné on affiche pas le toggle parcelle inexistante -->
+<div *ngIf="!this.formulaire.controls.parcelle.value || this.formulaire.controls.parcelle.value==-99" >
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+    <div class="sycad-form-line container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="20" [fxFlex.xl]="20">
+      <label id="etatDossier-active">Parcelle inexistante</label>
+      <mat-slide-toggle (change)="toggleParcelle($event)"  [checked]="parcelleInexistantechoix" aria-labelledby="etatDossier-active"></mat-slide-toggle>
+
+    </div>
+  </div>
+  <div *ngIf="parcelleInexistantechoix">
+    <app-parcelle-inexistante [parcelleInexistanteForm]="parcelleInexistante" ></app-parcelle-inexistante>
+  </div>
+
+</div>
+
+
+
+
+
+            <div class="card-action-form">
+                <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                    <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>
+                    <button mat-raised-button type="button" color="primary" mat-button matStepperNext>Suivant</button>
+                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">Créer</button>
+                </div>
+            </div>
+
+        </mat-step>
+
+        <mat-step [editable]="true">
+            <ng-template matStepLabel>Attributaire</ng-template>
+
+            <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="70">
+                    <app-field-remote-autocomplete [dataForm]="attributaireRemoteAutocomplete" (formAddModal)="openFormAddModal($event)" (subjectCompleteEvent)="receiveSubjectAttributaire($event)">
+                    </app-field-remote-autocomplete>
+                </div>
+
+            </div>
+
+            <div *ngIf="attributaireChoisie" fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="70">
+                    <mat-card-header>
+                        <mat-card-title>
+                            Détail Attributaire
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <app-card-general-contribuable-form [contribuable]="attributaireChoisie" (formAddModal)="openFormAddModal($event)" [allow_edition]="true"></app-card-general-contribuable-form>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+
+          <div *ngIf="isloading == false">
+
+            <div *ngFor="let dossier of dossierRetour" fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+              <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+                <mat-card-header>
+                  <mat-card-title>
+                    Détail Attributaire actuel
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+
+                  <app-card-general-dossier-and-contribuable [numero]="dossier.numero"></app-card-general-dossier-and-contribuable>
+
+
+
+                </mat-card-content>
+
+              </mat-card>
+                </div>
+            </div>
+            <div class="card-action-form">
+                <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                    <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>
+<!--                    <button mat-raised-button type="button" color="primary" mat-button matStepperNext>Suivant</button>-->
+                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">Créer</button>
+                </div>
+            </div>
+        </mat-step>
+
+<!--        <mat-step [stepControl]="pieces" [editable]="true">-->
+<!--            <form [formGroup]="pieces">-->
+<!--                <ng-template matStepLabel>Pièces jointes</ng-template>-->
+<!--                <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">-->
+<!--                    <div fxLayout="column" class="flex-p" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="50">-->
+<!--                        <div fxLayout="row" fxLayoutAlign="start center">-->
+<!--                            <button type="button" mat-flat-button color="primary" [disabled]="categoriePieceProcessus$.length==0" (click)="addNewDossierPiece()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10"-->
+<!--                                [fxFlex.lg]="50" [fxFlexOffset.md]="10" [fxFlex.xl]="50" [fxFlexOffset]="10">-->
+<!--                              <mat-icon class="icon-sm">add</mat-icon> Ajouter une nouvelle pièce-->
+<!--                          </button>-->
+<!--                        </div>-->
+<!--                        <ng-template ngFor let-pieces [ngForOf]="pieces.controls" let-i="index">-->
+<!--                            <div class="card-container-form-element y-1" fxLayout="row" fxLayoutAlign="start">-->
+<!--                                <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">-->
+
+<!--                                    <button mat-icon-button matSuffix color="warn" class="delete-icons" type="button">-->
+<!--                                      <mat-icon (click)="removeDossierPiece(i)">remove_circle</mat-icon>-->
+<!--                                  </button>-->
+<!--                                    <app-dossier-piece-form [formGroup]="pieces" [categoriePieceProcessus]="categoriePieceProcessus$" (changeCategoriePiece)="changeCategoriePiece($event)" [touched]="pieces.touched"></app-dossier-piece-form>-->
+<!--                                </mat-card>-->
+<!--                            </div>-->
+<!--                        </ng-template>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="card-action-form">-->
+<!--                    <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">-->
+<!--                        <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>-->
+<!--                        <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>-->
+<!--                        <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>-->
+<!--                        <button mat-raised-button type="button" color="primary" mat-button matStepperNext>Suivant</button>-->
+<!--                        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">Créer</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </mat-step>-->
+<!--        <mat-step [editable]="true" *ngIf="attributaireChoisie">-->
+<!--            <form [formGroup]="mandats">-->
+<!--                <ng-template matStepLabel>Mandats</ng-template>-->
+<!--                <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">-->
+<!--                    <div fxLayout="column" class="flex-p" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="50">-->
+<!--                        <div fxLayout="row" fxLayoutAlign="start center">-->
+<!--                            <button type="button" mat-flat-button color="primary" (click)="addMandat()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10" [fxFlex.lg]="50" [fxFlexOffset.md]="10" [fxFlex.xl]="50"-->
+<!--                                [fxFlexOffset]="10">-->
+<!--                  <mat-icon class="icon-sm">add</mat-icon> Ajouter un mandat-->
+<!--                </button>-->
+<!--                        </div>-->
+<!--                        <ng-template ngFor let-mandat [ngForOf]="mandats.controls" let-i="index">-->
+<!--                            <div class="card-container-form-element y-1" fxLayout="row" fxLayoutAlign="start">-->
+<!--                                <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">-->
+<!--                                    <button mat-icon-button matSuffix color="warn" class="delete-icons" type="button">-->
+<!--                      <mat-icon (click)="removeMandat(i)">remove_circle</mat-icon>-->
+<!--                    </button>-->
+
+<!--                                    <app-mandat-form [formGroup]="mandat" [filteredListMandat]="filteredListMandat" [choixMandant]="attributaireChoisie" [withMandant]="false" [withMandat]="true" [withMandataire]="true"></app-mandat-form>-->
+
+<!--                                </mat-card>-->
+<!--                            </div>-->
+<!--                        </ng-template>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="card-action-form">-->
+<!--                    <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">-->
+<!--                        <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>-->
+<!--                        <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>-->
+<!--                        <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>-->
+<!--                        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">Créer</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </mat-step>-->
+
+    </mat-horizontal-stepper>
+
+</form>

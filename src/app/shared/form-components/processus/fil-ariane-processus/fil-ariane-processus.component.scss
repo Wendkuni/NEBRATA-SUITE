@@ -1,0 +1,74 @@
+@mixin arrow() {
+    border-bottom: 50px solid transparent;
+    border-top: 50px solid transparent;
+    content: " ";
+    display: block;
+    height: 0;
+    left: 100%;
+    margin-top: -50px;
+    position: absolute;
+    top: 50%;
+    width: 0;
+}
+
+.container-file-ariane {
+    width: 100%;
+    min-width: 100%;
+    display: flex;
+    flex-direction: row;
+    .box-ariane {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .container-file-ariane-content {
+        flex: 1;
+        .container-file-ariane-content-body {
+            // border: 1px solid blue;
+            // max-width: 100%;
+            list-style: none;
+            overflow: hidden;
+            .etape-processus {
+                background: #ddd;
+                color: #666;
+                position: relative;
+                cursor: default;
+                list-style-image: none;
+                list-style-type: none;
+                padding: 0px;
+                text-align: center;
+                &:not(:first-child) {
+                    padding-left: 30px;
+                }
+                &:after {
+                    @include arrow();
+                    border-left: 30px solid #ddd;
+                    z-index: 2;
+                }
+                &:before {
+                    @include arrow();
+                    border-left: 30px solid #fff;
+                    z-index: 1;
+                    margin-left: 3px;
+                }
+                //   width: 200px;
+                &__text {
+                    /*       overflow: hidden;
+                    padding-left: 10px;
+                    min-width: 0;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    
+                    */
+                }
+            }
+        }
+    }
+    .bouton-chevron {
+        //border: 1px solid purple;
+        width: 32px;
+        min-width: 32px;
+        padding: 0px;
+        border-radius: 0px;
+    }
+}

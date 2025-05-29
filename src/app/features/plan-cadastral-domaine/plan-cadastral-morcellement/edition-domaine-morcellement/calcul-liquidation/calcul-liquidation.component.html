@@ -1,0 +1,70 @@
+<form [formGroup]="formulaire">
+
+    <mat-horizontal-stepper linear #stepper>
+
+        <mat-step [editable]="true">
+
+            <ng-template matStepLabel>Informations sur les impôts de la liquidation </ng-template>
+
+
+
+
+            <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <div fxLayout="column" class="flex-p" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="90" [fxFlex.xl]="70">
+
+                    <ng-template ngFor let-impot [ngForOf]="impots.controls" let-i="index">
+                        <div class="card-container-form-element y-1" fxLayout="row" fxLayoutAlign="start">
+                            <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+                                <app-impot-form [formGroup]="impot" [data]="getValueImpot(impot)"></app-impot-form>
+                            </mat-card>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+
+
+            <div class="card-action-form">
+                <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+                </div>
+            </div>
+
+        </mat-step>
+
+        <mat-step [editable]="true">
+
+            <ng-template matStepLabel>Titres de recette </ng-template>
+
+
+            <app-list-reglement-titre [titresRecette]="morcellement.titresRecette"></app-list-reglement-titre>
+
+            <div class="card-action-form">
+                <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+                </div>
+            </div>
+
+        </mat-step>
+        <mat-step [editable]="true">
+
+            <ng-template matStepLabel>Exonérations </ng-template>
+
+            <app-list-impot-exoneration [titresRecette]="morcellement.titresRecette"></app-list-impot-exoneration>
+
+            <div class="card-action-form">
+                <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+                </div>
+            </div>
+
+        </mat-step>
+
+    </mat-horizontal-stepper>
+
+</form>

@@ -1,0 +1,19 @@
+<div fxLayout="column">
+  <div class="flex-p">
+    <ng-template #datatable1></ng-template>
+  </div>
+</div>
+<ng-template #templateDestinationDocumentType let-documentType="data">
+  <div class="list-categoriePiece" [ngStyle]="{'padding': documentType.destination	.length>0?'15px':'0'}" *ngIf="documentType.destination.length > 0">
+    <mat-chip-list>
+      <mat-label>DESTINATIONS :</mat-label>
+      <mat-chip *ngFor="let destination of documentType.destination	">{{destination.libelle}}</mat-chip>
+    </mat-chip-list>
+  </div>
+  <div class="list-droitsImmobiliers"  [ngStyle]="{'padding': documentType.droitsImmobiliers	.length>0?'15px':'0'}" *ngIf="documentType.droitsImmobiliers.length > 0">
+    <mat-chip-list>
+      <mat-label>DROITS IMMOBILIERS :</mat-label>
+      <mat-chip *ngFor="let droitImmobilier of documentType.droitsImmobiliers	" style="background-color: #92fcae; color: black">{{droitImmobilier.libelle}}</mat-chip>
+    </mat-chip-list>
+  </div>
+</ng-template>

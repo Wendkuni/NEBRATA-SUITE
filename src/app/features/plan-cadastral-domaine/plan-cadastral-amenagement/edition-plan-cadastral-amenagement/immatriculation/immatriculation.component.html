@@ -1,0 +1,131 @@
+<form [formGroup]="formulaire">
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <mat-horizontal-stepper linear #stepper>
+        <mat-step [stepControl]="dossier" [editable]="true">
+            <form [formGroup]="dossier">
+                <ng-template matStepLabel>Informations de base</ng-template>
+
+                <app-dossier-form [formGroup]="dossier"></app-dossier-form>
+
+                <ng-container [formGroup]="formulaire">
+                    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                            <mat-label>Date mise à jour (*)</mat-label>
+                            <input matInput [matDatepicker]="dateMajPlanPicker" placeholder="Date mise à jour" formControlName="dateMajPlan">
+                            <mat-datepicker-toggle matSuffix [for]="dateMajPlanPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #dateMajPlanPicker></mat-datepicker>
+                            <mat-error *ngIf="dateMajPlan.invalid && (dateMajPlan.dirty || dateMajPlan.touched) && dateMajPlan.errors?.required">
+                                La date de mise à jour est obligatoire
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                            <mat-label>Domaine</mat-label>
+                            <mat-select formControlName="domaine">
+                                <mat-option [value]="domaine" *ngFor="let domaine of domaines">
+                                    {{domaine}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="domaine.invalid && (domaine.dirty || domaine.touched) && domaine.errors?.required">
+                                Le domaine est obligatoire
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </ng-container>
+
+              <div class="card-action-form">
+                <div  fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                  <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                  <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                  <button mat-raised-button color="primary" type="button" matStepperNext>Suivant</button>
+                </div>
+              </div>
+            </form>
+        </mat-step>
+
+
+
+        <mat-step [stepControl]="pieces" [editable]="true">
+            <form [formGroup]="pieces">
+                <ng-template matStepLabel>Pièces jointes</ng-template>
+                <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                    <div fxLayout="column" class="flex-p" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="50">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <button type="button" mat-flat-button color="primary" [disabled]="categoriePieceProcessus$.length==0" (click)="addNewDossierPiece()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10"
+                                [fxFlex.lg]="50" [fxFlexOffset.md]="10" [fxFlex.xl]="50" [fxFlexOffset]="10">
+                                <mat-icon class="icon-sm">add</mat-icon> Ajouter une nouvelle pièce
+                            </button>
+                        </div>
+                        <ng-template ngFor let-piece [ngForOf]="pieces.controls" let-i="index">
+                            <div class="card-container-form-element y-1" fxLayout="row" fxLayoutAlign="start">
+                                <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+                                    <button mat-icon-button matSuffix color="warn" class="delete-icons" type="button">
+                                        <mat-icon (click)="removeDossierPiece(i)">remove_circle</mat-icon>
+                                    </button>
+                                    <app-dossier-piece-form [formGroup]="piece" [categoriePieceProcessus]="categoriePieceProcessus$" (changeCategoriePiece)="changeCategoriePiece($event)" [touched]="piece.touched"></app-dossier-piece-form>
+                                </mat-card>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+
+              <div class="card-action-form">
+                <div fxLayout="row"  [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                  <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                  <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                  <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>
+                  <button mat-raised-button type="button" color="primary" mat-button matStepperNext>Suivant</button>
+                </div>
+              </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="ilots" [editable]="true">
+            <form [formGroup]="ilots">
+                <ng-template matStepLabel>Les Ilots et parcelles</ng-template>
+                <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                    <div fxLayout="column" class="flex-p" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="80" [fxFlex.xl]="70">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <button mat-raised-button type="button" color="primary" (click)="addNewIlot()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10" [fxFlex.lg]="25" [fxFlexOffset.md]="10" [fxFlex.xl]="30"
+                                [fxFlexOffset]="10">
+                  <mat-icon class="icon-sm">add</mat-icon>
+                  Ajouter un Ilot
+                </button>
+                        </div>
+
+
+
+                        <ng-template ngFor let-ilot [ngForOf]="ilots.controls" let-i="index">
+                            <div class="card-container-form-element y-1" fxLayout="row" fxLayoutAlign="start">
+                                <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+                                    <button mat-icon-button matSuffix color="warn" class="delete-icons" type="button">
+                                        <mat-icon (click)="removeIlot(i)">remove_circle</mat-icon>
+                                    </button>
+
+                                    <app-ilot-form-rural [formGroup]="ilot" [arrondissement]="planCadastral.arrondissement"></app-ilot-form-rural>
+                                </mat-card>
+                            </div>
+                        </ng-template>
+
+
+
+
+                    </div>
+                </div>
+              <div class="card-action-form">
+                <div  fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                  <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                  <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                  <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>
+                  <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+                </div>
+              </div>
+            </form>
+        </mat-step>
+
+    </mat-horizontal-stepper>
+
+</form>

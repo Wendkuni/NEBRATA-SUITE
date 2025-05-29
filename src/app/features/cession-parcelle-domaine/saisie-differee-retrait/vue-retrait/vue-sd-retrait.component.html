@@ -1,0 +1,351 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{retrait?.etat.libelle}}</mat-card-title>
+        <mat-card-subtitle>{{retrait?.etat.description}}</mat-card-subtitle>
+        <ng-container *ngIf="retrait && !noOpenActions && retrait?.transitions?.length>0">
+            <app-action-detail-dossier [numero]="retrait.numero" [url]="urlAction" [transitions]="retrait.transitions"></app-action-detail-dossier>
+        </ng-container>
+    </mat-card-header>
+    <form class="user-form" *ngIf="retrait">
+        <mat-card-content>
+            <mat-tab-group class="mat-tab-active-color">
+
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>content_paste</mat-icon>
+                            Formalite
+                        </ng-template>
+                        <mat-tab-group>
+                            <mat-tab>
+                                <form>
+                                    <ng-template mat-tab-label>
+                                        <mat-icon>content_paste</mat-icon>
+                                        Informations de base
+                                    </ng-template>
+                                    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                            <mat-label>Numéro </mat-label>
+                                            <input matInput value="{{retrait.numero}}" [readonly]="true">
+                                        </mat-form-field>
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                            <mat-label>Date dossier (*)</mat-label>
+                                            <input matInput value="{{retrait.dateCreationDossier | date:'dd/MM/yyyy'}}" [readonly]="true">
+
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                            <mat-label>Objet </mat-label>
+                                            <input matInput [attr.autocomplete]="'off'" value="{{retrait.objet}}" [readonly]="true" />
+                                        </mat-form-field>
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                            <mat-label>Date externe (*)</mat-label>
+                                            <input matInput value="{{retrait.dateExterne | date:'dd/MM/yyyy'}}" [readonly]="true">
+
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                            <mat-label>Référence externe </mat-label>
+                                            <input matInput [attr.autocomplete]="'off'" value="{{retrait.refExterne}}" [readonly]="true" />
+                                        </mat-form-field>
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                            <mat-label>Source de session </mat-label>
+                                            <input matInput [attr.autocomplete]="'off'" value="{{retrait.cessionSource.libelle}}" [readonly]="true" />
+                                        </mat-form-field>
+                                    </div>
+                                   
+                                </form>
+                            </mat-tab>
+                            <mat-tab>
+                                <ng-template mat-tab-label>
+                                    <mat-icon>attach_file</mat-icon>
+                                    Pièces fournies
+                                </ng-template>
+                                <table mat-table [dataSource]="dataSourcePiece" class="mat-elevation-z8" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+                                    <ng-container matColumnDef="categorie">
+                                        <th mat-header-cell *matHeaderCellDef> Catégorie</th>
+                                        <td mat-cell *matCellDef="let listPiece"> {{listPiece.categorie?.categoriePiece?.libelle}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="reference">
+                                        <th mat-header-cell *matHeaderCellDef> Référence </th>
+                                        <td mat-cell *matCellDef="let listPiece"> {{listPiece.reference}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="autorite">
+                                        <th mat-header-cell *matHeaderCellDef> Autorité de délivrance </th>
+                                        <td mat-cell *matCellDef="let listPiece"> {{listPiece.autoriteDeDelivrance}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="dateDelivrance">
+                                        <th mat-header-cell *matHeaderCellDef> Date de délivrance </th>
+                                        <td mat-cell *matCellDef="let listPiece"> {{listPiece.dateDelivrance | date: 'dd/MM/yyyy'}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="dateExpiration">
+                                        <th mat-header-cell *matHeaderCellDef> Date d'expiration </th>
+                                        <td mat-cell *matCellDef="let listPiece"> {{listPiece.dateExpiration| date: 'dd/MM/yyyy'}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="imageUrl">
+                                        <th mat-header-cell *matHeaderCellDef> Pièce jointe </th>
+                                        <td mat-cell *matCellDef="let listPiece">
+
+                                          <span *ngIf="!listPiece.pieceJointe">Aucune pièce jointe</span>
+                                          <ng-container *ngIf="listPiece.pieceJointe">
+                                            <span *ngFor="let piece of listPiece.pieceJointe; let i = index"  class="piece-telechargeable"> <a   href="{{piece | generalDownload}}">Télécharger {{i+1}}</a></span>
+                                          </ng-container>
+                                      </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumnsPiece"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumnsPiece;"></tr>
+
+                                </table>
+                            </mat-tab>
+
+                            <mat-tab>
+                                <form>
+                                    <ng-template mat-tab-label>
+                                        <mat-icon>business</mat-icon>
+                                        Structure de traitement
+                                    </ng-template>
+                                    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                                            <mat-label>Structure</mat-label>
+                                            <input matInput value="{{retrait.transmission?.structure?.nom}}" [readonly]="true">
+                                        </mat-form-field>
+
+                                    </div>
+                                    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                                            <mat-label>Service</mat-label>
+                                            <input matInput value="{{retrait.transmission?.service?.nom}}" [readonly]="true">
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                                            <mat-label>Bureau</mat-label>
+                                            <input matInput value="{{retrait.transmission?.bureau?.nom}}" [readonly]="true">
+                                        </mat-form-field>
+                                    </div>
+                                </form>
+                            </mat-tab>
+                            <mat-tab>
+                                <form>
+                                    <ng-template mat-tab-label>
+                                        <mat-icon>list_alt</mat-icon>
+                                        Titres et actes
+                                    </ng-template>
+
+                                </form>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </form>
+                </mat-tab>
+
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>content_paste</mat-icon>
+                            Propriété
+                        </ng-template>
+                        <mat-tab-group>
+                            <mat-tab>
+                                <form>
+                                    <ng-template mat-tab-label>
+                                        <mat-icon>list_alt</mat-icon>
+                                        Parcelle
+                                    </ng-template>
+
+                                    <app-parcelle-visualiser [attribution]="retrait"></app-parcelle-visualiser>
+
+                                </form>
+                                <app-cycledevie-parcelle [icad]="retrait.parcelle?.icad"></app-cycledevie-parcelle>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </form>
+                </mat-tab>
+
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>content_paste</mat-icon>
+                            Contribuable
+                        </ng-template>
+                        <mat-tab-group>
+
+                            <mat-tab *ngIf="retrait.ancienAttributaire">
+
+                                <ng-template mat-tab-label>
+                                    <mat-icon>person</mat-icon>
+                                    Ancien attributaire
+                                </ng-template>
+                                <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                    <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+                                        <mat-card-header>
+                                            <mat-card-title>
+                                                Détail ancien attributaire
+                                            </mat-card-title>
+                                        </mat-card-header>
+                                        <mat-card-content>
+                                            <app-card-general-contribuable-form [contribuable]="retrait.ancienAttributaire"></app-card-general-contribuable-form>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            </mat-tab>
+                            <mat-tab *ngIf="retrait.structure">
+                                <ng-template mat-tab-label>
+                                    <mat-icon>business</mat-icon>
+                                    Structure attributaire
+                                </ng-template>
+                                <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                        <mat-label>Code</mat-label>
+                                        <input matInput value="{{retrait.structure.code}}" [readonly]="true">
+                                    </mat-form-field>
+                                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                        <mat-label>Nom</mat-label>
+                                        <input matInput value="{{retrait.structure.nom}}" [readonly]="true">
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                        <mat-label>Type structure</mat-label>
+                                        <input matInput value="{{retrait.structure?.typeStructure?.nom}}" [readonly]="true">
+                                    </mat-form-field>
+                                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                        <mat-label>Sigle</mat-label>
+                                        <input matInput value="{{retrait.structure.sigle}}" [readonly]="true">
+                                    </mat-form-field>
+                                </div>
+
+                            </mat-tab>
+                            <mat-tab *ngIf="retrait.acteur">
+
+                                <ng-template mat-tab-label>
+                                    <mat-icon>person</mat-icon>
+                                    Acteur promoteur
+                                </ng-template>
+
+
+                                <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                    <mat-card class="p-0 " [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="60" [fxFlex.xl]="50">
+                                        <div class="bg-primary " fxLayout="row" fxLayoutAlign="space-between center">
+                                            <h3 class="user-name"> {{ retrait.acteur.denomination }} {{ retrait.acteur?.categorie?.libelle }}</h3>
+                                        </div>
+
+                                        <div class="user-content" fxLayout="row" fxLayoutAlign="space-around center">
+                                            <div fxFlex="30" fxLayout="column" fxLayoutAlign="center center">
+                                                <div class="user-img">
+                                                    <img [src]="  retrait.acteur | acteurLogo" class="transition-2">
+
+                                                </div>
+
+                                            </div>
+                                            <div fxFlex="70" fxLayout="column" class="user-details transition-2">
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">money</mat-icon>
+                                                    <span>{{ retrait.acteur.codeUnique }}</span>
+                                                </p>
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">calendar_today</mat-icon>
+                                                    <span>{{ retrait.acteur.dateDeCreation | date:'dd/MM/yyyy' }}</span>
+                                                </p>
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">work</mat-icon>
+                                                    <span>{{ retrait.acteur.statusJuridique?.libelle }}</span>
+                                                </p>
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">star</mat-icon>
+                                                    <span>{{ retrait.acteur.nationalite?.libelle }}</span>
+                                                </p>
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">business_center</mat-icon>
+                                                    <span>{{ retrait.acteur.regimeFiscal?.libelle }}</span>
+                                                </p>
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">looks_3</mat-icon>
+                                                    <span>{{ retrait.acteur.numCNSS }}</span>
+                                                </p>
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">euro</mat-icon>
+                                                    <span>{{ retrait.acteur.capitalFiscal }}</span>
+                                                </p>
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">work</mat-icon>
+                                                    <span>{{ retrait.acteur.activitePrincipale?.nom }}</span>
+                                                </p>
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">mail_outline</mat-icon>
+                                                    <span>{{ retrait.acteur.emails | principalContactFilter }}</span>
+                                                    <ng-template [ngIf]="retrait.acteur.emails.length>1">
+                                                        <span [matMenuTriggerFor]="listEmailActeur" class="bouton-voir-plus"> <strong>voir
+                                                          plus +</strong>  </span>
+                                                        <mat-menu #listEmailActeur="matMenu" class="sycad-menu-panel">
+                                                            <ng-template ngFor let-email [ngForOf]="retrait.acteur.emails | exceptPrincipalFilter">
+
+                                                                <p mat-menu-item [class]="'detail-list-resume'" click-stop-propagation>
+                                                                    <mat-icon>mail_outline</mat-icon>
+                                                                    <span>({{ email.level }}) {{ email.value }}</span>
+                                                                </p>
+                                                            </ng-template>
+                                                        </mat-menu>
+
+                                                    </ng-template>
+
+                                                </p>
+
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">call</mat-icon>
+                                                    <span>{{ retrait.acteur.telephones | principalContactFilter }}</span>
+                                                    <ng-template [ngIf]="retrait.acteur.telephones.length>1">
+                                                        <span [matMenuTriggerFor]="listTelephoneActeur" class="bouton-voir-plus">
+                                                          <strong>voir+</strong> </span>
+                                                        <mat-menu #listTelephoneActeur="matMenu" class="sycad-menu-panel">
+                                                            <ng-template ngFor let-telephone [ngForOf]="retrait.acteur.telephones | exceptPrincipalFilter">
+                                                                <p mat-menu-item [class]="'detail-list-resume'" click-stop-propagation>
+                                                                    <mat-icon>call</mat-icon>
+                                                                    <span>({{ telephone.level }}) {{ telephone.value }}</span>
+                                                                </p>
+                                                            </ng-template>
+                                                        </mat-menu>
+
+                                                    </ng-template>
+                                                </p>
+
+
+                                            </div>
+                                        </div>
+                                    </mat-card>
+                                </div>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </form>
+                </mat-tab>
+
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>content_paste</mat-icon>
+                            Fiscalite
+                        </ng-template>
+
+
+                    </form>
+                </mat-tab>
+
+
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                    </ng-template>
+                    <div fxLayout="row" fxLayoutAlign="start">
+                        <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="50" [fxFlex.xl]="60">
+                            <app-historique [numero]="retrait.numero"></app-historique>
+                        </div>
+
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card-content>
+    </form>
+</mat-card>

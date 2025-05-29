@@ -1,0 +1,99 @@
+<div class="container-otp" fxLayout="row wrap">
+    <div fxFlex="100" class="flex-p">
+        <mat-card>
+            <mat-card-header fxLayoutAlign="center">
+                <mat-card-title>1. Installer sur votre smartphone l'une des applications suivantes (Sur <strong>Google Play</strong> ou <strong>App Store</strong> )</mat-card-title>
+
+
+            </mat-card-header>
+            <mat-card-content>
+                <div fxLayout="row" fxLayoutAlign="space-around">
+                    <div class="logo-app" fxLayout="column wrap" fxLayoutAlign="center center">
+                        <img src="/assets/img/app/google-authenticator.png">
+                        <strong>Google Authenticator</strong>
+                    </div>
+
+                    <div class="logo-app" fxLayout="column wrap" fxLayoutAlign="center center">
+                        <img src="/assets/img/app/free-otp.png">
+                        <strong>FreeOTP</strong>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div fxFlex="100" class="flex-p">
+        <mat-card>
+            <mat-card-header fxLayoutAlign="center">
+                <mat-card-title>2. Ouvrez l'application et scanner le QRcode suivant</mat-card-title>
+
+
+            </mat-card-header>
+            <mat-card-content>
+                <div fxLayout="row" fxLayoutAlign="space-around" *ngIf="canScanQrCode">
+                    <div class="qr-code-otp">
+                        <img src="{{otpConfig.qrcode_image}}">
+                    </div>
+
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="space-around" *ngIf="!canScanQrCode">
+
+                    <mat-list>
+                        <mat-list-item> <strong class="name-attribute">Nom application</strong> : {{otpConfig.application_name}}</mat-list-item>
+                        <mat-list-item> <strong class="name-attribute">algorithm</strong> : {{otpConfig.algorithm}}</mat-list-item>
+                        <mat-list-item> <strong class="name-attribute">Nombre de chiffre</strong> : {{otpConfig.number_digits}}</mat-list-item>
+                        <mat-list-item> <strong class="name-attribute">Période de validité </strong> : {{otpConfig.period}}</mat-list-item>
+                        <mat-list-item> <strong class="name-attribute">Nom d'utilisateur</strong> : {{otpConfig.username}}</mat-list-item>
+                        <mat-list-item> <strong class="name-attribute">Code secret</strong> : <span class="secret-code"> {{otpConfig.secret}}</span></mat-list-item>
+                    </mat-list>
+                </div>
+
+
+            </mat-card-content>
+
+            <mat-card-actions>
+                <div fxLayout="row" fxLayoutAlign="space-around" *ngIf="canScanQrCode">
+                    <strong class="sycad-element-clickable" (click)="canScanQrCode=false">Impossiblde de scanner le QR code ?</strong>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-around" *ngIf="!canScanQrCode">
+                    <strong class="sycad-element-clickable" (click)="canScanQrCode=true">Scanner le QR code ?</strong>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+
+    <div fxFlex="100" class="flex-p">
+        <mat-card>
+            <mat-card-header fxLayoutAlign="center center">
+                <mat-card-title>3. Saisir le code fourni par l'application</mat-card-title>
+
+
+            </mat-card-header>
+            <mat-card-content>
+
+                <div fxLayout="row" fxLayoutAlign="space-around">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <input matInput [textMask]="{mask: codemask}" class="text-code" placeholder="Code TOTP" [attr.autocomplete]="'off'" formControlName="code">
+                            <mat-error *ngIf="f.code.errors?.required">Le code OTP est obligatoire</mat-error>
+                            <mat-error *ngIf="f.code.errors?.codeTotpFormat">Il faut un code à 6 chiffres</mat-error>
+
+                            <mat-icon matSuffix>smartphone</mat-icon>
+                            <mat-hint class="w-100 text-code">Code à 6 chiffres</mat-hint>
+
+                        </mat-form-field>
+
+                        <button mat-raised-button [disabled]="!form.valid" color="primary" class="mat-elevation-z15 box-button w-100" type="submit">Valider la configuration</button>
+                        <button mat-raised-button (click)="logout()" color="warn" class="mat-elevation-z15 box-button w-100 decallage-bouton">Annuler
+                        </button>
+                    </form>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="space-around">
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+</div>

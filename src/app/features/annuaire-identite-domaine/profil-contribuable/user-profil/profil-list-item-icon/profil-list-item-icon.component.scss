@@ -1,0 +1,20 @@
+
+
+::ng-deep mat-list-item {
+    padding-right: 0;
+    display: block;
+    margin-top: 5px;
+}
+span{
+    white-space: normal;
+  }
+::ng-deep mat-list-item:hover{
+ background-color: #f0f0f0;
+ border-radius: 5px;
+ cursor: pointer;
+}
+
+::ng-deep .mat-list-base .mat-list-item {
+  padding-left: 5px;
+  margin-bottom: 5px;
+}

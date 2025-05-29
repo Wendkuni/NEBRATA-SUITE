@@ -1,0 +1,102 @@
+<form [formGroup]="dossierPiece" class="form-container">
+
+    <div *ngIf="categoriePieceProcessusChoisie" fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="40" [fxFlex.sm]="40" [fxFlex.md]="25" [fxFlex.lg]="20" [fxFlex.xl]="20">
+            <mat-label>Nombre d'exemplaire</mat-label>
+            <input matInput value="{{categoriePieceProcessusChoisie.nbExemplaire}}" [readonly]="true">
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="40" [fxFlex.sm]="40" [fxFlex.md]="25" [fxFlex.lg]="20" [fxFlex.xl]="20">
+            <mat-label>Obligatoire</mat-label>
+            <input matInput value="{{categoriePieceProcessusChoisie.obligatoire?'OUI':'NON'}}" [readonly]="true">
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+
+        <div class="sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+            <ng-select [items]="categoriePieceProcessus" [clearable]="isNotFixedValue" [searchable]="isNotFixedValue" appendTo="body" (change)="onChangeCategoriePiece($event)" [selectOnTab]="true" bindLabel="libelle" bindValue="id" placeholder="Catégorie de pièce"
+                formControlName="categorie">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+            </ng-select>
+            <mat-error *ngIf="categorie.invalid && (categorie.dirty || categorie.touched) && categorie.errors?.required">
+                La catégorie est obligatoire
+            </mat-error>
+        </div>
+    </div>
+
+    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                <mat-label>Référence de la pièce</mat-label>
+                <input matInput placeholder="Numéro de la pièce" [attr.autocomplete]="'off'" formControlName="reference" />
+                <mat-error *ngIf="reference.invalid && (reference.dirty || reference.touched) && reference.errors?.required">
+                    La référence de la pièce est obligatoire
+                </mat-error>
+                <mat-error *ngIf="reference.invalid && (reference.dirty || reference.touched) && ( reference.errors?.minlength || reference.errors?.maxlength)">
+                    La taille de la référence de la pièce est limité entre 2 et 150 caractères
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                <mat-label>Date délivrance</mat-label>
+                <input matInput [matDatepicker]="datePiece" placeholder="Délivré le " [max]="today" formControlName="dateDelivrance">
+                <mat-datepicker-toggle matSuffix [for]="datePiece"></mat-datepicker-toggle>
+                <mat-datepicker #datePiece></mat-datepicker>
+            </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+            <mat-label>Autorité de délivrance </mat-label>
+            <input matInput placeholder="Autorité de délivrance" [attr.autocomplete]="'off'" formControlName="autoriteDeDelivrance" />
+            <mat-error *ngIf="autoriteDeDelivrance.invalid && (autoriteDeDelivrance.dirty || autoriteDeDelivrance.touched) && autoriteDeDelivrance.errors?.required">
+                L'autorité de délivrance de la pièce est obligatoire
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+            <mat-label>Date d'expiration </mat-label>
+            <input matInput [matDatepicker]="dateExpiration" placeholder="Date d'expiration " [max]="today" formControlName="dateExpiration">
+            <mat-datepicker-toggle matSuffix [for]="dateExpiration"></mat-datepicker-toggle>
+            <mat-datepicker #dateExpiration></mat-datepicker>
+        </mat-form-field>
+
+    </div>
+
+    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+            <mat-label>Observation sur la pièce </mat-label>
+            <input matInput placeholder="observationPiece" [attr.autocomplete]="'off'" formControlName="observation" />
+            <mat-error *ngIf="reference.invalid && (reference.dirty || reference.touched) && reference.errors?.required">
+                La référence de la pièce est obligatoire
+            </mat-error>
+            <mat-error *ngIf="reference.invalid && (reference.dirty || reference.touched) && ( reference.errors?.minlength || reference.errors?.maxlength)">
+                La taille de la référence de la pièce est limité entre 2 et 150 caractères
+            </mat-error>
+        </mat-form-field>
+
+    </div>
+
+    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+        <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+            <button mat-icon-button color="warn" class="delete-icons-2" type="button">
+              <mat-icon (click)="resetDropZone()">clear</mat-icon>
+            </button>
+
+              <ng-container *ngIf="documentPiece">
+                <span *ngFor="let piece of documentPiece; let i = index"  class="piece-telechargeable"> <a   href="{{piece | generalDownload}}">Pièce {{i+1}}</a></span>
+              </ng-container>
+            <span>Taille maximale de fichiers : {{maxSize}} mb</span>
+            <dropzone class="dropzone-container" [config]="config" [message]="'Cliquez ou faites glisser la pièce ici jointe'" (init)="onUploadInit($event)" (error)="onUploadError($event)" (success)="onUploadSuccess($event)">
+            </dropzone>
+        </div>
+    </div>
+
+</form>

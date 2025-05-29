@@ -1,0 +1,86 @@
+
+<button class="close" mat-button mat-dialog-close><mat-icon >close</mat-icon></button>
+<h1 mat-dialog-title class="modifier-text"><span *ngIf="!natureImpot.id">Créer une nouvelle nature Impot</span><span *ngIf="natureImpot.id">Modifier: {{natureImpot.libelle}}</span></h1>
+<div class="sycad-loading-shade" *ngIf="isLoadingResults">
+  <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
+<form [formGroup]="formulaire" class="natureImpot-form" (ngSubmit)="onSubmit()">
+  <div class="sycad-zone-modal-form-edition" mat-dialog-content perfectScrollbar>
+    <mat-grid-list cols="1" rowHeight="100px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="outline" fxFlex="90">
+          <mat-label>Type nature impôt(*)</mat-label>
+          <mat-select formControlName="typeNatureImpot">
+            <mat-option [value]="typeNatureImpot" *ngFor="let typeNatureImpot of typeNatureImpots">
+              {{typeNatureImpot}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="typeNatureImpot.invalid && (typeNatureImpot.dirty || typeNatureImpot.touched) && typeNatureImpot.errors?.required">
+            Le type de la nature de l'impôt est obligatoire
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div fxFlex="90" class="container-form-field-radio">
+          <ng-select [items]="codeSIRemoteAutocomplete.listRessource$ | async" [typeahead]="codeSIRemoteAutocomplete.term"  [loading]="codeSIRemoteAutocomplete.loading" (search)="onSearchCodeSI($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle" bindValue="id" placeholder="Système d'imposition(*)"
+                     formControlName="codeSI">
+            <ng-template ng-loadingspinner-tmp>
+              <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </ng-template>
+          </ng-select>
+          <mat-error *ngIf="codeSI.invalid && (codeSI.dirty || codeSI.touched) && codeSI.errors?.required">
+            Le code SI est obligatoire
+          </mat-error>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="outline" fxFlex="90">
+          <mat-label>Code (*)</mat-label>
+          <input matInput placeholder="code" [attr.autocomplete]="'off'" formControlName="code" />
+          <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && code.errors?.required">
+            Le code est obligatoire
+          </mat-error>
+          <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && ( code.errors?.minlength || code.errors?.maxlength )">
+            La taille du code de la natureImpot est limité entre 4 et 150 caractères
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="outline" fxFlex="90">
+          <mat-label>libelle (*)</mat-label>
+          <input matInput placeholder="libelle de la région" [attr.autocomplete]="'off'" formControlName="libelle" />
+          <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && libelle.errors?.required">
+            Le libelle de la natureImpot est obligatoire
+          </mat-error>
+          <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && ( libelle.errors?.minlength || libelle.errors?.maxlength )">
+            La taille du libelle de la natureImpot est limité entre 4 et 150 caractères
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="outline" fxFlex="90">
+          <mat-label>Libelle court nature impôt</mat-label>
+          <input matInput placeholder="libelle court nature impôt" [attr.autocomplete]="'off'" formControlName="libelleCourt" />
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="outline" fxFlex="90">
+          <mat-label>Ordre de tri</mat-label>
+          <input matInput placeholder="Ordre de tri" [attr.autocomplete]="'off'" formControlName="ordre" type="number" />
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <div mat-dialog-actions fxLayout="row" align="end">
+    <button mat-raised-button color="warn" type="button" (click)="closeFormModal()">Annuler</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+      <span *ngIf="!natureImpot.id">Enregistrer</span><span *ngIf="natureImpot.id">Mettre à jour</span>
+    </button>
+  </div>
+</form>
+

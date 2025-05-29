@@ -1,0 +1,44 @@
+<mat-accordion class="list-profil-infos">
+    <mat-expansion-panel>
+      
+          <mat-expansion-panel-header>
+            <mat-panel-title class="panel-header-adresse" fxLayout="row" fxLayoutAlign="start start">
+            <h3>Informations</h3>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+
+      <mat-card-content perfectScrollbar>
+        <mat-list>
+         <app-profil-list-item-icon [value]="userData?.codeUnique" label="Code unique" icon="card_membership"></app-profil-list-item-icon>
+          <app-profil-list-item-icon [value]="userData?.matricule" label="Matricule" ></app-profil-list-item-icon>
+          <app-profil-list-item-icon [value]="userData?.typeUser" label="Type utilisateur"></app-profil-list-item-icon>
+          <app-profil-list-item-icon [value]="userData?.nom" label="Nom" ></app-profil-list-item-icon>
+          <app-profil-list-item-icon [value]="userData?.nomDeJeuneFille" label="Nom de jeune fille" ></app-profil-list-item-icon>
+          <app-profil-list-item-icon [value]="userData?.nationalite?.libelle" label="Nationalité" ></app-profil-list-item-icon>
+          <app-profil-list-item-icon [value]="userData?.genre" label="Genre" ></app-profil-list-item-icon>
+          <app-profil-list-item-icon [value]="userData?.dateNaissance | date : 'longDate'" label="Date de naissance"></app-profil-list-item-icon>
+          <app-profil-list-item-icon [value]="userData?.lieuNaissance" label="Lieu de naissance"></app-profil-list-item-icon>
+          <app-profil-list-item-icon [value]="userData?.situationMatrimoniale?.libelle" label="Situation Matrimoniale"></app-profil-list-item-icon>
+          <app-profil-list-item-icon [value]="userData?.fonction" label="Fonction" ></app-profil-list-item-icon>
+          <app-profil-list-item-icon [value]="userData?.profession?.nom" label="Profession"></app-profil-list-item-icon>
+          <app-profil-list-item-icon [value]="userData?.titreHonorifique" label="Titre Honorifique"></app-profil-list-item-icon>
+          <mat-list-item >
+          <div matLine>
+            <h3>Bureau </h3><span>{{ userData?.affectation?.bureau?.nom ? userData?.affectation?.bureau?.nom : '...'}}</span>
+          </div>
+        </mat-list-item>
+        <mat-list-item >
+          <div matLine>
+            <h3>Service </h3><span> {{ userData?.affectation?.service?.nom ? userData?.affectation?.service?.nom : '...'}}</span>
+          </div>
+        </mat-list-item>
+        <mat-list-item >
+          <div matLine>
+            <h3>Structure </h3> <span>{{ userData?.affectation?.structure?.nom ? userData?.affectation?.structure?.nom : '...'}} </span>
+          </div>
+        </mat-list-item>
+        </mat-list> 
+      </mat-card-content>
+</mat-expansion-panel>
+</mat-accordion>

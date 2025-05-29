@@ -1,0 +1,274 @@
+.sycad-field-radio-button-horizontal {
+    margin-left: 5px;
+}
+
+.container-affectation {
+    padding-top: 20px;
+}
+
+.sycad-form-ng-select-start-tab {
+    padding-top: 20px;
+}
+
+.sycad-field-radio-button-horizontal {
+    margin-left: 5px;
+}
+
+.container-affectation {
+    padding-top: 20px;
+}
+
+.sycad-form-ng-select-start-tab {
+    padding-top: 20px;
+}
+
+.sycad-field-radio-button-horizontal {
+    margin-left: 5px;
+}
+
+.container-affectation {
+    padding-top: 20px;
+}
+
+.sycad-form-ng-select-start-tab {
+    padding-top: 20px;
+}
+
+table {
+    width: 100%;
+}
+
+.nested-table-element-detail {
+    //overflow: hidden;
+    display: flex;
+}
+
+.inner-table-reg {
+     width: 53%; 
+    position: sticky!important;
+    left: 26px;  
+    margin-bottom: 15px; 
+    
+}
+.inner-table-val-liq {
+   margin-top: 15px;
+   width: 100%;
+   margin-bottom: 15px;
+}
+
+
+.inner-table-reg mat-form-field {
+    margin-top: 15px;
+    width: 100%;
+}
+
+
+
+th.mat-header-cell,
+th.cdk-header-cell {
+    text-align: left !important;
+    
+}
+
+.titre-recette-table td.mat-cell {
+    text-align: left;
+    min-width: 120px;
+  } 
+  .titre-recette-table tr{
+    cursor:pointer;
+}
+
+.mat-sort-header-container {
+    justify-content: left;
+}
+
+.mat-sort-header-container {
+    justify-content: left!important;
+}
+
+tr.nested-detail-row {
+    height: 0;
+}
+
+.nested-element-row td {
+    border-bottom-width: 0;
+}
+
+.user-name {
+    line-height: 40px;
+    padding-left: 10px;
+}
+
+/* New Scss Code */
+
+
+.cursor-mouse tr {
+    cursor:pointer;
+  }
+  
+  .mat-row:nth-child(even){
+    background: #efefef;
+  }
+
+  .mat-header-cell {
+    background-color: rgba(0, 0, 0, 0.015);
+  }
+
+  .user-img {
+    position: relative;
+    img {
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        //margin-left: 50px;
+        &.blocked {
+            opacity: 0.5;
+        }
+    }
+    .mat-icon {
+        position: absolute;
+        top: -8px;
+        left: -8px;
+        font-size: 96px;
+        height: 96px;
+        width: 96px;
+    }
+}
+
+.bouton-voir-plus strong{
+   color: #1b5e20;
+}
+
+
+.user-details p:hover{
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    cursor: pointer;
+   }
+   
+.container-card-bornage .mat-card-title{
+       display: flex;
+   }
+.container-card-bornage .mat-card-title .mat-icon{
+    font-size: 37px;
+    width: 46px;
+    height: 35px;
+    margin-top: -5px;   
+}
+.container-card-bornage .mat-card-content{
+h4 {
+    color: rgba(0, 0, 0, 0.54);
+  }
+  
+  h3,h4 {
+    margin-top: 10px!important;
+    mat-icon {
+      align-items: center;
+      font-size: 14px;
+      }
+  }
+  mat-divider{
+    margin-top: 5px !important;
+    margin-bottom: 5px!important;
+  }
+}
+.card-geometre-expert{
+    padding: 16px;
+  }
+ 
+.card-geometre-expert .mat-card{
+    margin-bottom: 5px;
+  }
+
+.user-details-geometre {
+      padding-top:15px;
+      padding-right: 10px;
+      padding-bottom:15px;
+      p{
+          margin-top: 5px;
+      }
+      strong{
+          margin-right:5px;
+      }
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .mat-icon {
+      padding: 2px 10px;
+    }
+    &.blocked {
+      opacity: 0.5;
+    }
+
+  
+  }
+ 
+.card-profil-acteur {
+   
+    mat-divider {
+        border-top-width: 2px;
+        border-top-style: solid;
+        margin-top: 15px;
+        width: 90%;
+        margin-left: 25px; 
+       
+    }
+    .role-acteur {
+        margin-top:10px;
+    }
+    .role-acteur  mat-chip{
+        margin-left: 23px;
+        height: auto;
+     }
+     .icon_subdirectory{
+        color: rgba(0, 0, 0, 0.15);
+    }
+    mat-chip.mat-standard-chip{
+        top:10px;
+    }
+  }
+  
+  a mat-icon{
+    vertical-align: middle;
+    font-size: 20px;
+
+}   
+.nested-table-element-detail-impot  table{
+    th.mat-header-cell,
+    th.cdk-header-cell{
+      text-align: center!important; 
+    }
+    td.mat-cell,
+    td.cdk-header-cell  {
+          font-size: 13px!important; 
+          min-height: 48px;
+          text-align: center!important;
+          border-right: 1px solid rgba(0, 0, 0, 0.123);  
+    }
+   
+  }
+
+  ::ng-deep .mat-tab-active-color .mat-tab-label-active {
+    background-color: rgb(245, 245, 245);
+    opacity: 1;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+
+}
+.no-data-row{
+    text-align: center; 
+    color: rgba(0, 0, 0,  0.247);
+  }
+/* ::ng-deep .sycad-app.green-light .mat-chip.mat-standard-chip{
+    top:10px;
+    } */
+
+/* .card-profil-acteur .mat-list-item{
+    top: 5px;
+} */
+
+
+
+  

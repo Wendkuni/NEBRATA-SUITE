@@ -1,0 +1,40 @@
+<form [formGroup]="formulaire">
+
+    <mat-horizontal-stepper linear #stepper>
+
+        <mat-step [editable]="true">
+
+            <ng-template matStepLabel>Les titres de recette et réglements</ng-template>
+
+
+            <app-list-reglement-titre [titresRecette]="bornage.titresRecette"></app-list-reglement-titre>
+
+            <div class="card-action-form">
+                <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+                </div>
+            </div>
+
+        </mat-step>
+
+        <mat-step [editable]="true">
+
+            <ng-template matStepLabel>Exonérations </ng-template>
+
+            <app-list-impot-exoneration [titresRecette]="bornage.titresRecette"></app-list-impot-exoneration>
+
+            <div class="card-action-form">
+                <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+                </div>
+            </div>
+
+        </mat-step>
+
+    </mat-horizontal-stepper>
+
+</form>

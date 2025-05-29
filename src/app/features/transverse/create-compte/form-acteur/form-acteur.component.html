@@ -1,0 +1,234 @@
+<form [formGroup]="formulaireActeur" class="user-form">
+
+    <mat-card-header>
+        <mat-card-subtitle>
+            <h3>
+                <span>Création d'un acteur moral </span>
+            </h3>
+            <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+                La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+            </mat-error>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+
+        <mat-tab-group>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">face</mat-icon>
+                    Identification
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+
+                    <div fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start" fxLayoutGap.gt-xs="20px">
+
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                            <mat-label>Numéro IFU</mat-label>
+                            <input matInput placeholder="Numéro IFU " [attr.autocomplete]="'off'" formControlName="numeroIfu" />
+                        </mat-form-field>
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="35" [fxFlex.md]="30" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                            <mat-label>Date de création </mat-label>
+                            <input matInput [matDatepicker]="dateDeCreationPicker" placeholder="Date de création" formControlName="dateDeCreation">
+                            <mat-datepicker-toggle matSuffix [for]="dateDeCreationPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #dateDeCreationPicker></mat-datepicker>
+
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start" fxLayoutGap.gt-xs="20px">
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="60" [fxFlex.md]="50" [fxFlex.lg]="30" [fxFlex.xl]="30">
+                            <mat-label>Dénommination (*) </mat-label>
+                            <input matInput placeholder="Dénommination" [attr.autocomplete]="'off'" formControlName="denomination" />
+                            <mat-error *ngIf="denomination.invalid && (denomination.dirty || denomination.touched) && denomination.errors?.required">
+                                La dénommination est obligatoire
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="35" [fxFlex.md]="30" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                            <mat-label>Sigle (*)</mat-label>
+                            <input matInput placeholder="Sigle" [attr.autocomplete]="'off'" formControlName="sigle" />
+                            <mat-error *ngIf="sigle.invalid && (sigle.dirty || sigle.touched) && sigle.errors?.required">
+                                La sigle est obligatoire
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-sm="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                            <mat-label>Télephone</mat-label>
+                            <input matInput placeholder="Telephone" [attr.autocomplete]="'off'" formControlName="telephone">
+                            <mat-error *ngIf="telephone.invalid && (telephone.dirty || telephone.touched) && telephone.errors?.required">
+                                Le numéro de téléphone est obligatoire
+                            </mat-error>
+                            <mat-error *ngIf="telephone.invalid && (telephone.dirty || telephone.touched) && telephone.errors?.pattern">
+                                Exemple (00226) XX XX XX XX ou (00226)XXXXXXXX ou 00226XXXXXXXX ou +226XXXXXXXX
+                            </mat-error>
+                            <mat-error *ngIf="telephone.invalid && (telephone.dirty || telephone.touched) && telephone.errors?.telephoneExist ">
+                                Ce numéro de téléphone est indisponible
+                            </mat-error>
+                            <mat-hint class="lds-ellipsis" *ngIf="telephone.status === 'PENDING'">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                            <mat-label>Email (*)</mat-label>
+
+                            <input matInput placeholder="Email" [attr.autocomplete]="'off'" formControlName="email">
+                            <mat-error *ngIf="email.invalid && (email.dirty || email.touched) && email.errors?.required">
+                                La valeur de l'email est obligatoire
+                            </mat-error>
+                            <mat-error *ngIf="email.invalid && (email.dirty || email.touched) && email.errors?.required">
+                                L'email est invalide
+                            </mat-error>
+                            <mat-error *ngIf="email.invalid && (email.dirty || email.touched) && email.errors?.emailExist ">
+                                Ce email est indisponible
+                            </mat-error>
+                            <mat-hint class="lds-ellipsis" *ngIf="email.status === 'PENDING'">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </mat-hint>
+
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start" fxLayoutGap.gt-xs="20px">
+
+                        <div class="sycad-form-ng-select sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="25" [fxFlex.xl]="25">
+                            <input type="hidden" formControlName="statusJuridique">
+                            <ng-select [items]="statusJuridiqueRemoteAutocomplete.listRessource$ | async" [typeahead]="statusJuridiqueRemoteAutocomplete.term" [attr.autocomplete]="'off'" [loading]="statusJuridiqueRemoteAutocomplete.loading" (search)="onSearchStatusJuridique($event)"
+                                appendTo="body" [selectOnTab]="true" bindLabel="libelle" bindValue="id" labelForId="statusJuridique" placeholder="Statut juridique (*)" formControlName="statusJuridique">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                            <mat-error *ngIf="statusJuridique.invalid && (statusJuridique.dirty || statusJuridique.touched) && statusJuridique.errors?.required">
+                                Le statut juridique est obligatoire
+                            </mat-error>
+                        </div>
+                        <div fxFlex="100" class="sycad-form-ng-select sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="25" [fxFlex.xl]="25">
+                            <ng-select [items]="categorieActeurRemoteAutocomplete.listRessource$ | async" [typeahead]="categorieActeurRemoteAutocomplete.term" [loading]="categorieActeurRemoteAutocomplete.loading" (search)="onSearchCategorieActeur($event)" appendTo="body" [selectOnTab]="true"
+                                bindLabel="libelle" bindValue="id" labelForId="categorie" placeholder="Catégorie de l'acteur (*)" formControlName="categorie">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+
+                            <mat-error *ngIf="categorie.invalid && (categorie.dirty || categorie.touched) && categorie.errors?.required">
+                                La catégorie est obligatoire
+                            </mat-error>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center ">
+                        <div class="sycad-form-ng-select sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="25" [fxFlex.xl]="25">
+                            <ng-select [items]="secteurActivitePrincipalRemoteAutocomplete.listRessource$ | async" [typeahead]="secteurActivitePrincipalRemoteAutocomplete.term" [loading]="secteurActivitePrincipalRemoteAutocomplete.loading" (search)="onSearchSecteurActivitePrincipal($event)"
+                                appendTo="body" [selectOnTab]="true" bindLabel="nom" labelForId="activitePrincipale" bindValue="id" placeholder="Activité principale" formControlName="activitePrincipale">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+
+                        </div>
+
+                        <div class="sycad-form-ng-select sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="25" [fxFlex.xl]="25">
+                            <ng-select [items]="nationaliteRemoteAutocomplete.listRessource$ | async" [typeahead]="nationaliteRemoteAutocomplete.term" [attr.autocomplete]="'off'" [loading]="nationaliteRemoteAutocomplete.loading" (search)="onSearchNationalite($event)" appendTo="body"
+                                [selectOnTab]="true" bindLabel="libelle" labelForId="nationalite" bindValue="id" placeholder="Nationalité " formControlName="nationalite">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+
+                        </div>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="start">
+                        <mat-card class="card-container-form-element y-1" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="50">
+                            <mat-card-header>
+                                <mat-card-title>Pièce d'identification </mat-card-title>
+                            </mat-card-header>
+                            <app-piece-officielle-form [formGroup]="pieceOfficielle" [contribuableType]="'ACTEUR'" [public]="true" [touched]="pieceOfficielle.touched"></app-piece-officielle-form>
+
+                        </mat-card>
+                    </div>
+                </div>
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Fiscalité
+                </ng-template>
+                <div fxLayout="column" class="flex-p">
+                    <div fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start" fxLayoutGap.gt-xs="20px">
+                        <div class="sycad-form-ng-select sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="25" [fxFlex.xl]="25">
+                            <ng-select [items]="regimeFiscalRemoteAutocomplete.listRessource$ | async" [typeahead]="regimeFiscalRemoteAutocomplete.term" [loading]="regimeFiscalRemoteAutocomplete.loading" (search)="onSearchRegimeFiscal($event)" appendTo="body" [selectOnTab]="true"
+                                bindLabel="libelle" labelForId="regimeFiscal" bindValue="id" placeholder="Régime fiscal " formControlName="regimeFiscal">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="start center" class="sycad-form-line">
+                        <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="50" [fxFlex.md]="50" [fxFlex.lg]="25" [fxFlex.xl]="25">
+                            <mat-label>Numéro CNSS</mat-label>
+                            <input matInput placeholder="Numéro CNSS" [attr.autocomplete]="'off'" formControlName="numCNSS" />
+                            <mat-error *ngIf="numCNSS.invalid && (numCNSS.dirty || numCNSS.touched) && numCNSS.errors?.numCNSSExist ">
+                                Ce numéro CNSS est indisponible
+                            </mat-error>
+                            <mat-hint class="lds-ellipsis" *ngIf="numCNSS.status === 'PENDING'">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </mat-hint>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+            </mat-tab>
+
+
+
+        </mat-tab-group>
+    </mat-card-content>
+    <mat-card-actions [ngClass]="{'card-action-form': (activeMediaQuery === 'lg' || activeMediaQuery === 'xl' ), 'card-action-form-small': (activeMediaQuery === 'sm') }">
+        <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+            <button mat-raised-button color="warn" type="button">Annuler</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!formulaireActeur.valid">
+        <span>Enregistrer</span>
+      </button>
+        </div>
+    </mat-card-actions>
+
+</form>

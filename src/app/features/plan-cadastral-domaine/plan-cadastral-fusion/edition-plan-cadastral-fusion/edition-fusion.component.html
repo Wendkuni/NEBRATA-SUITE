@@ -1,0 +1,218 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+
+
+    <mat-card-header>
+        <mat-card-subtitle>
+            <h3>
+                <span *ngIf="!fusion">Démarrer un dossier de fusionnement de parcelle</span>
+                <span *ngIf="fusion?.numero">{{transition.libelle}} : sur le dossier {{fusion.numero}}</span>
+            </h3>
+
+
+            <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+                La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+            </mat-error>
+
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+
+        <mat-tab-group #tabGroup>
+          <mat-tab *ngIf="!fusion">
+            <ng-template mat-tab-label>
+                <mat-icon class="sycad-form-tab-label-icon">info</mat-icon>
+
+                 <ng-container  >Details du processus</ng-container>
+            </ng-template>
+
+            <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+
+                <ng-container [ngSwitch]="true">
+                  <!-- header -->
+
+                <app-details-processus-tab-pane [processus]="processus"> </app-details-processus-tab-pane>
+
+
+                <!-- button commencer, id tabGroup -> mat-tab-group -->
+                  <div style="display: flex;justify-content: space-between; align-items: end;">
+                    <button mat-raised-button color="primary" style=" margin-left: auto;padding:5px 5px" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1">
+                      Commencer
+                      <mat-icon>keyboard_arrow_right</mat-icon>
+                    </button>
+                  </div>
+
+                </ng-container>
+
+            </div>
+        </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">face</mat-icon>
+
+                    <ng-container *ngIf="fusion?.numero">Formulaire transition {{transition.libelle}}</ng-container>
+                    <ng-container *ngIf="!fusion">Création d'une demande de document</ng-container>
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+                    <ng-container [ngSwitch]="true">
+
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'FUSION_ENVOYER_SINTAX_TO_MAJ_REGLEMENT'   ">
+                            <app-reglement-liq-fusion (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [fusion]="fusion" [transition]="transition"></app-reglement-liq-fusion>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'FUSION_ENVOYER_SINTAX_TO_SOLDE'  ">
+                            <app-solder-liq-fusion (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [fusion]="fusion" [transition]="transition"></app-solder-liq-fusion>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'FUSION_LIQUIDE_TO_ENVOYER_SINTAX' ">
+                            <app-envoie-liq-fusion-vers-sintax (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [fusion]="fusion" [transition]="transition"></app-envoie-liq-fusion-vers-sintax>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'FUSION_BROUILLON_TO_LIQUIDE' || transition?.code === 'FUSION_TRANSMIS_TO_LIQUIDE'  || transition?.code === 'FUSION_LIQUIDE_TO_LIQUIDE' ">
+                            <app-calcul-liq-fusion (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [fusion]="fusion" [transition]="transition"></app-calcul-liq-fusion>
+                        </ng-template>
+
+
+                        <ng-template [ngSwitchCase]="
+                        transition?.code === 'FUSION_SOLDE_TO_AFFECTE_AGENT' ||
+                         transition?.code === 'FUSION_TRANSMIS_TO_AFFECTE_AGENT' ||
+                         transition?.code === 'FUSION_BROUILLON_TO_AFFECTE_AGENT'  ">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [codeCommune]="fusion?.parcelle?.ilot?.section?.commune?.code" [dossierProcessus]="fusion" [fixedStructures]="false" [processusService]="fusionService"
+                                [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'FUSION_BROUILLON_TO_TRANSMIS' ">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [avecPiece]="false" [codeCommune]="fusion?.parcelle?.ilot?.section?.commune?.code" [dossierProcessus]="fusion" [fixedStructures]="false" [processusService]="fusionService"
+                                [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="
+                        transition?.code === 'FUSION_SOLDE_TO_AFFECTE' ||
+                         transition?.code === 'FUSION_TRANSMIS_TO_AFFECTE' ||
+                          transition?.code === 'FUSION_BROUILLON_TO_AFFECTE' ">
+                            <app-affectation-dm (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [fusion]="fusion" [transition]="transition"></app-affectation-dm>
+                        </ng-template>
+
+                        <!--
+
+-->
+                        <ng-template [ngSwitchCase]=" transition?.code === 'FUSION_TRANSMISSION_BROUILLON_TO_BROUILLON'
+                        || transition?.code === 'FUSION_TRANSMISSION_TRANSMIS_TO_TRANSMIS'
+                        || transition?.code === 'FUSION_TRANSMISSION_AFFECTE_TO_AFFECTE'
+                        || transition?.code === 'FUSION_TRANSMISSION_EDITION_EDF_TO_EDITION_EDF'
+                        || transition?.code === 'FUSION_TRANSMISSION_NUMEROTATION_TO_NUMEROTATION'
+                         || transition?.code === 'FUSION_TRANSMISSION_EDITION_EDM_TO_EDITION_EDM'
+                          || transition?.code === 'FUSION_TRANSMISSION_VALIDE_TO_VALIDE' ">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" (formErrors)="onFormError($event)" [codeCommune]="fusion?.parcelle?.ilot?.section?.commune?.code" [dossierProcessus]="fusion" [fixedStructures]="false"
+                                [processusService]="fusionService" [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'FUSION_BROUILLON_TO_BROUILLON' ">
+                            <ng-container *ngIf="authentificatedUser?.typeUser==='AGENT' && hasPermissionNumerotation(); else autreContribuableGeneral">
+                                <app-saisie-fusionnement-par-agent (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [fusion]="fusion" [transition]="transition">
+                                </app-saisie-fusionnement-par-agent>
+                            </ng-container>
+
+                            <ng-template #autreContribuableGeneral>
+                                <ng-container>
+                                    <app-saisie-fusionnement-par-contribuable (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [fusion]="fusion" [transition]="transition" [authentificatedUser]="authentificatedUser">
+                                    </app-saisie-fusionnement-par-contribuable>
+                                </ng-container>
+                            </ng-template>
+
+                        </ng-template>
+                        <ng-template [ngSwitchCase]=" transition?.code === 'FUSION_ATTENTE_NUMEROTATION_TO_NUMEROTATION' ">
+                            <app-approuver-travail-fusion (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [fusion]="fusion" [transition]="transition"></app-approuver-travail-fusion>
+                        </ng-template>
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'FUSION_BROUILLON_TO_ANNULER' || transition?.code === 'FUSION_TRANSMIS_TO_ANNULER'    ">
+                            <app-annulation-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="fusion" [transition]="transition" [processusService]="fusionService" [frontendUrl]="getFrontendTemplate()"></app-annulation-dossier-transition>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'FUSION_TRANSMISSION_FUSIONNE_TO_ATTENTE_NUMEROTATION' ">
+                            <app-envoyer-pour-controle-apres-fusion (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [fusion]="fusion" [transition]="transition"></app-envoyer-pour-controle-apres-fusion>
+                        </ng-template>
+                        <ng-template [ngSwitchCase]=" transition?.code === 'FUSION_AFFECTE_TO_FUSIONNE'  || transition?.code === 'FUSION_FUSIONNE_TO_FUSIONNE'">
+                            <app-fusionner (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [fusion]="fusion" [transition]="transition"></app-fusionner>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'FUSION_NUMEROTATION_TO_EDITION_EDF' ||  transition?.code === 'FUSION_EDITION_EDF_TO_EDITION_EDF' ">
+                            <app-edition-edmfusion (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [fusion]="fusion" [transition]="transition" [processus]="processus"></app-edition-edmfusion>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'FUSION_EDITION_EDF_TO_VALIDE' ">
+                            <app-valider-fusion (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [fusion]="fusion" [transition]="transition"></app-valider-fusion>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === ' FUSION_NUMEROTATION_TO_NUMEROTATION' ">
+                            <app-numerotation-fusion (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [fusion]="fusion" [transition]="transition"></app-numerotation-fusion>
+                        </ng-template>
+
+                        <ng-template [ngSwitchDefault]>
+                            <ng-container *ngIf="authentificatedUser?.typeUser==='AGENT' && hasPermissionNumerotation(); else autreContribuableGeneral">
+                                <app-creation-fusionnement-par-agent (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus">
+                                </app-creation-fusionnement-par-agent>
+                            </ng-container>
+
+                            <ng-template #autreContribuableGeneral>
+                                <ng-container>
+                                    <app-creation-fusionnement-par-contribuable (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [authentificatedUser]="authentificatedUser" [processus]="processus">
+                                    </app-creation-fusionnement-par-contribuable>
+                                </ng-container>
+                            </ng-template>
+
+
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'FUSION_TRANSMIS_TO_BROUILLON'  || transition?.code === 'FUSION_AFFECTE_TO_TRANSMIS'  || transition?.code === 'FUSION_NUMEROTATION_TO_FUSIONNE'  || transition?.code === 'FUSION_EDITION_EDF_TO_NUMEROTATION' || transition?.code === 'FUSION_NUMEROTATION_TO_ATTENTE_NUMEROTATION'  ">
+                            <app-renvoyer-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="fusion" [transition]="transition" [processusService]="fusionService" [frontendUrl]="getFrontendTemplate()"></app-renvoyer-dossier-transition>
+                        </ng-template>
+
+
+
+                    </ng-container>
+
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="fusion?.numero">
+                <ng-template mat-tab-label>
+                    <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                </ng-template>
+                <div fxLayout="column" class="flex-p">
+                    <app-historique [numero]="fusion?.numero"></app-historique>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="fusion">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Entête de dossier
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+
+                    <app-entete [numero]="fusion?.numero" [processus]="'WRKFProcessFusionCadastral'"></app-entete>
+                </div>
+            </mat-tab>
+
+          <mat-tab *ngIf="fusion">
+            <ng-template mat-tab-label>
+              <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+              Détail du dossier
+            </ng-template>
+            <div fxLayout="column" class="flex-p">
+              <app-vue-fusionnement [noOpenActions]="true"></app-vue-fusionnement>
+            </div>
+          </mat-tab>
+
+
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,208 @@
+.sycad-table-bouton-ajout {
+    margin-right: 7px;
+}
+
+.sycad-table-bouton-refresh {
+  margin-left: 10px;
+}
+
+
+
+.sycad-table-element-description {
+    width: 85%;
+}
+
+.sycad-table-header-line {
+    margin-top: 25px;
+}
+
+.sycad-table-header-line-2 {
+    margin-top: 10px;
+}
+
+.sycad-table-header-choix-colonne {
+    height: 42px;
+}
+
+.sycad-table-second-footer-row td {
+    font-style: italic;
+}
+
+.sycad-table-download-text {
+    position: relative;
+    top: -7px;
+}
+
+.mat-menu-item-action {
+    height: 30px;
+    line-height: 30px;
+    .material-icons {
+        font-size: 22px;
+        padding: 0px;
+        margin-right: 0px;
+    }
+}
+
+.mat-menu-panel {
+    min-height: 40px;
+    min-width: 138px;
+    max-width: 450px;
+}
+
+.sycad-table-container {
+    position: relative;
+    /* border: 2px solid red;  */
+    height: 600px;
+    width: 97%;
+    margin: 15px;
+    table {
+        /*  width: 2500px; 
+        min-width: 1024px;*/
+        min-width: 100%;
+    }
+    .mat-form-field {
+        font-size: 7px;
+        width: 125px;
+        color: black;
+        margin-left: 3px;
+        margin-right: 3px;
+        input {
+            font-size: 14px;
+        }
+    }
+    th.mat-header-cell,
+    th.cdk-header-cell {
+        text-align: left !important;
+    }
+    td.mat-cell {
+        text-align: left;
+    }
+    .mat-sort-header-container {
+        justify-content: left;
+    }
+    tr.sycad-table-detail-row {
+        height: 0;
+    }
+    tr.sycad-table-element-row:not(.sycad-table-expanded-row):hover {
+        background: whitesmoke;
+    }
+    tr.sycad-table-element-row:not(.sycad-table-expanded-row):active {
+        background: #efefef;
+    }
+    .sycad-table-element-row td {
+        border-bottom-width: 0;
+    }
+    .sycad-table-element-detail {
+        overflow: hidden;
+        display: flex;
+    }
+    .mat-checkbox-layout {
+        background: white;
+    }
+    .sycad-table-first-header-row th {
+        border-bottom: none;
+    }
+    .sycad-table-second-header-row {
+        font-style: italic;
+    }
+    .sycad-table-first-footer-row {
+        font-weight: bold;
+    }
+    .sycad-table-second-footer-row td {
+        color: #900000;
+    }
+    /* td,
+    th {
+        &.mat-column-select {
+            width: 20px;
+            min-width: 20px!important;
+            border: 2px solid red;
+        }
+    }
+    */
+    .colonne-select,
+    .mat-column-filter-select {
+        min-width: 25px!important;
+        width: 25px!important;
+    }
+    .mat-header-cell,
+    .mat-footer-cell,
+    .mat-cell {
+        min-width: 170px;
+    }
+    .colonne-action,
+    .mat-column-filter-action {
+        min-width: 25px!important;
+        width: 25px!important;
+    }
+}
+
+.container-form-field-radio {
+    .ng-select {
+        width: 60%;
+    }
+}
+
+.ng-select .ng-select-container {
+    min-height: 37px;
+}
+
+.user-search {
+    width: 0;
+    overflow: hidden;
+    transition: 0.3s;
+    .mat-form-field {
+        width: 100% !important;
+        text-align: center !important;
+        height: 36px;
+    }
+    .mat-form-field-infix {
+        padding: 5px;
+    }
+    .mat-input-element {
+        text-align: justify;
+        padding-left: 15px;
+    }
+    &.show {
+        width: 100%;
+        overflow: visible;
+    }
+}
+
+.sycad-table-input-filter {
+    .mat-icon {
+        width: 12px;
+    }
+}
+
+
+/*
+.entete-sycad-table-pivot-list {
+    height: 40px;
+    .mat-select {
+        height: 31px;
+    }
+    .mat-button-toggle-label-content {
+        font-weight: bold;
+    }
+    .mat-button-toggle-group {
+        margin-left: 10px;
+    }
+}
+
+*/
+
+
+/*
+.mat-paginator-sticky {
+    bottom: 0px;
+    position: sticky;
+    z-index: 10;
+}
+
+*/
+
+.sycad-menu-recherche-avance.mat-menu-panel {
+    min-width: 750px;
+    min-height: 600px;
+}

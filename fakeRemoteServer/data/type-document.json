@@ -1,0 +1,17 @@
+{
+    "page": 0,
+    "limit": 10,
+    "totalCount": 13,
+    "order": null,
+    "search": "",
+    "filters": {},
+    "sort": null,
+    "items": [{
+        "id": 2,
+        "code": "D02",
+        "libelle": "Titre foncier",
+        "titre": "non",
+        "tf": "oui",
+        "actif": "oui"
+    }]
+}

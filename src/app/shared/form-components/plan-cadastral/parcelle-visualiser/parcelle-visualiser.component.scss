@@ -1,0 +1,32 @@
+.map-container {
+  position: relative;
+  width: 600px;
+  height: 100%;
+  text-align: right;
+  font-size: large;
+}
+
+/* Fullscreen mode styles for the container and its children */
+:fullscreen .map-container,
+:fullscreen .map-container > * {
+  width: 100vw;
+  height: 100%;
+}
+
+:-webkit-full-screen .map-container,
+:-webkit-full-screen .map-container > * {
+  width: 100vw;
+  height: 100%;
+}
+
+:-moz-full-screen .map-container,
+:-moz-full-screen .map-container > * {
+  width: 100vw;
+  height: 100%;
+}
+
+:-ms-fullscreen .map-container,
+:-ms-fullscreen .map-container > * {
+  width: 100vw;
+  height: 100vh;
+}

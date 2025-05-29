@@ -1,0 +1,316 @@
+<app-header-landing></app-header-landing>
+<div class="introduction" fxLayout="row wrap">
+
+    <div fxLayout="column" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="60" [fxFlex.xl]="60">
+        <h1 class="titre-generale">A qui s’adresse la plateforme ?</h1>
+        <div class="all-elements" fxLayout="row wrap" fxLayoutAlign="center start">
+            <div class="element" [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="40" [fxFlex.lg]="40" [fxFlex.xl]="40">
+                <h3 class="titre-element bg-primary" fxLayoutAlign="center center">
+                    <mat-icon>people_outline</mat-icon>Public cible</h3>
+                <div class="contenu element-list card__content">
+                    <ul>
+                        <li>
+                            Les agents de l'administration public et des Mairies;
+                        </li>
+                        <li>
+                            Les contribuables;
+                        </li>
+                        <li>
+                            les acteurs privés: Les experts geometres, les promoteurs immobiliers; les notaires etc...
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+            <div class="element connexion-button" [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="40" [fxFlex.lg]="40" [fxFlex.xl]="40">
+                <h3 class="titre-element bg-primary" fxLayoutAlign="center center">
+                    <mat-icon>people_outline</mat-icon>Mandataires</h3>
+                <div class="contenu card__content">
+                    <p>Gestion des mandats confiés à une tierce personne pour faire les opérations en lieu et place du propriétaire de la parcelle.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div fxLayout="row" fxLayout="row wrap" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="40" [fxFlex.xl]="40" fxLayoutAlign="center center">
+        <div class="connexion mat-elevation-z12" [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="50" [fxFlex.lg]="90" [fxFlex.xl]="90">
+            <div class="contenu" fxLayoutAlign="center center">
+                Accédez à votre espace SYC@D<br/> en vous connectant ici
+            </div>
+            <div class="footer-element bg-primary" fxLayoutAlign="center center">
+                <a routerLink="/{{login_lien}}" mat-flat-button color="primary">CONNEXION</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="main-container bg-grit">
+    <h1 class="heading-container heading">Les processus du cadastre</h1>
+    <div class="card-container">
+        <div class="card first_card" [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="40" [fxFlex.lg]="30" [fxFlex.xl]="30">
+            <h3 class="card__title">Demande de bornage de terrain</h3>
+            <div class="card__content">
+                <p>Le bornage est l'opération technique et juridique qui a pour objet de fixer de façon irrévocable et permanente, les limites séparatives d'une parcelle par des bornes, ou tout autre signe reconnu par les textes en vigueur et à vérifier
+                    la conformité entre ces limites sur le terrain et celles figurant sur plan cadastral ou selon les données disponibles au Cadastre.</p>
+            </div>
+            <div class="card__action bg-primary">
+                <span class="rotation-icon">
+          <button mat-raised-button color="primary"><mat-icon>insert_drive_file</mat-icon>Voir plus</button>
+        </span>
+            </div>
+        </div>
+
+        <div class="card" [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="40" [fxFlex.lg]="30" [fxFlex.xl]="30">
+            <h3 class="card__title">Demande de morcellement de terrain</h3>
+            <div class="card__content">
+                <p>Le Morcellement est l'opération qui permet la création de deux ou plusieurs parcelles à partir d'une parcelle existante.</p>
+                <p>
+                    Sur Le processus de morcellement d'une parcelle,correspond au processus de validation d'un Etat Descriptif de Morcellement (EDM) afin de mettre en à jour le plan cadastral.</p>
+                <p>Le morcellement abouti obligatoirement aux bornages des terrains résultants. </p>
+
+            </div>
+            <div class="card__action bg-primary">
+                <span class="rotation-icon">
+          <button mat-raised-button color="primary"><mat-icon>insert_drive_file</mat-icon>Voir plus</button>
+        </span>
+            </div>
+        </div>
+
+        <div class="card last_card" [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="40" [fxFlex.lg]="30" [fxFlex.xl]="30">
+            <h3 class="card__title">Demande de fusion de terrain</h3>
+            <div class="card__content">
+                <p>La fusion est l'opération qui permet la création d'une nouvelle parcelle à partir de deux ou plusieurs parcelles existantes.</p>
+                <p>Cette opération oblige préalablement un bornage des terrains initiaux et le bornage du terrain résultant.</p><br/><br/>
+            </div>
+            <div class="card__action bg-primary">
+                <span class="rotation-icon">
+            <button mat-raised-button color="primary"><mat-icon>insert_drive_file</mat-icon>Voir plus</button>
+          </span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="main-container">
+    <h1 class="heading-container heading">Les impôts fonciers</h1>
+    <div class="card-container">
+        <div class="card" [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="40" [fxFlex.lg]="30" [fxFlex.xl]="30">
+            <h3 class="card__title">Déclaration de la contribution foncière</h3>
+            <div class="card__content">
+                <p>
+                    La contribution foncière est un impôt déclaratif annuel et systématique qui est imposable à tout citoyen, propriétaire de terrain bâti ou non bâti à quelques exceptions près.
+                </p>
+                <p>
+                    La contribution foncière est due en janvier de l’année payable au plus tard le 31 mars de l’année.
+                </p>
+            </div>
+            <div class="card__action  bg-primary">
+                <span class="rotation-icon">
+            <button mat-raised-button color="primary"><mat-icon>insert_drive_file</mat-icon>Voir plus</button>
+          </span>
+            </div>
+        </div>
+
+        <div class="card" [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="40" [fxFlex.lg]="30" [fxFlex.xl]="30">
+            <h3 class="card__title">Demande d’exonération d’impôt foncier</h3>
+            <div class="card__content">
+                <p>Les contribuables peuvent effectuer en ligne une demande d'exonération sur un impôt foncier donné.</p>
+            </div>
+            <div class="card__action  bg-primary">
+                <span class="rotation-icon">
+            <button mat-raised-button color="primary"><mat-icon>insert_drive_file</mat-icon>Voir plus</button>
+          </span>
+            </div>
+        </div>
+        <div class="card" [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="40" [fxFlex.lg]="30" [fxFlex.xl]="30">
+            <h3 class="card__title">Paiement des taxes et droits</h3>
+            <div class="card__content element-list">
+                Tout contribuable peut effectuer facilement le payement de ses taxes et droits du cadastre et du foncier sur les plateformes suivantes :<br/>
+                <ul>
+                    <li>
+                        Guichet unique du foncier;
+                    </li>
+                    <li>
+                        Guichet des receveurs des impôts;
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://esintax.bf/">la plateforme eSintax</a> ;
+                    </li>
+                    <li>
+                        Mobile Money
+                    </li>
+                </ul>
+            </div>
+            <div class="card__action  bg-primary ">
+                <span class="rotation-icon">
+            <span class="rotation-icon">
+            <button mat-raised-button color="primary"><mat-icon>insert_drive_file</mat-icon>Voir plus</button>
+          </span>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="main-container">
+    <h1 class="heading-container heading">Documentation</h1>
+    <div class="card-container">
+        <div class="card" [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="40" [fxFlex.lg]="30" [fxFlex.xl]="30">
+            <h3 class="card__title">Guide utilisateur des contribuables</h3>
+            <div class="card__content">
+                <p>
+                    Guide d'accès et d'exploitation de la plateforme par les contribuables.
+                </p>
+            </div>
+            <div class="card__action  bg-primary">
+                <a fxLayoutAlign="center center" mat-raised-button color="primary" target="_blanck" href="/assets/img/landing/Support Technique-GUIDE UTILISATEUR CONTRIBUABLE SYC@D.pdf">
+                    <mat-icon>get_app</mat-icon>TÉLÉCHARGER LE GUIDE</a>
+            </div>
+        </div>
+        <div class="card" [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="40" [fxFlex.lg]="30" [fxFlex.xl]="30">
+            <h3 class="card__title">Guide utilisateur des acteurs privés</h3>
+            <div class="card__content">
+                <p>
+                    Guide d'accès et d'exploitation de la plateforme par les acteurs privés de la chaine foncière (Géomètres, notaires, agents immobiliers etc.)
+                </p>
+            </div>
+            <div class="card__action  bg-primary">
+                <a fxLayoutAlign="center center" mat-raised-button color="primary" target="_blanck" href="/assets/img/landing/Support Technique-GUIDE  UTILISATEUR AGENT SYC@D.pdf">
+                    <mat-icon>get_app</mat-icon>TÉLÉCHARGER LE GUIDE</a>
+            </div>
+        </div>
+        <div class="card" [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="40" [fxFlex.lg]="30" [fxFlex.xl]="30">
+            <h3 class="card__title">Guide utilisateur chaine youtube</h3>
+            <div class="card__content">
+                <p>
+                    Guide en mode vidéo pour l'accès et l'exploitation  pour tous les acteurs autour de la plateforme
+                </p>
+            </div>
+            <div class="card__action  bg-primary">
+                <a fxLayoutAlign="center center" mat-raised-button color="primary" target="_blanck" href="https://www.youtube.com/playlist?list=PL350kVjJ1VNlT4R8x7Bbq5X6S7XkfuIOG">
+                    <mat-icon>cloud</mat-icon>Visualisez la chaine</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="main-container">
+    <h1 class="heading-container heading">Innovations technologiques</h1>
+    <div class="card-container">
+        <div class="card" [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="40" [fxFlex.lg]="30" [fxFlex.xl]="30">
+            <h3 class="card__title">Workflow de traitement des dossiers</h3>
+            <div class="card__content">
+                <p>La plateforme est bâtie autour d’un moteur de workflow transversal de traitement des dossiers entre les structures de l’état, les contribuables et les différents acteurs privés de la chaine foncières</p>
+            </div>
+            <div class="card__action bg-primary">
+                <span class="rotation-icon">
+            <button mat-raised-button color="primary"><mat-icon>insert_drive_file</mat-icon>Voir plus</button>
+          </span>
+            </div>
+        </div>
+
+        <div class="card" [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="40" [fxFlex.lg]="30" [fxFlex.xl]="30">
+            <h3 class="card__title">Archivage des Documents</h3>
+            <div class="card__content">
+                <p>Tous les processus gérés au sein de la plateforme permettent le chargement et la gestion des documents numériques nécessaires au contrôle et à la validation. Mais, des versions physiques peuvent être demandées pour certifier les documents
+                    numériques.</p>
+            </div>
+            <div class="card__action bg-primary">
+                <span class="rotation-icon">
+            <button mat-raised-button color="primary"><mat-icon>insert_drive_file</mat-icon>Voir plus</button>
+          </span>
+            </div>
+        </div>
+        <div class="card" [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="40" [fxFlex.lg]="30" [fxFlex.xl]="30">
+            <h3 class="card__title">Sécurité et traçabilité</h3>
+            <div class="card__content element-list">
+                <p>
+                    La sécurité et la traçabilité sont au cœur de la nouvelle plateforme cloud :
+                </p>
+                <ul>
+                    <li>gestion de la double authentification des utilisateurs en ligne à l’aide d’un OTP applicatif</li>
+                    <li>traçabilité complète de toutes les opérations effectuées à travers les processus automatisés.</li>
+                </ul>
+            </div>
+            <div class="card__action bg-primary">
+                <span class="rotation-icon">
+            <button mat-raised-button color="primary"><mat-icon>insert_drive_file</mat-icon>Voir plus</button>
+          </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="footer">
+    <div class="all-elements" fxLayout="row wrap" fxLayoutAlign="center start">
+        <div class="logo-element" fxLayoutAlign="start center" [fxFlex.xs]="80" [fxFlex.sm]="80" [fxFlex.md]="80" [fxFlex.lg]="80" [fxFlex.xl]="80">
+            <img [fxFlex.xs]="10" [fxFlex.sm]="7" [fxFlex.md]="7" [fxFlex.lg]="15" [fxFlex.xl]="15" src="/assets/img/landing/logodgi2.png" class="img-dgi">
+            <p>SYC@D</p>
+        </div>
+        <div class="element disp" [fxFlex.xs]="80" [fxFlex.sm]="80" [fxFlex.md]="30" [fxFlex.lg]="30" [fxFlex.xl]="30">
+            <h3 class="titre-element" fxLayoutAlign="start center">Contact</h3>
+            <div class="contenue">
+                <p>Tel : (+226) 25 30 89 85/86/87 - 25 31 60 03/05</p>
+                <p>Mail : contact@sif.gov.bf</p>
+                <p>Adresse : Direction Générale des Impôts, 01 BP 119 Ouagadougou 01, Burkina Faso</p>
+            </div>
+        </div>
+
+        <div class="element disp" [fxFlex.xs]="100" [fxFlex.sm]="50" [fxFlex.md]="10" [fxFlex.lg]="10" [fxFlex.xl]="10">
+            <h3 class="titre-element" fxLayoutAlign="start center">SYC@D</h3>
+            <div class="contenue">
+                <a mat-stroked-button>Accueil</a><br/>
+                <a target="_blanck" href="http://project.nebrata.com/" mat-stroked-button>Assistance</a>
+            </div>
+        </div>
+        <div class="element disp" [fxFlex.xs]="100" [fxFlex.sm]="50" [fxFlex.md]="30" [fxFlex.lg]="30" [fxFlex.xl]="30">
+            <h3 class="titre-element" fxLayoutAlign="start center">Documentation</h3>
+            <div class="contenue">
+                <a target="_blanck" href="https://www.youtube.com/playlist?list=PL350kVjJ1VNlT4R8x7Bbq5X6S7XkfuIOG" mat-stroked-button>Chaine youtube</a><br/>
+                <a target="_blanck" href="/assets/img/landing/Support Technique-GUIDE UTILISATEUR CONTRIBUABLE SYC@D.pdf" mat-stroked-button>Guide contribuable</a><br/>
+                <a target="_blanck" href="/assets/img/landing/Support Technique-GUIDE  UTILISATEUR AGENT SYC@D.pdf" mat-stroked-button>Guide utilisateur acteur privée</a><br/>
+                <a target="_blanck" href="/assets/img/landing/Support Technique-GUIDE  ADMINISTRATEUR SYC@D.pdf" mat-stroked-button>Guide utilisateur des agents de l’administration.</a><br/>
+                <a target="_blanck" href="https://www.google.com/intl/fr/chrome/" mat-stroked-button>Télécharger Google Chrome</a><br/>
+                <a target="_blanck" href="https://www.mozilla.org/fr/firefox/" mat-stroked-button>Télécharger Mozilla Firefox</a>
+
+            </div>
+        </div>
+
+        <div class="element disp" [fxFlex.xs]="100" [fxFlex.sm]="50" [fxFlex.md]="20" [fxFlex.lg]="20" [fxFlex.xl]="20">
+            <h3 class="titre-element" fxLayoutAlign="start center">Nos sites officiels</h3>
+            <div class="contenue">
+                <a target="_blanck" href="https://www.impots.gov.bf/accueil" mat-stroked-button>Ministère | finances.gov.bf</a><br/>
+                <a target="_blanck" href="https://www.finances.gov.bf/accueil" mat-stroked-button>DGI | impots.gov.bf</a><br/>
+                <a target="_blanck" mat-stroked-button href="https://esintax.bf/">eSintax</a><br/>
+                <a target="_blanck" mat-stroked-button href="https://nebrata.com/">NEBRATA</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="copy" fxLayoutAlign="center center">
+    <div class="all-elements" fxLayout="row wrap" [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="80" [fxFlex.lg]="80" [fxFlex.xl]="80">
+        <img [fxFlex.xs]="10" [fxFlex.sm]="10" [fxFlex.md]="10" [fxFlex.lg]="7" [fxFlex.xl]="7" src="/assets/img/landing/chevaux.png" class="img-dgi">
+        <div fxLayoutAlign="center center" class="element" [fxFlex.xs]="90" [fxFlex.sm]="90" [fxFlex.md]="75" [fxFlex.lg]="80" [fxFlex.xl]="80">
+            <h3>© Copyright 2021 – Direction Générale des Impôts – Burkina Faso | Réalisation : NEBRATA Consulting and Innovation </h3>
+        </div>
+        <img [fxFlex.xs]="15" [fxFlex.sm]="15" [fxFlex.md]="15" [fxFlex.lg]="10" [fxFlex.xl]="10" src="/assets/img/landing/nebrata.png" class="img-dgi">
+    </div>
+</div>

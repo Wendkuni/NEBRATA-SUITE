@@ -1,0 +1,112 @@
+<form [formGroup]="immeubleForm">
+    <mat-card-header>
+    </mat-card-header>
+    <mat-card-content>
+        <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+            <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+                <ng-select [items]="typeImmeubleRemoteAutocomplete.listRessource$ | async" [typeahead]="typeImmeubleRemoteAutocomplete.term" [loading]="typeImmeubleRemoteAutocomplete.loading" (search)="onSearchTypeImmeuble($event)" appendTo="body" [selectOnTab]="true"
+                    bindLabel="libelle" bindValue="id" placeholder="Type de l'immeuble(*)" formControlName="type">
+                    <ng-template ng-loadingspinner-tmp>
+                        <div class="lds-ellipsis">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+            <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+                <ng-select [items]="categorieRemoteAutocomplete.listRessource$ | async" [typeahead]="categorieRemoteAutocomplete.term" [loading]="categorieRemoteAutocomplete.loading" (search)="onSearchCategorie($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle"
+                    bindValue="id" placeholder="Catégorie l'immeuble(*)" formControlName="categorie">
+                    <ng-template ng-loadingspinner-tmp>
+                        <div class="lds-ellipsis">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="45" [fxFlex.xl]="45">
+                <mat-label>Numéro(*)</mat-label>
+                <input matInput placeholder="Numéro(*)" [attr.autocomplete]="'off'" formControlName="numero" />
+                <mat-error *ngIf="numero.invalid && (numero.dirty || numero.touched) && numero.errors?.required">
+                    Le numero est obligatoire
+                </mat-error>
+                <mat-error *ngIf="numero.invalid && (numero.dirty || numero.touched) && ( numero.errors?.minlength || numero.errors?.maxlength)">
+                    La taille du numero est limité entre 2 et 150 caractères
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="45" [fxFlex.xl]="45">
+                <mat-label>Libellé(*)</mat-label>
+                <input matInput placeholder="Libellé(*)" [attr.autocomplete]="'off'" formControlName="libelle" />
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="45" [fxFlex.xl]="45">
+                <mat-label>Dimension</mat-label>
+                <input matInput placeholder="dimension" [attr.autocomplete]="'off'" formControlName="dimension" />
+            </mat-form-field>
+            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="45" [fxFlex.xl]="45">
+                <mat-label>Date de réalisation</mat-label>
+                <input matInput [matDatepicker]="dateRealisation" formControlName="dateRealisation">
+                <mat-datepicker-toggle matSuffix [for]="dateRealisation"></mat-datepicker-toggle>
+                <mat-datepicker #dateRealisation></mat-datepicker>
+            </mat-form-field>
+        </div>
+
+        <!--app-choix-parcelle-form formControlName="parcelle" [parcelleChoisie]="bornage?.parcelle" [proprietaire]="bornage?.contribuableBeneficiaire?.guid" [structure]="bornage?.structureBeneficiaire?.id"></app-choix-parcelle-form-->
+
+
+        <!--
+
+            
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="content-container" [fxFlex]="100">
+                <dropzone class="dropzone-container" fxLayoutAlign="start strech" fxFlex="auto" [config]="config" [message]="'Cliquez ou faites glisser les images ici pour les télécharger'" (init)="onUploadInit($event)" (error)="onUploadError($event)" (success)="onUploadSuccess($event)">
+                </dropzone>
+            </div>
+            <button mat-icon-button color="warn" type="button" [fxFlex.lg]="5" [fxFlex.xl]="20">
+        <mat-icon (click)="resetDropZone()">remove_circle</mat-icon>
+      </button>
+        </div>
+        -->
+
+
+        <div fxLayout="row wrap" fxLayoutAlign="start">
+            <div class="content-container" [fxFlex]="100" *ngIf="photosJointes">
+
+                <ng-template ngFor let-photo [ngForOf]="photosJointes" let-i="index">
+                    <span [fxFlex]="100"> <a href="{{photo | generalDownload}}">Télécharger la photo</a></span>
+
+                </ng-template>
+
+            </div>
+
+            <div class="content-container" [fxFlex]="100">
+
+
+                <dropzone class="dropzone-container" [fxFlex]="100" [config]="config" [message]="'Cliquez ou faites glisser les images ici pour les télécharger'" (init)="onUploadInit($event)" (error)="onUploadError($event)" (success)="onUploadSuccess($event)">
+                </dropzone>
+
+                <button mat-icon-button color="warn" class="delete-icons-2" type="button">
+                    <mat-icon (click)="resetDropZone()">clear</mat-icon>
+                  </button>
+            </div>
+
+        </div>
+        <!--  <ng-container *ngIf="photos.controls.length>0">
+        <ng-template ngFor let-photo [ngForOf]="photos.controls" let-i="index">
+          <img src="immeubleForm.value.photos | generalDownload">
+          <button mat-icon-button color="warn" type="button"  [fxFlex.lg]="5" [fxFlex.xl]="20">
+            <mat-icon (click)="removePhoto(i)">remove_circle</mat-icon>
+          </button>
+        </ng-template>
+      </ng-container>-->
+
+    </mat-card-content>
+</form>

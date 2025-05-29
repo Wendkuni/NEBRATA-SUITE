@@ -1,0 +1,18 @@
+<mat-accordion class="list-profil-infos profil-panel">
+  <mat-expansion-panel>
+      <mat-expansion-panel-header>
+          <mat-panel-title class="panel-header-parents" fxLayout="row" fxLayoutAlign="start start">
+             <h3>Réseaux sociaux</h3>
+          </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-card-content class="profil-expension-panel">
+          <mat-list>
+            <ng-container *ngFor="let reseauSocial of reseauxSociaux">
+              <app-profil-list-item-icon [value]="reseauSocial?.profil"  label="{{reseauSocial?.type}} "></app-profil-list-item-icon>
+            </ng-container>
+          </mat-list>
+      </mat-card-content>
+  </mat-expansion-panel>
+</mat-accordion>
+
+

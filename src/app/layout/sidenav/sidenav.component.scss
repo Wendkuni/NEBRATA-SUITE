@@ -1,0 +1,168 @@
+@import "../../themes/styles/variables";
+.pin {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    fill: currentColor;
+}
+
+.sidenav-header {
+    padding: 0 10px !important;
+}
+
+
+/*
+.user-block{
+    height: 0;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    img{
+        width: 80px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 50%;
+    }
+    .user-info-wrapper{
+        padding: 0 6px;
+        margin: 6px 0;
+        width: 100%;
+        .user-info{
+            text-align: center;
+            .name{
+                font-size: 15px
+            }
+            .position{
+                font-size: 13px;
+            }
+        }
+    }
+    &.show{
+        height: $sidenav-user-block-height;
+    }
+}
+
+*/
+
+#app-menu-spinner {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    top: 0;
+    background: #fff;
+    z-index: 999999;
+    visibility: visible;
+    opacity: 0.6;
+    -webkit-transition: visibility 0.5s, opacity 0.3s linear;
+    -moz-transition: visibility 0.5s, opacity 0.3s linear;
+    transition: visibility 0.5s, opacity 0.3s linear;
+    &.hide {
+        visibility: hidden;
+        opacity: 0;
+    }
+    h4 {
+        margin-top: 10px;
+        letter-spacing: 0.02em;
+        opacity: 0;
+        text-transform: uppercase;
+        -moz-animation: loading-text-opacity 2s linear 0s infinite normal;
+        -o-animation: loading-text-opacity 2s linear 0s infinite normal;
+        -webkit-animation: loading-text-opacity 2s linear 0s infinite normal;
+        animation: loading-text-opacity 2s linear 0s infinite normal;
+    }
+}
+
+.separation-top-menu-to-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.sidenav-menu-outer {
+    .ps {
+        height: calc(100% - #{$toolbar-height});
+    }
+    &.user-block-show {
+        .ps {
+            height: calc(100% - #{$toolbar-height + $sidenav-user-block-height});
+        }
+    }
+}
+
+
+.profile-container {
+    position: relative;
+    overflow: hidden;
+    height: 0; /* Hauteur initiale pour l'état masqué */
+    opacity: 0; /* Transparence initiale pour l'état masqué */
+    -webkit-transition: height 0.3s ease, opacity 0.3s ease;
+    -moz-transition: height 0.3s ease, opacity 0.3s ease;
+    -ms-transition: height 0.3s ease, opacity 0.3s ease;
+    transition: height 0.3s ease, opacity 0.3s ease;
+}
+
+/* Profil visible */
+.profile-container.visible-class {
+    height: 185px;
+    opacity: 1;
+}
+
+/* Profil masqué */
+.profile-container.hidden-class {
+    height: 0;
+    opacity: 0;
+}
+
+.structure-info {
+    margin-top: 8px;
+    font-size: 12px;
+    color: gray;
+  }
+
+  .smallest-text {
+    font-size: 0.7rem; /* Vous pouvez ajuster entre 0.6rem et 0.9rem */
+    white-space: normal;
+    display: flex;
+    align-items: center; /* Aligne verticalement */
+  }
+  .move-up {
+    margin-top: -30px;
+    display: flex; 
+    align-items: center; 
+    font-size: 16px;
+  }
+  .move-up-small-i {
+    
+    display: flex; 
+    align-items: center; 
+    font-size: 0.9em;
+    color: gray; /* Optionnel pour différencier visuellement */
+    white-space: normal;
+}
+
+.move-up-botton {
+    margin-top: -1px; /* Ajustez selon vos besoins */
+    display: flex; 
+    align-items: center; 
+    gap: 25px; 
+    transform: translateY(-10px);
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.small-icon {
+    font-size: 20px; /* Ajustez la taille selon vos besoins */
+    width: 25px;     /* Assurez-vous que la largeur et la hauteur correspondent */
+    height: 34px;
+    line-height: 40px; /* Pour un alignement vertical correct */
+}
+.profile-size{
+    text-align: center;
+}

@@ -1,0 +1,33 @@
+[{
+        "id": 1,
+        "libelle": "M."
+    },
+    {
+        "id": 2,
+        "libelle": "Mr"
+    },
+    {
+        "id": 3,
+        "libelle": "Mdme"
+    },
+    {
+        "id": 4,
+        "libelle": "Mlle"
+    },
+    {
+        "id": 5,
+        "libelle": "Dr"
+    },
+    {
+        "id": 6,
+        "libelle": "Pr"
+    },
+    {
+        "id": 7,
+        "libelle": "Mr"
+    },
+    {
+        "id": 8,
+        "libelle": "Ex"
+    }
+]

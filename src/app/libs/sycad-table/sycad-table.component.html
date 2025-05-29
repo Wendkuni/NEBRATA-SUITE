@@ -1,0 +1,307 @@
+<div fxLayout="row wrap" fxLayoutAlign="space-between center" class="flex-p entete-sycad-table">
+
+    <div class="sycad-loading-shade" id="sycad-table-loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+        <div class="sycad-rate-limit-reached pulse-button-yellow" *ngIf="isRateLimitReached">
+            Le serveur n'a pas pu traiter la demande. Merci de réessayer plus tard.
+        </div>
+    </div>
+
+    <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="40" [fxFlex.xl]="25">
+        <div class="sycad-table-bouton-ajout" *ngIf="tableDescription.isCreationActive">
+            <mat-button-toggle-group appearance="legacy">
+                <mat-button-toggle (click)="onAddData.emit()" class="bg-primary" id="sycad-table-bouton-ajout-nouvel-ressource">
+                    <mat-icon>add_circle_outline</mat-icon>
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+        </div>
+        <div fxFlex="100" fxLayoutAlign="start center">
+            <div class="user-search show">
+                <mat-form-field class="user-search-input">
+                    <mat-icon matPrefix>search</mat-icon>
+                    <input matInput placeholder="Faites une recherche global sur les données..."  id="sycad-table-input-recherche-global" autocomplete="off" (keyup)="applyFilter($event)" [(ngModel)]="tableDescription.globalFilter" [ngModelOptions]="{standalone: true}">
+                    <mat-icon matSuffix (click)="tableDescription.globalFilter = '';clearGlobalFilter()" class="sycad-element-clickable"  id="sycad-table-input-recherche-global-clear">clear</mat-icon>
+                    <mat-icon matSuffix (click)="refreshTableau()" class="ecofinpro-element-clickable sycad-table-bouton-refresh" id="sycad-table-input-recherche-global-refresh">refresh</mat-icon>
+
+                </mat-form-field>
+            </div>
+
+        </div>
+
+    </div>
+    <div *ngIf="tableDescription.isAdvancedSearch" [fxFlex.xs]="100" [ngClass]="{'sycad-table-header-line-2': (activeMediaQuery === 'xs' || activeMediaQuery === 'sm')}" [fxFlex.sm]="45" [fxFlex.md]="40" [fxFlex.lg]="20" [fxFlex.xl]="15">
+
+        <ng-select fxFlex="100" [items]="filtreRechercheRemoteAutocomplete.listRessource$ | async" [typeahead]="filtreRechercheRemoteAutocomplete.term" [loading]="filtreRechercheRemoteAutocomplete.loading" (search)="onSearchFiltreRechercheAvance($event)" appendTo="body"
+            [selectOnTab]="true" bindLabel="libelle" bindValue="id" placeholder="Filtre">
+            <ng-template ng-loadingspinner-tmp>
+                <div class="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </ng-template>
+        </ng-select>
+
+    </div>
+
+    <div [fxFlex.xs]="100" [ngClass]="{'sycad-table-header-line-2': (activeMediaQuery === 'xs' || activeMediaQuery === 'sm')}" [fxFlex.sm]="45" [fxFlex.md]="40" [fxFlex.lg]="20" [fxFlex.xl]="15">
+        <mat-button-toggle-group #viewType="matButtonToggleGroup" appearance="legacy">
+
+
+            <mat-button-toggle [matMenuTriggerFor]="menu" *ngIf="tableDescription.isExport && tableDescription.typeRessource" id="sycad-table-bouton-report-action">
+                <mat-icon>view_list</mat-icon> Reporting
+            </mat-button-toggle>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item class="mat-menu-item-action" sycad-export-ressource [typeExport]="'CSV'" id="sycad-table-bouton-report-action-csv" [typeResource]="tableDescription.typeRessource" (finishExport)="finishExport($event)" [contextFilter]="contextTable"> <mat-icon>folder</mat-icon> CSV</button>
+                <button mat-menu-item class="mat-menu-item-action" sycad-export-ressource [typeExport]="'PDF'" id="sycad-table-bouton-report-action-pdf" [typeResource]="tableDescription.typeRessource" (finishExport)="finishExport($event)" [contextFilter]="contextTable"> <mat-icon>picture_as_pdf</mat-icon>  PDF</button>
+                <button mat-menu-item class="mat-menu-item-action" sycad-export-ressource [typeExport]="'WORD'" id="sycad-table-bouton-report-action-word" [typeResource]="tableDescription.typeRessource" (finishExport)="finishExport($event)" [contextFilter]="contextTable"> <mat-icon>send</mat-icon> WORD</button>
+                <button mat-menu-item class="mat-menu-item-action" sycad-export-ressource [typeExport]="'ODT'" id="sycad-table-bouton-report-action-odt" [typeResource]="tableDescription.typeRessource" (finishExport)="finishExport($event)" [contextFilter]="contextTable"> <mat-icon>folder</mat-icon>  ODT</button>
+                <button mat-menu-item class="mat-menu-item-action" sycad-export-ressource [typeExport]="'XLS'" id="sycad-table-bouton-report-action-xls" [typeResource]="tableDescription.typeRessource" (finishExport)="finishExport($event)" [contextFilter]="contextTable"> <mat-icon>folder</mat-icon>XLS</button>
+                <button mat-menu-item class="mat-menu-item-action" sycad-export-ressource [typeExport]="'XLSX'" id="sycad-table-bouton-report-action-xlsx" [typeResource]="tableDescription.typeRessource" (finishExport)="finishExport($event)" [contextFilter]="contextTable"> <mat-icon>folder</mat-icon>XLSX</button>
+                <button mat-menu-item class="mat-menu-item-action" sycad-printer-export-resource [typeResource]="tableDescription.typeRessource" id="sycad-table-bouton-report-action-print" [contextFilter]="contextTable"> <mat-icon>print</mat-icon> Imprimer</button>
+                <button mat-menu-item class="mat-menu-item-action" sycad-export-ressource [typeExport]="'IMAGE'" id="sycad-table-bouton-report-action-image"  [typeResource]="tableDescription.typeRessource" (finishExport)="finishExport($event)" [contextFilter]="contextTable"> <mat-icon>image</mat-icon> Capture</button>
+            </mat-menu>
+
+            <ng-container *ngIf="actions.length>0">
+                <mat-button-toggle [matMenuTriggerFor]="menuActions">
+                    <mat-icon>view_list</mat-icon> Actions
+                </mat-button-toggle>
+                <mat-menu #menuActions="matMenu">
+                    <button mat-menu-item class="mat-menu-item-action" *ngFor="let actionObject of actions " (click)="executeGeneriqueAction(actionObject)"> <mat-icon>adjust</mat-icon> {{actionObject.libelle}}</button>
+                </mat-menu>
+            </ng-container>
+        </mat-button-toggle-group>
+    </div>
+
+    <div [fxFlex.xs]="100" class="sycad-table-header-choix-colonne" [ngClass]="{'sycad-table-header-line-2': (activeMediaQuery === 'xs' || activeMediaQuery === 'sm' || activeMediaQuery === 'md')}" [fxFlex.sm]="45" [fxFlex.md]="40" [fxFlex.lg]="15" [fxFlex.xl]="10">
+        <mat-form-field fxFlex="100">
+            <mat-label>Champs disponibles</mat-label>
+            <mat-select multiple [(value)]="displayedColumns" (selectionChange)="onDisplayedColumnsChange($event)">
+                <mat-select-trigger>
+                </mat-select-trigger>
+                <mat-option *ngFor="let colonne of tableDescription.colonnes " [value]="colonne.name">{{colonne.label}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+</div>
+
+
+
+
+
+<perfect-scrollbar class="sycad-table-container mat-elevation-z8" [config]="{useBothWheelAxes: true, suppressScrollX: false, suppressScrollY: true}" [ngClass]="{'sycad-table-container-expanded': tableDescription.isExpand, 'sycad-table-container-not-expanded': !tableDescription.isExpand}">
+
+    <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort matSortDirection="asc" matSortDisableClear="true">
+
+
+        <ng-container matColumnDef="select" *ngIf="actions.length>0">
+            <th mat-header-cell *matHeaderCellDef class="colonne-select">
+                <mat-checkbox (change)="$event ? masterToggle() : null" color="primary" [checked]="selectionColonne.hasValue() && isAllSelected()" [indeterminate]="selectionColonne.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row" class="colonne-select">
+                <mat-checkbox (change)="$event ? selectionColonne.toggle(row) : null" color="primary" [checked]="selectionColonne.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                </mat-checkbox>
+            </td>
+        </ng-container>
+
+        <ng-container *ngFor="let colonne of tableDescription.colonnes | filterColonne " matColumnDef="{{colonne.name}}">
+
+            <ng-container [ngSwitch]="colonne.isSortable">
+                <ng-template [ngSwitchCase]="true">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="{{colonne.nameFilter ?? colonne.name}}"  id="sycad-table-colonne-name-{{colonne.name}}"> {{colonne.label}} </th>
+                </ng-template>
+                <ng-template [ngSwitchCase]="false">
+                    <th mat-header-cell *matHeaderCellDef> {{colonne.label}} </th>
+                </ng-template>
+            </ng-container>
+
+
+            <ng-container [ngSwitch]="colonne.type">
+                <ng-template [ngSwitchCase]="'STRING'">
+                    <td mat-cell *matCellDef="let element"> {{element | ShowColonneValue:colonne.name:colonne}} </td>
+                </ng-template>
+
+                <ng-template [ngSwitchCase]="'DATE'">
+                    <td mat-cell *matCellDef="let element"> {{element | ShowColonneValue:colonne.name:colonne | date : 'dd/MM/yyyy'}} </td>
+                </ng-template>
+                <ng-template [ngSwitchCase]="'DATETIME'">
+                    <td mat-cell *matCellDef="let element"> {{element | ShowColonneValue:colonne.name:colonne | date : 'dd/MM/yyyy HH:mm'}} </td>
+                </ng-template>
+                <ng-template [ngSwitchCase]="'BOOLEAN'">
+                    <td mat-cell *matCellDef="let element"> {{element | ShowColonneValue:colonne.name:colonne | showBooleanValue }} </td>
+                </ng-template>
+
+                <ng-template [ngSwitchCase]="'MIXTEVALUE'">
+                    <td mat-cell *matCellDef="let element">{{tableDescription.preShowColumnValue(element,colonne.name)}}</td>
+                </ng-template>
+                <ng-template [ngSwitchCase]="'LIEN'">
+                    <td mat-cell *matCellDef="let element">
+                        <span *ngIf="element | ShowColonneValue:colonne.name:colonne"> <a href="{{element | ShowColonneValue:colonne.name:colonne | generalDownload}}"> <strong class="sycad-table-download-text">Télécharger</strong>  <mat-icon color="primary">download</mat-icon></a></span>
+                    </td>
+                </ng-template>
+                <ng-template [ngSwitchDefault]>
+                    <td mat-cell *matCellDef="let element"> type inconnu </td>
+                </ng-template>
+
+            </ng-container>
+
+        </ng-container>
+
+
+
+
+        <ng-container matColumnDef="action" stickyEnd *ngIf="!tableDescription.isOnlyListing">
+            <th mat-header-cell *matHeaderCellDef class="colonne-action">Action</th>
+            <td mat-cell *matCellDef="let element" class="colonne-action" click-stop-propagation>
+
+
+
+                <ng-container *ngIf="(tableDescription.isEditable || tableDescription.isDeletable || tableDescription.actionElement.enable) && !tableDescription.getProcessus()">
+                    <mat-icon [matMenuTriggerFor]="menuActions" #menuTrigger="matMenuTrigger" class="sycad-element-clickable">more_vert</mat-icon>
+
+                    <mat-menu #menuActions="matMenu" xPosition="before" overlapTrigger="true">
+                        <span (mouseleave)="menuTrigger.closeMenu()">
+                <button mat-menu-item class="mat-menu-item-action mat-menu-item-action-modifier" *ngIf="tableDescription.isEditable" (click)="onEditData.emit(element)" >
+                    <mat-icon>mode_edit</mat-icon>
+                    <span>Modifier</span>
+                        </button>
+
+                <button mat-menu-item class="mat-menu-item-action mat-menu-item-action-delete" *ngIf="tableDescription.isDeletable" (click)="onDeleteEvent(element)">
+                    <mat-icon>delete</mat-icon>
+                    <span>Supprimer</span>
+                </button>
+                <button mat-menu-item class="mat-menu-item-action" *ngIf="tableDescription.isCompte" (click)="onGererCompte.emit(element)">
+                    <mat-icon>security</mat-icon>
+                    <span>Compte utilisateur</span>
+                </button>
+                <button mat-menu-item class="mat-menu-item-action" *ngIf="tableDescription.isAffectation"  (click)="onAffectionData.emit(element)">
+                    <mat-icon>location_city</mat-icon>
+                    <span>Affecter agent</span>
+                </button>
+                <button mat-menu-item class="mat-menu-item-action" *ngIf="tableDescription.isProfil" (click)="onViewProfil.emit(element)">
+                    <mat-icon>account_circle</mat-icon>
+                    <span>Profil</span>
+                </button>
+
+                        <button mat-menu-item class="mat-menu-item-action" *ngIf="tableDescription.actionElement.enable" (click)="onActionElementEvent(element)">
+                    <mat-icon>{{tableDescription.actionElement.icon}}</mat-icon>
+                    <span>{{tableDescription.actionElement.libelle}}</span>
+                </button>
+                        </span>
+                    </mat-menu>
+
+                </ng-container>
+
+
+                <ng-container *ngIf="tableDescription.getProcessus()">
+
+                    <ng-container>
+                        <mat-icon [matMenuTriggerFor]="menuActions" #menuTrigger="matMenuTrigger" class="sycad-element-clickable">more_vert</mat-icon>
+
+                        <mat-menu #menuActions="matMenu" xPosition="before" overlapTrigger="true">
+                            <span (mouseleave)="menuTrigger.closeMenu()">
+
+                            <button  mat-menu-item class="mat-menu-item-action" *ngFor="let transition of element.transitions "  (click)="executeActionProcessus(transition,element)" >
+                                <mat-icon>mode_edit</mat-icon>
+                                <span>{{transition.libelle}}</span>
+                            </button>
+                            <button mat-menu-item class="mat-menu-item-action" (click)="onPreviewData.emit(element)">
+                                <mat-icon>preview</mat-icon>
+                                <span>Visualiser</span>
+                            </button>
+
+                            </span>
+                        </mat-menu>
+                    </ng-container>
+
+
+                </ng-container>
+
+            </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="expandedDetail" *ngIf="tableDescription.isExpand">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="tableDescription.colonnes.length+2" [attr.rowspan]="1">
+                <div class="sycad-table-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <div class="sycad-table-element-description">
+
+                        <ng-container *ngIf="tableDescription.templateExpand" [ngTemplateOutlet]="tableDescription.templateExpand" [ngTemplateOutletContext]="{data: element}"></ng-container>
+
+
+                    </div>
+                </div>
+            </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="filter-select" *ngIf="actions.length>0">
+            <th mat-header-cell *matHeaderCellDef></th>
+        </ng-container>
+
+
+        <ng-container *ngFor="let colonne of tableDescription.colonnes " [ngSwitch]="colonne.isfiltered">
+            <ng-container *ngSwitchCase="false" matColumnDef="filter-{{colonne.name}}">
+                <th mat-header-cell *matHeaderCellDef></th>
+            </ng-container>
+
+
+            <ng-container *ngSwitchCase="true" matColumnDef="filter-{{colonne.name}}">
+                <th mat-header-cell *matHeaderCellDef>
+
+
+                    <ng-container [ngSwitch]="colonne.type">
+                        <ng-template [ngSwitchCase]="'STRING'">
+                            <mat-form-field appearance="outline" class="sycad-table-input-filter">
+                                <input matInput (keyup)="applyColumnFilter($event)" [(ngModel)]="colonne.filterValue" id="sycad-table-colonne-filter-{{colonne.name}}" />
+                                <mat-icon matSuffix (click)="colonne.filterValue = ''; clearColumnFilter()" class="sycad-element-clickable" id="sycad-table-colonne-filter-clear-{{colonne.name}}">clear</mat-icon>
+                            </mat-form-field>
+                        </ng-template>
+                        <ng-template [ngSwitchCase]="'BOOLEAN'">
+                            <mat-slide-toggle [(ngModel)]="colonne.filterValue" [color]="primary" (change)="applyColumnFilterBoolean($event)"  id="sycad-table-colonne-filter-{{colonne.name}}"></mat-slide-toggle>
+                            <mat-icon matSuffix (click)="colonne.filterValue = null; clearColumnFilter()" class="sycad-element-clickable" style="    font-size: 16px;" id="sycad-table-colonne-filter-clear-{{colonne.name}}">clear</mat-icon>
+                        </ng-template>
+                        <ng-template [ngSwitchCase]="'DATE'">
+                            datepicker
+                        </ng-template>
+                        <ng-template [ngSwitchDefault]>
+                            type inconnu
+                        </ng-template>
+                    </ng-container>
+
+
+
+                </th>
+
+            </ng-container>
+
+        </ng-container>
+        <ng-container matColumnDef="filter-action" *ngIf="!tableDescription.isOnlyListing">
+            <th mat-header-cell *matHeaderCellDef></th>
+        </ng-container>
+
+
+
+
+        <tr mat-header-row *matHeaderRowDef="tableDescription.colonnes | transFormDisplayedColumns:actions:tableDescription.isOnlyListing; sticky: true" class="sycad-table-first-header-row"></tr>
+        <tr mat-header-row *matHeaderRowDef="tableDescription.colonnes | transListColumnFilte:actions:tableDescription.isOnlyListing; sticky: true" class="sycad-table-second-header-row">
+        </tr>
+
+
+
+        <tr mat-row *matRowDef="let element; columns: tableDescription.colonnes | transFormDisplayedColumns:actions:tableDescription.isOnlyListing;" class="sycad-table-element-row" [class.sycad-table-expanded-row]="expandedElement === element" (click)="expandedElement = expandedElement === element ? null : element">
+        </tr>
+        <ng-container *ngIf="tableDescription.isExpand">
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail'];" class="sycad-table-detail-row"></tr>
+        </ng-container>
+
+
+
+
+    </table>
+</perfect-scrollbar>
+
+<mat-paginator [pageSize]="10" [length]="resultsLength" [pageSizeOptions]="[10, 25, 100]" showFirstLastButtons class="mat-paginator-sticky"></mat-paginator>

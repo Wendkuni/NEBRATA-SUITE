@@ -1,0 +1,19 @@
+<mat-accordion class="list-profil-infos profil-panel">
+  <mat-expansion-panel>
+      <mat-expansion-panel-header>
+          <mat-panel-title class="panel-header-parents" fxLayout="row" fxLayoutAlign="start start">
+             <h3>Activités</h3>
+          </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-card-content>
+          <mat-list>
+            <app-profil-list-item-icon [value]=" activitePrincipale?.nom " label="Activité principale"></app-profil-list-item-icon>
+            <ng-container *ngFor="let activiteSecondaire of activitesSecondaires">
+              <mat-list-item>
+                <app-profil-list-item-icon [value]="activiteSecondaire?.nom" label="Activité secondaire"></app-profil-list-item-icon>
+              </mat-list-item>
+            </ng-container>
+          </mat-list>
+      </mat-card-content>
+  </mat-expansion-panel>
+</mat-accordion>

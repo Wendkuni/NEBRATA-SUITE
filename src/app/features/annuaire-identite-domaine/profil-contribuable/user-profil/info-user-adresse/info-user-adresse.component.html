@@ -1,0 +1,65 @@
+<mat-accordion class="profil-panel">
+  <mat-expansion-panel>
+
+    <mat-expansion-panel-header>
+      <mat-panel-title class="panel-header-adresse" fxLayout="row" fxLayoutAlign="start start">
+        <h3>Adresses</h3>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item *ngIf="principalAdresse$  | async as principalAdresse">
+        <div matLine>
+          <h3>Adresse principale </h3>
+          <span>{{principalAdresse?.libelle}}</span>
+        </div>
+        <div  matLine>
+          <h3>Localite </h3><span>{{ principalAdresse?.localite ? principalAdresse?.localite : '...'}}</span>
+        </div>
+        <div  matLine>
+          <h3>Parcelle </h3><span>{{ principalAdresse?.parcelle ? principalAdresse?.parcelle : '...'}}</span>
+        </div>
+        <div  matLine>
+          <h3>Porte </h3><span>{{ principalAdresse?.porte ? principalAdresse?.porte : '...'}}</span>
+        </div>
+        <div  matLine>
+          <h3>Quartier </h3><span>{{ principalAdresse?.quartier ? principalAdresse?.quartier : '...'}}</span>
+        </div>
+        <div  matLine>
+          <h3>Rue </h3><span>{{ principalAdresse?.rue ? principalAdresse?.rue : '...'}}</span>
+        </div>
+        </mat-list-item>
+
+        <mat-divider *ngIf="principalAdresse$ | async"></mat-divider>
+        <ng-container *ngFor="let adresse of adresses let i=index">
+          <ng-container *ngIf="adresse.principal === false">
+            <mat-list-item>
+              <div  matLine>
+                <h3>Adresse{{ i!=0?i:' ' }} </h3><!-- <span>{{ adresse?.libelle ? adresse?.libelle : '...'}}</span> -->
+                <span>{{ adresse?.libelle }}</span>
+              </div>
+              <div  matLine>
+                <h3>Localite </h3><span>{{ adresse?.localite ? adresse?.localite : '...'}}</span>
+              </div>
+              <div  matLine>
+                <h3>Parcelle </h3><span>{{ adresse?.parcelle ? adresse?.parcelle : '...'}}</span>
+              </div>
+              <div  matLine>
+                <h3>Porte </h3><span>{{ adresse?.porte ? adresse?.porte : '...'}}</span>
+              </div>
+              <div  matLine>
+                <h3>Quartier </h3><span>{{ adresse?.quartier ? adresse?.quartier : '...'}}</span>
+              </div>
+              <div  matLine>
+                <h3>Rue </h3><span>{{ adresse?.rue ? adresse?.rue : '...'}}</span>
+              </div>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+          </ng-container>
+        </ng-container>
+      </mat-list>
+    </mat-card-content>
+
+  </mat-expansion-panel>
+</mat-accordion>

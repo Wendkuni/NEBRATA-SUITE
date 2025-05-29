@@ -1,0 +1,396 @@
+<h3>
+    Les parcelles à ajouter doivent au moins être initialisés dans un dossier de retrait
+</h3>
+<div fxLayout="row" fxLayoutAlign="start">
+    <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+        <ng-select [items]="communeRemoteAutocomplete.listRessource$ | async" [typeahead]="communeRemoteAutocomplete.term" [loading]="communeRemoteAutocomplete.loading" (search)="onSearchCommune($event)" (change)="onChangeCommune($event)" appendTo="body" [selectOnTab]="true"
+            bindLabel="nom" bindValue="id" labelForId="commune" [(ngModel)]="communeId" [ngModelOptions]="{standalone: true}" placeholder="Commune">
+            <ng-template ng-loadingspinner-tmp>
+                <div class="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </ng-template>
+        </ng-select>
+
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="start">
+    <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+        <ng-select [items]="sectionRemoteAutocomplete.listRessource$ | async" [typeahead]="sectionRemoteAutocomplete.term" [virtualScroll]="true" [loading]="sectionRemoteAutocomplete.loading" (search)="onSearchSection($event)" (change)="onChangeSection($event)"
+            appendTo="body" [selectOnTab]="true" bindLabel="libelle" bindValue="id" [(ngModel)]="sectionChoisieId" [ngModelOptions]="{standalone: true}" labelForId="section" placeholder="Section">
+            <ng-template ng-loadingspinner-tmp>
+                <div class="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </ng-template>
+            <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                <span *ngIf="item.numeroAncien">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span>{{item.numero}}</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                <span *ngIf="item.numeroAncien" [ngOptionHighlight]="search">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span [ngOptionHighlight]="search">{{item.numero}}</span>
+            </ng-template>
+        </ng-select>
+
+    </div>
+</div>
+
+<button class="ajoutParc" mat-raised-button type="button" mat-button (click)="addNewParcelle()">Ajouter une parcelle</button>
+
+<form [formGroup]="parcellesAAjouter" class="form-container">
+    <div fxLayout="row" fxLayoutAlign="start">
+
+        <div class="form-table-ilot-container mat-elevation-z8">
+
+            <table *ngIf="isNumeroParcelle" mat-table [dataSource]="dataSource">
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
+
+                <ng-container matColumnDef="ilot">
+                    <th mat-header-cell *matHeaderCellDef> Choisir Ilot </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+                        <div class="sycad-form-ng-select-in-table">
+                            <ng-select class="ilotField" [items]="ilotRemoteAutocomplete.listRessource$ | async" [typeahead]="ilotRemoteAutocomplete.term" [loading]="ilotRemoteAutocomplete.loading" (search)="onSearchIlot($event)" appendTo="body" formControlName="ilot" [selectOnTab]="true"
+                                bindLabel="nom" bindValue="id" labelForId="ilot-parcelle-a-ajouter-select" placeholder="Ilot">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                                <ng-template ng-label-tmp let-item="item">
+                                    <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                                    <span *ngIf="item.numeroAncien">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span>{{item.numero}}</span>
+                                </ng-template>
+                                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                                    <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                                    <span *ngIf="item.numeroAncien" [ngOptionHighlight]="search">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span [ngOptionHighlight]="search">{{item.numero}}</span>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </td>
+
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element;let i = index">
+                        <mat-icon class="sycad-element-clickable" (click)="supprimerParcelle(i)">delete_forever</mat-icon>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="superficie">
+                    <th mat-header-cell *matHeaderCellDef> Superficie parcelle </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+
+                        <mat-form-field appearance="outline">
+                            <input matInput type="number" [attr.autocomplete]="'off'" formControlName="superficie">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="numero">
+                    <th mat-header-cell *matHeaderCellDef> Numéro parcelle </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+                        <mat-form-field appearance="outline">
+                            <input matInput [attr.autocomplete]="'off'" formControlName="numero" required>
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="numeroAncien">
+                    <th mat-header-cell *matHeaderCellDef> Numéro ancien parcelle</th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+
+                        <mat-form-field appearance="outline">
+                            <input matInput [attr.autocomplete]="'off'" formControlName="numeroAncien">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+
+                <ng-container matColumnDef="libelle">
+                    <th mat-header-cell *matHeaderCellDef> libelle parcelle </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+                        <mat-form-field appearance="outline">
+                            <input matInput [attr.autocomplete]="'off'" formControlName="libelle">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="ordre">
+
+                    <th mat-header-cell *matHeaderCellDef [hidden]="!ordre"> Ordre </th>
+                    <td mat-cell [hidden]="!ordre" *matCellDef="let element" [formGroup]="element">
+
+                        <mat-form-field appearance="outline">
+                            <input matInput type="number" [attr.autocomplete]="'off'" formControlName="ordre">
+                        </mat-form-field>
+                    </td>
+
+                </ng-container>
+
+                <ng-container matColumnDef="arrondissement">
+                    <th mat-header-cell *matHeaderCellDef> arrondissement </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+                        <div class="sycad-form-ng-select-in-table">
+                            <ng-select [items]="arrondissementRemoteAutocomplete.listRessource$ | async" [typeahead]="arrondissementRemoteAutocomplete.term" [groupBy]="groupByFnArrondissement" [groupValue]="groupValueFnArrondissement" (change)="onChangeArrondissement($event)" [loading]="arrondissementRemoteAutocomplete.loading"
+                                (search)="onSearchArrondissement($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom" bindValue="id" placeholder="Arrondissement(*)" formControlName="arrondissement">
+                                <ng-template ng-optgroup-tmp let-item="item">
+                                    <span style="vertical-align: middle;"> {{item.name}}</span>
+                                </ng-template>
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                    <div class="ng-value" *ngFor="let arrondissement of items | slice:0:5">
+                                        <span class="ng-value-icon right" (click)="clear(arrondissement)" aria-hidden="true">× </span>
+                                        <span class="ng-value-label"> {{arrondissement.nom}}</span>
+
+                                    </div>
+                                    <div class="ng-value" *ngIf="items.length > 5">
+                                        <span class="ng-value-label">{{items.length - 5}} plus...</span>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="destination">
+                    <th mat-header-cell *matHeaderCellDef> destination parcelle </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+                        <div class="sycad-form-ng-select-in-table">
+
+                            <ng-select [items]="destinationRemoteAutocomplete.listRessource$ | async" [typeahead]="destinationRemoteAutocomplete.term" [loading]="destinationRemoteAutocomplete.loading" (search)="onSearchDestination($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle"
+                                bindValue="id" placeholder="Destination(*)" formControlName="destination">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="quartier">
+                    <th mat-header-cell *matHeaderCellDef> quartier </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+                        <div class="sycad-form-ng-select-in-table">
+                            <ng-select [items]="quartierRemoteAutocomplete.listRessource$ | async" [typeahead]="quartierRemoteAutocomplete.term" [loading]="quartierRemoteAutocomplete.loading" (search)="onSearchQuartier($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom"
+                                bindValue="id" placeholder="Quartier " formControlName="quartier">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="localite">
+                    <th mat-header-cell *matHeaderCellDef> Localité </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+                        <div class="sycad-form-ng-select-in-table">
+                            <ng-select [items]="localiteRemoteAutocomplete.listRessource$ | async" [typeahead]="localiteRemoteAutocomplete.term" [loading]="localiteRemoteAutocomplete.loading" (search)="onSearchLocalite($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom"
+                                bindValue="id" placeholder="Localité (*)" formControlName="localite">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </td>
+                </ng-container>
+            </table>
+
+            <table *ngIf="!isNumeroParcelle" mat-table [dataSource]="dataSource">
+                <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+                <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns1;"></tr>
+
+                <ng-container matColumnDef="ilot">
+                    <th mat-header-cell *matHeaderCellDef> Choisir Ilot </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+                        <div class="sycad-form-ng-select-in-table">
+                            <ng-select class="ilotField" [items]="ilotRemoteAutocomplete.listRessource$ | async" [typeahead]="ilotRemoteAutocomplete.term" [loading]="ilotRemoteAutocomplete.loading" (search)="onSearchIlot($event)" appendTo="body" formControlName="ilot" [selectOnTab]="true"
+                                bindLabel="nom" bindValue="id" placeholder="Ilot">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                                <ng-template ng-label-tmp let-item="item">
+                                    <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                                    <span *ngIf="item.numeroAncien">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> --
+                  </span> Numéro : <span>{{item.numero}}</span>
+                                </ng-template>
+                                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                                    <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                                    <span *ngIf="item.numeroAncien" [ngOptionHighlight]="search">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span [ngOptionHighlight]="search">{{item.numero}}</span>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </td>
+
+                </ng-container>
+
+                <ng-container matColumnDef="numeroAncien">
+                    <th mat-header-cell *matHeaderCellDef> Numéro ancien parcelle</th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+
+                        <mat-form-field appearance="outline">
+                            <input matInput [attr.autocomplete]="'off'" formControlName="numeroAncien">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="superficie">
+                    <th mat-header-cell *matHeaderCellDef> Superficie parcelle </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+
+                        <mat-form-field appearance="outline">
+                            <input matInput type="number" [attr.autocomplete]="'off'" formControlName="superficie">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="libelle">
+                    <th mat-header-cell *matHeaderCellDef> libelle parcelle </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+                        <mat-form-field appearance="outline">
+                            <input matInput [attr.autocomplete]="'off'" formControlName="libelle">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="ordre">
+
+                    <th mat-header-cell *matHeaderCellDef [hidden]="!ordre"> Ordre </th>
+                    <td mat-cell [hidden]="!ordre" *matCellDef="let element" [formGroup]="element">
+
+                        <mat-form-field appearance="outline">
+                            <input matInput type="number" [attr.autocomplete]="'off'" formControlName="ordre">
+                        </mat-form-field>
+                    </td>
+
+                </ng-container>
+
+                <ng-container matColumnDef="arrondissement">
+                    <th mat-header-cell *matHeaderCellDef> arrondissement </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+                        <div class="sycad-form-ng-select-in-table">
+                            <ng-select [items]="arrondissementRemoteAutocomplete.listRessource$ | async" [typeahead]="arrondissementRemoteAutocomplete.term" [loading]="arrondissementRemoteAutocomplete.loading" (search)="onSearchArrondissement($event)" (change)="onChangeArrondissement($event)"
+                                appendTo="body" [selectOnTab]="true" bindLabel="nom" bindValue="id" placeholder="Arrondissement(*)" formControlName="arrondissement">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="destination">
+                    <th mat-header-cell *matHeaderCellDef> destination parcelle </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+                        <div class="sycad-form-ng-select-in-table">
+
+
+                            <ng-select [items]="destinationRemoteAutocomplete.listRessource$ | async" [typeahead]="destinationRemoteAutocomplete.term" [loading]="destinationRemoteAutocomplete.loading" (search)="onSearchDestination($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle"
+                                bindValue="id" placeholder="Destination(*)" formControlName="destination">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="quartier">
+                    <th mat-header-cell *matHeaderCellDef> quartier </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+                        <div class="sycad-form-ng-select-in-table">
+                            <ng-select [items]="quartierRemoteAutocomplete.listRessource$ | async" [typeahead]="quartierRemoteAutocomplete.term" [loading]="quartierRemoteAutocomplete.loading" (search)="onSearchQuartier($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom"
+                                bindValue="id" placeholder="Quartier " formControlName="quartier">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="localite">
+                    <th mat-header-cell *matHeaderCellDef> Localité </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+                        <div class="sycad-form-ng-select-in-table">
+                            <ng-select [items]="localiteRemoteAutocomplete.listRessource$ | async" [typeahead]="localiteRemoteAutocomplete.term" [loading]="localiteRemoteAutocomplete.loading" (search)="onSearchLocalite($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom"
+                                bindValue="id" placeholder="Localité (*)" formControlName="localite">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element;let i = index">
+                        <mat-icon class="sycad-element-clickable" (click)="supprimerParcelle(i)">delete_forever</mat-icon>
+                    </td>
+                </ng-container>
+            </table>
+        </div>
+    </div>
+</form>

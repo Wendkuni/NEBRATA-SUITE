@@ -1,0 +1,11 @@
+<div fxLayout="column">
+    <div class="flex-p">
+        <ng-template #datatable1></ng-template>
+    </div>
+</div>
+<ng-template #templateService let-service="data">
+    <div class="custom-service-classe">Longitude: {{service?.localisation?.longitude}}</div>
+    <div class="custom-service-classe">Latitude: {{service?.localisation?.lattitude}}</div>
+    <div class="custom-service-classe">Désignation: {{service?.localisation?.designation}}</div>
+    <div class="custom-structure-classe"> Code de la localité: {{service?.localisation?.localite?.code}}</div>
+</ng-template>

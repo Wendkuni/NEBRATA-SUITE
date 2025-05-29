@@ -1,0 +1,28 @@
+.form-container {
+    padding-top: 25px;
+}
+
+.sycad-form-adresse-ng-select {
+    margin-top: 0.5em;
+    .mat-error {
+        position: absolute;
+        font-size: 75%;
+    }
+    .ng-select {
+        width: 100%;
+    }
+}
+
+.container-form-field-radio {
+    margin-top: 1em;
+}
+
+.autocomplete-list {
+    width: 100%;
+    background-color: rgb(225, 222, 222);
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 10;
+}

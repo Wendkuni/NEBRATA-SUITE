@@ -1,0 +1,118 @@
+<div class=" titre-general mat-elevation-z12" fxLayoutAlign="center center">
+  <div fxLayoutAlign="center center" class="element" [fxFlex.xs]="90" [fxFlex.sm]="90" [fxFlex.md]="75" [fxFlex.lg]="85" [fxFlex.xl]="85">
+    <h1>PROCESSUS DE DEMANDE  BORNAGE DE PARCELLES</h1>
+  </div>
+</div>
+
+<div>
+  <p class="description">
+    Le bornage est l'opération technique et juridique qui a pour objet de fixer de façon
+          irrévocable et permanente, les limites séparatives d'une parcelle par des bornes, ou tout autre
+          signe reconnu par les textes en vigueur et à vérifier la conformité entre ces limites sur le terrain. et
+          celles figurant sur plan cadastral ou selon les données disponibles au Cadastre.
+    <br/>
+  </p>
+<mat-accordion class="example-headers-align">
+
+  <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+    <mat-expansion-panel-header class="header-titre bg-primary">
+      <mat-panel-title>
+        <h3 class="titre-element">Les differents types de bornage</h3>
+      </mat-panel-title>
+      <mat-panel-description>
+        <p> </p>
+        <mat-icon *ngIf="step !== 0">add</mat-icon>
+        <mat-icon *ngIf="step === 0">clear</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <div class="contenu element-list">
+      <p>Il existe trois (03) types de bornage :</p>
+      <ul>
+        <li>le bornage délimitation</li>
+        <li>le bornage-morcellement</li>
+        <li>le bornage-fusion</li>
+
+      </ul>
+
+      <ol>
+        <li class="description-element">le bornage délimitation</li>
+        <p>Operation de délimitation et de relever des caracteriques d'une parcelle
+          Production d'un Dossier Technique de Bornage (DTB) assorti d'un numéro chronologique du registre des DTB par SCTF</p>
+        <li class="description-element">le bornage-morcellement</li>
+        <p>
+          A l'aide d'un plan de bornage-Morcellement (EDM), operation de creation de parcelles à partir d'une parcelle existante.
+          L'ancien numero sont desactivés du PlanCadastral.<br/>
+          Les Etats Descriptifs de Morcellement (EDM) sont produits assorti d'un Numero de EDM chronologique du Registre des EDM par SCTF
+        </p>
+
+        <li class="description-element">le bornage-fusion</li>
+        <p>
+          A l'aide d'un plan de bornage-Fusion (EDF), Operation de creation d'une nouvelle parcelle à partir de plusieurs parcelles contigues.
+          les anciens numeros sont desactivés du plan Cadastral.<br/>
+          Les Etats Descriptifs de Fusion(EDF) sont produits assorti d'un Numero de EDM chronologique du Registre des EDF par SCTF
+        </p>
+      </ol>
+
+
+    </div>
+    <!-- <mat-action-row>
+      <button mat-button color="primary" (click)="nextStep()">Sui</button>
+    </mat-action-row> -->
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+    <mat-expansion-panel-header class="header-titre bg-primary">
+      <mat-panel-title>
+        <h3 class="titre-element">Frais de l'operation</h3>
+      </mat-panel-title>
+      <mat-panel-description>
+        <p> </p>
+        <mat-icon *ngIf="step !== 1">add</mat-icon>
+        <mat-icon *ngIf="step === 1">clear</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <div class="contenu element-list">
+      <p>Une operation de bornage occasionne des droits et frais à payer selon le decret joint : </p>
+      <ol>
+        <li>frais de bornage  (Autour de 65 000FXOF) si l'operation est effectuée par le SCTF</li>
+        <li>Frais de controle et validation (3 000F) si l'operation est effectuée par le Geometre expert agréé</li>
+      </ol>
+
+    </div>
+    <!-- <mat-action-row>
+      <button mat-button color="primary" (click)="nextStep()">Sui</button>
+    </mat-action-row> -->
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+    <mat-expansion-panel-header class="header-titre bg-primary">
+      <mat-panel-title>
+        <h3 class="titre-element">Autre Infos</h3>
+      </mat-panel-title>
+      <mat-panel-description>
+        <p> </p>
+        <mat-icon *ngIf="step !== 2">add</mat-icon>
+        <mat-icon *ngIf="step === 2">clear</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <div class="contenu element-list">
+       <p>
+        il ya mise à jour du Plan et du PV de Bornage s'il y'a modification physique sur:
+      </p>
+      <ol>
+        <li>les limites de la parcelle</li>
+        <li>les investissements (les differents immeubles) sur la parcelle et</li>
+        <li>meme sur l'identité de l'attributaire ou proprietaire des suites de mutation.</li>
+      </ol>
+    </div>
+    <!-- <mat-action-row>
+      <button mat-button color="warn" (click)="prevStep()">Previous</button>
+      <button mat-button color="primary" (click)="nextStep()">End</button>
+    </mat-action-row> -->
+  </mat-expansion-panel>
+
+</mat-accordion>
+</div>

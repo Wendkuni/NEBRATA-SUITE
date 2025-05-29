@@ -1,0 +1,71 @@
+<form [formGroup]="dossierForm">
+
+
+  <div fxLayout="row" fxLayout.lt-md="row wrap"
+       fxLayoutGap.gt-sm="20px" fxLayoutAlign="start" class="sycad-form-line">
+    <mat-form-field class="sycad-form-line"
+                    appearance="outline" [fxFlex.xs]="100"
+                    [fxFlex.sm]="100" [fxFlex.md]="20"
+                    [fxFlex.lg]="40" [fxFlex.xl]="40">
+      <mat-label>Objet (*)</mat-label>
+      <input matInput [attr.autocomplete]="'off'"
+             formControlName="objet"/>
+      <mat-error
+        *ngIf="objet.invalid && (objet.dirty || objet.touched) && objet.errors?.required">
+        Le objet est obligatoire
+      </mat-error>
+      <mat-error
+        *ngIf="objet.invalid && (objet.dirty || objet.touched) && ( objet.errors?.minlength || objet.errors?.maxlength)">
+        La taille du objet est limité entre 2 et 150
+        caractères
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayout.lt-md="row wrap"
+       fxLayoutGap.gt-sm="10px" fxLayoutAlign="start">
+
+    <mat-form-field class="sycad-form-line"
+                    appearance="outline" [fxFlex.xs]="100"
+                    [fxFlex.sm]="100" [fxFlex.md]="20"
+                    [fxFlex.lg]="19" [fxFlex.xl]="20">
+      <mat-label>{{ labelDateExterne }} (*)</mat-label>
+
+      <input matInput [matDatepicker]="dateExternePicker"
+             [attr.autocomplete]="'off'" [max]="maxDate"
+             placeholder="Date de création"
+             formControlName="dateExterne">
+      <mat-datepicker-toggle matSuffix
+                             [for]="dateExternePicker"></mat-datepicker-toggle>
+      <mat-datepicker #dateExternePicker></mat-datepicker>
+      <mat-error
+        *ngIf="dateExterne.invalid && (dateExterne.dirty || dateExterne.touched) && dateExterne.errors?.required">
+        La date externe est obligatoire
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="sycad-form-line"
+                    appearance="outline" [fxFlex.xs]="100"
+                    [fxFlex.sm]="100" [fxFlex.md]="20"
+                    [fxFlex.lg]="19" [fxFlex.xl]="20">
+      <mat-label> {{labelReference}} (*)</mat-label>
+      <input matInput [attr.autocomplete]="'off'"
+             formControlName="refExterne"/>
+      <mat-hint id="mat-hint">Saisir SR-Date si pas de référence ex:SR-30/08/2024.</mat-hint>
+      <mat-error
+        *ngIf="refExterne.invalid && (refExterne.dirty || refExterne.touched) && refExterne.errors?.required">
+        Le refExterne est obligatoire
+      </mat-error>
+      <mat-error
+        *ngIf="refExterne.invalid && (refExterne.dirty || refExterne.touched) && ( refExterne.errors?.minlength || refExterne.errors?.maxlength)">
+        La taille du refExterne est limité entre 2 et 150
+        caractères
+      </mat-error>
+    </mat-form-field>
+
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="start">
+    <app-observation-form
+      [formGroup]="dossierForm"></app-observation-form>
+
+  </div>
+</form>

@@ -1,0 +1,14 @@
+.form-container {
+    padding-top: 25px;
+}
+
+.sycad-form-telephone-ng-select {
+    margin-top: 0.5em;
+    .mat-error {
+        position: absolute;
+        font-size: 75%;
+    }
+    .ng-select {
+        width: 100%;
+    }
+}

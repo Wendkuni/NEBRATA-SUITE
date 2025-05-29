@@ -1,0 +1,24 @@
+<div fxLayout="column">
+  <div class="flex-p">
+    <ng-template #datatable1></ng-template>
+  </div>
+</div>
+<ng-template #templatePackageImpot let-packageImpot="data">
+  <mat-card style="max-width: 70%;">
+    <mat-card-content>
+      <div *ngFor="let elementImpot of packageImpot.elementsImpots">
+        <div class="custom-package-impot-classe"> Element liquidation: {{elementImpot?.elementLiquidation?.libelle}}</div>
+        <h4>Formule base imposable</h4>
+        <div class="custom-package-impot-classe"> Titre: {{elementImpot?.baseImpot?.titre}}</div>
+        <div class="custom-package-impot-classe"> Expression: {{elementImpot?.baseImpot?.expression}}</div>
+        <h4>Formule taux</h4>
+        <div class="custom-package-impot-classe">Titre: {{elementImpot?.taux?.titre}}</div>
+        <div class="custom-package-impot-classe">Expression: {{elementImpot?.taux?.expression}}</div>
+        <div class="custom-package-impot-classe">Modifiable: {{elementImpot?.modifiable}}</div>
+        <div class="custom-package-impot-classe">Ordre de trie: {{elementImpot.ordreTrie}}</div>
+      
+       
+      </div>
+    </mat-card-content>
+</mat-card>
+</ng-template>

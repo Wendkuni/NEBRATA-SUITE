@@ -1,0 +1,17 @@
+<div fxLayout="column">
+    <div class="flex-p">
+        <ng-template #datatable1></ng-template>
+    </div>
+</div>
+
+
+
+<ng-template #templateRole let-role="data">
+
+    <div class="list-roles" [ngStyle]="{'padding': role.permissions.length>0?'15px':'0'}">
+        <mat-chip-list>
+            <mat-chip *ngFor="let permission of role.permissions">{{permission}}</mat-chip>
+        </mat-chip-list>
+
+    </div>
+</ng-template>

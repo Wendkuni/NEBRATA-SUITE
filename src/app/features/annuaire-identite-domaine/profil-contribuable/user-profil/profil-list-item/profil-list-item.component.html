@@ -1,0 +1,5 @@
+<mat-list-item>
+  <h3 matLine matTooltip="{{ tooltip }}" matTooltipClass="contact-tooltip-red" [matTooltipPosition]="'before'" [matTooltipHideDelay]="500">{{ value && value != ' ' ? value : '...' }}</h3>
+  <p matLine *ngIf="label"><b>{{ label }}</b></p>
+</mat-list-item>
+<mat-divider *ngIf="line"></mat-divider>

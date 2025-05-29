@@ -1,0 +1,35 @@
+<form [formGroup]="formulaire">
+  <mat-horizontal-stepper linear #stepper>
+    <mat-step [stepControl]="parcelles" [editable]="true">
+      <form [formGroup]="parcelles">
+        <ng-template matStepLabel>Immatriculation</ng-template>
+
+        <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+          <div fxLayout="column" class="flex-p" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="80" [fxFlex.xl]="70">
+
+            <div class="card-container-form-element y-1" fxLayout="row" fxLayoutAlign="start">
+              <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+                <ng-template ngFor let-parcelle [ngForOf]="parcelles.controls" let-i="index">
+                  <app-parcelle-form-immatriculation [formGroup]="parcelle" [parcelle]="morcellement.parcelle"></app-parcelle-form-immatriculation>
+
+                </ng-template>
+
+              </mat-card>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card-action-form">
+          <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+            <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+            <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+            <button mat-raised-button color="primary" type="button" matStepperNext>Suivant</button>
+            <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+  </mat-horizontal-stepper>
+
+</form>

@@ -1,0 +1,299 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <form [formGroup]="formulaire" class="user-form" (ngSubmit)="onSubmit()">
+        <mat-card-header>
+            <mat-card-subtitle>
+                <h3>
+                    <span *ngIf="!structure.id">Créer une structure </span>
+                    <span *ngIf="structure.id">Modifier: [{{structure.nom}}]</span>
+                </h3>
+                <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+                    La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+                </mat-error>
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-tab-group>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon>business</mat-icon>
+                        Informations de base
+                    </ng-template>
+                    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                        <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                            <ng-select [items]="typeStructureRemoteAutocomplete.listRessource$ | async" [typeahead]="typeStructureRemoteAutocomplete.term" [loading]="typeStructureRemoteAutocomplete.loading" (search)="onSearchTypeStructure($event)" appendTo="body" [selectOnTab]="true"
+                                bindLabel="nom" bindValue="id" placeholder="Type structure (*)" formControlName="typeStructure">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                            <mat-error *ngIf="typeStructure.invalid && (typeStructure.dirty || typeStructure.touched) && typeStructure.errors?.required">
+                                Il faut au moins le type de la structure
+                            </mat-error>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                        <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                            <ng-select [items]="structureRemoteAutocomplete.listRessource$ | async" [typeahead]="structureRemoteAutocomplete.term" [loading]="structureRemoteAutocomplete.loading" (search)="onSearchStructure($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom"
+                                bindValue="id" placeholder="Structure parente" formControlName="parent">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                            <mat-label>Code(*)</mat-label>
+                            <input placeholder="Code" matInput [attr.autocomplete]="'off'" formControlName="code" />
+                            <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && code.errors?.required">
+                                Le sigle est obligatoire
+                            </mat-error>
+                            <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && ( code.errors?.minlength || code.errors?.maxlength )">
+                                La taille du sigle est limité entre 2 et 50 caractères
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                            <mat-label>Sigle(*)</mat-label>
+                            <input placeholder="Sigle" matInput [attr.autocomplete]="'off'" formControlName="sigle" />
+                            <mat-error *ngIf="sigle.invalid && (sigle.dirty || sigle.touched) && sigle.errors?.required">
+                                Le sigle est obligatoire
+                            </mat-error>
+                            <mat-error *ngIf="sigle.invalid && (sigle.dirty || sigle.touched) && ( sigle.errors?.minlength || sigle.errors?.maxlength )">
+                                La taille du sigle est limité entre 2 et 50 caractères
+                            </mat-error>
+                            <mat-error *ngIf="sigle.invalid && (sigle.dirty || sigle.touched) && ( sigle.errors?.minlength || sigle.errors?.pattern )">
+                                Ce champ doit ne doit contenir que des caractères majuscules et undercore
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                        <mat-form-field appearance="outline" fxFlex="90" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                            <mat-label>Nom </mat-label>
+                            <input matInput placeholder="Nom de la structure" [attr.autocomplete]="'off'" formControlName="nom" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="90" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                            <mat-label>Numéro bornage  (Dernier numéro de bornage)</mat-label>
+                            <input matInput type="number" placeholder="Numéro bornage" [attr.autocomplete]="'off'" formControlName="numeroBornage" />
+                        </mat-form-field>
+                    </div>
+                    
+                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+                      <div class="sycad-form-line container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                        <label id="structureDeDepot-label">Structure de dépôt</label>
+                        <mat-slide-toggle formControlName="structureDeDepot" aria-labelledby="structureDeDepot-label"></mat-slide-toggle>
+                      </div>
+
+                      <div class="sycad-form-line container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                        <label id="structureDArchivage-label">Structure d'archivage</label>
+                        <mat-slide-toggle formControlName="structureDArchivage" aria-labelledby="structureDArchivage-label"></mat-slide-toggle>
+                      </div>
+                    </div>
+                    
+                    <div fxLayout="row wrap" fxLayoutAlign="start">
+                        <div class="content-container" [fxFlex]="100">
+                            <span *ngIf="documentPiece" [fxFlex]="100"> <a href="{{documentPiece | generalDownload}}">Télécharger la pièce jointe</a></span>
+                        </div>
+
+                        <div class="content-container" [fxFlex]="100">
+                            <dropzone class="dropzone-container" [fxFlex]="45" [config]="config" [message]="'Cliquez ou faites glisser les images ici pour les télécharger'" (init)="onUploadInit($event)" (error)="onUploadError($event)" (success)="onUploadSuccess($event)">
+                            </dropzone>
+                            <button mat-icon-button color="warn" type="button">
+                                <mat-icon (click)="resetDropZone()">remove_circle</mat-icon>
+                             </button>
+                        </div>
+                    </div>
+
+                </mat-tab>
+                <mat-tab>
+                    <form [formGroup]="localisation">
+                        <ng-template mat-tab-label>Localisations</ng-template>
+                        <app-localisation [formGroup]="localisation"></app-localisation>
+                    </form>
+                </mat-tab>
+                <mat-tab>
+                  <ng-template mat-tab-label>
+                    Zone de compétences
+                  </ng-template>
+                  <mat-tab-group>
+                    <mat-tab>
+                      <form [formGroup]="formulaire">
+                        <ng-template mat-tab-label>Commune</ng-template>
+                        <div fxLayout="row wrap" fxLayoutAlign="start center">
+                          <div class="sycad-form-line container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                            <label id="touteCommune-label">Choisir toutes les communes</label>
+                            <mat-slide-toggle formControlName="touteCommune" aria-labelledby="touteCommune-label"></mat-slide-toggle>
+                          </div>
+                        </div>
+                        <div fxLayout="row wrap" fxLayoutAlign="start center">
+                          <div class=" sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="40" [fxFlex.xl]="40">
+                            <ng-select [items]="communeRemoteAutocomplete.listRessource$ | async" [typeahead]="communeRemoteAutocomplete.term" (change)="onChangeCommune($event)" [loading]="communeRemoteAutocomplete.loading" (search)="onSearchCommune($event)" appendTo="body" [multiple]="true"
+                                       [selectOnTab]="true" bindLabel="nom" bindValue="id" placeholder="Zone de compétence commune" formControlName="competenceCommune">
+                              <ng-template ng-loadingspinner-tmp>
+                                <div class="lds-ellipsis">
+                                  <div></div>
+                                  <div></div>
+                                  <div></div>
+                                  <div></div>
+                                </div>
+                              </ng-template>
+                              <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                <div class="ng-value" *ngFor="let commune of items | slice:0:5">
+                                  <span class="ng-value-icon right" (click)="clear(commune)" aria-hidden="true">× </span>
+                                  <span class="ng-value-label"> {{commune.nom}}</span>
+
+                                </div>
+                                <div class="ng-value" *ngIf="items.length > 5">
+                                  <span class="ng-value-label">{{items.length - 5}} plus...</span>
+                                </div>
+                              </ng-template>
+                            </ng-select>
+                          </div>
+
+                          <table mat-table [dataSource]="dataSourceCommune" class="mat-elevation-z8 sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+
+                            <ng-container matColumnDef="code">
+                              <th mat-header-cell *matHeaderCellDef> Code </th>
+                              <td mat-cell *matCellDef="let element"> {{element.code}} </td>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="nom">
+                              <th mat-header-cell *matHeaderCellDef> Nom </th>
+                              <td mat-cell *matCellDef="let element"> {{element.nom}} </td>
+                            </ng-container>
+
+
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsCommune"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsCommune;"></tr>
+                          </table>
+                        </div>
+                      </form>
+                    </mat-tab>
+                    <mat-tab>
+                      <form [formGroup]="formulaire">
+                        <ng-template mat-tab-label>Arrondissements</ng-template>
+                        <div fxLayout="row wrap" fxLayoutAlign="start center">
+                          <div class="sycad-form-line container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                            <label id="touteArrondissement-label">Choisir tous les arrondissements</label>
+                            <mat-slide-toggle formControlName="touteArrondissement" aria-labelledby="touteArrondissement-label"></mat-slide-toggle>
+                          </div>
+                        </div>
+                        <div fxLayout="row wrap" fxLayoutAlign="start center">
+                          <div class=" sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="40" [fxFlex.xl]="40">
+                            <ng-select #remoteSelect [items]="arrondissementRemoteAutocomplete.listRessource$ | async" [typeahead]="arrondissementRemoteAutocomplete.term" [groupBy]="groupByFnArrondissement" [groupValue]="groupValueFnArrondissement" (change)="onChangeArrondissement($event)"
+                                       [loading]="arrondissementRemoteAutocomplete.loading" (search)="onSearchArrondissement($event)" appendTo="body" [multiple]="true" [selectOnTab]="true" bindLabel="nom" bindValue="id" placeholder="Zone de compétence arrondissement"
+                                       formControlName="competenceArrondissement">
+
+                              <ng-template ng-optgroup-tmp let-item="item">
+                                <span style="vertical-align: middle;"> {{item.name}}</span>
+                              </ng-template>
+                              <ng-template ng-loadingspinner-tmp>
+                                <div class="lds-ellipsis">
+                                  <div></div>
+                                  <div></div>
+                                  <div></div>
+                                  <div></div>
+                                </div>
+                              </ng-template>
+                              <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                <div class="ng-value" *ngFor="let arrondissement of items | slice:0:5">
+                                  <span class="ng-value-icon right" (click)="clear(arrondissement)" aria-hidden="true">× </span>
+                                  <span class="ng-value-label"> {{arrondissement.nom}}</span>
+
+                                </div>
+                                <div class="ng-value" *ngIf="items.length > 5">
+                                  <span class="ng-value-label">{{items.length - 5}} plus...</span>
+                                </div>
+                              </ng-template>
+                            </ng-select>
+                          </div>
+
+                          <table mat-table [dataSource]="dataSourceArrondissement" class="mat-elevation-z8 sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+
+                            <ng-container matColumnDef="code">
+                              <th mat-header-cell *matHeaderCellDef> Code </th>
+                              <td mat-cell *matCellDef="let element"> {{element.code}} </td>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="nom">
+                              <th mat-header-cell *matHeaderCellDef> Nom </th>
+                              <td mat-cell *matCellDef="let element"> {{element.nom}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="commune">
+                              <th mat-header-cell *matHeaderCellDef> Commune </th>
+                              <td mat-cell *matCellDef="let element"> {{element.commune.nom}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsArrondissement"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsArrondissement;"></tr>
+                          </table>
+                        </div>
+                      </form>
+                    </mat-tab>
+                  </mat-tab-group>
+                </mat-tab>
+                <mat-tab>
+                  <ng-template mat-tab-label>
+                    Transition Fonctionnelle
+                  </ng-template>
+
+                  <div fxLayout="column" class="flex-p">
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                      <button mat-raised-button type="button" color="primary" (click)="addNewTransitionFonctionnelle()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10" [fxFlex.lg]="25" [fxFlexOffset.md]="10" [fxFlex.xl]="30"
+                              [fxFlexOffset]="10">
+                        <mat-icon class="icon-sm">add</mat-icon>
+                        Ajouter une Transition Fonctionnelle
+                      </button>
+                    </div>
+
+                    <ng-container *ngIf="transitionFonctionnelles.controls.length>0">
+                      <ng-template ngFor let-transitionFonctionnelle [ngForOf]="transitionFonctionnelles.controls" let-i="index">
+
+                        <div fxLayout="row" fxLayoutAlign="start">
+                          <mat-card class="card-container-form-element y-1" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="60">
+                            <button mat-icon-button matSuffix color="warn" type="button" class="delete-icons">
+                              <mat-icon (click)="removeTransitionFonctionnelle(i)">remove_circle</mat-icon>
+                            </button>
+
+                            <app-transition-fonctionnelle-form [formGroup]="transitionFonctionnelle"
+                                                               [touched]="transitionFonctionnelle.touched"></app-transition-fonctionnelle-form>
+
+                          </mat-card>
+                        </div>
+                      </ng-template>
+                    </ng-container>
+                  </div>
+
+                </mat-tab>
+            </mat-tab-group>
+            <mat-card-actions [ngClass]="{'card-action-form': (activeMediaQuery === 'lg' || activeMediaQuery === 'xl' ), 'card-action-form-small': (activeMediaQuery === 'sm') }">
+                <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+            <span *ngIf="!structure.id">Enregistrer</span><span *ngIf="structure.id">Mettre à
+                        jour</span>
+          </button>
+                </div>
+            </mat-card-actions>
+        </mat-card-content>
+    </form>
+
+</mat-card>

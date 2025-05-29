@@ -1,0 +1,31 @@
+[{
+        "id": "Archiver",
+        "code": "Archiver",
+        "libelle": "Archiver",
+        "description": "Archiver"
+    },
+    {
+        "id": "CalculerDroitsTaxes",
+        "code": "CalculerDroitsTaxes",
+        "libelle": "Calculer les droits de taxes",
+        "description": "Calculer les droits de taxes"
+    },
+    {
+        "id": "DelivrerQuittance",
+        "code": "DelivrerQuittance",
+        "libelle": "Délivrer la quittance",
+        "description": "Délivrer la quittance"
+    },
+    {
+        "id": "GenererNumero",
+        "code": "GenererNumero",
+        "libelle": "Générer un numero",
+        "description": "Générer un numero"
+    },
+    {
+        "id": "PayerDrotisTaxes",
+        "code": "PayerDrotisTaxes",
+        "libelle": "Payer les droits de taxes",
+        "description": "Payer les droits de taxes"
+    }
+]

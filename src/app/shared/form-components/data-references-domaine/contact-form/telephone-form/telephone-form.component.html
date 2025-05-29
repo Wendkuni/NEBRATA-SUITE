@@ -1,0 +1,52 @@
+<form [formGroup]="telephone" class="form-container">
+
+
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+        <div class="sycad-form-telephone-ng-select sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="25" [fxFlex.lg]="25" [fxFlex.xl]="25">
+            <ng-select formControlName="level" placeholder="Type de Telephone (*)" appendTo="body" [searchable]="false" [clearable]="false">
+                <ng-option value="PROFESSIONAL">
+                    Professionnel
+                </ng-option>
+                <ng-option value="PERSONNAL">
+                    Personnel
+                </ng-option>
+                <ng-option value="HOME">
+                    Maison
+                </ng-option>
+            </ng-select>
+            <mat-error *ngIf="telephone.controls.level.invalid && (telephone.controls.level.dirty || telephone.controls.level.touched) && telephone.controls.level.errors?.required">
+                Le type est obligatoire
+            </mat-error>
+        </div>
+
+        <mat-form-field appearance="outline" class="sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="40" [fxFlex.lg]="40" [fxFlex.xl]="30">
+            <mat-label>Telephone (*)</mat-label>
+            <input matInput [textMask]="{mask: maskTelephone, guide: true}" matInput placeholder="Telephone" [attr.autocomplete]="'off'" formControlName="numero">
+            <mat-error *ngIf="telephone.controls.numero.invalid && (telephone.controls.numero.dirty || telephone.controls.numero.touched) && telephone.controls.numero.errors?.required">
+                Le numéro de téléphone est obligatoire
+            </mat-error>
+            <mat-error *ngIf="telephone.controls.numero.invalid && (telephone.controls.numero.dirty || telephone.controls.numero.touched) && telephone.controls.numero.errors?.pattern">
+                Exemple (00226) XX XX XX XX ou (00226)XXXXXXXX ou 00226XXXXXXXX ou +226XXXXXXXX
+            </mat-error>
+            <mat-error *ngIf="telephone.controls.numero.invalid && (telephone.controls.numero.dirty || telephone.controls.numero.touched) && telephone.controls.numero.errors?.telephoneExist ">
+                Ce numéro de téléphone est indisponible
+            </mat-error>
+            <mat-hint class="lds-ellipsis" *ngIf="telephone.status === 'PENDING'">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </mat-hint>
+
+        </mat-form-field>
+
+
+        <div class="container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="20" [fxFlex.lg]="20" [fxFlex.xl]="15">
+            <mat-slide-toggle formControlName="principal" (change)="onChangeTelephonePrincipal(telephone)" fxFlex="100">Principale ?</mat-slide-toggle>
+        </div>
+
+    </div>
+
+</form>

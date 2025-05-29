@@ -1,0 +1,243 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+
+
+    <mat-card-header>
+        <mat-card-subtitle>
+            <h3>
+                <span *ngIf="!morcellement">Démarrer un dossier de morcellement de parcelle</span>
+                <span *ngIf="morcellement?.numero">{{transition.libelle}} : sur le dossier {{morcellement.numero}}</span>
+            </h3>
+
+
+            <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+                La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+            </mat-error>
+
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+
+        <mat-tab-group #tabGroup>
+          <mat-tab *ngIf="!morcellement">
+            <ng-template mat-tab-label>
+                <mat-icon class="sycad-form-tab-label-icon">info</mat-icon>
+
+                 <ng-container  >Details du processus</ng-container>
+            </ng-template>
+
+            <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+
+                <ng-container [ngSwitch]="true">
+                  <!-- header -->
+
+                <app-details-processus-tab-pane [processus]="processus"> </app-details-processus-tab-pane>
+
+
+                <!-- button commencer, id tabGroup -> mat-tab-group -->
+                  <div style="display: flex;justify-content: space-between; align-items: end;">
+                    <button mat-raised-button color="primary" style=" margin-left: auto;padding:5px 5px" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1">
+                      Commencer
+                      <mat-icon>keyboard_arrow_right</mat-icon>
+                    </button>
+                  </div>
+
+                </ng-container>
+
+            </div>
+        </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">face</mat-icon>
+
+                    <ng-container *ngIf="morcellement?.numero">Formulaire transition {{transition.libelle}}</ng-container>
+                    <ng-container *ngIf="!morcellement">Création d'une demande de document</ng-container>
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+                    <ng-container [ngSwitch]="true">
+
+
+
+
+                        <!--  transition à faire -->
+
+
+
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'MORCELLEMENT_EDITION_EDM_TO_VALIDE' ">
+                            <app-valider-mocellement (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [morcellement]="morcellement" [transition]="transition"></app-valider-mocellement>
+                        </ng-template>
+
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'MORCELLEMENT_NUMEROTATION_TO_EDITION_EDM' ||  transition?.code === 'MORCELLEMENT_EDITION_EDM_TO_EDITION_EDM' ">
+                            <app-edition-edmmocellement (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [morcellement]="morcellement" [transition]="transition" [processus]="processus"></app-edition-edmmocellement>
+                        </ng-template>
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'MORCELLEMENT_NUMEROTATION_TO_NUMEROTATION' ">
+                            <app-numerotation-mocellement (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [morcellement]="morcellement" [transition]="transition"></app-numerotation-mocellement>
+                        </ng-template>
+
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'MORCELLEMENT_TRANSMISSION_MORCELE_TO_ATTENTE_NUMEROTATION' ">
+                            <app-envoyer-pour-controle-apres-mocellement (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [morcellement]="morcellement" [transition]="transition"></app-envoyer-pour-controle-apres-mocellement>
+                        </ng-template>
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'MORCELLEMENT_AFFECTE_TO_MORCELE'  || transition?.code === 'MORCELLEMENT_MORCELE_TO_MORCELE'">
+                            <app-morceler (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [morcellement]="morcellement" [transition]="transition"></app-morceler>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'MORCELLEMENT_ATTENTE_NUMEROTATION_TO_NUMEROTATION' ">
+                            <app-approuver-travail-morcellement (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [morcellement]="morcellement" [transition]="transition"></app-approuver-travail-morcellement>
+                        </ng-template>
+
+                        <!--  fin transition à faire -->
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'MORCELLEMENT_STRUCTURE_TRANSMIS_TO_AFFECTE_AGENT'
+                          || transition?.code === 'MORCELLEMENT_STRUCTURE_BROUILLON_TO_AFFECTE_AGENT' || transition?.code === 'MORCELLEMENT_SOLDE_TO_AFFECTE_AGENT'  ">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [codeCommune]="morcellement?.parcelle?.ilot?.section?.commune?.code" [dossierProcessus]="morcellement" [fixedStructures]="false" [processusService]="morcellementService"
+                                [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'MORCELLEMENT_SOLDE_TO_AFFECTE'
+                            ||  transition?.code === 'MORCELLEMENT_STRUCTURE_BROUILLON_TO_AFFECTE'
+                             ||  transition?.code === 'MORCELLEMENT_STRUCTURE_TRANSMIS_TO_AFFECTE' ">
+                            <app-affectation-dm (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [morcellement]="morcellement" [transition]="transition"></app-affectation-dm>
+                        </ng-template>
+
+
+
+
+
+
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'MORCELLEMENT_TRANSMIS_TO_BROUILLON'  || transition?.code === 'MORCELLEMENT_AFFECTE_TO_TRANSMIS'  || transition?.code === 'MORCELLEMENT_NUMEROTATION_TO_MORCELE'  || transition?.code === 'MORCELLEMENT_EDITION_EDM_TO_NUMEROTATION' || transition?.code === 'MORCELLEMENT_NUMEROTATION_TO_ATTENTE_NUMEROTATION'  ">
+                            <app-renvoyer-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="morcellement" [transition]="transition" [processusService]="morcellementService" [frontendUrl]="getFrontendTemplate()"></app-renvoyer-dossier-transition>
+                        </ng-template>
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'MORCELLEMENT_BROUILLON_TO_TRANSMIS' ">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [avecPiece]="false" [codeCommune]="morcellement?.parcelle?.ilot?.section?.commune?.code" [dossierProcessus]="morcellement" [fixedStructures]="false" [processusService]="morcellementService"
+                                [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'MORCELLEMENT_BROUILLON_TO_ANNULER' || transition?.code === 'MORCELLEMENT_TRANSMIS_TO_ANNULER'    ">
+                            <app-annulation-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="morcellement" [transition]="transition" [processusService]="morcellementService" [frontendUrl]="getFrontendTemplate()"></app-annulation-dossier-transition>
+                        </ng-template>
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'MORCELLEMENT_ENVOYER_SINTAX_TO_MAJ_REGLEMENT'   ">
+                            <app-morcellement-reglement-liquidation (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [morcellement]="morcellement" [transition]="transition"></app-morcellement-reglement-liquidation>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'MORCELLEMENT_ENVOYER_SINTAX_TO_SOLDE'  ">
+                            <app-morcellement-solder-liquidation (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [morcellement]="morcellement" [transition]="transition"></app-morcellement-solder-liquidation>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'MORCELLEMENT_LIQUIDE_TO_ENVOYER_SINTAX' ">
+                            <app-morcellement-envoie-vers-sintax (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [morcellement]="morcellement" [transition]="transition"></app-morcellement-envoie-vers-sintax>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'MORCELLEMENT_BROUILLON_TO_LIQUIDE' || transition?.code === 'MORCELLEMENT_TRANSMIS_TO_LIQUIDE'  || transition?.code === 'MORCELLEMENT_LIQUIDE_TO_LIQUIDE' ">
+                            <app-morcellement-calcul-liquidation (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [morcellement]="morcellement" [transition]="transition"></app-morcellement-calcul-liquidation>
+                        </ng-template>
+
+
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'MORCELLEMENT_TRANSMISSION_BROUILLON_TO_BROUILLON'
+                        || transition?.code === 'MORCELLEMENT_TRANSMISSION_TRANSMIS_TO_TRANSMIS'
+                        || transition?.code === 'MORCELLEMENT_TRANSMISSION_AFFECTE_TO_AFFECTE'
+                        || transition?.code === 'MORCELLEMENT_TRANSMISSION_NUMEROTATION_TO_NUMEROTATION'
+                         || transition?.code === 'MORCELLEMENT_TRANSMISSION_EDITION_EDM_TO_EDITION_EDM'
+                          || transition?.code === 'MORCELLEMENT_TRANSMISSION_VALIDE_TO_VALIDE' ">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" (formErrors)="onFormError($event)" [codeCommune]="morcellement?.parcelle?.ilot?.section?.commune?.code" [dossierProcessus]="morcellement" [fixedStructures]="false"
+                                [processusService]="morcellementService" [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                        </ng-template>
+
+
+
+
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'MORCELLEMENT_BROUILLON_TO_BROUILLON' ">
+                            <ng-container *ngIf="authentificatedUser?.typeUser==='AGENT' && hasPermissionNumerotation(); else autreContribuableGeneral">
+                                <app-saisie-brouillon-par-agent (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [morcellement]="morcellement" [transition]="transition">
+                                </app-saisie-brouillon-par-agent>
+                            </ng-container>
+
+                            <ng-template #autreContribuableGeneral>
+                                <ng-container>
+                                    <app-saisie-brouillon-par-contribuable (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [morcellement]="morcellement" [transition]="transition" [authentificatedUser]="authentificatedUser">
+                                    </app-saisie-brouillon-par-contribuable>
+                                </ng-container>
+                            </ng-template>
+
+                        </ng-template>
+
+
+
+                        <ng-template [ngSwitchDefault]>
+                            <ng-container *ngIf="authentificatedUser?.typeUser==='AGENT' && hasPermissionNumerotation(); else autreContribuableGeneral">
+                                <app-creation-morcellement-par-agent (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus">
+                                </app-creation-morcellement-par-agent>
+                            </ng-container>
+
+                            <ng-template #autreContribuableGeneral>
+                                <ng-container>
+                                    <app-creation-morcellement-par-contribuable (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [authentificatedUser]="authentificatedUser" [processus]="processus">
+                                    </app-creation-morcellement-par-contribuable>
+                                </ng-container>
+                            </ng-template>
+
+                        </ng-template>
+
+
+                    </ng-container>
+
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="morcellement?.numero">
+                <ng-template mat-tab-label>
+                    <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                </ng-template>
+                <div fxLayout="column" class="flex-p">
+                    <app-historique [numero]="morcellement?.numero"></app-historique>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="morcellement">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Entête de dossier
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+
+                    <app-entete [numero]="morcellement?.numero" [processus]="'WRKFProcessMorcellementCadastral'"></app-entete>
+                </div>
+            </mat-tab>
+
+          <mat-tab *ngIf="morcellement">
+            <ng-template mat-tab-label>
+              <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+              Détail du dossier
+            </ng-template>
+            <div fxLayout="column" class="flex-p">
+              <app-vue-domaine-morcellement [noOpenActions]="true"></app-vue-domaine-morcellement>
+            </div>
+          </mat-tab>
+
+
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>

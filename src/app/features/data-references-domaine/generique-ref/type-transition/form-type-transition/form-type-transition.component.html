@@ -1,0 +1,69 @@
+<mat-card>
+  <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <mat-card-header>
+    <mat-card-subtitle>
+      <h3>
+        <span *ngIf="typeTransition.id">Modification de : {{typeTransition.libelle}}</span>
+      </h3>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <h1 mat-dialog-title class="modifier-text" style="text-align: left;">
+      <span *ngIf="!typeTransition.id">Créer un nouveau droit immobilier</span>
+      <span *ngIf="typeTransition.id">Modifier: {{typeTransition.libelle}}</span>
+    </h1>
+    <form [formGroup]="formulaire" class="role-form" (ngSubmit)="onSubmit()">
+      <div class="sycad-zone-modal-form-edition" mat-dialog-content perfectScrollbar>
+        <mat-grid-list cols="1" rowHeight="100px">
+          <mat-grid-tile>
+            <mat-form-field appearance="outline" fxFlex="100">
+              <mat-label>Code</mat-label>
+              <input
+                matInput
+                placeholder="Code"
+                [attr.autocomplete]="'off'"
+                formControlName="code"
+                [readonly]="typeTransition.id"
+              />
+              <mat-error *ngIf="formulaire.get('code').invalid && (formulaire.get('code').dirty || formulaire.get('code').touched) && formulaire.get('code').errors?.required">
+                Le code est obligatoire
+              </mat-error>
+              <mat-error *ngIf="formulaire.get('code').invalid && (formulaire.get('code').dirty || formulaire.get('code').touched) && (formulaire.get('code').errors?.minlength || formulaire.get('code').errors?.maxlength)">
+                La taille du code est limitée entre 4 et 50 caractères
+              </mat-error>
+              <mat-error *ngIf="formulaire.get('code').invalid && (formulaire.get('code').dirty || formulaire.get('code').touched) && (formulaire.get('code').errors?.pattern)">
+                Ce champ ne doit contenir que des caractères majuscules et underscore
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field appearance="outline" fxFlex="100">
+              <mat-label>Libelle</mat-label>
+              <input
+                matInput
+                placeholder="Libelle"
+                [attr.autocomplete]="'off'"
+                formControlName="libelle"
+              />
+              <mat-error *ngIf="formulaire.get('libelle').invalid && (formulaire.get('libelle').dirty || formulaire.get('libelle').touched) && formulaire.get('libelle').errors?.required">
+                Le libelle est obligatoire
+              </mat-error>
+              <mat-error *ngIf="formulaire.get('libelle').invalid && (formulaire.get('libelle').dirty || formulaire.get('libelle').touched) && (formulaire.get('libelle').errors?.minlength || formulaire.get('libelle').errors?.maxlength)">
+                Le libelle est limité entre 2 et 150 caractères
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+      <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+        <button mat-raised-button color="warn" (click)="resetForm()">Annuler</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+          <span *ngIf="!typeTransition.id">Enregistrer</span>
+          <span *ngIf="typeTransition.id">Mettre à jour</span>
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

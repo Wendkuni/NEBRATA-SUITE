@@ -1,0 +1,14 @@
+<div fxLayout="column">
+  <div class="flex-p">
+    <ng-template #datatable1></ng-template>
+  </div>
+</div>
+<ng-template #templateCategorieActeur let-categorieActeur="data">
+
+<mat-card>
+       
+        <mat-card-content *ngFor="let profil of categorieActeur.profils">
+            <div class="custom-structure-classe">Profile :{{profil.libelle}}</div>
+        </mat-card-content>
+    </mat-card>
+</ng-template>

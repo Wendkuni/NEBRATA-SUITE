@@ -1,0 +1,121 @@
+<div fxLayout="column" fxLayoutAlign="space-between stretch">
+
+  <div fxFlex="auto" style="border: 1px solid black; height: 1000px;">
+
+    <mat-tab-group>
+
+      <mat-tab>
+        <mat-tab-group>
+        <ng-template mat-tab-label>
+          <mat-icon class="profile-tab-icon">aspect_ratio</mat-icon>
+     Mes parcelles
+        </ng-template>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="profile-tab-icon">how_to_reg</mat-icon>
+          Attributions
+          </ng-template>
+           <app-info-user-attributions></app-info-user-attributions>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="profile-tab-icon">how_to_reg</mat-icon>
+           Mutations
+          </ng-template>
+
+         <app-info-user-mutations></app-info-user-mutations>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="profile-tab-icon">picture_as_pdf</mat-icon>
+          Retraits
+          </ng-template>
+
+          <app-info-user-retrait></app-info-user-retrait>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="profile-tab-icon">receipt</mat-icon>
+          Demande document
+          </ng-template>
+          <app-info-user-demande-document></app-info-user-demande-document>
+        </mat-tab>
+    </mat-tab-group>
+    </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="profile-tab-icon">folder</mat-icon>
+         Mes mandats
+        </ng-template>
+        <app-info-user-mandats></app-info-user-mandats>
+      </mat-tab>
+
+
+      <mat-tab>
+        <mat-tab-group>
+        <ng-template mat-tab-label>
+          <mat-icon class="profile-tab-icon">monetization_on</mat-icon>
+         Mes impositions
+        </ng-template>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="profile-tab-icon">font_download</mat-icon>
+          Avis d'imposition
+          </ng-template>
+
+      <app-info-user-contribution-fonciere></app-info-user-contribution-fonciere>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="profile-tab-icon">description</mat-icon>
+           Exonerations
+          </ng-template>
+
+         <app-info-user-exonerations></app-info-user-exonerations>
+
+        </mat-tab>
+      </mat-tab-group>
+      </mat-tab>
+
+      <mat-tab>
+        <mat-tab-group>
+        <ng-template mat-tab-label>
+          <mat-icon class="profile-tab-icon">rounded_corner</mat-icon>
+       Mes bornages
+        </ng-template>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="profile-tab-icon">tab</mat-icon>
+          Bornages
+          </ng-template>
+
+         <app-info-user-bornages></app-info-user-bornages>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="profile-tab-icon">view_module</mat-icon>
+        Morcellement
+          </ng-template>
+         <app-info-user-morcellement></app-info-user-morcellement>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="profile-tab-icon">view_stream</mat-icon>
+      Fusion
+          </ng-template>
+         <app-info-user-fusion></app-info-user-fusion>
+        </mat-tab>
+      </mat-tab-group>
+      </mat-tab>
+
+
+
+    </mat-tab-group>
+  </div>
+
+

@@ -1,0 +1,128 @@
+<button class="close" mat-button mat-dialog-close><mat-icon >close</mat-icon></button>
+
+
+<h1 mat-dialog-title class="modifier-text"><span *ngIf="!role.id">Créer un nouveau Role</span><span *ngIf="role.id">Modifier: {{role.libelle}}</span></h1>
+<div class="sycad-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
+<form [formGroup]="formulaire" class="role-form" (ngSubmit)="onSubmit()">
+    <div class="sycad-zone-modal-form-edition" mat-dialog-content perfectScrollbar>
+
+        <mat-grid-list cols="1" rowHeight="100px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div fxFlex="90" class="container-form-field-radio">
+                    <ng-select formControlName="type" placeholder="Type de role" appendTo="body" [searchable]="false" [clearable]="false">
+                        <ng-option value="DEFAULT">
+                            Role pour tout les utilisateurs
+                        </ng-option>
+                        <ng-option value="ACTEUR">
+                            Role pour tout acteur
+                        </ng-option>
+                        <ng-option value="ACTEURCATEGORIE">
+                            Role pour catégorie acteur
+                        </ng-option>
+                        <ng-option value="CONTRIBUABLEPHYSIQUE">
+                            Role pour contribuable physique
+                        </ng-option>
+                        <ng-option value="CONTRIBUABLEMORAL">
+                            Role pour contribuable moral
+                        </ng-option>
+                        <ng-option value="AGENT">
+                            Role pour tout agent
+                        </ng-option>
+                        <ng-option value="ADMINISTRATION">
+                            Role Administration
+                        </ng-option>
+                        <ng-option value="APPLICATION">
+                            Role pour toute application
+                        </ng-option>
+                    </ng-select>
+                    <mat-error *ngIf="type.invalid && (type.dirty || type.touched) && type.errors?.required">
+                        Le type est obligatoire
+                    </mat-error>
+                </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div fxFlex="90" class="container-form-field-radio">
+                    <ng-select [items]="permissionsRemoteAutocomplete.listRessource$ | async" [typeahead]="permissionsRemoteAutocomplete.term" [multiple]="true" [loading]="permissionsRemoteAutocomplete.loading" (search)="onSearchPermission($event)" appendTo="body" [selectOnTab]="true"
+                        bindLabel="libelle" bindValue="id" placeholder="Permissions" formControlName="permissions">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+
+
+                    </ng-select>
+                    <mat-error *ngIf="permissions.invalid && (permissions.dirty || permissions.touched) && permissions.errors?.required">
+                        Une faut au moins une permission
+                    </mat-error>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div fxFlex="90" class="container-form-field-radio">
+                    <ng-select [items]="excludesRemoteAutocomplete.listRessource$ | async" [typeahead]="excludesRemoteAutocomplete.term" [multiple]="true" [loading]="excludesRemoteAutocomplete.loading" (search)="onSearchExlucision($event)" appendTo="body" [selectOnTab]="true"
+                        bindLabel="libelle" bindValue="id" placeholder="Exclusions" formControlName="excludes">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+
+
+                    </ng-select>
+
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <mat-form-field appearance="outline" fxFlex="90">
+                    <mat-label>Libellé</mat-label>
+                    <input matInput placeholder="Libellé" [attr.autocomplete]="'off'" formControlName="libelle" />
+
+                    <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && libelle.errors?.required">
+                        Le libellé est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && ( libelle.errors?.minlength || libelle.errors?.maxlength )">
+                        La taille du libellé est limité entre 2 et 150 caractères
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="!role.id">
+                <mat-form-field appearance="outline" fxFlex="90">
+                    <mat-label>Code</mat-label>
+                    <input matInput placeholder="Code" [attr.autocomplete]="'off'" formControlName="code" />
+
+                    <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && code.errors?.required">
+                        Le code est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && ( code.errors?.minlength || code.errors?.maxlength )">
+                        La taille du code est limité entre 4 et 50 caractères
+                    </mat-error>
+                    <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && ( code.errors?.minlength || code.errors?.pattern )">
+                        Ce champ doit ne doit contenir que des caractères majuscules et undercore
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+
+
+
+        </mat-grid-list>
+    </div>
+    <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
+        <button mat-raised-button color="warn" type="button" (click)="closeFormModal()">Annuler</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+        <span *ngIf="!role.id">Enregistrer</span><span *ngIf="role.id">Mettre à jour</span>
+    </button>
+
+    </div>
+
+</form>

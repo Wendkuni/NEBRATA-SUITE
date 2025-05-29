@@ -1,0 +1,174 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+
+
+    <mat-card-header>
+        <mat-card-subtitle>
+            <h3>
+                <span *ngIf="!contributionFonciere">Démarrer un dossier de la contribution foncière </span>
+                <span *ngIf="contributionFonciere?.numero">{{transition.libelle}} : sur le dossier {{contributionFonciere.numero}}</span>
+            </h3>
+
+
+            <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+                La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+            </mat-error>
+
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+
+        <mat-tab-group #tabGroup>
+          <mat-tab *ngIf="!contributionFonciere">
+            <ng-template mat-tab-label>
+                <mat-icon class="sycad-form-tab-label-icon">info</mat-icon>
+
+                 <ng-container  >Details du processus</ng-container>
+            </ng-template>
+
+            <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+
+                <ng-container [ngSwitch]="true">
+                  <!-- header -->
+
+                <app-details-processus-tab-pane [processus]="processus"> </app-details-processus-tab-pane>
+
+
+                <!-- button commencer, id tabGroup -> mat-tab-group -->
+                  <div style="display: flex;justify-content: space-between; align-items: end;">
+                    <button mat-raised-button color="primary" style=" margin-left: auto;padding:5px 5px" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1">
+                      Commencer
+                      <mat-icon>keyboard_arrow_right</mat-icon>
+                    </button>
+                  </div>
+
+                </ng-container>
+
+            </div>
+        </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">face</mat-icon>
+
+                    <ng-container *ngIf="contributionFonciere?.numero">Formulaire transition {{transition.libelle}}</ng-container>
+                    <ng-container *ngIf="!contributionFonciere">Création d'une demande de document</ng-container>
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+                    <ng-container [ngSwitch]="true">
+
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'CONTRIBUTION_FONCIERE_ENVOYER_SINTAX_TO_SOLDE'  ">
+                            <app-solder-cf (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [contributionFonciere]="contributionFonciere" [transition]="transition"></app-solder-cf>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'CONTRIBUTION_FONCIERE_LIQUIDE_TO_ENVOYER_SINTAX' ">
+                            <app-envoie-vers-sintax (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [contributionFonciere]="contributionFonciere" [transition]="transition"></app-envoie-vers-sintax>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'CONTRIBUTION_FONCIERE_BROUILLON_TO_LIQUIDE' || transition?.code === 'CONTRIBUTION_FONCIERE_TRANSMIS_TO_LIQUIDE'  || transition?.code === 'CONTRIBUTION_FONCIERE_LIQUIDE_TO_LIQUIDE' ">
+                            <app-calcul-cf (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [contributionFonciere]="contributionFonciere" [transition]="transition"></app-calcul-cf>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'CONTRIBUTION_FONCIERE_ENVOYER_SINTAX_TO_MAJ_REGLEMENT'  ">
+                            <app-reglement-titre (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [contributionFonciere]="contributionFonciere" [transition]="transition"></app-reglement-titre>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'CONTRIBUTION_FONCIERE_BROUILLON_TO_ANNULER' || transition?.code === 'CONTRIBUTION_FONCIERE_TRANSMIS_TO_ANNULER'    ">
+                            <app-annulation-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="contributionFonciere" [transition]="transition" [processusService]="contributionFonciereService" [frontendUrl]="getFrontendTemplate()"></app-annulation-dossier-transition>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'CONTRIBUTION_FONCIERE_TRANSMIS_TO_BROUILLON'   ">
+                            <app-renvoyer-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="contributionFonciere" [transition]="transition" [processusService]="contributionFonciereService" [frontendUrl]="getFrontendTemplate()"></app-renvoyer-dossier-transition>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'CONTRIBUTION_FONCIERE_BROUILLON_TO_TRANSMIS' ">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [avecPiece]="true" [codeCommune]="contributionFonciere?.parcelle?.ilot?.section?.commune?.code" [dossierProcessus]="contributionFonciere" [fixedStructures]="false"
+                                [processusService]="contributionFonciereService" [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                        </ng-template>
+
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'CONTRIBUTION_FONCIERE_TRANSMISSION_BROUILLON_TO_BROUILLON'   ">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [codeCommune]="contributionFonciere?.parcelle?.ilot?.section?.commune?.code" [dossierProcessus]="contributionFonciere" [fixedStructures]="false" [processusService]="contributionFonciereService"
+                                [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'CONTRIBUTION_FONCIERE_BROUILLON_TO_BROUILLON'  ">
+                            <ng-container *ngIf="authentificatedUser?.typeUser==='AGENT' && hasPermissionRenvoyerAuCreateur(); else autreContribuableCondition">
+                                <app-saisie-par-agent (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [contributionFonciere]="contributionFonciere" [processus]="processus" [transition]="transition"></app-saisie-par-agent>
+                            </ng-container>
+
+                            <ng-template #autreContribuableCondition>
+                                <app-saisie-par-contribuable (loadingEvent)="loadingEvent($event)" [authentificatedUser]="authentificatedUser" (formErrors)="onFormError($event)" [contributionFonciere]="contributionFonciere" [processus]="processus" [transition]="transition"></app-saisie-par-contribuable>
+                            </ng-template>
+
+                        </ng-template>
+
+
+                        <ng-template [ngSwitchDefault]>
+                            <ng-container *ngIf="authentificatedUser?.typeUser==='AGENT' && hasPermissionRenvoyerAuCreateur(); else autreContribuableCondition">
+                                <app-creation-par-agent (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus"></app-creation-par-agent>
+                            </ng-container>
+
+                            <ng-template #autreContribuableCondition>
+                                <app-creation-par-contribuable (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [authentificatedUser]="authentificatedUser" [processus]="processus"></app-creation-par-contribuable>
+                            </ng-template>
+
+                        </ng-template>
+
+
+
+
+                    </ng-container>
+
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="contributionFonciere?.numero">
+                <ng-template mat-tab-label>
+                    <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                </ng-template>
+                <div fxLayout="column" class="flex-p">
+                    <app-historique [numero]="contributionFonciere?.numero"></app-historique>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="contributionFonciere">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Entête de dossier
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+
+                    <app-entete [numero]="contributionFonciere?.numero" [processus]="'WRKFProcessContribuationFonciers'"></app-entete>
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="contributionFonciere">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Détail du dossier
+                </ng-template>
+
+                <div  fxLayout="column" class="flex-p">
+
+                    <app-vue-contribution-fonciere [noOpenActions]="true"></app-vue-contribution-fonciere>
+                </div>
+            </mat-tab>
+
+
+        </mat-tab-group>
+    </mat-card-content>
+
+
+
+
+
+
+
+</mat-card>

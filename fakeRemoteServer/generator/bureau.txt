@@ -1,0 +1,8 @@
+[
+  '{{repeat(60, 60)}}',
+  {
+
+    index: '{{index()+1}}',
+    address: '{{integer(100, 999)}} {{street()}} {{integer(100, 10000)}}'
+  }
+]

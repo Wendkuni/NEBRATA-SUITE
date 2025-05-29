@@ -1,0 +1,60 @@
+.sycad-field-radio-button-horizontal {
+  margin-left: 5px;
+}
+
+.container-affectation {
+  padding-top: 20px;
+}
+
+.sycad-zone-modal-form-edition {
+  height: 65vh;
+  overflow-x: hidden;
+}
+
+.structure-form {
+  .ng-select {
+    width: 100%;
+  }
+
+  .form-field-outer {
+    width: 100%;
+  }
+  .mat-radio-button {
+    margin-right: 12px;
+  }
+  .mat-icon {
+    margin-right: 7px;
+  }
+  .mat-grid-list {
+    overflow: hidden;
+  }
+}
+
+.mat-form-field {
+  margin-left: 8px;
+}
+
+
+.logo-exist-bg .dz-message {
+  background: none!important;
+}
+
+.modifier-text {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+}
+.sycad-form-ng-select {
+  margin-top: 10px;
+  .mat-error {
+    position: absolute;
+    font-size: 75%;
+  }
+  .ng-select {
+    width: 100%;
+  }
+}
+.form-container {
+  padding-top: 25px;
+}

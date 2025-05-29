@@ -1,0 +1,101 @@
+<button class="close" mat-button mat-dialog-close><mat-icon >close</mat-icon></button>
+<h1 mat-dialog-title class="modifier-text"><span *ngIf="!parametre.id">Créer un service Administratif</span><span *ngIf="parametre.id">Modifier: {{parametre.description}}</span></h1>
+<div class="sycad-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
+<form [formGroup]="formulaire" class="service-form" (ngSubmit)="onSubmit()">
+    <div class="sycad-zone-modal-form-edition" mat-dialog-content perfectScrollbar>
+
+        <mat-grid-list cols="1" rowHeight="150px">
+
+            <ng-container [ngSwitch]="parametre.typeValeurParametre">
+
+                <ng-template [ngSwitchCase]="'STRING'">
+                    <mat-grid-tile [colspan]="1" [rowspan]="1">
+                        <mat-form-field appearance="outline" fxFlex="90">
+                            <mat-label>Valeur</mat-label>
+                            <input matInput placeholder="Valeur" [attr.autocomplete]="'off'" formControlName="valeur" />
+                            <mat-error *ngIf="valeur.invalid && (valeur.dirty || valeur.touched) && valeur.errors?.required">
+                                Le valeur est obligatoire
+                            </mat-error>
+
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </ng-template>
+
+                <ng-template [ngSwitchCase]="'SECRET'">
+                    <mat-grid-tile [colspan]="1" [rowspan]="1">
+                        <mat-form-field appearance="outline" fxFlex="90">
+                            <mat-label>Valeur</mat-label>
+                            <input matInput placeholder="Valeur" [attr.autocomplete]="'off'" formControlName="valeur" />
+                            <mat-error *ngIf="valeur.invalid && (valeur.dirty || valeur.touched) && valeur.errors?.required">
+                                Le valeur est obligatoire
+                            </mat-error>
+
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </ng-template>
+
+
+                <ng-template [ngSwitchCase]="'BOOLEAN'">
+                    <mat-grid-tile [colspan]="1" [rowspan]="1">
+                        <mat-slide-toggle formControlName="valeur">Oui ou Non ?</mat-slide-toggle>
+
+                        <mat-error *ngIf="valeur.invalid && (valeur.dirty || valeur.touched) && valeur.errors?.required">
+                            Le valeur est obligatoire
+                        </mat-error>
+                    </mat-grid-tile>
+                </ng-template>
+
+
+
+                <ng-template [ngSwitchCase]="'TEXTRICHE'">
+                    <mat-grid-tile [colspan]="1" [rowspan]="3">
+                        <angular-editor class="sycad-text-riche" formControlName="valeur" [config]="editorConfig"></angular-editor>
+                    </mat-grid-tile>
+                </ng-template>
+
+                <ng-template [ngSwitchCase]="'NUMBER'">
+                    <mat-grid-tile [colspan]="1" [rowspan]="1">
+                        <mat-form-field appearance="outline" fxFlex="90">
+                            <mat-label>Valeur</mat-label>
+                            <input matInput placeholder="Valeur" type="number" [attr.autocomplete]="'off'" formControlName="valeur" />
+                            <mat-error *ngIf="valeur.invalid && (valeur.dirty || valeur.touched) && valeur.errors?.required">
+                                Le valeur est obligatoire
+                            </mat-error>
+
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </ng-template>
+                <ng-template [ngSwitchCase]="'URL'">
+                    <mat-grid-tile [colspan]="1" [rowspan]="1">
+                        <mat-form-field appearance="outline" fxFlex="90">
+                            <mat-label>Valeur</mat-label>
+                            <input matInput placeholder="Valeur" [attr.autocomplete]="'off'" formControlName="valeur" />
+                            <mat-icon matPrefix>insert_link</mat-icon>
+                            <mat-error *ngIf="valeur.invalid && (valeur.dirty || valeur.touched) && valeur.errors?.required">
+                                Le valeur est obligatoire
+                            </mat-error>
+
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </ng-template>
+
+                <ng-template [ngSwitchDefault]>
+                    type inconnu {{parametre.typeValeurParametre}}
+                </ng-template>
+
+
+            </ng-container>
+
+        </mat-grid-list>
+
+    </div>
+    <div mat-dialog-actions fxLayout="row" align="end">
+        <button mat-raised-button color="warn" type="button" (click)="closeFormModal()">Annuler</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+      <span *ngIf="!parametre.id">Enregistrer</span><span *ngIf="parametre.id">Mettre à jour</span>
+    </button>
+    </div>
+
+</form>

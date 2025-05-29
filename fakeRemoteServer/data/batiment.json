@@ -1,0 +1,61 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "numero": "IM01",
+      "libelle": "Parcelle",
+      "dimenssion": "250 m2",
+      "dateRealisation": "20/04/2021",
+      "parcelle": "PAR-00258",
+      "typeImmeuble": "Batiment",
+      "type": "VILLA F5",
+      "niveau": "5",
+      "destination": "Institut d'enseignement"
+    },
+    {
+      "id": 2,
+      "numero": "IM01",
+      "libelle": "Parcelle",
+      "dimenssion": "250 m2",
+      "dateRealisation": "20/04/2021",
+      "parcelle": "PAR-00258",
+      "typeImmeuble": "Batiment",
+      "type": "VILLA F4",
+      "niveau": "2",
+      "destination": "Institut d'enseignement"
+    },
+    {
+      "id": 3,
+      "numero": "IM01",
+      "libelle": "Parcelle",
+      "dimenssion": "250 m2",
+      "dateRealisation": "20/04/2021",
+      "parcelle": "PAR-00258",
+      "typeImmeuble": "Batiment",
+      "type": "VILLA F3",
+      "niveau": "1",
+      "destination": "Institut d'enseignement"
+    },
+    {
+      "id": 4,
+      "numero": "IM01",
+      "libelle": "Parcelle",
+      "dimenssion": "250 m2",
+      "dateRealisation": "20/04/2021",
+      "parcelle": "PAR-00258",
+      "typeImmeuble": "Batiment",
+      "type": "VILLA F5",
+      "niveau": "2",
+      "destination": "Institut d'enseignement"
+    }
+
+  ]
+}

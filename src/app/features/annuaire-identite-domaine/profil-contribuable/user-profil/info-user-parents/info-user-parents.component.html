@@ -1,0 +1,20 @@
+<mat-accordion class="list-profil-infos profil-panel">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title class="panel-header-parents" fxLayout="row" fxLayoutAlign="start start">
+        <h3>Filiation</h3>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card-content>
+      <mat-list>
+        <app-profil-list-item-icon [value]="userData?.nomPere" label="Nom du père" ></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.prenomsPere" label="Prénoms du père" ></app-profil-list-item-icon>
+        <br>
+        <mat-divider></mat-divider>
+        <br>
+        <app-profil-list-item-icon [value]="userData?.nomMere" label="Nom de la mère"></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.prenomsMere" label="Prénoms de la mère"></app-profil-list-item-icon>
+      </mat-list>
+    </mat-card-content>
+  </mat-expansion-panel>
+</mat-accordion>

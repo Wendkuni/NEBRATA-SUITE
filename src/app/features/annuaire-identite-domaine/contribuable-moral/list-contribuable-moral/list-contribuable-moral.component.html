@@ -1,0 +1,100 @@
+<!--  -->
+<mat-card-content>
+
+  <mat-tab-group>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="sycad-form-tab-label-icon">view_list</mat-icon>
+        Listes
+      </ng-template>
+      <app-liste-contribuable-moral [contribuable]="context"></app-liste-contribuable-moral>
+    </mat-tab>
+    <mat-tab>
+
+      <ng-template mat-tab-label>
+        <mat-icon class="sycad-form-tab-label-icon">view_module</mat-icon>
+        Cartes
+      </ng-template>
+      <div fxLayout="row" fxLayoutAlign=" center" class="flex-p">
+        <div fxLayout="row">
+          <mat-button-toggle-group #group="matButtonToggleGroup" appearance="legacy">
+
+            <mat-button-toggle value="add" (click)="ajout()">
+              <mat-icon>person_add</mat-icon>
+            </mat-button-toggle>
+
+
+            <mat-button-toggle value="search">
+              <mat-icon>search</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+
+        <div fxFlex="30" fxLayoutAlign="start center">
+          <form class="user-search" [class.show]="group.value == 'search'">
+            <mat-form-field class="user-search-input">
+              <input matInput [(ngModel)]="this.context.search" placeholder="Rechercher un contribuable..." autocomplete="off" (keyup)="onGlobalSearch()" [ngModelOptions]="{standalone: true}">
+              <mat-icon matSuffix (click)="this.context.search = ''; onGlobalSearch()" class="sycad-element-clickable">clear</mat-icon>
+            </mat-form-field>
+          </form>
+        </div>
+
+
+        <div fxLayout="row" fxFlex="60" fxLayoutAlign="end center">
+          <mat-button-toggle-group #viewType="matButtonToggleGroup" appearance="legacy">
+            <mat-button-toggle value="grid" [checked]="true">
+              <mat-icon>view_module</mat-icon>
+            </mat-button-toggle>
+            <!--            <mat-button-toggle value="list">-->
+            <!--              <mat-icon>view_list</mat-icon>-->
+            <!--            </mat-button-toggle>-->
+          </mat-button-toggle-group>
+        </div>
+      </div>
+
+
+      <div *ngIf="viewType.value == 'grid'" fxLayout="row wrap">
+        <div *ngFor="let contribuable of context.items" fxFlex="100" fxFlex.gt-md="33.3" fxFlex.md="50" class="flex-p">
+          <app-contribuable-moral-card [contribuable]="contribuable" (delete)="supprimer($event)" [type]="viewType.value"></app-contribuable-moral-card>
+        </div>
+      </div>
+
+      <!--      <div *ngIf="viewType.value == 'list'" fxLayout="row wrap">-->
+      <!--        <div *ngFor="let contribuable of context.items" fxFlex="100" class="flex-p">-->
+      <!--          <app-contribuable-physique-card [contribuable]="contribuable" (delete)="supprimer($event)" [type]="viewType.value"></app-contribuable-physique-card>-->
+      <!--        </div>-->
+      <!--      </div>-->
+
+
+
+
+
+      <div fxLayout="row wrap">
+        <div fxFlex="100" class="flex-p">
+          <mat-card class="p-0 text-center">
+
+            <mat-paginator [length]="context.totalCount" (page)="onPageEvent($event)" [pageSizeOptions]="[3,6,10, 15]" showFirstLastButtons class="mat-paginator-sticky"></mat-paginator>
+          </mat-card>
+        </div>
+      </div>
+      <div *ngIf="!context.items" fxLayout="column" fxLayoutAlign="center center" class="user-spinner">
+        <mat-spinner color="primary"></mat-spinner>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</mat-card-content>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

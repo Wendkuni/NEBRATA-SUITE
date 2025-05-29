@@ -1,0 +1,75 @@
+<button class="close" mat-button mat-dialog-close><mat-icon >close</mat-icon></button>
+<h1 mat-dialog-title class="modifier-text"><span *ngIf="!categoriePieceIdentite.id">Créer une nouvelle catégorie de pièce</span><span *ngIf="categoriePieceIdentite.id">Modifier: {{categoriePieceIdentite.libelle}}</span></h1>
+<div class="sycad-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
+<form [formGroup]="formulaire" class="role-form" (ngSubmit)="onSubmit()">
+    <div class="sycad-zone-modal-form-edition" mat-dialog-content perfectScrollbar>
+        <mat-grid-list cols="1" rowHeight="100px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div fxFlex="100">
+                    <ng-select formControlName="typePieceOficielles" placeholder="Type de catégorie" appendTo="body" [searchable]="false" [clearable]="false" [multiple]="true">
+                        <ng-option value="CONTRIBUABLEMORAL">
+                            Contribuable moral
+                        </ng-option>
+                        <ng-option value="ACTEUR">
+                            Acteur
+                        </ng-option>
+                        <ng-option value="CONTRIBUABLEPHYSIQUE">
+                            Contribuable physique
+                        </ng-option>
+                        <ng-option value="INDIVISION">
+                            Indivision
+                        </ng-option>
+                      <ng-option value="AGENT">
+                        Agent
+                      </ng-option>
+                    </ng-select>
+                    <mat-error *ngIf="typePieceOficielles.invalid && (typePieceOficielles.dirty || typePieceOficielles.touched) && typePieceOficielles.errors?.required">
+                        Le type est obligatoire
+                    </mat-error>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Code</mat-label>
+                    <input matInput placeholder="Code" [attr.autocomplete]="'off'" formControlName="code" />
+                    <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && code.errors?.required">
+                        Le code est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && ( code.errors?.minlength || code.errors?.maxlength )">
+                        La taille du code est limité entre 2 et 150 caractères
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Libellé</mat-label>
+                    <input matInput placeholder="Libellé" [attr.autocomplete]="'off'" formControlName="libelle" />
+                    <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && libelle.errors?.required">
+                        Le libellé est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && ( libelle.errors?.minlength || libelle.errors?.maxlength )">
+                        La taille du libellé est limité entre 2 et 150 caractères
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <div style="width: 40%; margin-bottom: 4%;">
+                    <div fxLayoutAlign="space-between center">
+                        <mat-label id="identite" class="label-title">Est une pièce d'identité</mat-label>
+                        <mat-slide-toggle formControlName="identite" aria-labelledby="identite"></mat-slide-toggle>
+                    </div>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+    <div mat-dialog-actions fxLayout="row" align="end">
+        <button mat-raised-button color="warn" type="button" (click)="closeFormModal()">Annuler</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+      <span *ngIf="!categoriePieceIdentite.id">Enregistrer</span><span *ngIf="categoriePieceIdentite.id">Mettre à jour</span>
+    </button>
+
+    </div>
+
+</form>

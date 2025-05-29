@@ -1,0 +1,41 @@
+<button class="close" mat-button mat-dialog-close><mat-icon >close</mat-icon></button>
+<h1 mat-dialog-title class="modifier-text"><span *ngIf="!typeStructure.id">Créer un nouveau type structure</span><span *ngIf="typeStructure.id">Modifier: {{typeStructure.nom}}</span></h1>
+<div class="sycad-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+<form [formGroup]="formulaire" (ngSubmit)="onSubmit()">
+    <div class="sycad-zone-modal-form-edition" mat-dialog-content perfectScrollbar>
+        <mat-grid-list cols="1" rowHeight="100px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <mat-form-field appearance="outline" fxFlex="90">
+                    <mat-label>Nom</mat-label>
+                    <input matInput placeholder="Nom" [attr.autocomplete]="'off'" formControlName="nom" />
+                    <mat-error *ngIf="nom.invalid && (nom.dirty || nom.touched) && nom.errors?.required">
+                        Le libellé est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="nom.invalid && (nom.dirty || nom.touched) && (nom.errors?.minlength || nom.errors?.maxlength )">
+                        La taille du libellé est limité entre 2 et 150 caractères
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <mat-form-field appearance="outline" fxFlex="90">
+                    <mat-label>Description</mat-label>
+                    <input matInput placeholder="Description" [attr.autocomplete]="'off'" formControlName="description" />
+                    <mat-error *ngIf="description.invalid && (description.dirty || description.touched) && description.errors?.required">
+                        Le libellé est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="description.invalid && (description.dirty || description.touched) && (description.errors?.minlength || nom.errors?.maxlength )">
+                        La taille du libellé est limité entre 2 et 150 caractères
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+    <div mat-dialog-actions fxLayout="row" align="end">
+        <button mat-raised-button color="warn" type="button" (click)="closeFormModal()">Annuler</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+        <span *ngIf="!typeStructure.id">Enregistrer</span><span *ngIf="typeStructure.id">Mettre à jour</span>
+      </button>
+    </div>
+</form>

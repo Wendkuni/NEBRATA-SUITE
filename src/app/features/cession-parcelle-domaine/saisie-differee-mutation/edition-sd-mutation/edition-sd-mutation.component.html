@@ -1,0 +1,132 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+
+
+    <mat-card-header>
+        <mat-card-subtitle>
+            <h3>
+                <span *ngIf="!mutation">Démarrer une saisie différée d'un dossier de mutation </span>
+                <span *ngIf="mutation?.numero">{{transition.libelle}} : sur le dossier {{mutation.numero}}</span>
+            </h3>
+
+
+            <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+                La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+            </mat-error>
+
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+
+        <mat-tab-group #tabGroup>
+          <mat-tab *ngIf="!mutation">
+            <ng-template mat-tab-label>
+                <mat-icon class="sycad-form-tab-label-icon">info</mat-icon>
+
+                 <ng-container  >Details du processus</ng-container>
+            </ng-template>
+
+            <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+
+                <ng-container [ngSwitch]="true">
+                  <!-- header -->
+
+                <app-details-processus-tab-pane [processus]="processus"> </app-details-processus-tab-pane>
+
+
+                <!-- button commencer, id tabGroup -> mat-tab-group -->
+                  <div style="display: flex;justify-content: space-between; align-items: end;">
+                    <button mat-raised-button color="primary" style=" margin-left: auto;padding:5px 5px" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1">
+                      Commencer
+                      <mat-icon>keyboard_arrow_right</mat-icon>
+                    </button>
+                  </div>
+
+                </ng-container>
+
+            </div>
+        </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">face</mat-icon>
+
+                    <ng-container *ngIf="mutation?.numero">Formulaire transition {{transition.libelle}}</ng-container>
+                    <ng-container *ngIf="!mutation">Création d'une mutation</ng-container>
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+                    <ng-container [ngSwitch]="true">
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'SAISIE_DIFFEREE_MUTATION_TRANSMISSION_BROUILLON' || transition?.code === 'SAISIE_DIFFEREE_MUTATION_TRANSMISSION_VALIDE'">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [codeCommune]="mutation?.parcelle?.ilot?.section?.commune?.code" [dossierProcessus]="mutation" [fixedStructures]="false" [processusService]="mutationService" [transition]="transition" [frontendUrl]="getFrontendTemplate()">
+
+                            </app-transmission-dossier>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="transition?.code==='SAISIE_DIFFEREE_MUTATION_BROUILLON_TO_BROUILLON'">
+                            <pc-saisie-sd-mutation (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [mutation]="mutation" [transition]="transition" [processus]="processus"></pc-saisie-sd-mutation>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="transition?.code==='SAISIE_DIFFEREE_MUTATION_BROUILLON_TO_VALIDE'">
+                            <pc-saisie-sd-mutation (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [mutation]="mutation" [transition]="transition" [processus]="processus"></pc-saisie-sd-mutation>
+                        </ng-template>
+                        <ng-template [ngSwitchCase]=" transition?.code === 'SAISIE_DIFFEREE_MUTATION_BROUILLON_TO_ANNULER'">
+                            <app-annulation-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="mutation" [transition]="transition" [processusService]="mutationService" [frontendUrl]="getFrontendTemplate()"></app-annulation-dossier-transition>
+                        </ng-template>
+
+                        <ng-template [ngSwitchDefault]>
+                            <pc-creation-sd-mutation (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus"></pc-creation-sd-mutation>
+                        </ng-template>
+
+
+                    </ng-container>
+
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="mutation?.numero">
+                <ng-template mat-tab-label>
+                    <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                </ng-template>
+                <div fxLayout="column" class="flex-p">
+                    <app-historique [numero]="mutation?.numero"></app-historique>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="mutation">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Entête de dossier
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+
+                    <app-entete [numero]="mutation?.numero" [processus]="'WRKFProcessSaisieDiffereeMutation'"></app-entete>
+                </div>
+            </mat-tab>
+
+
+          <mat-tab *ngIf="mutation">
+            <ng-template mat-tab-label>
+              <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+              Détail du dossier
+            </ng-template>
+            <div fxLayout="column" class="flex-p">
+              <app-vue-sd-mutation [noOpenActions]="true"></app-vue-sd-mutation>
+            </div>
+          </mat-tab>
+
+
+        </mat-tab-group>
+    </mat-card-content>
+
+
+
+
+
+
+
+</mat-card>

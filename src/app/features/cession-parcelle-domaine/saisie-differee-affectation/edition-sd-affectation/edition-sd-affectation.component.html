@@ -1,0 +1,134 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+
+
+    <mat-card-header>
+        <mat-card-subtitle>
+            <h3>
+                <span *ngIf="!affectation">Démarrer une saisie différée d'un dossier d'affectation </span>
+                <span *ngIf="affectation?.numero">{{transition.libelle}} : sur le dossier {{affectation.numero}}</span>
+            </h3>
+
+
+            <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+                La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+            </mat-error>
+
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+
+        <mat-tab-group  #tabGroup ng-reflect-color="primary">
+          <mat-tab *ngIf="!affectation">
+            <ng-template mat-tab-label>
+                <mat-icon class="sycad-form-tab-label-icon">info</mat-icon>
+
+                 <ng-container  >Details du processus</ng-container>
+            </ng-template>
+
+            <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+
+                <ng-container [ngSwitch]="true">
+                  <!-- header -->
+
+                <app-details-processus-tab-pane [processus]="processus"> </app-details-processus-tab-pane>
+
+
+                <!-- button commencer, id tabGroup -> mat-tab-group -->
+                  <div style="display: flex;justify-content: space-between; align-items: end;">
+                    <button mat-raised-button color="primary" style=" margin-left: auto;padding:5px 5px" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1">
+                      Commencer
+                      <mat-icon>keyboard_arrow_right</mat-icon>
+                    </button>
+                  </div>
+
+                </ng-container>
+
+            </div>
+        </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">face</mat-icon>
+
+                    <ng-container *ngIf="affectation?.numero">Formulaire transition {{transition.libelle}}</ng-container>
+                    <ng-container *ngIf="!affectation">Création d'une affectation</ng-container>
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+                    <ng-container [ngSwitch]="true">
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'SAISIE_DIFFEREE_AFFECTATION_TRANSMISSION_BROUILLON' || transition?.code === 'SAISIE_DIFFEREE_AFFECTATION_TRANSMISSION_VALIDE'">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [codeCommune]="affectation?.parcelle?.ilot?.section?.commune?.code"[dossierProcessus]="affectation" [fixedStructures]="false" [processusService]="affectationService" [transition]="transition" [frontendUrl]="getFrontendTemplate()">
+
+                            </app-transmission-dossier>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="transition?.code==='SAISIE_DIFFEREE_AFFECTATION_BROUILLON_TO_BROUILLON'">
+                            <pc-saisie-sd-affectation (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [affectation]="affectation" [transition]="transition" [processus]="processus"></pc-saisie-sd-affectation>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="transition?.code==='SAISIE_DIFFEREE_AFFECTATION_BROUILLON_TO_VALIDE'">
+                            <pc-saisie-sd-affectation (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [affectation]="affectation" [transition]="transition" [processus]="processus"></pc-saisie-sd-affectation>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'SAISIE_DIFFEREE_AFFECTATION_BROUILLON_TO_ANNULER'">
+                            <app-annulation-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="affectation" [transition]="transition" [processusService]="affectationService" [frontendUrl]="getFrontendTemplate()">
+
+                            </app-annulation-dossier-transition>
+                        </ng-template>
+
+                        <ng-template [ngSwitchDefault]>
+                            <pc-creation-sd-affectation (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus"></pc-creation-sd-affectation>
+                        </ng-template>
+
+
+                    </ng-container>
+
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="affectation?.numero">
+                <ng-template mat-tab-label>
+                    <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                </ng-template>
+                <div fxLayout="column" class="flex-p">
+                    <app-historique [numero]="affectation?.numero"></app-historique>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="affectation">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Entête de dossier
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+
+                    <app-entete [numero]="affectation?.numero" [processus]="'WRKFProcessSaisieDiffereeAffectation'"></app-entete>
+                </div>
+            </mat-tab>
+
+          <mat-tab *ngIf="affectation">
+            <ng-template mat-tab-label>
+              <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+              Détail du dossier
+            </ng-template>
+            <div fxLayout="column" class="flex-p">
+              <app-vue-sd-affectation [noOpenActions]="true"></app-vue-sd-affectation>
+            </div>
+          </mat-tab>
+
+
+        </mat-tab-group>
+    </mat-card-content>
+
+
+
+
+
+
+
+</mat-card>

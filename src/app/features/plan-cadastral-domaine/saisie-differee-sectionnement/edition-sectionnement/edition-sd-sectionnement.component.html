@@ -1,0 +1,106 @@
+<mat-card>
+  <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+
+
+  <mat-card-header>
+    <mat-card-subtitle>
+      <h3>
+        <span *ngIf="!sdSectionnementElement">Démarrer une saisie différée d'un dossier de saisie sectionnement</span>
+        <span *ngIf="sdSectionnementElement?.numero">{{transition.libelle}} : sur le dossier {{sdSectionnementElement.numero}}</span>
+      </h3>
+
+
+      <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+        La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+      </mat-error>
+
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="sycad-form-tab-label-icon">face</mat-icon>
+
+          <ng-container *ngIf="sdSectionnementElement?.numero">Formulaire transition {{transition.libelle}}</ng-container>
+          <ng-container *ngIf="!sdSectionnementElement">Création d'une affectation</ng-container>
+        </ng-template>
+
+        <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+          <ng-container [ngSwitch]="true">
+
+
+            <ng-template [ngSwitchCase]=" transition?.code === 'SAISIE_DIFFEREE_SECTIONNEMENT_TRANSMISSION_BROUILLON' || transition?.code === 'SAISIE_DIFFEREE_SECTIONNEMENT_TRANSMISSION_VALIDE'">
+              <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)"  [codeCommune]="
+                        sdSectionnementElement?.sectionsADesactive[0]?.commune?.code
+                    " [dossierProcessus]="sdSectionnementElement" [fixedStructures]="false" [processusService]="sdSectionnementService" [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+            </ng-template>
+
+            <ng-template [ngSwitchCase]="transition?.code==='SAISIE_DIFFEREE_SECTIONNEMENT_BROUILLON_TO_BROUILLON'">
+              <app-saisie-sectionnement  (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [sdSectionnementElement]="sdSectionnementElement" [transition]="transition" [processus]="processus"></app-saisie-sectionnement>
+            </ng-template>
+
+            <ng-template [ngSwitchCase]="transition?.code==='SAISIE_DIFFEREE_SECTIONNEMENT_BROUILLON_TO_VALIDE'">
+              <app-saisie-sectionnement  (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [sdSectionnementElement]="sdSectionnementElement" [transition]="transition" [processus]="processus"></app-saisie-sectionnement>
+            </ng-template>
+            <ng-template [ngSwitchCase]="transition?.code=='SAISIE_DIFFEREE_SECTIONNEMENT_EDITION_DOCUMENT'">
+              <app-archiver-document (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [sdSectionnementElement]="sdSectionnementElement" [processus]="processus" [transition]="transition"></app-archiver-document>
+            </ng-template>
+            <ng-template [ngSwitchCase]="transition?.code=='SAISIE_DIFFEREE_SECTIONNEMENT_EDITION_DOCUMENT_TO_EDITION_DOCUMENT'">
+              <app-archiver-document (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [sdSectionnementElement]="sdSectionnementElement" [transition]="transition" [processus]="processus" ></app-archiver-document>
+            </ng-template>
+
+            <ng-template [ngSwitchCase]=" transition?.code === 'SAISIE_DIFFEREE_SECTIONNEMENT_BROUILLON_TO_ANNULER'">
+              <app-annulation-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="sdSectionnementElement" [transition]="transition" [processusService]="sdSectionnementService" [frontendUrl]="getFrontendTemplate()"></app-annulation-dossier-transition>
+            </ng-template>
+
+            <ng-template [ngSwitchDefault]>
+              <app-sd-creation (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus"></app-sd-creation>
+            </ng-template>
+
+
+          </ng-container>
+
+        </div>
+      </mat-tab>
+
+
+
+      <mat-tab *ngIf="sdSectionnementElement?.numero">
+        <ng-template mat-tab-label>
+          <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+        </ng-template>
+        <div fxLayout="column" class="flex-p">
+          <app-historique [numero]="sdSectionnementElement?.numero"></app-historique>
+        </div>
+      </mat-tab>
+
+      <mat-tab *ngIf="sdSectionnementElement">
+        <ng-template mat-tab-label>
+          <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+          Entête de dossier
+        </ng-template>
+
+        <div fxLayout="column" class="flex-p">
+
+          <app-entete [numero]="sdSectionnementElement?.numero" [processus]="'WRKFProcessSaisieDiffereeMaj'"></app-entete>
+        </div>
+      </mat-tab>
+
+      <mat-tab *ngIf="sdSectionnementElement" >
+        <ng-template mat-tab-label>
+          <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+          Détail du dossier
+        </ng-template>
+
+        <div  fxLayout="column" class="flex-p">
+
+          <app-vue-sd-sectionnement [noOpenActions]="true"></app-vue-sd-sectionnement>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+
+</mat-card>

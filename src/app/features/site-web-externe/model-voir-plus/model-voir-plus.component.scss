@@ -1,0 +1,202 @@
+.menu .menu-element {
+  padding: 10px;
+}
+
+.menu .menu-element .logo-mobile {
+  display: none;
+}
+
+.menu .menu-element .logo-mobile .img-dgi, .menu .menu-element .logo-mobile p {
+  display: none;
+}
+
+.menu .menu-element .logo {
+  margin-left: -150px;
+}
+
+.bannier {
+  width: 100%;
+  height: 40%;
+  background-image: url("./../../../../assets/img/landing/bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.bannier .element {
+  background-color: rgba(0, 0, 0, 0.849);
+  padding: 10px;
+}
+
+.bannier .element .haut {
+  padding: 25px;
+  padding-bottom: 50px;
+}
+
+.bannier .element .haut .bienvenu {
+  color: white;
+  text-align: center;
+  font-size: 60px;
+  font-weight: bold;
+}
+
+.bannier .element .haut .definition {
+  margin-top: 40px;
+  color: white;
+  font-size: 26px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.bannier .element .haut .mot {
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.bannier .element .bas {
+  font-size: 18px;
+  color: white;
+}
+
+.bannier .element .bas .text-chevaux {
+  padding: 10px;
+}
+
+.bannier .element .bas .text-impot {
+  text-align: right;
+  padding: 10px;
+}
+
+
+.footer{
+  padding-top: 50px;
+  padding-bottom: 25px;
+  background-color: rgba(20, 19, 19, 0.959);
+  color: white;
+  .all-elements{
+    .logo-element{
+      //background-color: aliceblue;
+      //display: none;
+      // img{
+      //   margin-left:5px;
+      //   display: none;
+      // }
+      // p{
+      //   display: none;
+      // }
+    }
+    .element{
+      margin: 10px;
+      //background-color: black;
+      .titre-element{
+       padding: 15px;
+        text-align: center;
+        font-weight: bold;
+      }
+      .contenu{
+        padding: 15px;
+      }
+      .footer-element{
+        width: 100%;
+        //border: 1px solid gray;
+        button{
+          width: 100%;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+.copy{
+  padding-bottom: 25px;
+  .all-elements{
+    .element{
+      h3{
+        text-align: center;
+      }
+    }
+  }
+}
+
+
+@media all and (min-width: 100px) and (max-width: 1041px) {
+  .bannier {
+    width: 100%;
+    height: 40%;
+    background-image: url("./../../../../assets/img/landing/Sycad-slide-mobile.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .bannier .element {
+    background-color: rgba(0, 0, 0, 0.849);
+    padding: 10px;
+  }
+  .bannier .element .haut {
+    padding: 25px;
+    padding-bottom: 100px;
+  }
+  .bannier .element .haut .bienvenu {
+    color: white;
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+  }
+  .bannier .element .haut .definition {
+    margin-top: 40px;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+  }
+  .bannier .element .haut .mot {
+    color: white;
+    font-size: 15px;
+    text-align: center;
+    margin-top: 40px;
+  }
+  .bannier .element .bas .img-chevaux, .bannier .element .bas .text-chevaux, .bannier .element .bas .img-dgi, .bannier .element .bas .text-impot {
+    display: none;
+  }
+  .menu .menu-element {
+    padding: 10px;
+  }
+  .menu .menu-element .logo-mobile {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .menu .menu-element .logo-mobile .img-dgi, .menu .menu-element .logo-mobile p {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .menu .menu-element .logo p {
+    display: none;
+  }
+
+  .copy{
+    //background-color: aqua;
+    img{
+      display: none;
+    }
+  }
+
+  .disp{
+    display: none;
+  }
+
+  .logo-element{
+//background-color: aliceblue;
+    //display: none;
+    img{
+      display: flex;
+    }
+    p{
+      display: flex;
+    }
+  }
+}
+/*# sourceMappingURL=header-landing.component.css.map */
+

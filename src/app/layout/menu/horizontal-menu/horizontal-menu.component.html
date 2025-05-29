@@ -1,0 +1,30 @@
+<div [fxLayout]="(menuParentId == 0) ? 'row' : 'column'" fxLayoutAlign="start center">
+    <div *ngFor="let menu of menuItems" class="horizontal-menu-item w-100">
+        <a *ngIf=" menu.routerLink && !menu.hasSubMenu " mat-button fxLayout="row" [fxLayoutAlign]="(settings.preference.menuType=='normal') ? 'start center' : 'center center'" [routerLink]="[menu.routerLink]" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}"
+            [matTooltip]="menu.titre" matTooltipPosition="above" [matTooltipDisabled]="(settings.preference.menuType=='mini') ? 'false' : 'true'" [id]="'horizontal-menu-item-'+menu.id">
+            <mat-icon class="horizontal-menu-icon">{{menu.icon}}</mat-icon>
+            <span class="horizontal-menu-title">{{menu.titre}}</span>
+        </a>
+        <a *ngIf="  menu.href && !menu.subMenu " mat-button fxLayout="row" [fxLayoutAlign]="(settings.preference.menuType=='normal') ? 'start center' : 'center center'" [attr.href]="menu.href || ''" [attr.target]="menu.target || ''" [matTooltip]="menu.titre"
+            matTooltipPosition="above" [matTooltipDisabled]="(settings.preference.menuType=='mini') ? 'false' : 'true'" [id]="'horizontal-menu-item-'+menu.id">
+            <mat-icon class="horizontal-menu-icon">{{menu.icon}}</mat-icon>
+            <span class="horizontal-menu-title">{{menu.titre}}</span>
+        </a>
+        <a *ngIf=" menu.hasSubMenu" mat-button fxLayout="row" [fxLayoutAlign]="(settings.preference.menuType=='normal') ? 'start center' : 'center center'" [matTooltip]="menu.titre" matTooltipPosition="above" [matTooltipDisabled]="(settings.preference.menuType=='mini') ? 'false' : 'true'"
+            [id]="'horizontal-menu-item-'+menu.id">
+            <mat-icon class="horizontal-menu-icon">{{menu.icon}}</mat-icon>
+            <span class="horizontal-menu-title">{{menu.titre}}</span>
+        </a>
+
+        <div *ngIf="  menu.hasSubMenu" class="horizontal-sub-menu" [id]="'horizontal-sub-menu-'+menu.id">
+
+            <app-horizontal-menu [menuParentId]="menu.id"></app-horizontal-menu>
+        </div>
+    </div>
+</div>
+<div class="lds-ellipsis" *ngIf="menuService.loading">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</div>

@@ -1,0 +1,227 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <form [formGroup]="formulaire" class="baremeImpot-form" (ngSubmit)="onSubmit()">
+        <mat-card-header>
+            <mat-card-subtitle>
+                <h3>
+                    <span *ngIf="!baremeImpot.id">Créer un nouveau bareme impôt</span>
+                    <span *ngIf="baremeImpot.id">Modifier bareme impôt: {{baremeImpot.degreSuccessoral?.libelle}} successoral</span>
+                </h3>
+                <mat-error class="global-error-valiator" *ngIf="isTrancheMin">
+                    La tranche minimale doit etre inferieur a la tranche maximale.
+                </mat-error>
+                <mat-error class="global-error-valiator" *ngIf="isTrancheMax">
+                    La tranche maximale doit etre superieur a la tranche minimale.
+                </mat-error>
+
+
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <ng-select [items]="natureImpotRemoteAutocomplete.listRessource$ | async" [typeahead]="natureImpotRemoteAutocomplete.term" [loading]="natureImpotRemoteAutocomplete.loading" (search)="onSearchNatureImpot($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle"
+                        bindValue="id" placeholder="Nature impôt (*)" formControlName="natureImpot">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                    <mat-error *ngIf="natureImpot.invalid && (natureImpot.dirty || natureImpot.touched) && natureImpot.errors?.required">
+                        La nature Impot est obligatoire
+                    </mat-error>
+
+                </div>
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <ng-select [items]="processusRemoteAutocomplete.listRessource$ | async" [loading]="processusRemoteAutocomplete.loading" (search)="onSearchProcessus($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle" bindValue="code" labelForId="codeProcessus"
+                        formControlName="codeProcessus" placeholder="Processus (*)">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                    <mat-error *ngIf="codeProcessus.invalid && (codeProcessus.dirty || codeProcessus.touched) && codeProcessus.errors?.required">
+                        La nature Impot est obligatoire
+                    </mat-error>
+                </div>
+
+            </div>
+
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <mat-label>Type contribuable</mat-label>
+                    <mat-select formControlName="contribuableType">
+                        <mat-option [value]="contribuableType" *ngFor="let contribuableType of contribuableTypes">
+                            {{contribuableType}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <!--   <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <ng-select [items]="communeRemoteAutocomplete.listRessource$ | async" [typeahead]="communeRemoteAutocomplete.term" [loading]="communeRemoteAutocomplete.loading" (search)="onSearchCommune($event)" (change)="onChangeCommune($event)" appendTo="body" [selectOnTab]="true"
+                        bindLabel="nom" bindValue="id" labelForId="commune" [(ngModel)]="communeId" [ngModelOptions]="{standalone: true}" placeholder="Commune">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div> -->
+
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <ng-select [items]="arrondissementRemoteAutocomplete.listRessource$ | async" [typeahead]="arrondissementRemoteAutocomplete.term" [groupBy]="groupByFnArrondissement" [groupValue]="groupValueFnArrondissement" [loading]="arrondissementRemoteAutocomplete.loading"
+                        [loading]="arrondissementRemoteAutocomplete.loading" (search)="onSearchArrondissement($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom" bindValue="id" placeholder="Arrondissement" formControlName="arrondissement">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+
+
+            </div>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <ng-select [items]="destinationRemoteAutocomplete.listRessource$ | async" [typeahead]="destinationRemoteAutocomplete.term" [loading]="destinationRemoteAutocomplete.loading" (search)="onSearchDestination($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle"
+                        bindValue="id" placeholder="Destination" formControlName="destination">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <ng-select [items]="degreSuccessoralRemoteAutocomplete.listRessource$ | async" [typeahead]="degreSuccessoralRemoteAutocomplete.term" [loading]="degreSuccessoralRemoteAutocomplete.loading" (search)="onSearchDegreSuccessoral($event)" appendTo="body" [selectOnTab]="true"
+                        bindLabel="libelle" bindValue="id" placeholder="Degré successoral" formControlName="degreSuccessoral">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+
+
+            </div>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <mat-label>Domaine</mat-label>
+                    <mat-select formControlName="domaine">
+                        <mat-option [value]="domaine" *ngFor="let domaine of domaines">
+                            {{domaine}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="20">
+                    <mat-label>Etat mise en valeur</mat-label>
+                    <mat-select formControlName="etatMev">
+                        <mat-option [value]="etatMev" *ngFor="let etatMev of etatMevs">
+                            {{etatMev}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+            </div>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="20">
+                    <mat-label>Taux</mat-label>
+                    <input matInput placeholder="Taux (**)" [attr.autocomplete]="'off'" formControlName="taux" type="number" />
+
+                    <mat-error class="global-error-valiator" *ngIf="taux.invalid  && (taux.touched || taux.dirty) && taux.errors?.required">
+                        Le taux ou la valeur sont obligatoires
+                    </mat-error>
+                </mat-form-field>
+
+
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="20">
+                    <mat-label>Valeur</mat-label>
+                    <input matInput placeholder="Valeur (**)" [attr.autocomplete]="'off'" formControlName="valeur" type="number" />
+
+                    <mat-error class="global-error-valiator" *ngIf="valeur.invalid && (valeur.touched || valeur.dirty) && valeur.errors?.required">
+                        Le taux ou la valeur sont obligatoires
+                    </mat-error>
+
+                </mat-form-field>
+
+
+
+
+            </div>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="20">
+                    <mat-label>Tranche minimale</mat-label>
+                    <input placeholder="0" matInput placeholder="Tranche minimale" [attr.autocomplete]="'off'" formControlName="trancheMin" type="number" />
+
+                    <mat-error class="global-error-valiator" *ngIf="isTrancheMin">
+                        La tranche minimale doit etre inferieur a la tranche maximale.
+                    </mat-error>
+                </mat-form-field>
+
+
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="20">
+                    <mat-label>Tranche maximale</mat-label>
+                    <input placeholder="999 999 999 999" matInput placeholder="Tranche maximale" [attr.autocomplete]="'off'" formControlName="trancheMax" type="number" />
+
+                    <mat-error class="global-error-valiator" *ngIf="isTrancheMax">
+                        La tranche maximale doit etre superieur la tranche minimale.
+                    </mat-error>
+                </mat-form-field>
+
+
+
+            </div>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="49" [fxFlex.xl]="20">
+                    <mat-label>Unité</mat-label>
+                    <input matInput placeholder="Unité" [attr.autocomplete]="'off'" formControlName="unite" />
+                </mat-form-field>
+              <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="45" [fxFlex.xl]="40">
+                <ng-select [items]="cessionSourceRemoteAutocomplte.listRessource$ | async" [typeahead]="cessionSourceRemoteAutocomplte.term" [loading]="cessionSourceRemoteAutocomplte.loading" (search)="onSearchCessionSource($event)" appendTo="body" [selectOnTab]="true"
+                           bindLabel="libelle" bindValue="id" placeholder="Mode de cession" formControlName="cessionSource">
+                  <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+
+            <mat-card-actions [ngClass]="{'card-action-form': (activeMediaQuery === 'lg' || activeMediaQuery === 'xl' ), 'card-action-form-small': (activeMediaQuery === 'sm') }">
+                <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid || isTrancheMin || isTrancheMax">
+            <span *ngIf="!baremeImpot.id">Enregistrer</span><span *ngIf="baremeImpot.id">Mettre à
+                        jour</span>
+          </button>
+                </div>
+            </mat-card-actions>
+        </mat-card-content>
+    </form>
+</mat-card>

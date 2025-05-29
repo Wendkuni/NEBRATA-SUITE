@@ -1,0 +1,44 @@
+<form [formGroup]="reseauSociauxForm" class="form-container">
+
+
+
+    <div fxLayout="row" fxLayout.xs="row wrap" fxLayout.sm="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+        <div class="sycad-form-reseau-sociaux-ng-select sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="25" [fxFlex.lg]="20" [fxFlex.xl]="20">
+            <ng-select formControlName="type" placeholder="Type de réseau (*)" appendTo="body" [searchable]="false" [clearable]="false">
+                <ng-option value="FACEBOOK">
+                    Facebook
+                </ng-option>
+                <ng-option value="TWITTER">
+                    Twitter
+                </ng-option>
+                <ng-option value="LINKEDIN">
+                    LinkedIn
+                </ng-option>
+                <ng-option value="INSTAGRAM">
+                    Instagram
+                </ng-option>
+                <ng-option value="VIADEO">
+                    Viadeo
+                </ng-option>
+                <ng-option value="YOUTUBE">
+                    Youtube
+                </ng-option>
+            </ng-select>
+            <mat-error *ngIf="type.invalid && (type.dirty || type.touched) && type.errors?.required">
+                Le type est obligatoire
+            </mat-error>
+        </div>
+
+        <mat-form-field appearance="outline" class="sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="60" [fxFlex.lg]="60" [fxFlex.xl]="40">
+            <mat-label>Lien du profil (*)</mat-label>
+            <input matInput placeholder="Entrez le lien du profi" [attr.autocomplete]="'off'" formControlName="profil">
+            <mat-error *ngIf="profil.invalid && (profil.dirty || profil.touched) && profil.errors?.required">
+                Le profil est obligatoire
+            </mat-error>
+
+        </mat-form-field>
+
+    </div>
+
+</form>

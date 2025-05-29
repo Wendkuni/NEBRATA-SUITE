@@ -1,0 +1,64 @@
+<button class="close" mat-button mat-dialog-close><mat-icon >close</mat-icon></button>
+<h1 mat-dialog-title class="modifier-text"><span *ngIf="!exerciceFiscale.id">Créer une nouveau exercice fiscal</span><span *ngIf="exerciceFiscale.id">Modifier: {{exerciceFiscale.libelle}}</span></h1>
+<div class="sycad-loading-shade" *ngIf="isLoadingResults">
+  <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
+<form [formGroup]="formulaire" class="exerciceFiscale-form" (ngSubmit)="onSubmit()">
+  <div class="sycad-zone-modal-form-edition" mat-dialog-content perfectScrollbar>
+    <mat-grid-list cols="1" rowHeight="100px">
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="outline" fxFlex="90">
+          <mat-label>Année(*)</mat-label>
+          <input matInput  placeholder="Année(*)" formControlName="annee" type="number">
+          <mat-error *ngIf="annee.invalid && (annee.dirty || annee.touched) && annee.errors?.required">
+            L'année est obligatoire
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="outline" fxFlex="90">
+          <mat-label>Libellé(*)</mat-label>
+          <input matInput placeholder="Libellé(*)" [attr.autocomplete]="'off'" formControlName="libelle" />
+          <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && libelle.errors?.required">
+            Le libellé est obligatoire
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="outline" fxFlex="90">
+          <mat-label>Date de début</mat-label>
+          <input matInput [matDatepicker]="datedebut" placeholder="Date début" formControlName="datedebut">
+          <mat-datepicker-toggle matSuffix [for]="datedebut"></mat-datepicker-toggle>
+          <mat-datepicker #datedebut></mat-datepicker>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="outline" fxFlex="90">
+          <mat-label>Date de fin</mat-label>
+          <input matInput [matDatepicker]="datefin" placeholder="Date fin " formControlName="datefin">
+          <mat-datepicker-toggle matSuffix [for]="datefin"></mat-datepicker-toggle>
+          <mat-datepicker #datefin></mat-datepicker>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="outline" fxFlex="90">
+          <mat-label>Etat exercice fiscal</mat-label>
+          <mat-select formControlName="etat">
+            <mat-option [value]="etat" *ngFor="let etat of etats">
+              {{etat}}
+            </mat-option>
+          </mat-select>
+
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <div mat-dialog-actions fxLayout="row" align="end">
+    <button mat-raised-button color="warn" type="button" (click)="closeFormModal()">Annuler</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+      <span *ngIf="!exerciceFiscale.id">Enregistrer</span><span *ngIf="exerciceFiscale.id">Mettre à jour</span>
+    </button>
+  </div>
+</form>
+

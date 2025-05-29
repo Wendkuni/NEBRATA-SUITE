@@ -1,0 +1,8 @@
+<mat-card class="p-0 card-live ">
+    <mat-card-header class="p-1" fxLayoutAlign="space-between center">
+        <mat-card-subtitle class="m-0 ">Connecté(s) (live)</mat-card-subtitle>
+    </mat-card-header>
+    <div class="w-100 h-100p" fxLayoutAlign="center center">
+        <animation-count-digit [digit]="nombreUserOnline$ | async" [duration]="1000"></animation-count-digit>
+    </div>
+</mat-card>

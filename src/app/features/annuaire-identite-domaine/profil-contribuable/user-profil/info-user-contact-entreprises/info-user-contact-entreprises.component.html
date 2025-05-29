@@ -1,0 +1,24 @@
+<mat-accordion class="profil-panel">
+  <mat-expansion-panel>
+      <mat-expansion-panel-header>
+          <mat-panel-title class="panel-header-parents" fxLayout="row" fxLayoutAlign="start start">
+             <h3>Contacts Entreprises</h3>
+          </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-card-content>
+          <mat-list>
+            <ng-container *ngFor="let contactEntreprise of contactEntreprises">
+              <mat-list-item>
+                <p matLine><b>{{ contactEntreprise?.prenom }} {{ contactEntreprise.nom }}</b></p>
+                <h3>Tel: {{ contactEntreprise?.telephone ? contactEntreprise?.telephone : '...' }}</h3>
+                <h3>Email: {{ contactEntreprise?.email ? contactEntreprise?.email : '...' }}</h3>
+                <h3>Adresse: {{ contactEntreprise?.adresse?.libelle ? contactEntreprise?.adresse?.libelle : '...' }}</h3>
+                <h3>Genre: {{ contactEntreprise?.genre ? contactEntreprise?.genre : '...' }}</h3>
+                <h3>Fonction: {{ contactEntreprise?.fonction ? contactEntreprise?.fonction : '...' }}</h3>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+            </ng-container>
+          </mat-list>
+      </mat-card-content>
+  </mat-expansion-panel>
+</mat-accordion>

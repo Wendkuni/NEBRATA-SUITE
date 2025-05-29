@@ -1,0 +1,96 @@
+<mat-card>
+  <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <form [formGroup]="formulaire" class="user-form" (ngSubmit)="onSubmit()">
+    <mat-card-header>
+      <mat-card-subtitle>
+        <h3>
+          <span *ngIf="!service.id">Créer une service </span>
+          <span *ngIf="service.id">Modifier: [{{service.nom}}]</span>
+        </h3>
+        <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+          La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+        </mat-error>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-tab-group>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>business</mat-icon>
+            Informations de base
+          </ng-template>
+          <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+            <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+              <ng-select [items]="structureRemoteAutocomplete.listRessource$ | async" [typeahead]="structureRemoteAutocomplete.term" [loading]="structureRemoteAutocomplete.loading" (search)="onSearchStructure($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom" bindValue="id" placeholder="Structure (*)"
+                         formControlName="structure">
+                <ng-template ng-loadingspinner-tmp>
+                  <div class="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                </ng-template>
+              </ng-select>
+              <mat-error *ngIf="structure.invalid && (structure.dirty || structure.touched) && structure.errors?.required">
+                Il faut au moins le type de la structure
+              </mat-error>
+            </div>
+          </div>
+          <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+            <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+              <mat-label>Code (*)</mat-label>
+              <input matInput placeholder="Code" [attr.autocomplete]="'off'" formControlName="code" />
+              <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && code.errors?.required">
+                Le code est obligatoire
+              </mat-error>
+              <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && ( code.errors?.minlength || code.errors?.maxlength )">
+                La taille du code est limité entre 2 et 150 caractères
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+            <mat-label>Sigle(*)</mat-label>
+            <input matInput placeholder="Sigle" [attr.autocomplete]="'off'" formControlName="sigle" />
+              <mat-error *ngIf="sigle.invalid && (sigle.dirty || sigle.touched) && sigle.errors?.required">
+                Le sigle est obligatoire
+              </mat-error>
+              <mat-error *ngIf="sigle.invalid && (sigle.dirty || sigle.touched) && ( sigle.errors?.minlength || sigle.errors?.maxlength )">
+                La taille du sigle est limité entre 2 et 150 caractères
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+            <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+              <mat-label>Nom (*)</mat-label>
+              <input matInput placeholder="Nom" [attr.autocomplete]="'off'" formControlName="nom" />
+              <mat-error *ngIf="nom.invalid && (nom.dirty || nom.touched) && nom.errors?.required">
+                Le nom est obligatoire
+              </mat-error>
+              <mat-error *ngIf="nom.invalid && (nom.dirty || nom.touched) && ( nom.errors?.minlength || nom.errors?.maxlength )">
+                La taille du nom est limité entre 2 et 150 caractères
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-tab>
+        <mat-tab>
+          <form [formGroup]="localisation">
+            <ng-template mat-tab-label>Localisations</ng-template>
+            <app-localisation [formGroup]="localisation"></app-localisation>
+          </form>
+        </mat-tab>
+      </mat-tab-group>
+      <mat-card-actions [ngClass]="{'card-action-form': (activeMediaQuery === 'lg' || activeMediaQuery === 'xl' ), 'card-action-form-small': (activeMediaQuery === 'sm') }">
+        <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+          <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+
+          <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+            <span *ngIf="!service.id">Enregistrer</span><span *ngIf="service.id">Mettre à
+                        jour</span>
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card-content>
+  </form>
+</mat-card>

@@ -1,0 +1,43 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "valeur": "15",
+      "trancheMin": "15",
+      "trancheMax": "25",
+      "taux": "15%",
+      "degreSuccessoral": "12",
+      "domaine": "Particulier",
+      "etatMev": "Nu",
+      "natureImpot": "Imputation",
+      "arrondissement": "Boulmiougou",
+      "destination": "Agriculture",
+      "unite": "20",
+      "contribuableType": "Contribuable moral"
+
+    },
+    {
+      "id": 2,
+      "trancheMin": "15",
+      "trancheMax": "25",
+      "taux": "15%",
+      "valeur": "25",
+      "arrondissement": "Saaba",
+      "destination": "élevage",
+      "degreSuccessoral": "12",
+      "domaine": "Particulier",
+      "etatMev": "Nu",
+      "natureImpot": "Imputation",
+      "unite": "20",
+      "contribuableType": "Contribuable physique"
+    }
+  ]
+}

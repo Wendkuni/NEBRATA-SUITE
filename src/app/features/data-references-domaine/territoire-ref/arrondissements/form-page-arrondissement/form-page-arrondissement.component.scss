@@ -1,0 +1,35 @@
+.role-form {
+  .ng-select {
+    width: 100%;
+  }
+}
+.sycad-zone-modal-form-edition{
+  height:100vh;
+}
+.modifier-text{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+}
+.mat-grid-list {
+  overflow: hidden;
+}
+.form-container {
+  padding-top: 25px;
+}
+
+.sycad-form-adresse-ng-select {
+  margin-top: 0.5em;
+  .mat-error {
+    position: absolute;
+    font-size: 75%;
+  }
+  .ng-select {
+    width: 100%;
+  }
+}
+
+.container-form-field-radio {
+  margin-top: 1em;
+}

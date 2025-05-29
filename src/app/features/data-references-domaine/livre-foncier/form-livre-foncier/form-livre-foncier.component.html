@@ -1,0 +1,104 @@
+<form [formGroup]="formulaire" class="user-form form-group" (ngSubmit)="onSubmit()">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-subtitle>
+            <h3 *ngIf="!livreFoncier.id" class="custom-title">Créer une nouveau livre foncier</h3>
+            <h3 *ngIf="livreFoncier.id" class="custom-title">Modifier: {{livreFoncier.libelle}}</h3>
+    
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+    
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+        <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+            <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+        </div>
+
+            <div fxLayoutAlign="space-between center" style="margin-top: 1%;">
+                <div class="sycad-form-ng-select"  [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="60" [fxFlex.xl]="60">
+                    <ng-select [items]="structureRemoteAutoComplete.listRessource$ | async" [typeahead]="structureRemoteAutoComplete.term"
+                    [loading]="structureRemoteAutoComplete.loading" (search)="onSearchStructure($event)" appendTo="body"
+                    [selectOnTab]="true" bindLabel="nom" bindValue="id" labelForId="structure" placeholder="Structure" formControlName="structure">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start" style="margin-top: 1%">
+            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="60" [fxFlex.xl]="60">
+                <mat-label>Code</mat-label>
+                <input matInput placeholder="Code" [attr.autocomplete]="'off'" formControlName="code" />
+                <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && code.errors?.required">
+                Le code est obligatoire
+                </mat-error>
+                <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && ( code.errors?.minlength || code.errors?.maxlength )">
+                La taille du code est limité entre 4 et 50 caractères
+                </mat-error>
+                <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && ( code.errors?.minlength || code.errors?.pattern )">
+                Ce champ doit ne doit contenir que des caractères majuscules et undercore
+                </mat-error>
+            </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="60" [fxFlex.xl]="60">
+                <mat-label>libelle</mat-label>
+                <input matInput placeholder="libelle" [attr.autocomplete]="'off'" formControlName="libelle" />
+                <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && libelle.errors?.required">
+                Le libelle est obligatoire
+                </mat-error>
+                <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && ( libelle.errors?.minlength || libelle.errors?.maxlength )">
+                La libelle est limité entre 2 et 150 caractères
+                </mat-error>
+            </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="60" [fxFlex.xl]="60">
+                    <mat-label>Circonscription</mat-label>
+                    <input matInput placeholder="circonscription" type="number" [attr.autocomplete]="'off'" formControlName="circonscription" />
+                    <mat-error *ngIf="circonscription.invalid && (circonscription.dirty || circonscription.touched) && circonscription.errors?.required">
+                    La circonscription est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="circonscription.invalid && (circonscription.dirty || circonscription.touched) && ( circonscription.errors?.minlength || circonscription.errors?.maxlength )">
+                    La circonscription est limité entre 2 et 150 caractères
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="60" [fxFlex.xl]="60">
+                    <mat-label>Dernier numéro</mat-label>
+                    <input matInput placeholder="Dernier numéro" [attr.autocomplete]="'off'" formControlName="dernierNumero" />
+                    <mat-error *ngIf="dernierNumero.invalid && (dernierNumero.dirty || dernierNumero.touched) && dernierNumero.errors?.required">
+                    Le dernier numéro est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="dernierNumero.invalid && (dernierNumero.dirty || dernierNumero.touched) && ( dernierNumero.errors?.minlength || dernierNumero.errors?.maxlength )">
+                    La dernier numéro est limité entre 2 et 150 caractères
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <mat-card-actions>
+            <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                <button mat-raised-button color="warn" type="button" (click)="goBack()">Annuler</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+                <span *ngIf="!livreFoncier.id">Enregistrer</span><span *ngIf="livreFoncier.id">Mettre à jour</span>
+                </button>
+            </div>
+            </mat-card-actions>
+
+
+      </mat-card-content>
+    </mat-card>
+    </form>
+    

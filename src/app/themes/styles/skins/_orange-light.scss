@@ -1,0 +1,52 @@
+@use '~@angular/material' as mat;
+$orange-light-primary:mat.define-palette(mat.$orange-palette, 600, 500, 300);
+$orange-light-accent: mat.define-palette(mat.$amber-palette, A700);
+$orange-light-warn: mat.define-palette(mat.$red-palette, 500);
+$orange-light-theme: mat.define-light-theme($orange-light-primary, $orange-light-accent, $orange-light-warn);
+.background-primary {
+    background-color: mat.get-color-from-palette($orange-light-primary)!important;
+    color: #000!important;
+}
+
+.color-primary {
+    color: mat.get-color-from-palette($orange-light-primary);
+}
+
+.color-warn {
+    color: mat.get-color-from-palette($orange-light-warn);
+}
+
+.current-etape-processus {
+    @extend .background-primary;
+    &:after {
+        border-left: 30px solid mat.get-color-from-palette($orange-light-primary)!important;
+    }
+}
+
+.sycad-table-first-header-row {
+    .mat-header-cell {
+        font-weight: 500;
+        font-size: 1em;
+    }
+}
+
+.sycad-table-container-expanded {
+    .mat-row:nth-child(2n+1) {
+        background-color: #f9f8f7;
+    }
+    .mat-row:not(:nth-child(4n+1)) {
+        background-color: #ffffff;
+    }
+    .mat-checkbox {
+        background-color: #fb8c00;
+    }
+}
+
+.sycad-table-container-not-expanded {
+    .mat-row:nth-child(even) {
+        background-color: #f9f8f7;
+    }
+    .mat-row:not(odd) {
+        background-color: #ffffff;
+    }
+}

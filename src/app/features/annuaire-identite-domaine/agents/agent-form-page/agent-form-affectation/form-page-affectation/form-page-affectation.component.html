@@ -1,0 +1,123 @@
+<mat-card>
+  <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <form [formGroup]="formulaire" class="user-form" (ngSubmit)="onSubmit()">
+    <mat-card-header>
+      <mat-card-subtitle>
+        <h3>
+          <span *ngIf="!agent.guid">Créer une agent </span>
+          <span *ngIf="agent.guid">Modifier: [{{agent.matricule}}] {{agent.nom}} {{agent.prenoms}}</span>
+        </h3>
+        <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+          La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+        </mat-error>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-tab-group>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>work</mat-icon>
+            Informations professionnelles
+          </ng-template>
+          <div fxLayout="column" class="flex-p">
+
+            <div fxLayout="row" fxLayoutAlign="start">
+              <mat-card class="card-container-form-element y-1" style="box-shadow: none !important;"
+                        [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="50">
+                <mat-card-header>
+                  <mat-card-title></mat-card-title>
+                </mat-card-header>
+                <div fxLayout="row wrap" class="container-affectation" fxLayoutGap="10px" fxLayoutAlign="start center" formGroupName="affectation">
+                  <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="60" [fxFlex.xl]="60">
+                    <ng-select [items]="structureRemoteAutocomplete.listRessource$ | async" [typeahead]="structureRemoteAutocomplete.term" (change)="onChangeStructure($event)"
+                               [loading]="structureRemoteAutocomplete.loading" (search)="onSearchStructure($event)" appendTo="body"
+                               [selectOnTab]="true" bindLabel="nom" bindValue="id" labelForId="structure" placeholder="Structure" formControlName="structure">
+                      <ng-template ng-loadingspinner-tmp>
+                        <div class="lds-ellipsis">
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                        </div>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+
+                  <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" (change)="onChangeService($event)" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="60" [fxFlex.xl]="60">
+                    <ng-select [items]="serviceRemoteAutocomplete.listRessource$ | async" [typeahead]="serviceRemoteAutocomplete.term" [loading]="serviceRemoteAutocomplete.loading" (change)="onChangeService($event)" (search)="onSearchService($event)" appendTo="body" [selectOnTab]="true"
+                               bindLabel="nom" bindValue="id" placeholder="Service" formControlName="service">
+                      <ng-template ng-loadingspinner-tmp>
+                        <div class="lds-ellipsis">
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                        </div>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+
+                  <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="60" [fxFlex.xl]="60">
+                    <ng-select [items]="bureauRemoteAutocomplete.listRessource$ | async" [typeahead]="bureauRemoteAutocomplete.term" [loading]="bureauRemoteAutocomplete.loading" (search)="onSearchBureau($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom" bindValue="id"
+                               labelForId="bureau" placeholder="Bureau" formControlName="bureau">
+                      <ng-template ng-loadingspinner-tmp>
+                        <div class="lds-ellipsis">
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                        </div>
+                      </ng-template>
+
+                    </ng-select>
+                    <mat-error *ngIf=" bureau.errors?.minimumAffectationExist">
+                      Un agent doit obligatoire être affecté à un bureau ou service ou à une structure
+                    </mat-error>
+                  </div>
+                </div>
+
+                <div fxLayout="row wrap" class="container-affectation" fxLayoutGap="10px" fxLayoutAlign="start center">
+
+                  <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="60" [fxFlex.xl]="60">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="100" [fxFlex.xl]="100">
+                      <mat-label>Fonction</mat-label>
+                      <input matInput placeholder="Fonction" [attr.autocomplete]="'off'" formControlName="fonction" />
+                    </mat-form-field>
+                  </div>
+
+                  <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px" [fxFlex]="100" formGroupName="affectation">
+                    <div class="sycad-form-line container-form-field-radio" [fxFlex.xs]="50" [fxFlex.sm]="45" [fxFlex.md]="35" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <label id="signataire-active">Signataire</label>
+                      <mat-slide-toggle formControlName="signataire" aria-labelledby="signataire-active" (change)="onChangeSignataire($event)"></mat-slide-toggle>
+                    </div>
+
+                    <div class="sycad-form-line container-form-field-radio" [fxFlex.xs]="50" [fxFlex.sm]="45" [fxFlex.md]="35" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <label id="interim-active">Intérim</label>
+                      <mat-slide-toggle formControlName="interim" (change)="onChangeInterim($event)" aria-labelledby="interim-active"></mat-slide-toggle>
+                    </div>
+                  </div>
+                </div>
+              </mat-card>
+            </div>
+          </div>
+        </mat-tab>
+
+      </mat-tab-group>
+    </mat-card-content>
+
+    <mat-card-actions [ngClass]="{'card-action-form': (activeMediaQuery === 'lg' || activeMediaQuery === 'xl' ), 'card-action-form-small': (activeMediaQuery === 'sm') }">
+      <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+        <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+          <span *ngIf="!agent.guid">Enregistrer</span><span *ngIf="agent.guid">Mettre à
+                        jour</span>
+        </button>
+      </div>
+    </mat-card-actions>
+
+  </form>
+</mat-card>

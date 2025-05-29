@@ -1,0 +1,150 @@
+<form [formGroup]="formulaire">
+
+    <mat-horizontal-stepper linear #stepper>
+        <mat-step [editable]="true">
+            <ng-template matStepLabel>Informations de base</ng-template>
+
+            <div *ngIf="contribuableMatcheChoisie" fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="60" [fxFlex.xl]="50">
+                    <mat-card-header>
+                        <mat-card-title>
+                            Détail contribuable supposé correspondre
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <app-card-general-contribuable-form [contribuable]="contribuableMatcheChoisie"></app-card-general-contribuable-form>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+
+            <div fxLayout="row" fxLayoutAlign="start">
+                <app-observation-form [formGroup]="dossier"></app-observation-form>
+            </div>
+            <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                <button mat-raised-button color="primary" type="button" matStepperNext>Suivant</button>
+                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+            </div>
+
+        </mat-step>
+
+        <mat-step [editable]="true">
+
+
+            <ng-template matStepLabel>Informations du contribuable</ng-template>
+
+            <app-form-agent-valider-compte *ngIf="compteContribuable.typeCompte === 'AGENT'" [compteContribuable]="compteContribuable"></app-form-agent-valider-compte>
+
+            <app-form-physique-valider-compte *ngIf="compteContribuable.typeCompte === 'CONTRIBUABLEPHYSIQUE'"  [compteContribuable]="compteContribuable"></app-form-physique-valider-compte>
+
+            <app-form-moral-valider-compte *ngIf="compteContribuable.typeCompte === 'CONTRIBUABLEMORALE'" [compteContribuable]="compteContribuable"></app-form-moral-valider-compte>
+
+            <app-form-acteur-valider-compte *ngIf="compteContribuable.typeCompte === 'ACTEUR'" [compteContribuable]="compteContribuable"></app-form-acteur-valider-compte>
+
+
+            <div class="card-action-form">
+                <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                    <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>
+                    <button mat-raised-button color="primary" type="button" matStepperNext>Suivant</button>
+                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+                </div>
+            </div>
+        </mat-step>
+
+        <mat-step [editable]="true" *ngIf="compteContribuable.typeCompte === 'CONTRIBUABLEMORALE' || compteContribuable.typeCompte === 'CONTRIBUABLEPHYSIQUE'">
+            <ng-template matStepLabel> Information parcelle</ng-template>
+
+            <mat-card [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="80" [fxFlex.lg]="70" [fxFlex.xl]="60">
+                <mat-card-header>
+                    <mat-card-title>Localisation de la parcelle</mat-card-title>
+                </mat-card-header>
+                <form class="form-container">
+
+                  <div ffxLayout="row" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+                      <mat-label>Commune</mat-label>
+                      <input matInput placeholder="Commune" [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.infoParcelle?.commune?.nom}}" [readonly]="true" />
+                    </mat-form-field>
+                  </div>
+
+                  <div fxLayout="row" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+                      <mat-label>Section</mat-label>
+                      <input matInput placeholder="Section" [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.infoParcelle?.section?.numeroAncien}} - {{compteContribuable?.informationsContribuable?.infoParcelle?.section?.numero}}" [readonly]="true" />
+                    </mat-form-field>
+                  </div>
+
+                  <div fxLayout="row" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+                      <mat-label>Ilot</mat-label>
+                      <input matInput placeholder="Ilot" [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.infoParcelle?.ilot?.numeroAncien}} - {{compteContribuable?.informationsContribuable?.infoParcelle?.ilot?.numero}}" [readonly]="true" />
+                    </mat-form-field>
+                  </div>
+
+
+                  <div fxLayout="row" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                      <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+                          <mat-label>Numéro parcelle (*)</mat-label>
+                          <input matInput placeholder="Numéro (*)" [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.infoParcelle?.numero}}" [readonly]="true" />
+                      </mat-form-field>
+
+                      <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+                          <mat-label>Numéro ancien parcelle </mat-label>
+                          <input matInput placeholder="Numéro" [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.infoParcelle?.numeroAncien}}" [readonly]="true" />
+                      </mat-form-field>
+                  </div>
+
+                  <div fxLayout="row" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                      <div class="content-container" [fxFlex]="100">
+                          <span [fxFlex]="100"> Les informations du document sont en lecture seule</span>
+                      </div>
+                  </div>
+
+                  <div fxLayout="row" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                      <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+                          <mat-label>Date Document</mat-label>
+                          <input matInput value="{{compteContribuable.informationsContribuable?.infoParcelle?.documentParcelle?.dateDoc | date: 'dd/MM/yyyy'}}" [readonly]="true">
+
+                      </mat-form-field>
+
+                      <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+                          <mat-label>Date Validite Document </mat-label>
+                          <input matInput value="{{compteContribuable.informationsContribuable?.infoParcelle?.documentParcelle?.dateValidite | date: 'dd/MM/yyyy'}}" [readonly]="true">
+
+                      </mat-form-field>
+                  </div>
+
+                  <div fxLayout="row" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                      <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+                          <mat-label>Type Document</mat-label>
+                          <input matInput value="{{compteContribuable.informationsContribuable?.infoParcelle?.documentParcelle?.documentType?.libelle}}" [readonly]="true">
+
+                      </mat-form-field>
+
+                      <div class="content-container" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                          <span *ngIf="compteContribuable.informationsContribuable?.pieceOfficielle?.documentPiece" [fxFlex]="100"> <a href="{{compteContribuable.informationsContribuable?.pieceOfficielle?.documentPiece | generalDownload}}">Télécharger la pièce jointe</a></span>
+                      </div>
+                  </div>
+
+                </form>
+
+
+            </mat-card>
+
+            <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>
+                <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+            </div>
+
+        </mat-step>
+
+
+    </mat-horizontal-stepper>
+
+</form>

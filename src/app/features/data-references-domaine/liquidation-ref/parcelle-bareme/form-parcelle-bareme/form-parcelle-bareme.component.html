@@ -1,0 +1,99 @@
+<button class="close" mat-button mat-dialog-close><mat-icon >close</mat-icon></button>
+<h1 mat-dialog-title class="modifier-text"><span *ngIf="!parcelleBareme.id">Créer une nouvelle parcelleBareme</span><span *ngIf="parcelleBareme.id">Modifier: {{parcelleBareme.valeur}}</span></h1>
+<div class="sycad-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
+<form [formGroup]="formulaire" class="parcelleBareme-form" (ngSubmit)="onSubmit()">
+    <div class="sycad-zone-modal-form-edition" mat-dialog-content perfectScrollbar>
+        <mat-grid-list cols="1" rowHeight="100px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div fxFlex="90" class="container-form-field-radio">
+                    <ng-select [items]="communeRemoteAutocomplete.listRessource$ | async" [typeahead]="communeRemoteAutocomplete.term" [loading]="communeRemoteAutocomplete.loading" (search)="onSearchCommune($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom" bindValue="id"
+                        placeholder="Commune (*)" formControlName="commune">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                    <mat-error *ngIf="commune.invalid && (commune.dirty || commune.touched) && commune.errors?.required">
+                        Il faut au moins une commune
+                    </mat-error>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div fxFlex="90" class="container-form-field-radio">
+                    <ng-select [items]="arrondissementRemoteAutocomplete.listRessource$ | async" [typeahead]="arrondissementRemoteAutocomplete.term" [loading]="arrondissementRemoteAutocomplete.loading" (search)="onSearchArrondissement($event)" appendTo="body" [selectOnTab]="true"
+                        bindLabel="nom" bindValue="id" placeholder="Arrondissement (*)" formControlName="arrondissement">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                    <mat-error *ngIf="arrondissement.invalid && (arrondissement.dirty || arrondissement.touched) && arrondissement.errors?.required">
+                        Il faut au moins un arrondissement
+                    </mat-error>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div fxFlex="90" class="container-form-field-radio">
+                    <ng-select [items]="arrondissementZoneRemoteAutocomplete.listRessource$ | async" [typeahead]="arrondissementZoneRemoteAutocomplete.term" [loading]="arrondissementZoneRemoteAutocomplete.loading" (search)="onSearchArrondissementZone($event)" appendTo="body"
+                        [selectOnTab]="true" bindLabel="libelle" bindValue="id" placeholder="Zone de l'arrondissement (*)" formControlName="arrondissementZone">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div fxFlex="90" class="container-form-field-radio">
+                    <ng-select [items]="destinationRemoteAutocomplete.listRessource$ | async" [typeahead]="destinationRemoteAutocomplete.term" [loading]="destinationRemoteAutocomplete.loading" (search)="onSearchDestination($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle"
+                        bindValue="id" placeholder="Destination (*)" formControlName="destination">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                    <mat-error *ngIf="destination.invalid && (destination.dirty || destination.touched) && destination.errors?.required">
+                        Il faut au moins une destination
+                    </mat-error>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <mat-form-field appearance="outline" fxFlex="90">
+                    <mat-label>valeur (*)</mat-label>
+                    <input matInput placeholder="valeur" [attr.autocomplete]="'off'" formControlName="valeur" type="number" />
+                    <mat-error *ngIf="valeur.invalid && (valeur.dirty || valeur.touched) && valeur.errors?.required">
+                        Le valeur est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="valeur.invalid && (valeur.dirty || valeur.touched) && ( valeur.errors?.minlength || valeur.errors?.pattern )">
+                        Ce champ doit ne doit contenir que des nombres entiers et undercore
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+    </div>
+    <div mat-dialog-actions fxLayout="row" align="end">
+        <button mat-raised-button color="warn" type="button" (click)="closeFormModal()">Annuler</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+      <span *ngIf="!parcelleBareme.id">Enregistrer</span><span *ngIf="parcelleBareme.id">Mettre à jour</span>
+    </button>
+    </div>
+</form>

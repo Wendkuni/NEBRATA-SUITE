@@ -1,0 +1,91 @@
+<mat-card>
+  <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+
+  <form [formGroup]="formulaire" class="menu-form" (ngSubmit)="onSubmit()">
+    <mat-card-header>
+      <mat-card-subtitle>
+        <h3>
+          <span *ngIf="menu?.id">Modifier: [{{menu?.titre}}]</span>
+        </h3>
+        <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+          La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+        </mat-error>
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutAlign="start center">
+        <mat-form-field appearance="outline" fxFlex="90" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+          <mat-label>Titre</mat-label>
+          <input matInput placeholder="Titre(*)" [attr.autocomplete]="'off'" formControlName="titre" />
+          <mat-error *ngIf="titre.invalid && (titre.dirty || titre.touched) && titre.errors?.required">
+            Le titre est obligatoire
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="spacer" fxLayout="row wrap " fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+        <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="40" [fxFlex.xl]="40">
+          <ng-select [items]="iconeRemeoteAutocomplete.listRessource$ | async" [typeahead]="iconeRemeoteAutocomplete.term" (change)="imgIcon = formulaire.get('icon').value" [loading]="iconeRemeoteAutocomplete.loading" (search)="onSearchIcon($event)" appendTo="body"
+                     [selectOnTab]="true" bindLabel="cssClasse" bindValue="cssClasse" placeholder="Icone" formControlName="icon">
+            <ng-template ng-label-tmp let-item="item">
+              <mat-icon>{{item.cssClasse}}</mat-icon> {{item.cssClasse}}
+            </ng-template>
+
+            <ng-template ng-option-tmp let-item="item" let-index="index">
+              <mat-icon >{{item.cssClasse}}</mat-icon><b> {{item.cssClasse}}</b>
+            </ng-template>
+
+
+          </ng-select>
+        </div>
+        <div>
+        </div>
+      </div>
+
+      <div class="spacer" fxLayout="row wrap " fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center" >
+      <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="40" [fxFlex.xl]="40">
+        <ng-select [items]="parentRemoteAutocomplete.listRessource$ | async" [typeahead]="parentRemoteAutocomplete.term" [loading]="parentRemoteAutocomplete.loading" (search)="onSearchParent($event)" appendTo="body" [selectOnTab]="true" bindLabel="titre" bindValue="id"
+                   placeholder="Parent" formControlName="parent">
+          <ng-template ng-loadingspinner-tmp>
+            <div class="lds-ellipsis">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+      <div>
+      </div>
+      </div>
+
+      <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutAlign="start center">
+        <mat-form-field appearance="outline" fxFlex="90" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+          <mat-label>Ordre</mat-label>
+          <input matInput placeholder="Ordre" [attr.autocomplete]="'off'" formControlName="ordre" type="number" />
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutAlign="start center">
+          <label id="hasSubmenu">Est sous menu</label>
+          <mat-slide-toggle formControlName="hasSubMenu" [checked]="menu.hasSubMenu" aria-labelledby="hasSubMenu"></mat-slide-toggle>
+      </div>
+
+      <mat-card-actions>
+        <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+          <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+            <span *ngIf="!menu.id">Enregistrer</span><span *ngIf="menu.id">Mettre à jour</span>
+          </button>
+        </div>
+      </mat-card-actions>
+
+
+    </mat-card-content>
+  </form>
+
+</mat-card>

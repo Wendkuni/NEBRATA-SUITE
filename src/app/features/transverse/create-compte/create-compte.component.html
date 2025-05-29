@@ -1,0 +1,60 @@
+<mat-sidenav-container id="login-container">
+
+    <div fxLayout="row" fxLayoutAlign="center top" class="h-100 login_page_wrapper">
+
+        <form fxFlex="80" fxFlex.gt-sm="30" fxFlex.sm="60">
+
+            <mat-card class="p-0 mat-elevation-z24 box">
+                <div fxLayout="column" fxLayoutAlign="center center" class="bg-primary box-header">
+                    <div class="logo">
+                        <img src="/assets/img/bg/logo.webp">
+                    </div>
+                </div>
+                <br>
+
+                <mat-card-content fxLayout="column" fxLayoutAlign="end center" class="box-content">
+
+                    <mat-card fxLayout="column" fxLayoutAlign="center center" class="mat-elevation-z12 box-content-inner">
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="95" [fxFlex.lg]="90" [fxFlex.xl]="80">
+                                <ng-select [(ngModel)]="typeDeCompte" [ngModelOptions]="{standalone: true}" placeholder="Veuillez choisir le type de compte utilisateur" appendTo="body" [searchable]="false" [clearable]="false">
+                                 <!--
+                                    <ng-option value="AGENT">
+                                        Compte agent administratif
+                                    </ng-option>
+                                 -->
+                                    <ng-option value="CONTRIBUABLEPHYSIQUE">
+                                      Personne physique
+                                    </ng-option>
+                                    <ng-option value="CONTRIBUABLEMORALE">
+                                        Personne morale
+                                    </ng-option>
+                                       <!--
+                                      <ng-option value="ACTEUR">
+                                        Compte acteur
+                                    </ng-option>
+
+                                 -->
+
+                                </ng-select>
+                            </div>
+                        </div>
+
+
+                    </mat-card>
+
+
+                    <button mat-raised-button color="primary" [disabled]="!typeDeCompte" class="marginButtonSend mat-elevation-z15 box-button" (click)="onChoixTypeCompte()">Continuer </button>
+
+
+
+                    <div class="m-t-16">Annuler et revenir à la page de <a routerLink="/">Connexion</a></div>
+                </mat-card-content>
+                <mat-card-content  fxLayout="column" fxLayoutAlign="end center">
+                <a target="_blanck" href="https://www.youtube.com/playlist?list=PL350kVjJ1VNlT4R8x7Bbq5X6S7XkfuIOG" mat-stroked-button>Cliquez ici pour suivre les guides vidéos de création de votre compte</a><br/>
+            </mat-card-content>
+            </mat-card>
+        </form>
+    </div>
+
+</mat-sidenav-container>

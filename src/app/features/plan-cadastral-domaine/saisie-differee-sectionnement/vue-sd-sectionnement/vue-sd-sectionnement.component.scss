@@ -1,0 +1,154 @@
+.sycad-field-radio-button-horizontal {
+  margin-left: 5px;
+}
+
+.container-affectation {
+  padding-top: 20px;
+}
+
+.sycad-form-ng-select-start-tab {
+  padding-top: 20px;
+}
+
+.sycad-field-radio-button-horizontal {
+  margin-left: 5px;
+}
+
+.container-affectation {
+  padding-top: 20px;
+}
+
+.sycad-form-ng-select-start-tab {
+  padding-top: 20px;
+}
+
+.sycad-field-radio-button-horizontal {
+  margin-left: 5px;
+}
+
+.container-affectation {
+  padding-top: 20px;
+}
+
+.sycad-form-ng-select-start-tab {
+  padding-top: 20px;
+}
+
+table {
+  width: 100%;
+
+}
+table th{
+  min-width:70px;
+}
+
+
+.nested-table-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.inner-table {
+  width: 100%;
+}
+
+.inner-table mat-form-field {
+  margin-top: 15px;
+  width: 100%;
+}
+
+th.mat-header-cell,
+th.cdk-header-cell {
+  text-align: left !important;
+  /* background-color: rgba(0, 0, 0, 0.015); */
+
+}
+
+td.mat-cell {
+  text-align: left;
+  padding-left: 5px;
+}
+
+
+.mat-sort-header-container {
+  justify-content: left;
+}
+
+.mat-sort-header-container {
+  justify-content: left!important;
+}
+
+tr.nested-detail-row {
+  height: 0;
+}
+
+.nested-element-row td {
+  border-bottom-width: 0;
+}
+
+.user-name {
+  line-height: 40px;
+  padding-left: 10px;
+}
+
+.user-content {
+  padding: 10px;
+  .user-img {
+    position: relative;
+    img {
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      &.blocked {
+        opacity: 0.5;
+      }
+    }
+    .mat-icon {
+      position: absolute;
+      top: -8px;
+      left: -8px;
+      font-size: 96px;
+      height: 96px;
+      width: 96px;
+    }
+  }
+  .mat-slide-toggle {
+    margin-top: 15px;
+  }
+  .user-details {
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .mat-icon {
+      padding: 2px 10px;
+    }
+    &.blocked {
+      opacity: 0.5;
+    }
+  }
+}
+
+::ng-deep .mat-tab-active-color .mat-tab-label-active {
+  background-color: rgb(245, 245, 245);
+  opacity: 1;
+}
+
+.mat-row:nth-child(even){
+  background: #e1e1e1;
+}
+
+.mat-row:hover{
+  background: rgba(0, 0, 0, 0.055);
+}
+
+.mat-header-cell {
+  background-color: rgba(0, 0, 0, 0.015);
+
+}
+.mat-paginator-sticky {
+  bottom: 0px;
+  width: 100%;
+  z-index: 1;
+}

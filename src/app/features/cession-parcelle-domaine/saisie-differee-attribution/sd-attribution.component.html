@@ -1,0 +1,103 @@
+
+<div fxLayout="column">
+  <div class="flex-p">
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <button mat-icon-button>
+            <mat-icon>filter_alt</mat-icon>Recherche du PV d'attribution pour les saisies
+          </button>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div fxLayout="column">
+        <form [formGroup]="formulaire">
+          <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+            <div [ngStyle]="{'margin-top': '20px', 'width': '100%'}">
+              <app-field-remote-autocomplete [dataForm]="entetePVRemoteAutocomplete" (subjectCompleteEvent)="receiveSubjectActeur($event)"></app-field-remote-autocomplete>
+            </div>
+          </div>
+          <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+            <!-- Champ Section -->
+            <div fxFlex="25" fxFlex.lt-md="100" [ngStyle]="{'margin-top': '20px'}">
+              <ng-select [items]="sectionRemoteAutocomplete.listRessource$ | async" [typeahead]="sectionRemoteAutocomplete.term" [virtualScroll]="true" [loading]="sectionRemoteAutocomplete.loading" (search)="onSearchSection($event)" (change)="onChangeSection($event)"
+                         appendTo="body" [selectOnTab]="true" bindLabel="libelle" bindValue="id" formControlName="section" labelForId="section" placeholder="Section">
+                <ng-template ng-loadingspinner-tmp>
+                  <div class="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                  <span *ngIf="item.numero">{{item.numero}}</span>
+                  <span
+                    *ngIf="item.numeroAncien"> ({{item.numeroAncien}}
+                    )</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item"
+                             let-index="index"
+                             let-search="searchTerm">
+            <span *ngIf="item.numero"
+                  [ngOptionHighlight]="search">{{item.numero}}</span>
+                  <span *ngIf="item.numeroAncien"
+                        [ngOptionHighlight]="search"> ({{item.numeroAncien}}
+                    )</span>
+                </ng-template>
+              </ng-select>
+            </div>
+
+            <!-- Champ Ilot -->
+            <div fxFlex="25" fxFlex.lt-md="50" [ngStyle]="{'margin-top': '20px'}">
+              <ng-select [items]="ilotRemoteAutocomplete.listRessource$ | async" [typeahead]="ilotRemoteAutocomplete.term"  (change)="onChangeIlot($event)"  [loading]="ilotRemoteAutocomplete.loading" (search)="onSearchIlot($event)"
+                         appendTo="body" [selectOnTab]="true" bindLabel="nom" bindValue="id" labelForId="ilot" placeholder="Ilot" formControlName="ilot">
+                <ng-template ng-loadingspinner-tmp>
+                  <div class="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                  <span *ngIf="item.numero">{{item.numero}}</span>
+                  <span
+                    *ngIf="item.numeroAncien"> ({{item.numeroAncien}}
+                    )</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item"
+                             let-index="index"
+                             let-search="searchTerm">
+                  <span *ngIf="item.numero"
+                        [ngOptionHighlight]="search">{{item.numero}}</span>
+                  <span *ngIf="item.numeroAncien"
+                        [ngOptionHighlight]="search"> ({{item.numeroAncien}}
+                    )</span>
+                </ng-template>
+              </ng-select>
+            </div>
+
+            <!-- Champ Numéro de page -->
+            <mat-form-field fxFlex="25" fxFlex.lt-md="50" [ngStyle]="{'margin-top': '20px'}" appearance="outline">
+              <mat-label>Numéro de page</mat-label>
+              <input matInput type="number" formControlName="numeroPage">
+            </mat-form-field>
+
+            <!-- Boutons -->
+            <div fxFlex="6" fxFlex.lt-md="50" [ngStyle]="{'margin-top': '20px'}">
+              <button mat-raised-button color="primary" (click)="rechercher()">Rechercher</button>
+            </div>
+            <div fxFlex="6" fxFlex.lt-md="50" [ngStyle]="{'margin-top': '20px'}">
+              <button mat-raised-button color="infos" (click)="sauvegarder()">Sauvegarder</button>
+            </div>
+            <div fxFlex="25" fxFlex.lt-md="50" [ngStyle]="{'margin-top': '20px'}">
+              <button mat-raised-button color="warn" (click)="effacer()">Effacer   </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </mat-expansion-panel>
+    <ng-template #datatable1></ng-template>
+  </div>
+</div>

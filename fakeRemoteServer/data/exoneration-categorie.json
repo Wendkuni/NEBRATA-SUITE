@@ -1,0 +1,48 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "code": "EXO14284",
+      "motif": "Construction",
+      "taux": "18%",
+      "montant": "200000000",
+      "refLoi": "LOIN2558",
+      "actif": "oui"
+    },
+    {
+      "id": 2,
+      "code": "EXOMP45",
+      "motif": "Construction",
+      "taux": "18%",
+      "montant": "200000000",
+      "refLoi": "LOIN2558",
+      "actif": "oui"
+    },
+    {
+      "id": 3,
+      "code": "EXO14L",
+      "motif": "Construction",
+      "taux": "18%",
+      "montant": "200000000",
+      "refLoi": "LOIN2558",
+      "actif": "oui"
+    },
+    {
+      "id": 4,
+      "code": "EXO125",
+      "motif": "Construction",
+      "taux": "18%",
+      "montant": "200000000",
+      "refLoi": "LOIN2558",
+      "actif": "oui"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+<mat-accordion class="list-profil-infos">
+  <mat-expansion-panel>
+    
+        <mat-expansion-panel-header>
+          <mat-panel-title class="panel-header-adresse" fxLayout="row" fxLayoutAlign="start start">
+            <mat-icon>person_outlined</mat-icon>  <h3>Informations</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+    <mat-card-content perfectScrollbar>
+      <mat-list>
+        <app-profil-list-item-icon [value]="userData?.codeUnique" label="Code unique" icon="card_membership"></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.nationalite?.libelle" label="Nationalité" icon="flag"></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.dateDeCreation | date : 'longDate'" label="Date de création"></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.statusJuridique?.libelle" label="Statut juridique"></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.relation?.libelle" label="Relation"></app-profil-list-item-icon>
+      </mat-list>
+    </mat-card-content>
+
+  </mat-expansion-panel>
+</mat-accordion>

@@ -1,0 +1,31 @@
+<form [formGroup]="formulaire">
+  <mat-horizontal-stepper linear #stepper>
+    <mat-step [editable]="true" >
+        <ng-template matStepLabel>Nouvelle parcelle</ng-template>
+      <div fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start" fxLayoutGap.gt-xs="20px">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="60" [fxFlex.md]="50" [fxFlex.lg]="30" [fxFlex.xl]="30">
+            <mat-label>Libellé(*) </mat-label>
+            <input matInput placeholder="Libellé de la parcelle" [attr.autocomplete]="'off'" formControlName="libelle" />
+            <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && libelle.errors?.required">
+                Le libellé est obligatoire
+            </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start" fxLayoutGap.gt-xs="20px">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="60" [fxFlex.md]="50" [fxFlex.lg]="30" [fxFlex.xl]="30">
+            <mat-label>Superficie</mat-label>
+            <input matInput placeholder="superficie" [attr.autocomplete]="'off'" formControlName="superficie" type="number" value ={{fusion.parcelle.superficie}} />
+        </mat-form-field>
+    </div>
+        <div class="card-action-form">
+          <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+            <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+            <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+            <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+          </div>
+        </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+
+</form>
+

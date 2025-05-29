@@ -1,0 +1,60 @@
+<div fxLayout="row" fxLayoutAlign="start center">
+<mat-card class="card-container-form-element y-1" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+<form [formGroup]="formulaire" class="form-container">
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutAlign="start" [fxLayoutGap]="'20px'">
+        <mat-form-field appearance="outline" class="sycad-form-line" [fxFlex.xs]="50" [fxFlex.sm]="50" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+            <mat-label>Date Enregistrement</mat-label>
+            <input matInput [matDatepicker]="dateEnregistrement" placeholder="Date d'enregistrement" [attr.autocomplete]="'off'" formControlName="dateEnregistrement" />
+            <mat-datepicker-toggle matSuffix [for]="dateEnregistrement"></mat-datepicker-toggle>
+            <mat-datepicker #dateEnregistrement></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="sycad-form-line" [fxFlex.xs]="50" [fxFlex.sm]="50" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+            <mat-label>Bordereau</mat-label>
+            <input matInput placeholder="Bordereau" [attr.autocomplete]="'off'" formControlName="bordereau" />
+        </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+        <mat-form-field appearance="outline" class="sycad-form-line" [fxFlex.xs]="32" [fxFlex.sm]="32" [fxFlex.md]="32" [fxFlex.lg]="32" [fxFlex.xl]="32">
+          <mat-label>Volume</mat-label>
+          <input matInput placeholder="Volume" [attr.autocomplete]="'off'" formControlName="volume" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="sycad-form-line" [fxFlex.xs]="32" [fxFlex.sm]="32" [fxFlex.md]="32" [fxFlex.lg]="32" [fxFlex.xl]="32">
+            <mat-label>Folio</mat-label>
+            <input matInput placeholder="Folio" [attr.autocomplete]="'off'" formControlName="folio" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="sycad-form-line" [fxFlex.xs]="32" [fxFlex.sm]="32" [fxFlex.md]="32" [fxFlex.lg]="32" [fxFlex.xl]="32">
+            <mat-label>Case</mat-label>
+            <input matInput placeholder="Case" [attr.autocomplete]="'off'" formControlName="caseDocumentEnregistrement" />
+        </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <mat-form-field appearance="outline" class="sycad-form-line" [fxFlex.xs]="50" [fxFlex.sm]="50" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+            <mat-label>Numero Quittance</mat-label>
+            <input matInput placeholder="Numero Quittance" [attr.autocomplete]="'off'" formControlName="numeroQuittance" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="sycad-form-line" [fxFlex.xs]="50" [fxFlex.sm]="50" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+            <mat-label>Date Quittance</mat-label>
+            <input matInput [matDatepicker]="dateQuittance" placeholder="Date Quittance" [attr.autocomplete]="'off'" formControlName="dateQuittance" />
+            <mat-datepicker-toggle matSuffix [for]="dateQuittance"></mat-datepicker-toggle>
+            <mat-datepicker #dateQuittance></mat-datepicker>
+        </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <mat-form-field appearance="outline" class="sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+            <mat-label>Montant Quittance</mat-label>
+            <input matInput placeholder="Montant Quittance" type="number" [attr.autocomplete]="'off'" formControlName="montantQuittance" />
+        </mat-form-field>
+    </div>
+
+</form>
+</mat-card>
+</div>

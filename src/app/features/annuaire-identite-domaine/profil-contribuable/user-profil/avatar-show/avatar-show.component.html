@@ -1,0 +1,19 @@
+<mat-card class="card-avatar-user card-profil-right" (mouseleave)="activeIconAvatarEdition=false">
+  <mat-card-header fxLayout="row" fxLayoutAlign="center start">
+    <!-- Read only -->
+    <img *ngIf="readonly" [src]="userOnline | avatarUser " alt="user-image" width="100"
+      class="rounded mat-elevation-z6">
+    <!-- Not read only -->
+    <img *ngIf="!readonly" [src]="userOnline | avatarUser "
+      (mouseover)="activeIconAvatarEdition=true" (click)="openEdition()" alt="user-image"
+      width="100" class="rounded mat-elevation-z6">
+    <mat-icon *ngIf="activeIconAvatarEdition" (click)="openEdition()"
+      class="card-avatar-user-edition-avatar-icon sycad-element-clickable" matRipple
+      [matRippleCentered]="true" [matRippleUnbounded]="true" [matRippleRadius]="30">
+      create</mat-icon>
+  </mat-card-header>
+  <mat-card-content fxLayout="row" fxLayoutAlign="center end" id="user-name-content-card">
+    <h3 *ngIf="userOnline?.denomination" matLine id="user-name-content">{{ userOnline?.denomination }}</h3>
+    <h3 *ngIf="!userOnline?.denomination" matLine id="user-name-content">{{ userOnline?.civilite?.libelle }} {{ userOnline?.prenoms }} {{ userOnline?.nom }}</h3>
+  </mat-card-content>
+</mat-card>

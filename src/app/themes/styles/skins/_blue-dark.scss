@@ -1,0 +1,53 @@
+@use '~@angular/material' as mat;
+$blue-dark-primary: mat.define-palette(mat.$light-blue-palette, 800, 300, 900);
+$blue-dark-accent: mat.define-palette(mat.$amber-palette, A200, A100, A700);
+$blue-dark-warn: mat.define-palette(mat.$red-palette, A200);
+$blue-dark-theme: mat.define-dark-theme($blue-dark-primary, $blue-dark-accent, $blue-dark-warn);
+.background-primary {
+    background-color: mat.get-color-from-palette($blue-dark-primary)!important;
+    color: #fff!important;
+}
+
+.color-primary {
+    color: mat.get-color-from-palette($blue-dark-primary);
+}
+
+.color-warn {
+    color: mat.get-color-from-palette($blue-dark-warn);
+}
+
+.current-etape-processus {
+    @extend .background-primary;
+    &:after {
+        border-left: 30px solid mat.get-color-from-palette($blue-dark-primary)!important;
+    }
+}
+
+.sycad-table-first-header-row {
+    .mat-header-cell {
+        font-weight: 500;
+        font-size: 1em;
+    }
+}
+
+.sycad-table-container-expanded {
+    .mat-row:nth-child(2n+1),
+    .mat-row:hover:nth-child(2n+1) {
+        background-color: #5b5d5f;
+    }
+    .mat-row:not(:nth-child(4n+1)),
+    .mat-row:hover:not(:nth-child(4n+1)) {
+        background-color: inherit;
+    }
+}
+
+.sycad-table-container-not-expanded {
+    .mat-row:nth-child(even),
+    .mat-row:hover:nth-child(even) {
+        background-color: #5b5d5f;
+    }
+    .mat-row:not(odd),
+    .mat-row:hover:not(odd) {
+        background-color: inherit;
+    }
+}

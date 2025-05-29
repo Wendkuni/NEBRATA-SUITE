@@ -1,0 +1,256 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+
+
+    <mat-card-header>
+        <mat-card-subtitle>
+            <h3>
+                <span *ngIf="!bornage">Démarrer un dossier de bornage délimitation </span>
+                <span *ngIf="bornage?.numero">{{transition.libelle}} : sur le dossier {{bornage.numero}}</span>
+            </h3>
+
+
+            <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+                La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+            </mat-error>
+
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+
+        <mat-tab-group  #tabGroup>
+          <mat-tab *ngIf="!bornage">
+            <ng-template mat-tab-label>
+                <mat-icon class="sycad-form-tab-label-icon">info</mat-icon>
+
+                 <ng-container  >Details du processus</ng-container>
+            </ng-template>
+
+            <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+
+                <ng-container [ngSwitch]="true">
+                  <!-- header -->
+
+                <app-details-processus-tab-pane  [processus]="processus" > </app-details-processus-tab-pane>
+
+
+                <!-- button commencer, id tabGroup -> mat-tab-group -->
+                  <div style="display: flex;justify-content: space-between; align-items: end;">
+                    <button mat-raised-button color="primary" style=" margin-left: auto;padding:5px 5px" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1">
+                      Commencer
+                      <mat-icon>keyboard_arrow_right</mat-icon>
+                    </button>
+                  </div>
+
+                </ng-container>
+
+            </div>
+        </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">face</mat-icon>
+
+                    <ng-container *ngIf="bornage?.numero">Formulaire transition {{transition.libelle}}</ng-container>
+                    <ng-container *ngIf="!bornage">Création d'une demande de document</ng-container>
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+                    <ng-container [ngSwitch]="true">
+
+
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_BROUILLON_TO_ANNULER' || transition?.code === 'BORNAGE_TRANSMIS_TO_ANNULER'    ">
+                            <app-annulation-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="bornage" [transition]="transition" [processusService]="bornageDelimitationService" [frontendUrl]="getFrontendTemplate()"></app-annulation-dossier-transition>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_EDITION_PV_BORNAGE_TO_BORNE' || transition?.code === 'BORNAGE_TRANSMIS_TO_BROUILLON' || transition?.code === 'BORNAGE_APPROUVER_CONTROLE_TO_EN_ATTENTE_CONTROL' || transition?.code === 'BORNAGE_AFFECTE_TO_NUMEROTE' || transition?.code === 'BORNAGE_EN_ATTENTE_CONTROLE_TO_BORNAGE_EDITION_PV_BORNAGE'   ">
+                            <app-renvoyer-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="bornage" [transition]="transition" [processusService]="bornageDelimitationService" [frontendUrl]="getFrontendTemplate()"></app-renvoyer-dossier-transition>
+                        </ng-template>
+
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_BORNE_TO_EDITION_PV_BORNAGE' || transition?.code === 'BORNAGE_EDITION_PV_BORNAGE_TO_EDITION_PV_BORNAGE' ">
+                            <app-edition-pvbornage (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [bornage]="bornage" [transition]="transition"></app-edition-pvbornage>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_BROUILLON_TO_NUMEROTE' || transition?.code === 'BORNAGE_TRANSMIS_TO_NUMEROTE'  ">
+                            <app-numerotation-dbt (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [bornage]="bornage" [transition]="transition"></app-numerotation-dbt>
+                        </ng-template>
+
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_AFFECTE_TO_BORNE'  || transition?.code === 'BORNAGE_BORNE_TO_BORNE' ">
+                            <app-bornage-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [bornage]="bornage" [transition]="transition"></app-bornage-dossier>
+                        </ng-template>
+
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_EDITION_PV_BORNAGE_TO_EN_ATTENTE_CONTROLE' ">
+                            <app-envoyer-pour-controle-bornage (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [bornage]="bornage" [transition]="transition"></app-envoyer-pour-controle-bornage>
+                        </ng-template>
+
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_EN_ATTENTE_CONTROLE_TO_APPROUVER_CONTROLE' ">
+                            <app-approuver-bornage (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [bornage]="bornage" [transition]="transition"></app-approuver-bornage>
+                        </ng-template>
+
+                        <!--
+
+                      -->
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_NUMEROTE_TO_AFFECTE_AGENT'
+                         || transition?.code === 'BORNAGE_SOLDE_TO_AFFECTE_AGENT'  ">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [codeCommune]="bornage?.parcelle?.ilot?.section?.commune?.code" [dossierProcessus]="bornage" [fixedStructures]="false" [processusService]="bornageDelimitationService"
+                                [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_NUMEROTE_TO_AFFECTE' || transition?.code === 'BORNAGE_SOLDE_TO_AFFECTE'  ">
+                            <app-affectation-dbt (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [bornage]="bornage" [transition]="transition"></app-affectation-dbt>
+                        </ng-template>
+
+
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_APPROUVER_CONTROLE_TO_VALIDE'  ">
+                            <app-valider-bornage (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [bornage]="bornage" [transition]="transition"></app-valider-bornage>
+                        </ng-template>
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_VALIDE_TO_VALIDE'  ">
+                            <app-notifier-bornage-valider (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [bornage]="bornage" [transition]="transition"></app-notifier-bornage-valider>
+                        </ng-template>
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_VALIDE_TO_RETIRE'  ">
+                            <app-retrait-dossier-bornage (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [bornage]="bornage" [transition]="transition"></app-retrait-dossier-bornage>
+                        </ng-template>
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_ENVOYER_SINTAX_TO_MAJ_REGLEMENT'   ">
+                            <app-reglement-liq-bornage (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [bornage]="bornage" [transition]="transition"></app-reglement-liq-bornage>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_ENVOYER_SINTAX_TO_SOLDE'  ">
+                            <app-solder-liq-bornage (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [bornage]="bornage" [transition]="transition"></app-solder-liq-bornage>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_LIQUIDE_TO_ENVOYER_SINTAX' ">
+                            <app-envoie-liq-bornage-vers-sintax (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [bornage]="bornage" [transition]="transition"></app-envoie-liq-bornage-vers-sintax>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_NUMEROTE_TO_LIQUIDE'   || transition?.code === 'BORNAGE_LIQUIDE_TO_LIQUIDE' ">
+                            <app-calcul-liq-bornage (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [bornage]="bornage" [transition]="transition"></app-calcul-liq-bornage>
+                        </ng-template>
+
+
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_BROUILLON_TO_TRANSMIS' ">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [avecPiece]="true" [codeCommune]="bornage?.parcelle?.ilot?.section?.commune?.code" [dossierProcessus]="bornage" [fixedStructures]="false" [processusService]="bornageDelimitationService"
+                                [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                        </ng-template>
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_TRANSMISSION_BROUILLON_TO_BROUILLON' || transition?.code === 'BORNAGE_TRANSMISSION_TRANSMIS_TO_TRANSMIS' || transition?.code === 'BORNAGE_TRANSMISSION_NUMEROTE_TO_NUMEROTE' || transition?.code === 'BORNAGE_TRANSMISSION_AFFECTE_TO_AFFECTE' || transition?.code === 'BORNAGE_TRANSMISSION_BORNE_TO_BORNE' || transition?.code === 'BORNAGE_TRANSMISSION_EDITION_PV_TO_EDITION_PV' || transition?.code === 'BORNAGE_TRANSMISSION_EN_ATTENTE_CONTROLE_TO_EN_ATTENTE_CONTROLE' || transition?.code === 'BORNAGE_TRANSMISSION_APPROUVER_CONTROLE_TO_APPROUVER_CONTROLE'  || transition?.code === 'BORNAGE_TRANSMISSION_VALIDE_TO_VALIDE' ">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [codeCommune]="bornage?.parcelle?.ilot?.section?.commune?.code" [dossierProcessus]="bornage" [fixedStructures]="false" [processusService]="bornageDelimitationService"
+                                [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'BORNAGE_BROUILLON_TO_BROUILLON'  ">
+                            <ng-container *ngIf="authentificatedUser?.typeUser==='AGENT' && hasPermissionNumerotation(); else acteurGeometreCondition">
+                                <app-saisie-brouillon-par-agent (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [bornage]="bornage" [transition]="transition">
+                                </app-saisie-brouillon-par-agent>
+                            </ng-container>
+
+                            <ng-template #acteurGeometreCondition>
+                                <ng-container *ngIf="authentificatedUser?.typeUser==='ACTEUR' && authentificatedUser?.categorie?.libelle==='EXPERT GEOMETRE'; else autreContribuableGeneral">
+                                    <app-saisie-brouillon-par-acteur (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [bornage]="bornage" [transition]="transition">
+                                    </app-saisie-brouillon-par-acteur>
+                                </ng-container>
+
+                                <ng-template #autreContribuableGeneral>
+                                    <ng-container>
+                                        <app-saisie-brouillon-par-contribuable (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [bornage]="bornage" [transition]="transition" [authentificatedUser]="authentificatedUser">
+                                        </app-saisie-brouillon-par-contribuable>
+                                    </ng-container>
+                                </ng-template>
+                            </ng-template>
+
+                        </ng-template>
+
+
+
+
+                        <ng-template [ngSwitchDefault]>
+                            <ng-container *ngIf="authentificatedUser?.typeUser==='AGENT' && hasPermissionNumerotation(); else acteurGeometreCondition">
+                                <app-creation-bornage-delimitation-par-agent (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus">
+                                </app-creation-bornage-delimitation-par-agent>
+                            </ng-container>
+
+                            <ng-template #acteurGeometreCondition>
+                                <ng-container *ngIf="authentificatedUser?.typeUser==='ACTEUR' && authentificatedUser?.categorie?.libelle==='EXPERT GEOMETRE'; else autreContribuableGeneral   ">
+                                    <app-creation-bornage-delimitation-par-acteur-geometre (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus">
+                                    </app-creation-bornage-delimitation-par-acteur-geometre>
+                                </ng-container>
+
+                                <ng-template #autreContribuableGeneral>
+                                    <ng-container>
+                                        <app-creation-bornage-delimitation-par-contribuable (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [authentificatedUser]="authentificatedUser" [processus]="processus">
+                                        </app-creation-bornage-delimitation-par-contribuable>
+                                    </ng-container>
+                                </ng-template>
+                            </ng-template>
+
+                        </ng-template>
+
+
+                    </ng-container>
+
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="bornage?.numero">
+                <ng-template mat-tab-label>
+                    <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                </ng-template>
+                <div fxLayout="column" class="flex-p">
+                    <app-historique [numero]="bornage?.numero"></app-historique>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="bornage">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Entête du dossier
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+
+                    <app-entete [numero]="bornage?.numero" [processus]="'WRKFProcessBornageDelimitation'"></app-entete>
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="bornage">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Détail du dossier
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+
+                    <app-vue-bornage-delimitation [noOpenActions]="true"></app-vue-bornage-delimitation>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+
+
+
+
+
+
+
+</mat-card>

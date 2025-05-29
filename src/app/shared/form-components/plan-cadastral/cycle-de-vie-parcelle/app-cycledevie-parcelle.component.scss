@@ -1,0 +1,8 @@
+.sycad-table-container {
+    td,
+    th {
+        &.mat-column-icad {
+            min-width: 200px;
+        }
+    }
+}

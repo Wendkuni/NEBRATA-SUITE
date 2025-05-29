@@ -1,0 +1,244 @@
+<form [formGroup]="formulaire" class="role-form" (ngSubmit)="onSubmit()">
+  <div class="sycad-attributaire-modal-form-edition" mat-dialog-content perfectScrollbar>
+    <div fxLayout="column" class="flex-p">
+
+    <div fxLayout="row" class="debut-form-container" fxLayout.lt-md="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+      <div class="sycad-form-line" [fxFlex.xs]="50" [fxFlex.sm]="50" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+        <ng-select [items]="typePieceIdentiteRemoteAutocomplete.listRessource$ | async" [typeahead]="typePieceIdentiteRemoteAutocomplete.term" [loading]="typePieceIdentiteRemoteAutocomplete.loading" (search)="onSearchTypePieceIdentite($event)" (change)="onChangeypePieceIdentite($event)"
+            appendTo="body" [selectOnTab]="true" bindLabel="libelle" bindValue="id" placeholder="Catégorie de pièce" formControlName="categorie">
+            <ng-template ng-loadingspinner-tmp>
+                <div class="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </ng-template>
+        </ng-select>
+        <mat-error *ngIf="categorie.invalid && (categorie.dirty || categorie.touched) && categorie.errors?.required">
+            La catégorie est obligatoire
+        </mat-error>
+      </div>
+    </div>
+
+      <div *ngIf="maySearchOniOrIfu == true">
+        <br>
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+          <app-recherche-oni [typeContribuable]="'CONTRIBUABLEPHYSIQUE'" [updateContribuable]="contribuableUpdate" [typePiece]="categoriePieceSelectionnee" (trouveContribuable)="trouveContribuableOni($event)" (importContribuable)="importContribuable($event)" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="100"></app-recherche-oni>
+
+        </div>
+        </div>
+<div [ngClass]="{'hidden': !mayFillForm}">
+  <mat-tab-group>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+          <mat-icon class="sycad-form-tab-label-icon">account_box</mat-icon>
+          Identification
+      </ng-template>
+
+        <br/>
+          <div fxLayout="row" class="debut-form-container" fxLayout.lt-md="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+            <mat-form-field appearance="outline" [fxFlex.xs]="50" [fxFlex.sm]="50" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                <mat-label>Nom (*)</mat-label>
+                <input matInput [attr.autocomplete]="'off'" formControlName="nom" />
+                <mat-error *ngIf="nom.invalid && (nom.dirty || nom.touched) && nom.errors?.required">
+                    Le nom est obligatoire
+                </mat-error>
+                <mat-error *ngIf="nom.invalid && (nom.dirty || nom.touched) && ( nom.errors?.minlength || nom.errors?.maxlength)">
+                    La taille du nom est limité entre 2 et 150 caractères
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" [fxFlex.xs]="50" [fxFlex.sm]="50" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                <mat-label>Nom de jeune fille</mat-label>
+                <input matInput [attr.autocomplete]="'off'" formControlName="nomJeuneFille" />
+            </mat-form-field>
+          </div>
+        <div fxLayout="row" class="debut-form-container" fxLayout.lt-md="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" >
+          <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="60">
+              <mat-label>Prénom (*)</mat-label>
+              <input matInput [attr.autocomplete]="'off'" formControlName="prenoms" />
+              <mat-error *ngIf="prenoms.invalid && (prenoms.dirty || prenoms.touched) && prenoms.errors?.required">
+                  Le prenoms est obligatoire
+              </mat-error>
+          </mat-form-field>
+
+
+
+
+          <mat-radio-group class="sycad-form-line-margin-bottom" formControlName="genre" aria-labelledby="attributaire-sexe" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="60" [fxFlex.lg]="50" [fxFlex.xl]="50">
+              <label id="attributaire-sexe">Choisir le genre </label>
+              <mat-radio-button value="FEMME" labelPosition="after" class="sycad-field-radio-button-horizontal">Femme</mat-radio-button>
+              <mat-radio-button value="HOMME" labelPosition="after" class="sycad-field-radio-button-horizontal">Homme</mat-radio-button>
+          </mat-radio-group>
+      </div>
+
+      <div fxLayout="row wrap" fxLayoutAlign="start center">
+          <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="60" [fxFlex.lg]="50" [fxFlex.xl]="50">
+              <ng-select [items]="professionRemoteAutocomplete.listRessource$ | async" [typeahead]="professionRemoteAutocomplete.term" [loading]="professionRemoteAutocomplete.loading" (search)="onSearchProfession($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom"
+                  bindValue="id" labelForId="profession" placeholder="Profession" formControlName="profession">
+                  <ng-template ng-loadingspinner-tmp>
+                      <div class="lds-ellipsis">
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                      </div>
+                  </ng-template>
+              </ng-select>
+          </div>
+      </div>
+        <div fxLayout="row" class="debut-form-container" fxLayout.lt-md="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+          <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+              <mat-label>Date de naissance (*)</mat-label>
+              <input matInput [matDatepicker]="dateNaissance" formControlName="dateNaissance" [max]="today">
+              <mat-datepicker-toggle matSuffix [for]="dateNaissance"></mat-datepicker-toggle>
+              <mat-datepicker #dateNaissance></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+              <mat-label>Lieu de naissance</mat-label>
+              <input matInput placeholder="lieuNaissance" [attr.autocomplete]="'off'" formControlName="lieuNaissance" />
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" class="debut-form-container" fxLayout.lt-md="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+          <mat-form-field class="sycad-form-line" appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.sm="100" fxFlex.md="90" fxFlex.lg="80" fxFlex.xl="70">
+              <mat-label>Nom et Prénom(s) du père</mat-label>
+              <input matInput placeholder="Nom et Prénom(s) du père" [attr.autocomplete]="'off'" formControlName="nomPere" />
+          </mat-form-field>
+
+          <mat-form-field class="sycad-form-line" appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="80" fxFlex.xl="70">
+              <mat-label>Nom et Prénom(s) de la mère</mat-label>
+              <input matInput placeholder="Nom et Prénom(s) de la mère" [attr.autocomplete]="'off'" formControlName="nomMere" />
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start">
+          <mat-card class="card-container-form-element y-1" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+              <mat-card-header>
+                  <mat-card-title>Pièce d'identification </mat-card-title>
+              </mat-card-header>
+              <app-piece-officielle-form [formGroup]="pieceOfficielle" [contribuableType]="'CONTRIBUABLEPHYSIQUE'" [touched]="pieceOfficielle.touched" [showCateg]="false"></app-piece-officielle-form>
+          </mat-card>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+          <mat-icon class="sycad-form-tab-label-icon">subject</mat-icon>
+          Informations
+      </ng-template>
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+          <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="60" [fxFlex.lg]="50" [fxFlex.xl]="50">
+              <ng-select [items]="situationMatrimonialeAutocomplete.listRessource$ | async" [typeahead]="situationMatrimonialeAutocomplete.term" [loading]="situationMatrimonialeAutocomplete.loading" (search)="onSearchSituationMatrimoniale($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle"
+                  bindValue="id" labelForId="situationMatrimoniale" placeholder="Situation Matrimoniale" formControlName="situationMatrimoniale">
+                  <ng-template ng-loadingspinner-tmp>
+                      <div class="lds-ellipsis">
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                      </div>
+                  </ng-template>
+              </ng-select>
+          </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="sycad-form-tab-label-icon">home</mat-icon>
+        Adresses
+      </ng-template>
+      <div class="sycad-attributaire-modal-form-edition" mat-dialog-content perfectScrollbar>
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <button mat-raised-button type="button" color="primary" (click)="addNewAdresse()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10" [fxFlex.lg]="25" [fxFlexOffset.md]="10" [fxFlex.xl]="30"
+              [fxFlexOffset]="10">
+            <mat-icon class="icon-sm">add</mat-icon>
+            Ajouter une Adresse
+          </button>
+        </div>
+        <ng-container *ngIf="adresses.controls.length>0">
+          <ng-template ngFor let-adresse [ngForOf]="adresses.controls" let-i="index">
+              <div fxLayout="row" fxLayoutAlign="start">
+                  <mat-card class="card-container-form-element y-1" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="60">
+                      <button mat-icon-button matSuffix type="button" color="warn" class="delete-icons">
+                        <mat-icon (click)="removeAdresse(i)">remove_circle</mat-icon>
+                    </button>
+                      <app-adresse-form [formGroup]="adresse" (changeAdressePrincipal)="onChangeAdressePrincipal($event)" [touched]="adresse.touched"></app-adresse-form>
+                  </mat-card>
+              </div>
+          </ng-template>
+        </ng-container>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="sycad-form-tab-label-icon">alternate_email</mat-icon>
+        Emails
+      </ng-template>
+      <div class="sycad-attributaire-modal-form-edition" mat-dialog-content perfectScrollbar>
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <button mat-raised-button type="button" color="primary" (click)="addNewEmail()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10" [fxFlex.lg]="25" [fxFlexOffset.md]="10" [fxFlex.xl]="30"
+                    [fxFlexOffset]="10">
+              <mat-icon class="icon-sm">add</mat-icon>
+            Ajouter une adresse mail
+          </button>
+        </div>
+          <ng-container *ngIf="emails.controls.length>0">
+            <ng-template ngFor let-email [ngForOf]="emails.controls" let-i="index">
+                <div fxLayout="row" fxLayoutAlign="start">
+                    <mat-card class="card-container-form-element y-1" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="60">
+                        <button mat-icon-button matSuffix type="button" color="warn" class="delete-icons">
+                          <mat-icon (click)="removeEmails(i)">remove_circle</mat-icon>
+                      </button>
+                        <app-email-form [formGroup]="email" (changeEmailPrincipal)="onChangeEmailPrincipal($event)" [touched]="email.touched"></app-email-form>
+                    </mat-card>
+                </div>
+            </ng-template>
+        </ng-container>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="sycad-form-tab-label-icon">call</mat-icon>
+        Téléphones
+      </ng-template>
+      <div class="sycad-attributaire-modal-form-edition" mat-dialog-content perfectScrollbar>
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <button mat-raised-button type="button" color="primary" (click)="addNewTelephone()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10" [fxFlex.lg]="25" [fxFlexOffset.md]="10" [fxFlex.xl]="30"
+                    [fxFlexOffset]="10">
+              <mat-icon class="icon-sm">add</mat-icon>
+              Ajouter un numéro de téléphone
+          </button>
+        </div>
+        <ng-container *ngIf="telephones.controls.length>0">
+          <ng-template ngFor let-telephone [ngForOf]="telephones.controls" let-i="index">
+
+              <div fxLayout="row" fxLayoutAlign="start">
+                  <mat-card class="card-container-form-element y-1" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="60">
+                      <button mat-icon-button matSuffix color="warn" type="button" class="delete-icons">
+                        <mat-icon (click)="removeTelephones(i)">remove_circle</mat-icon>
+                    </button>
+
+                      <app-telephone-form [formGroup]="telephone" (changeTelephonePrincipal)="onChangeTelephonePrincipal($event)" [touched]="telephone.touched"></app-telephone-form>
+
+                  </mat-card>
+              </div>
+          </ng-template>
+      </ng-container>
+      </div>
+    </mat-tab>
+    
+  </mat-tab-group>
+</div>
+  </div>
+  </div>
+  <div [fxLayoutGap]="'10px'" fxLayoutAlign="end">
+      <button mat-raised-button color="warn" (click)="closeFormModal()">Annuler</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+          Enregistrer
+    </button>
+  </div>
+</form>

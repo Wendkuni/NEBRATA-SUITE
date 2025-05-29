@@ -1,0 +1,80 @@
+<form [formGroup]="localisationForm">
+    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+            <mat-label>Longitude</mat-label>
+            <input placeholder="Longitude" type="number" matInput [attr.autocomplete]="'off'" formControlName="longitude" />
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+            <mat-label>Lattitude</mat-label>
+            <input placeholder="Lattitude" type="number" matInput [attr.autocomplete]="'off'" formControlName="lattitude" />
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+            <ng-select [items]="quartierRemoteAutocomplete.listRessource$ | async" [typeahead]="quartierRemoteAutocomplete.term" [loading]="quartierRemoteAutocomplete.loading" (search)="onSearchQuartier($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom"
+                bindValue="id" labelForId="quartier" placeholder="Quartier" formControlName="quartier">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+
+            </ng-select>
+        </div>
+
+        <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+            <ng-select [items]="localiteRemoteAutocomplete.listRessource$ | async" [typeahead]="localiteRemoteAutocomplete.term" [loading]="localiteRemoteAutocomplete.loading" (search)="onSearchLocalite($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom"
+                bindValue="id" labelForId="localite" placeholder="Localité" formControlName="localite">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+
+            </ng-select>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+            <mat-label>Désignation</mat-label>
+            <input placeholder="Désignation" matInput [attr.autocomplete]="'off'" formControlName="designation" />
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+            <mat-label>Rue</mat-label>
+            <input placeholder="Rue" matInput [attr.autocomplete]="'off'" formControlName="rue" />
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+            <mat-label>Immeuble</mat-label>
+            <input placeholder="Immeuble" matInput [attr.autocomplete]="'off'" formControlName="immeuble" />
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+            <mat-label>Etage</mat-label>
+            <input placeholder="Etage" matInput [attr.autocomplete]="'off'" formControlName="etage" />
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+            <mat-label>Porte</mat-label>
+            <input placeholder="Porte" matInput [attr.autocomplete]="'off'" formControlName="porte" />
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+            <mat-label>Email de service</mat-label>
+            <input placeholder="Email de service" matInput [attr.autocomplete]="'off'" formControlName="emailDeService" />
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+            <mat-label>Téléphone de service</mat-label>
+            <input placeholder="Téléphone de service" matInput [attr.autocomplete]="'off'" formControlName="telephoneDeService" />
+            <mat-hint>Exemple (00226) XX XX XX XX ou (00226)XXXXXXXX ou 00226XXXXXXXX ou +226XXXXXXXX</mat-hint>
+        </mat-form-field>
+    </div>
+</form>

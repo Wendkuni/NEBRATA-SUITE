@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <base href="/">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+</head>
+
+<body>
+    <script>
+        /*<![CDATA[*/
+        (function() {
+            window.sycadInitialData = '[(${sycadSettingApplication})]';
+        })();
+
+        /*]]>*/
+    </script>
+
+    <sycad-app-root></sycad-app-root>
+
+
+
+    <style type="text/css" id="loading-html-basic-css">
+       /* Style de base */
+.whole-package {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Style du logo */
+.logo {
+    width: 100px;
+    height: 100px;
+    animation: scaleAnimation 3s infinite;
+}
+
+/* Animation de grossissement et rétrécissement */j
+@keyframes scaleAnimation {
+    0%, 100% {
+      transform: scale(4);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+}
+
+    </style>
+    <div class="whole-package">
+     <div class="loading-container cssload-preloader"   id="loading-html-basic">
+        <img src="assets/img/logo/Plan de travail 6.png" alt="Logo" class="logo">
+    </div>
+</div>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,132 @@
+import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Settings } from '@sycadApp/config/app.settings.model';
+import { Observable, Subject, merge, of } from 'rxjs';
+import { AppSettingsService } from '@sycadApp/config/app.settings.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { SycadTableContext } from '@sycadApp/libs/model-table';
+import { debounceTime, switchMap, takeUntil, startWith } from 'rxjs/operators';
+import { PageEvent, MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import {ContribuableMoraleItem} from "@sycadApp/models/data-references/contribuables/contribuable-moral.model";
+import {ContribuableMoralService} from '@sycadApp/services/data-references/contribuables/contribuable-moral-service';
+import { environment } from 'environments/environment';
+
+
+
+
+
+
+
+@Component({
+  selector: 'app-list-contribuable-moral',
+  templateUrl: './list-contribuable-moral.component.html',
+  styleUrls: ['./list-contribuable-moral.scss'],
+  encapsulation: ViewEncapsulation.None
+})
+export class ContribuableMoralListComponent implements OnInit {
+
+
+
+  public settings: Settings;
+  public context = new SycadTableContext<ContribuableMoraleItem>();
+  public globalsearchTermSubject: Subject<string> = new Subject<string>();
+
+
+  @ViewChild(MatPaginator, { static: true })
+  public paginator: MatPaginator;
+
+  constructor(
+    public appSettings: AppSettingsService,
+    private router: Router,
+
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar,
+    public contribuableService: ContribuableMoralService) {
+    this.settings = this.appSettings.settings;
+  }
+  ngAfterViewInit() {
+
+
+  }
+  private _onDestroy = new Subject<void>();
+  ngOnDestroy() {
+    this._onDestroy.next();
+    this._onDestroy.complete();
+  }
+  ngOnInit() {
+
+    this.route.queryParamMap.subscribe(params => {
+      this.paginator.pageIndex = (params.get("_page")) ? Number(params.get("_page")) : 0;
+      this.paginator.pageSize = (params.get("_limit")) ? Number(params.get("_limit")) : 6;
+
+    });
+
+
+    merge(this.globalsearchTermSubject, this.paginator.page)
+      .pipe(
+        debounceTime(750),
+        takeUntil(this._onDestroy),
+        startWith({}),
+        switchMap(() => {
+
+          this.context.limit = this.paginator.pageSize;
+          this.context.page = this.paginator.pageIndex;
+
+          return this.contribuableService.search(this.context);
+        })).subscribe(data => {
+          this.context.items = data.items;
+          this.context.limit = data.limit;
+          this.context.page = data.page;
+          this.context.totalCount = data.totalCount;
+        });
+
+  }
+
+  public onGlobalSearch() {
+    this.globalsearchTermSubject.next(this.context.search);
+
+  }
+  public onPageEvent(pageEvent: PageEvent) {
+    this.router.navigate([], { relativeTo: this.route, queryParams: { _page: pageEvent.pageIndex, _limit: pageEvent.pageSize } });
+    if (this.settings.preference.fixedHeader) {
+      document.getElementById('main-content').scrollTop = 0;
+    }
+    else {
+      document.getElementsByClassName('mat-drawer-content')[0].scrollTop = 0;
+    }
+
+  }
+
+
+
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 25000,
+      verticalPosition: 'top'
+
+    });
+  }
+
+  public ajout() {
+    this.router.navigate([`${environment.FRONTEND_ROUTES.CONTRIBUABLE_MORAL}/edition`]);
+  }
+
+  public supprimer(data) {
+
+
+    this.contribuableService.delete(data.guid).subscribe(
+      data => {
+        this.openSnackBar("Contribuable supprimé avec succès","OK");
+        this.globalsearchTermSubject.next("");
+      },
+      errorResponse => {
+        this.openSnackBar("Impossible de supprimer le contribuable","OK");
+      }
+    );
+  }
+
+
+}

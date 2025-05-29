@@ -1,0 +1,25 @@
+.role-form {
+  .ng-select {
+    width: 100%;
+  }
+}
+.sycad-zone-modal-form-edition{
+  height:40vh;
+}
+.modifier-text{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+}
+.mat-grid-list {
+  overflow: hidden;
+}
+.hidden-field {
+  visibility: hidden;
+}
+.gris  .mat-form-field-outline{
+  background-color: #f0f0f0 !important; /* Couleur grise de fond */
+  border: 1px solid #ccc !important; /* Bordure grise */
+  color: #777 !important; /* Couleur du texte grise (optionnel) */
+}

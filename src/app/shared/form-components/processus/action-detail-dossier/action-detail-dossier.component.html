@@ -1,0 +1,8 @@
+<div class="container-action-detail-dossier">
+    <button mat-button [matMenuTriggerFor]="menu"> Actions autorisées <mat-icon>more_vert</mat-icon> </button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item *ngFor="let transition of transitions " (click)="actionProcessus(transition.code)">
+           Aller à :  {{transition.libelle}}
+        </button>
+    </mat-menu>
+</div>

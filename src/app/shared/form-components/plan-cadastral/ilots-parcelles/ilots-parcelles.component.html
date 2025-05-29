@@ -1,0 +1,118 @@
+
+<div fxLayout="row wrap" fxLayoutAlign="start" fxLayoutGap="10px">
+  <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="45" [fxFlex.xl]="40">
+    <ng-select
+      [items]="arrondissementRemoteAutocomplete.listRessource$ | async"
+      [typeahead]="arrondissementRemoteAutocomplete.term"
+      (change)="onChangeArrondissement($event)"
+      [loading]="arrondissementRemoteAutocomplete.loading"
+      (search)="onSearchArrondissement($event)"
+      [groupBy]="groupByFnArrondissement"
+      [groupValue]="groupValueFnArrondissement"
+      appendTo="body"
+      [selectOnTab]="true"
+      bindLabel="nom"
+      bindValue="id"
+      labelForId="arrondissement"
+      placeholder="Arrondissement">
+      <ng-template ng-optgroup-tmp let-item="item">
+        <span style="vertical-align: middle;">{{item.name}}</span>
+      </ng-template>
+      <ng-template ng-loadingspinner-tmp>
+        <div class="lds-ellipsis">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </ng-template>
+    </ng-select>
+  </div>
+</div>
+
+<form [formGroup]="ilotsAAjouter" id="ilot-parcelles">
+  <div fxLayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="start" class="button-row">
+    <button mat-raised-button color="primary" (click)="loadParcellesByArrondissement()">Charger les parcelles</button>
+  </div>
+  <!-- Table des parcelles -->
+  <div fxLayout="row wrap" fxLayoutAlign="start" class="table-container">
+    <table mat-table [dataSource]="dataSourceParcelle" multiTemplateDataRows matSort class="master-table mat-elevation-z8"
+           [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+      <ng-container matColumnDef="nston">
+        <th mat-header-cell *matHeaderCellDef>
+          Numéro section
+        </th>
+        <td mat-cell
+            *matCellDef="let element"> {{element.nston}} </td>
+      </ng-container>
+      <ng-container matColumnDef="nstoa">
+        <th mat-header-cell *matHeaderCellDef>
+          Numéro ancien
+        </th>
+        <td mat-cell
+            *matCellDef="let element"> {{element.nstoa}} </td>
+      </ng-container>
+      <ng-container matColumnDef="nilotn">
+        <th mat-header-cell *matHeaderCellDef>
+          Ilot nouveau
+        </th>
+        <td mat-cell
+            *matCellDef="let element"> {{element.nilotn}} </td>
+      </ng-container>
+      <ng-container matColumnDef="nilota">
+        <th mat-header-cell *matHeaderCellDef>
+          Ilot ancien
+        </th>
+        <td mat-cell
+            *matCellDef="let element"> {{element.nilota}} </td>
+      </ng-container>
+      <ng-container matColumnDef="nplen">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Numéro parcelle</th>
+        <td mat-cell *matCellDef="let element">{{element.nplen}}</td>
+      </ng-container>
+      <ng-container matColumnDef="nplea">
+        <th mat-header-cell *matHeaderCellDef> Numéro
+          ancien
+        </th>
+        <td mat-cell
+            *matCellDef="let element"> {{element.nplea}} </td>
+      </ng-container>
+      <ng-container matColumnDef="supm2">
+        <th mat-header-cell *matHeaderCellDef> Superficie
+        </th>
+        <td mat-cell
+            *matCellDef="let element"> {{element.supm2}} </td>
+      </ng-container>
+      <ng-container matColumnDef="destinat">
+        <th mat-header-cell *matHeaderCellDef> Destination
+        </th>
+        <td mat-cell
+            *matCellDef="let element"> {{element.destinat}} </td>
+      </ng-container>
+      <ng-container matColumnDef="nsect">
+        <th mat-header-cell *matHeaderCellDef> Localité
+        </th>
+        <td mat-cell
+            *matCellDef="let element"> {{element.nsect}} </td>
+      </ng-container>
+      <ng-container matColumnDef="nqart">
+        <th mat-header-cell *matHeaderCellDef> Quartier
+        </th>
+        <td mat-cell
+            *matCellDef="let element"> {{element.nqart}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsParcelleToDisplay"></tr>
+      <tr mat-row *matRowDef="let row; let i = index; columns: columnsParcelleToDisplay;"></tr>
+    </table>
+    <mat-paginator [length]="totalParcelleElements" [pageSize]="pageSize"
+                   [pageSizeOptions]="[5, 10, 25,100]"
+                   [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90"
+                   [fxFlex.lg]="80" [fxFlex.xl]="70"
+                   (page)="onParcellePageChange($event)"
+                   showFirstLastButtons>
+    </mat-paginator>
+  </div>
+</form>
+
+

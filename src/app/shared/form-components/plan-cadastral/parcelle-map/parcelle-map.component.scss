@@ -1,0 +1,32 @@
+
+#map {
+  height: 600px;
+  position: relative;
+  border: 5px solid rgb(111, 114, 120); /* Bordure noire épaisse */
+  border-radius: 5px; /* Coins légèrement arrondis pour un effet doux */
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000; /* Assurez-vous qu'il soit au-dessus de la carte */
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+  background: #f1f1f1;
+  border-radius: 10px;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+}
+
+.custom-popup .leaflet-popup-content {
+  margin: 0;
+  padding: 0;
+}
+
+.custom-popup .leaflet-popup-tip-container {
+  margin-top: -1px;
+}
+
+

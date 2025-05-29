@@ -1,0 +1,43 @@
+.mat-tab-body {
+    padding-top: 20px;
+}
+
+.sycad-form-tab-label-icon {
+    margin-right: 8px;
+}
+
+.sycad-form-ng-select {
+    margin-top: -1.5em;
+    .mat-error {
+        position: absolute;
+        font-size: 75%;
+    }
+    .ng-select {
+        width: 100%;
+    }
+}
+
+.sycad-form-line {
+    height: 90px;
+}
+
+.card-action-form {
+    position: fixed;
+    bottom: 40px;
+    right: 5%;
+    z-index: 9999999;
+}
+
+.container-form-field-radio {
+    label {
+        display: block;
+        padding-bottom: 7px;
+    }
+}
+
+.global-error-valiator {
+    font-size: 80%;
+    position: absolute;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

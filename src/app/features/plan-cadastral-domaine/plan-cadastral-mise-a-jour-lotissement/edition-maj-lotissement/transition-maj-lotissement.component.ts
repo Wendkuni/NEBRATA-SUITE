@@ -1,0 +1,540 @@
+
+import { Input, Component, Directive } from '@angular/core';
+import {PlanCadastralMAJLotissementElement} from '@sycadApp/models/workflow/maj-lotissement.model';
+import {Validators, FormArray, FormGroup, FormBuilder} from '@angular/forms';
+import {Document, DossierPiece, Mandat, Processus, Transition} from '@sycadApp/models/workflow/common/general';
+import { RemoteAutocomplete } from '@sycadApp/shared/form-components/model/remote-autocomplete';
+import {TransitionComponent} from '@sycadShared/form-components/processus/transition/component.transition';
+import {AdvancedRemoteAutocomplete} from '@sycadApp/shared/form-components/data-references-domaine/field-remote-autocomplete/advanced-remote-autocomplete';
+import {ActeurAutocomplete} from '@sycadApp/models/data-references/contribuables/acteur.model';
+import {GeneralContribuable, Section} from '@sycadApp/models/data-references/contribuables/global.model';
+import {StructureAutocomplete, StructureElement} from '@sycadApp/models/data-references/organigramme/structure.model';
+import {Router} from '@angular/router';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {AppConfirmService} from '@sycadShared/app-confirm/app-confirm.service';
+import {DateAdapter} from '@angular/material/core';
+import {MediaObserver} from '@angular/flex-layout';
+import {CategoriePieceService} from '@sycadApp/services/data-references/system/categorie-piece.service';
+import {ActeursService} from '@sycadApp/services/data-references/contribuables/acteurs.service';
+import {ContribuableService} from '@sycadApp/services/data-references/system/contribuable.service';
+import {StructureService} from '@sycadApp/services/data-references/organigramme/structure.service';
+import {ParcelleService} from '@sycadApp/services/cession-parcelle/parcelle.service';
+import {MandatService} from '@sycadApp/services/workflow/mandat.service';
+import {IlotElement, ParcelleElement} from '@sycadApp/models/data-references/territoire/localite.model';
+import {catchError, map} from 'rxjs/operators';
+import {Observable, of, Subject} from 'rxjs';
+import {RapideContribuableFormComponent} from '@sycadShared/form-components/annuaire-identite/rapide-contribuable-form/rapide-contribuable-form.component';
+import {TypeColonne} from '@sycadApp/libs/model-table';
+import {environment} from '../../../../../environments/environment';
+import {PlanCadastralMiseAjourLotissementService} from '@sycadApp/services/workflow/common/maj-lotissement.service';
+import { RemoteAutocompleteCommuneZoneCompetence } from '../../plan-cadastral-sectionnement/edition-plan-cadastral-sectionnement/creation/remote-autocomple-zone-competence';
+import { CommuneAutocomplete } from '@sycadApp/models/data-references/territoire/commune.model';
+
+
+
+@Directive()
+export class TransitionPlanCadastralMiseAJourLotissementComponent extends TransitionComponent {
+
+  @Input()
+  public majLotissement: PlanCadastralMAJLotissementElement;
+  @Input()
+  public transition: Transition;
+
+  @Input()
+  public processus: Processus;
+
+  public mandatRemoteAutocomplete = new AdvancedRemoteAutocomplete<Mandat>();
+  public acteurRemoteAutocomplete = new AdvancedRemoteAutocomplete<ActeurAutocomplete>();
+  public acteurBeneficiaireRemoteAutocomplete = new AdvancedRemoteAutocomplete<ActeurAutocomplete>();
+  public structureRemoteAutocomplete = new RemoteAutocomplete<StructureAutocomplete>();
+  public isLoadingResults = false;
+  public attributaireForm: FormGroup;
+
+
+
+  get objet() { return this.formulaire.get('dossier').get('objet'); }
+  get dateExterne() { return this.formulaire.get('dossier').get('dateExterne'); }
+  get refExterne() { return this.formulaire.get('dossier').get('refExterne'); }
+  get observation() { return this.formulaire.get('dossier').get('observation'); }
+  get etatDossier() { return this.formulaire.get('dossier').get('etatDossier'); }
+  get libelle() { return this.formulaire.get('parcelle').get('libelle'); }
+  get dossier() { return this.formulaire.get('dossier'); }
+  get acteurExterne() { return this.formulaire.get('acteurExterne'); }
+  get typeOperation() { return this.formulaire.get('typeOperation'); }
+  get commune() { return this.formulaire.get('commune'); }
+  get promoteurImmobilier() { return this.formulaire.get('promoteurImmobilier'); }
+  get structureBeneficiaire() { return this.formulaire.get('structureBeneficiaire'); }
+  get contribuableBeneficiaire() { return this.formulaire.get('contribuableBeneficiaire'); }
+  get mandat() { return this.formulaire.get('mandat'); }
+  get pieces() { return this.formulaire.controls.pieces as FormArray; }
+  get documents() { return this.formulaire.controls.documents as FormArray; }
+  get numerosDossierRetrait() { return this.formulaire.get('numerosDossierRetrait'); }
+  get parcellesADesactive() { return this.formulaire.get('parcellesADesactive'); }
+  get ilotsADesactive() { return this.formulaire.get('ilotsADesactive'); }
+  get sectionsADesactive() { return this.formulaire.get('sectionsADesactive'); }
+  get parcellesAAjouter() { return this.formulaire.controls.parcellesAAjouter as FormArray; }
+  get parcellesAModifier() { return this.formulaire.controls.parcellesAModifier as FormArray; }
+  get parcellesM() { return this.formulaire.get('parcellesM'); }
+  get ilotsM() { return this.formulaire.get('ilotsM'); }
+  get sectionsM() { return this.formulaire.get('sectionsM'); }
+  get ilotsAAjouter(){return this.formulaire.controls.ilotsAAjouter as FormArray;}
+  get ilotsAModifier(){return this.formulaire.controls.ilotsAModifier as FormArray;}
+  get sectionsAAjouter(){return this.formulaire.controls.sectionsAAjouter as FormArray;}
+  get sectionsAModifier(){return this.formulaire.controls.sectionsAModifier as FormArray;}
+
+
+  public callbackAutocompleteParcelleByIlot:(search:string,params:Map<string,any>)=>Observable<any[]>;
+
+  constructor(
+    public router: Router,
+    public dialog: MatDialog,
+    public _snackBar: MatSnackBar,
+    public confirmService: AppConfirmService,
+    public _adapter: DateAdapter<any>,
+    public mediaObserver: MediaObserver,
+    public fb: FormBuilder,
+    public categoriePieceService: CategoriePieceService,
+    public majLotissmentService: PlanCadastralMiseAjourLotissementService,
+    public acteurService: ActeursService,
+    public contribuableService: ContribuableService,
+    public structureService: StructureService,
+    public parcelleService: ParcelleService,
+    public mandatService: MandatService,
+  ) {
+    super(mediaObserver);
+
+    this.formulaire = this.fb.group({
+      dossier: this.fb.group({
+        objet: [null, [Validators.required]],
+        dateExterne: [null, Validators.compose([Validators.required])],
+        etatDossier: [false],
+        refExterne: [null, [Validators.required, Validators.maxLength(255), Validators.minLength(2)]],
+        observation: [null],
+      }),
+      acteurExterne: [null],
+      typeOperation:  [null, [Validators.required]],
+      commune:  [null, [Validators.required]],
+      promoteurImmobilier: [null],
+      numeroPVEvaluation: [null],
+      dateEvaluation: [null],
+      dateDBT: [null],
+      numeroDBT: [null],
+      structureBeneficiaire: [null],
+      contribuableBeneficiaire: [null],
+      pieces: new FormArray([]),
+      documents: new FormArray([]),
+      mandat: [null],
+      numerosDossierRetrait: [null],
+      parcellesM: [null],
+      parcellesAModifier: new FormArray([]),
+      ilotsADesactive: [null],
+      parcellesADesactive: [null],
+      sectionsADesactive: [null],
+      parcellesAAjouter: new FormArray([]),
+      ilotsM: [null],
+      sectionsM: [null],
+      ilotsAModifier: new FormArray([]),
+      sectionsAModifier: new FormArray([]),
+      ilotsAAjouter: new FormArray([]),
+      sectionsAAjouter: new FormArray([]),
+    });
+
+    this.callbackAutocompleteParcelleByIlot=(search:string,params:Map<string,any>)=> {
+      return this.parcelleService.autocompletionByIlot(search,params).pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((err) => {
+          return of([]);
+        })
+      );
+    };
+
+  }
+
+  /**************** piece officielle *********************/
+
+  createDossierPiece(piece: DossierPiece = null) {
+
+    if (piece != null) {
+
+
+      return this.fb.group({
+        id: [piece.id],
+        categorie: [piece.categorie, Validators.compose([Validators.required])],
+        reference: [piece.reference],
+        dateExpiration: [piece.dateExpiration],
+        dateDelivrance: [piece.dateDelivrance],
+        autoriteDeDelivrance: [piece.autoriteDeDelivrance],
+        observation: [piece.observation],
+        pieceJointe: [piece.pieceJointe],
+      });
+    } else {
+      return this.fb.group({
+        id: [null],
+        categorie: [null, Validators.compose([Validators.required])],
+        reference: [null],
+        dateExpiration: [null],
+        dateDelivrance: [null],
+        autoriteDeDelivrance: [null],
+        observation: [null],
+        pieceJointe: null,
+      });
+    }
+
+  }
+  addNewDossierPiece() {
+    this.pieces.insert(0, this.createDossierPiece());
+
+  }
+
+
+  removeDossierPiece(index) {
+    this.pieces.removeAt(index);
+  }
+  /**************** fin piece officielle *********************/
+
+  /*************************** creation de documents**********************************/
+  createDocument(document: Document = null) {
+    if(document != null){
+      return this.fb.group({
+        id: [document.id],
+        libelle:[document.libelle, [Validators.required]],
+        numero:[document.numero, [Validators.required]],
+        pieceJointe:[document.pieceJointe],
+        dateValidite: [document.dateValidite],
+        documentType: [document.documentType.id, [Validators.required]],
+        dateDoc: [document.dateDoc, [Validators.required]]
+      });
+    }else {
+      return this.fb.group({
+        id: [null],
+        libelle: [null, [Validators.required]],
+        numero: [null, [Validators.required]],
+        pieceJointe: [null, [Validators.required]],
+        dateValidite: [null],
+        documentType: [null, [Validators.required]],
+        dateDoc: [null, [Validators.required]]
+      });
+    }
+  }
+
+  addDocument() {
+    this.documents.insert(0, this.createDocument());
+
+  }
+
+  removeDocument(index) {
+
+    this.documents.removeAt(index);
+
+  }
+
+  /***************** fin création document **********************/
+
+  public contribuableBeneficiaireChoisie: GeneralContribuable;
+  public structureBeneficiaireChoisie: StructureAutocomplete;
+  receiveSubjectContribuableBeneficiaire(contri: GeneralContribuable) {
+    this.contribuableBeneficiaireChoisie = contri;
+   // console.log(this.parcellesAModifier);
+    this.structureBeneficiaireChoisie=null;
+    this.structureBeneficiaire.setValue(null);
+    this.parcellesM.setValue(null);
+    this.parcellesADesactive.setValue(null);
+    this.parcellesChoisies = null;
+    this.editParcelles = null;
+  }
+
+  public onSearchStructure(eventNgSelect) {
+    this.structureRemoteAutocomplete.term.next(eventNgSelect.term);
+  }
+  public onChangeStructure(structure: StructureElement) {
+
+
+    this.structureBeneficiaireChoisie=structure;
+    this.contribuableBeneficiaire.setValue(null);
+    this.contribuableBeneficiaireChoisie = null;
+
+    this.parcellesM.setValue(null);
+    this.parcellesADesactive.setValue(null);
+    this.parcellesChoisies = null;
+    this.editParcelles = null;
+
+  }
+
+
+  public sectionsChoisies: Section[];
+  public sectionsAAjouterChoisies: Section[];
+  public sectionsAModifierChoisies: Section[];
+  public ilotsChoisies: IlotElement[];
+  public ilotsChoisiesAajouter: IlotElement[];
+  public ilotsChoisiesAModifier: IlotElement[];
+  public parcellesChoisies: ParcelleElement[];
+  public newParcelles: ParcelleElement[];
+  public editParcelles: ParcelleElement[];
+
+  receiveSubjectActeur(acteur: any) {
+    // this.attribution.acteur= acteur;
+  }
+
+  public mandatChoisie: Mandat;
+  receiveSubjectMandat(mandat: Mandat) {
+    this.mandatChoisie= mandat;
+    if(mandat) {
+      this.contribuableBeneficiaireChoisie=mandat.mandant;
+      this.contribuableBeneficiaire.setValue(mandat.mandant.guid);
+    }else {
+      this.contribuableBeneficiaireChoisie=null;
+      this.contribuableBeneficiaire.setValue(null);
+    }
+    this.parcellesM.setValue(null);
+    this.parcellesADesactive.setValue(null);
+    this.parcellesChoisies = null;
+    this.editParcelles = null;
+  }
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 25000,
+      verticalPosition: "top",
+    });
+  }
+
+
+  public onChangeParcelle(parcelles) {
+    this.parcellesChoisies = parcelles;
+  }
+
+  public onChangeIlot(ilots) {
+    this.ilotsChoisies = ilots;
+  }
+
+  public onChangeSection(sections) {
+    this.sectionsChoisies = sections;
+  }
+
+  initConfigAutocompleteActeurPromoteur() {
+
+    let callbackAutocomplete =   (search:string,params:Map<string,any>)=> {
+      return this.acteurService.autocompletion(search,params).pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((err) => {
+          return of([]);
+        })
+      );
+    };
+    this.acteurBeneficiaireRemoteAutocomplete.customNgSelectConfig = {
+      multiple: false,
+      controlName: 'promoteurImmobilier',
+      libelle: 'libelle',
+      term: new Subject<string>(),
+      callbackAutocomplete: callbackAutocomplete,
+      formulaire: this.formulaire,
+      placeholder: "L'acteur promoteur immobilier"
+    };
+
+    this.acteurBeneficiaireRemoteAutocomplete.nativeNgSelectConfig.placeholder = "L'acteur promoteur immobilier";
+    this.acteurBeneficiaireRemoteAutocomplete.nativeNgSelectConfig.appendTo = 'body';
+    this.acteurBeneficiaireRemoteAutocomplete.nativeNgSelectConfig.bindValue = 'guid';
+    this.acteurBeneficiaireRemoteAutocomplete.listItemSelected = [];
+    this.acteurBeneficiaireRemoteAutocomplete.keyId = 'guid';
+    this.acteurBeneficiaireRemoteAutocomplete.callbackAutocomplete = callbackAutocomplete;
+
+    this.acteurBeneficiaireRemoteAutocomplete.mapFunction = (acteur: ActeurAutocomplete): ActeurAutocomplete => {
+      acteur.libelle = acteur.denomination + " ( " + acteur.categorie + " )";
+      acteur.libelleTelephone = acteur?.telephones?.map(value => value.value).join(', ');
+      acteur.libelleEmail =  acteur?.emails?.map(value => value.value).join(', ');
+      return acteur;
+    };
+    const colTabAttributaire = [
+      { name: 'codeUnique', label: 'Code unique' },
+      { name: 'statusJuridique', label: 'Status juridique' },
+      { name: 'denomination', label: 'Dénomination' },
+      { name: 'sigle', label: 'Sigle' },
+      { name: 'categorie', label: 'Catégorie' },
+      { name: 'pieceOfficielle.categorie.libelle', label: 'Type pièce' , type: TypeColonne.STRING },
+      { name: 'pieceOfficielle.numero', label: 'Numéro pièce' , type: TypeColonne.STRING },
+      { name: 'pieceOfficielle.nip', label: 'Nip pièce', type: TypeColonne.STRING  },
+      { name: 'pieceOfficielle.dateObtention', label: 'date pièce' , type: TypeColonne.DATE },
+      { name: 'profession', label: 'Profession' , type: TypeColonne.STRING },
+      { name: 'libelleTelephone', label: 'Téléphone' , type: TypeColonne.STRING },
+      { name: 'libelleEmail', label: 'Email' , type: TypeColonne.STRING },
+    ];
+    this.acteurBeneficiaireRemoteAutocomplete.tableDescription = this.acteurBeneficiaireRemoteAutocomplete.pushColumn(colTabAttributaire, 'Tableau des acteurs promoteurs immobilier');
+
+  }
+  initConfigAutocompleteActeur() {
+
+    let callbackAutocomplete =   (search:string,params:Map<string,any>)=> {
+      return this.acteurService.autocompletion(search,params).pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((err) => {
+          return of([]);
+        })
+      );
+    };
+    this.acteurRemoteAutocomplete.customNgSelectConfig = {
+      multiple: false,
+      controlName: 'acteurExterne',
+      libelle: 'libelle',
+      term: new Subject<string>(),
+      callbackAutocomplete: callbackAutocomplete,
+      formulaire: this.formulaire,
+      placeholder: "L'acteur géomètre expert"
+    };
+
+    this.acteurRemoteAutocomplete.nativeNgSelectConfig.placeholder = "L'acteur géomètre expert";
+    this.acteurRemoteAutocomplete.nativeNgSelectConfig.appendTo = 'body';
+    this.acteurRemoteAutocomplete.nativeNgSelectConfig.bindValue = 'guid';
+    this.acteurRemoteAutocomplete.listItemSelected = [];
+    this.acteurRemoteAutocomplete.keyId = 'guid';
+    this.acteurRemoteAutocomplete.callbackAutocomplete = callbackAutocomplete;
+
+    this.acteurRemoteAutocomplete.mapFunction = (acteur: ActeurAutocomplete): ActeurAutocomplete => {
+      acteur.libelle = acteur.denomination + " ( " + acteur.categorie + " )";
+      acteur.libelleTelephone = acteur?.telephones?.map(value => value.value).join(', ');
+      acteur.libelleEmail =  acteur?.emails?.map(value => value.value).join(', ');
+      return acteur;
+    };
+    const colTabAttributaire = [
+      { name: 'codeUnique', label: 'Code unique' },
+      { name: 'statusJuridique', label: 'Status juridique' },
+      { name: 'denomination', label: 'Dénomination' },
+      { name: 'sigle', label: 'Sigle' },
+      { name: 'categorie', label: 'Catégorie' },
+      { name: 'pieceOfficielle.categorie.libelle', label: 'Type pièce' , type: TypeColonne.STRING },
+      { name: 'pieceOfficielle.numero', label: 'Numéro pièce' , type: TypeColonne.STRING },
+      { name: 'pieceOfficielle.nip', label: 'Nip pièce', type: TypeColonne.STRING  },
+      { name: 'pieceOfficielle.dateObtention', label: 'date pièce' , type: TypeColonne.DATE },
+      { name: 'profession', label: 'Profession' , type: TypeColonne.STRING },
+      { name: 'libelleTelephone', label: 'Téléphone' , type: TypeColonne.STRING },
+      { name: 'libelleEmail', label: 'Email' , type: TypeColonne.STRING },
+    ];
+    this.acteurRemoteAutocomplete.tableDescription = this.acteurRemoteAutocomplete.pushColumn(colTabAttributaire, 'Tableau des acteurs géomètre expert');
+
+  }
+  public dialogRefRapideContribuableForm: MatDialogRef<RapideContribuableFormComponent, any>;
+
+
+
+  initConfigAutocompleteMandat() {
+
+    let callbackAutocomplete = (search:string,params:Map<string,any>)=> {
+      return this.mandatService.autocompletionByMesMandats(search,params).pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((err) => {
+          return of([]);
+        })
+      );
+    };
+
+    this.mandatRemoteAutocomplete.customNgSelectConfig = {
+      multiple: false,
+      controlName: 'mandat',
+      libelle: 'objet',
+      term: new Subject<string>(),
+      callbackAutocomplete: callbackAutocomplete,
+      formulaire: this.formulaire,
+      placeholder: "Le mandat associé à ce dossier"
+    };
+
+    this.mandatRemoteAutocomplete.nativeNgSelectConfig.placeholder = "Le mandat associé à ce dossier";
+    this.mandatRemoteAutocomplete.nativeNgSelectConfig.appendTo = 'body';
+    this.mandatRemoteAutocomplete.nativeNgSelectConfig.bindValue = 'id';
+    this.mandatRemoteAutocomplete.listItemSelected = [];
+    this.mandatRemoteAutocomplete.keyId = 'id';
+    this.mandatRemoteAutocomplete.callbackAutocomplete = callbackAutocomplete;
+    const colTabAttributaire = [
+      { name: 'objet', label: 'Objet' },
+      { name: 'reference', label: 'Référence' },
+      { name: 'mandant.libelle', label: 'Mandant' },
+      { name: 'mandataire.libelle', label: 'Mandataire' },
+      { name: 'debut', label: 'Début',type:TypeColonne.DATE },
+      { name: 'fin', label: 'Fin',type:TypeColonne.DATE },
+    ];
+    this.mandatRemoteAutocomplete.tableDescription = this.mandatRemoteAutocomplete.pushColumn(colTabAttributaire, 'Tableau de mes mandats');
+
+  }
+  createParcelle(parcelle: ParcelleElement = null) {
+    if (parcelle == null) {
+      return this.fb.group({
+        id: [null],
+        libelle: [null],
+        ordre: [null],
+        superficie: [null, Validators.compose([Validators.required])]
+
+      });
+    } else {
+      return  this.fb.group({
+          id: [parcelle.id],
+          libelle: [parcelle.libelle],
+          ordre: [parcelle?.ordre],
+          superficie: [parcelle.superficie, Validators.compose([Validators.required])]
+      });
+    }
+
+  }
+  resetForm() {
+    this.router.navigate([`${environment.FRONTEND_ROUTES.PROCESSUS_PLAN_CADASTRAL_MAJ_PLAN_CADASTRE}`]);
+  }
+
+
+  private getCorrectWidth() {
+
+    if (this.mediaObserver.isActive("xs")) {
+      return {
+        width: '95vw',
+        height: '90vh',
+        position: {
+          top: '2vh',
+        }
+      };
+    }
+
+    if (this.mediaObserver.isActive("sm")) {
+      return {
+        width: '80vw',
+        height: '90vh',
+        position: {
+          top: '2vh',
+        }
+      };
+    }
+
+    if (this.mediaObserver.isActive("md")) {
+      return {
+        width: '60vw',
+        height: '90vh',
+        position: {
+          top: '2vh',
+        }
+      };
+    }
+
+    if (this.mediaObserver.isActive("lg")) {
+      return {
+        width: '55vw',
+        height: '90vh',
+        position: {
+          top: '2vh',
+        }
+      };
+    }
+    if (this.mediaObserver.isActive("xl")) {
+      return {
+        width: '50vw',
+        height: '90vh',
+        position: {
+          top: '2vh',
+        }
+      };
+    }
+  }
+
+}

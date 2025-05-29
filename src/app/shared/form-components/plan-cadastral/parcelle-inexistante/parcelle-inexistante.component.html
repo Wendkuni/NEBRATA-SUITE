@@ -1,0 +1,119 @@
+<form [formGroup]="parcelleInexistanteForm" class="parcelle-inexistante">
+  <label id="etatDossier-active" style="font-weight: bold;">Description de la parcelle non trouvée</label>
+
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="16px" fxLayoutAlign="start" >
+    <div  class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="15" [fxFlex.xl]="10">
+      <ng-select  [items]="communeRemoteAutocomplete.listRessource$ | async" [typeahead]="communeRemoteAutocomplete.term"
+                  [loading]="communeRemoteAutocomplete.loading" (search)="onSearchCommune($event)" (change)="onChangeCommune($event)"
+                  appendTo="body" [selectOnTab]="true" bindLabel="nom" bindValue="id"
+                labelForId="commune" placeholder="Commune" formControlName="commune">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+            </ng-select>
+            <div *ngIf="parcelleInexistanteForm.get('commune')?.invalid && parcelleInexistanteForm.get('commune')?.touched" class="error-message">
+              La commune est obligatoire.
+            </div>
+    </div>
+    <div  class="sycad-form-ng-select"  [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="15" [fxFlex.xl]="10">
+      <ng-select [items]="arrondissementRemoteAutocomplete.listRessource$ | async" [typeahead]="arrondissementRemoteAutocomplete.term" [loading]="arrondissementRemoteAutocomplete.loading" (search)="onSearchArrondissement($event)" (change)="onChangeArrondissement($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom"
+                labelForId="Arrondissement" placeholder="Arrondissement" bindValue="id" formControlName="arrondissement">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+            </ng-select>
+            <div *ngIf="parcelleInexistanteForm.get('arrondissement')?.invalid && parcelleInexistanteForm.get('arrondissement')?.touched" class="error-message">
+              L'arrondissement est obligatoire.
+            </div>
+    </div>
+    <div class="sycad-form-ng-select"  [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="15" [fxFlex.xl]="10">
+      <ng-select [items]="localiteRemoteAutocomplete.listRessource$ | async" [typeahead]="localiteRemoteAutocomplete.term" [loading]="localiteRemoteAutocomplete.loading" (search)="onSearchLocalite($event)"  appendTo="body" [selectOnTab]="true" bindLabel="nom"
+      labelForId="Localite" placeholder="Localite" bindValue="id" formControlName="localite">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+            </ng-select>
+
+    </div>
+    <div class="sycad-form-ng-select"  [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="15" [fxFlex.xl]="10">
+      <ng-select [items]="quartierRemoteAutocomplete.listRessource$ | async" [typeahead]="quartierRemoteAutocomplete.term" [loading]="quartierRemoteAutocomplete.loading" (search)="onSearchQuartier($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom"
+                labelForId="Quartier" placeholder="Quartier" bindValue="id" formControlName="quartier">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+            </ng-select>
+
+    </div>
+
+  </div>
+  <br>
+  <div  fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="16px" fxLayoutAlign="start" >
+
+  <mat-form-field class="sycad-form-ng-select" fxFlex="15" >
+    <input matInput placeholder="Section" formControlName="section">
+  </mat-form-field>
+
+  <mat-form-field  class="sycad-form-ng-select" fxFlex="15">
+    <input matInput placeholder="Ilot" formControlName="ilot" >
+  </mat-form-field>
+
+  <mat-form-field class="sycad-form-ng-select" fxFlex="15">
+    <input matInput placeholder="Parcelle" formControlName="numero">
+  </mat-form-field>
+
+  <mat-form-field class="sycad-form-ng-select" fxFlex="15">
+    <input matInput placeholder="Superficie" type="number" formControlName="superficie" >
+  </mat-form-field>
+
+  </div>
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="16px" fxLayoutAlign="start">
+  <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="32" [fxFlex.xl]="10">
+    <ng-select [items]="destinationRemoteAutocomplete.listRessource$ | async" [typeahead]="destinationRemoteAutocomplete.term" [loading]="destinationRemoteAutocomplete.loading" (search)="onSearchDestination($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle" bindValue="libelle"
+              labelForId="Destination" placeholder="Destination" bindValue="id"  formControlName="destination">
+              <ng-template ng-loadingspinner-tmp>
+                  <div class="lds-ellipsis">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                  </div>
+              </ng-template>
+          </ng-select>
+
+  </div>
+  <div class="sycad-form-ng-select"  [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="15" [fxFlex.xl]="10">
+    <ng-select [items]="etatMiseEnValeurOptions"   [loading]="etatMiseEnValeurRemoteAutocomplete.loading"   appendTo="body" [selectOnTab]="true" bindLabel="label" bindValue="value"
+              labelForId="etatMiseEnValeur" placeholder="Etat mise en valeur" formControlName="etatMiseEnValeur">
+              <ng-template ng-loadingspinner-tmp>
+                  <div class="lds-ellipsis">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                  </div>
+              </ng-template>
+          </ng-select>
+
+  </div>
+</div>
+  </form>

@@ -1,0 +1,103 @@
+.map-container {
+  position: relative;
+  width: 600px;
+  height: 100%;
+  text-align: right;
+  font-size: large;
+}
+#map {
+  height: 600px;
+  //position: relative;
+  border: 5px solid rgb(111, 114, 120); /* Bordure noire épaisse */
+  border-radius: 5px; /* Coins légèrement arrondis pour un effet doux */
+  //box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6),
+  //-5px -5px 15px rgba(255, 255, 255, 0.6);
+}
+
+.sycad-form-ng-select {
+  margin-top: 20px;
+}
+
+.sycad-form-line-select-template {
+  height: 142px;
+}
+
+#mouse-position {
+  font-size: 14px;
+  color: #333;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000; /* Assurez-vous qu'il soit au-dessus de la carte */
+}
+
+.src-display {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+#cacherColonne{
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.leaflet-control-custom {
+  background-color: white;
+  background-size: contain;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.coordinates-display {
+  background-color: rgba(255, 255, 255, 0.8) !important; /* Couleur de fond blanche semi-transparente */
+  padding: 5px;
+  font-size: 14px;
+  color: #333;
+  border-radius: 4px;
+  margin-top: 25px; /* Espace entre l'échelle et les coordonnées */
+  border: 1px solid #ccc; /* Ajout d'une bordure grise claire */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); /* Ajout d'une ombre pour bien voir le fond */
+}
+
+
+.custom-popup .leaflet-popup-content-wrapper {
+  background: #f1f1f1;
+  border-radius: 10px;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+}
+
+.custom-popup .leaflet-popup-content {
+  margin: 0;
+  padding: 0;
+}
+
+.custom-popup .leaflet-popup-tip-container {
+  margin-top: -1px;
+}
+
+/* Styles pour le popup final */
+.custom-popup .leaflet-popup-content {
+  margin: 0;
+  padding: 0;
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  padding: 0;
+}
+

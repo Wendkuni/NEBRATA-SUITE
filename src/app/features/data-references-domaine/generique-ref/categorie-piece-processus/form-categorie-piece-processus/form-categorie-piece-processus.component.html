@@ -1,0 +1,46 @@
+<button class="close" mat-button mat-dialog-close><mat-icon >close</mat-icon></button>
+<h1 mat-dialog-title class="modifier-text"><span *ngIf="!categoriePieceProcessus.id">Créer une nouvelle catégotie de pièce des processus</span><span *ngIf="categoriePieceProcessus.id">Modifier: {{categoriePieceProcessus?.categoriePiece?.libelle}</span></h1>
+<div class="sycad-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
+<form [formGroup]="formulaire" class="categoriePieceProcessus-form" (ngSubmit)="onSubmit()">
+    <div class="sycad-zone-modal-form-edition" mat-dialog-content perfectScrollbar>
+        <mat-grid-list cols="1" rowHeight="100px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div fxFlex="90" class="container-form-field-radio">
+                    <ng-select [items]="categoriePieceRemoteAutocomplete.listRessource$ | async" [typeahead]="categoriePieceRemoteAutocomplete.term" [loading]="categoriePieceRemoteAutocomplete.loading" (search)="onSearchCategoriePiece($event)" appendTo="body" [selectOnTab]="true"
+                        bindLabel="libelle" bindValue="id" placeholder="Catégorie de pièce" formControlName="categoriePiece">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <mat-form-field appearance="outline" fxFlex="90">
+                    <mat-label>Nombre d'exemplaire</mat-label>
+                    <input matInput placeholder="Nombre d'exemplaire" [attr.autocomplete]="'off'" formControlName="nbExemplaire" type="number" />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div class="sycad-form-line container-form-field-radio" fxFlex="90">
+                    <label id="obligatoire">Obligatoire</label>
+
+                    <mat-slide-toggle formControlName="obligatoire" aria-labelledby="obligatoire"> </mat-slide-toggle>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+    <div mat-dialog-actions fxLayout="row" align="end">
+        <button mat-raised-button color="warn" type="button" (click)="closeFormModal()">Annuler</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+      <span *ngIf="!categoriePieceProcessus.id">Enregistrer</span><span *ngIf="categoriePieceProcessus.id">Mettre à jour</span>
+    </button>
+    </div>
+</form>

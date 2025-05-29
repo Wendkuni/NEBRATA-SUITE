@@ -1,0 +1,52 @@
+<form [formGroup]="formulaireEmails"  (ngSubmit)="onSubmitEmails()">
+  <mat-grid-list cols="4" rowHeight="60px">
+    <mat-grid-tile [colspan]="2" class="list-grid-contact">
+      <div fxFlex="80" class="select-button">
+        <button mat-raised-button type="button" color="primary" (click)="addNewEmail()"> <mat-icon class="icon-sm">add_circle_outline</mat-icon>
+        </button>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="3" rowHeight="80px" *ngIf="getFormEmails.controls.length>0">
+    <ng-template ngFor let-emails [ngForOf]="getFormEmails.controls" let-i="index">
+      <mat-grid-tile [colspan]="3" [rowspan]="1" [formGroup]="emails">
+        <mat-form-field appearance="fill" fxFlex="40" class="field">
+          <mat-label>Email (*) </mat-label>
+          <input type="hidden" formControlName="id">
+          <input matInput placeholder="Email" [attr.autocomplete]="'off'" formControlName="email">
+          <button mat-icon-button matSuffix color="warn">
+            <mat-icon (click)="removeEmails(i,emails)">remove_circle</mat-icon>
+          </button>
+          <mat-hint>Contact Email ({{i+1}})</mat-hint>
+          <mat-error *ngIf="emails.controls.email.invalid && (emails.controls.email.dirty || emails.controls.email.touched) && emails.controls.email.errors?.required">
+            La valeur de l'email est obligatoire
+          </mat-error>
+          <mat-error *ngIf="emails.controls.email.invalid && (emails.controls.email.dirty || emails.controls.email.touched) && emails.controls.email.errors?.required">
+            L'email est invalide
+          </mat-error>
+        </mat-form-field>
+        <div fxFlex="30" class="container-form-field-radio">
+          <ng-select formControlName="level" placeholder="Type de mail" appendTo="body" [searchable]="false" [clearable]="false">
+            <ng-option value="PROFESSIONAL">
+              Professionnel
+            </ng-option>
+            <ng-option value="PERSONNAL">
+              Personnel
+            </ng-option>
+          </ng-select>
+          <mat-error *ngIf="emails.controls.level.invalid && (emails.controls.level.dirty || emails.controls.level.touched) && emails.controls.level.errors?.required">
+            Le type est obligatoire
+          </mat-error>
+        </div>
+        <div fxFlex="30" class="container-form-field-radio">
+          <mat-slide-toggle (change)="onChangeEmailPrincipal(emails)" formControlName="principal" fxFlex="100">Principale ?</mat-slide-toggle>
+        </div>
+      </mat-grid-tile>
+    </ng-template>
+  </mat-grid-list>
+  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
+    <button mat-raised-button color="primary" type="submit" [disabled]="!formulaireEmails.valid">
+      <span>Enregistrer</span>
+    </button>
+  </div>
+</form>

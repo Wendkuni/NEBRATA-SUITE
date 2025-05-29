@@ -1,0 +1,44 @@
+<button class="close" mat-button mat-dialog-close><mat-icon >close</mat-icon></button>
+<h1 mat-dialog-title class="modifier-text"><span *ngIf="!formule.id">Créer une nouvelle formule</span><span *ngIf="formule.id">Modifier: {{formule.titre}}</span></h1>
+<div class="sycad-loading-shade" *ngIf="isLoadingResults">
+  <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
+<form [formGroup]="formulaire" class="role-form" (ngSubmit)="onSubmit()">
+  <div class="sycad-zone-modal-form-edition" mat-dialog-content perfectScrollbar>
+    <mat-grid-list cols="1" rowHeight="100px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="outline" fxFlex="90">
+          <mat-label>Titre(*)</mat-label>
+          <input matInput placeholder="titre(*)" [attr.autocomplete]="'off'" formControlName="titre" />
+          <mat-error *ngIf="titre.invalid && (titre.dirty || titre.touched) && titre.errors?.required">
+            Le titre est obligatoire
+          </mat-error>
+          <mat-error *ngIf="titre.invalid && (titre.dirty || titre.touched) && ( titre.errors?.minlength || titre.errors?.maxlength )">
+            La taille du titre est limité entre 4 et 50 caractères
+          </mat-error>
+          <mat-error *ngIf="titre.invalid && (titre.dirty || titre.touched) && ( titre.errors?.minlength || titre.errors?.pattern )">
+            Ce champ doit ne doit contenir que des caractères majuscules et undercore
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="outline" fxFlex="90">
+          <mat-label>Expression</mat-label>
+          <input matInput placeholder="expression" [attr.autocomplete]="'off'" formControlName="expression" />
+          <mat-error *ngIf="expression.invalid && (expression.dirty || expression.touched) && expression.errors?.required">
+            L'expression est obligatoire
+          </mat-error>
+          <mat-error *ngIf="expression.invalid && (expression.dirty || expression.touched) && ( expression.errors?.minlength || expression.errors?.maxlength )">
+            L'expression est limité entre 2 et 150 caractères
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <div mat-dialog-actions fxLayout="row" align="end">
+    <button mat-raised-button color="warn" (click)="closeFormModal()">Annuler</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+      <span *ngIf="!formule.id">Enregistrer</span><span *ngIf="formule.id">Mettre à jour</span>
+    </button>
+  </div>
+</form>

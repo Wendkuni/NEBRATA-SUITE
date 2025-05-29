@@ -1,0 +1,107 @@
+<form [formGroup]="formulaire">
+  <mat-tab-group #stepper [(selectedIndex)]="selectedIndex">
+
+    <mat-tab label="Informations de base">
+      <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+        <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="45" [fxFlex.xl]="40">
+          <ng-select [items]="communeRemoteAutocomplete.listRessource$ | async" [typeahead]="communeRemoteAutocomplete.term" [loading]="communeRemoteAutocomplete.loading" (search)="onSearchCommune($event)" (change)="onChangeCommune($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom" bindValue="id"
+                     labelForId="commune" placeholder="Commune" formControlName="commune">
+            <ng-template ng-loadingspinner-tmp>
+              <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </ng-template>
+          </ng-select>
+          <mat-error *ngIf="commune.errors?.minimumAffectationExist">
+            La commune est obligatoire
+          </mat-error>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+        <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="45" [fxFlex.xl]="40">
+          <ng-select [items]="arrondissementRemoteAutocomplete.listRessource$ | async" [typeahead]="arrondissementRemoteAutocomplete.term" [loading]="arrondissementRemoteAutocomplete.loading" (search)="onSearchArrondissement($event)" appendTo="body" [selectOnTab]="true"
+                     bindLabel="nom" bindValue="id" placeholder="Arrondissement" formControlName="arrondissement">
+            <ng-template ng-loadingspinner-tmp>
+              <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </ng-template>
+          </ng-select>
+          <mat-error *ngIf="arrondissement.errors?.minimumAffectationExist">
+            L'arrondissement est obligatoire
+          </mat-error>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+        <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="45" [fxFlex.xl]="40">
+          <ng-select [items]="typeDocuments" appendTo="body" (change)="onChangeTypeDocuments($event)" [selectOnTab]="true" bindLabel="libelle" bindValue="libelle" placeholder="Type de document">
+            <ng-template ng-loadingspinner-tmp>
+              <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+        <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="45" [fxFlex.xl]="40">
+          <ng-select [items]="cessionSourceRemoteAutocomplte.listRessource$ | async" [typeahead]="cessionSourceRemoteAutocomplte.term" [loading]="cessionSourceRemoteAutocomplte.loading" (search)="onSearchCessionSource($event)" appendTo="body" [selectOnTab]="true"
+                     bindLabel="libelle" bindValue="id" placeholder="Mode de cession" formControlName="cessionSource">
+            <ng-template ng-loadingspinner-tmp>
+              <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+      <br>
+      <form [formGroup]="dossier">
+        <div fxLayout="row" fxLayoutAlign="start">
+          <app-observation-form [formGroup]="dossier"></app-observation-form>
+        </div>
+      </form>
+      <div class="card-action-form">
+        <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+          <button mat-raised-button type="button" mat-button (click)="resetTabs()">Reinitialiser</button>
+          <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+          <button mat-raised-button color="primary" type="button" (click)="navigateToNextTab()">Suivant</button>
+
+          <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">Créer</button>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Document du PV">
+      <div [formGroup]="formulaire" fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+        <ng-template matStepLabel>Document à charger</ng-template>
+        <div fxLayout="column" class="flex-p" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="50">
+          <app-document-pv-form [formGroup]="documentDeSortie" [typeDocuments]="selectedDocumentType"></app-document-pv-form>
+        </div>
+        <div class="card-action-form">
+          <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+            <button mat-raised-button type="button" mat-button (click)="resetTabs()">Reinitialiser</button> 
+            <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+
+            <button mat-raised-button color="primary" type="button" (click)="navigateToPreviousTab()">Précédent</button>
+
+            <button mat-raised-button type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">Créer</button>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+</form>

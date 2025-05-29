@@ -1,0 +1,24 @@
+<form [formGroup]="sectionForm" class="form-container">
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+            <mat-label>Numéro ancien </mat-label>
+            <input matInput [attr.autocomplete]="'off'" formControlName="numeroAncien">
+
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+            <mat-label>Numéro (*)</mat-label>
+            <input matInput [attr.autocomplete]="'off'" formControlName="numero">
+            <mat-error *ngIf="numero.invalid && (numero.dirty ||numero.touched) && numero.errors?.required">
+                Le numéro est obligatoire
+            </mat-error>
+
+        </mat-form-field>
+
+    </div>
+
+
+
+
+</form>

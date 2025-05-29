@@ -1,0 +1,463 @@
+<mat-card>
+
+  <mat-card-header>
+    <mat-card-title>{{mutation.etat.libelle}}</mat-card-title>
+    <mat-card-subtitle>{{mutation.etat.description}}</mat-card-subtitle>
+    <ng-container *ngIf="mutation && !noOpenActions && mutation?.transitions?.length>0">
+      <app-action-detail-dossier [numero]="mutation.numero" [url]="urlAction" [transitions]="mutation.transitions"></app-action-detail-dossier>
+    </ng-container>
+  </mat-card-header>
+    <form class="user-form" *ngIf="mutation">
+        <mat-card-content>
+            <mat-tab-group class="mat-tab-active-color">
+
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>content_paste</mat-icon>
+                            Formalite
+                        </ng-template>
+                        <mat-tab-group>
+                            <mat-tab>
+                                <form>
+                                    <ng-template mat-tab-label>
+                                        <mat-icon>content_paste</mat-icon>
+                                        Informations de base
+                                    </ng-template>
+                                    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                            [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                            <mat-label>Numéro </mat-label>
+                                            <input matInput value="{{mutation.numero}}" [readonly]="true">
+                                        </mat-form-field>
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                            [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                            <mat-label>Date dossier (*)</mat-label>
+                                            <input matInput value="{{mutation.dateCreationDossier | date:'dd/MM/yyyy'}}" [readonly]="true">
+
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                            [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                            <mat-label>Objet </mat-label>
+                                            <input matInput [attr.autocomplete]="'off'" value="{{mutation.objet}}"
+                                                [readonly]="true" />
+                                        </mat-form-field>
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                            [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                            <mat-label>Date externe (*)</mat-label>
+                                            <input matInput value="{{mutation.dateExterne | date:'dd/MM/yyyy'}}" [readonly]="true">
+
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                            [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                            <mat-label>Référence externe </mat-label>
+                                            <input matInput [attr.autocomplete]="'off'" value="{{mutation.refExterne}}"
+                                                [readonly]="true" />
+                                        </mat-form-field>
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                            [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                            <mat-label>Source de session </mat-label>
+                                            <input matInput [attr.autocomplete]="'off'" value="{{mutation.cessionSource.libelle}}"
+                                                [readonly]="true" />
+                                        </mat-form-field>
+                                    </div>
+                                    
+                                </form>
+                            </mat-tab>
+                            <mat-tab>
+                                <ng-template mat-tab-label>
+                                    <mat-icon>attach_file</mat-icon>
+                                    Pièces fournies
+                                </ng-template>
+                                <table mat-table [dataSource]="dataSourcePiece" class="mat-elevation-z8" [fxFlex.xs]="100"
+                                    [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+                                    <ng-container matColumnDef="categorie">
+                                        <th mat-header-cell *matHeaderCellDef> Catégorie</th>
+                                        <td mat-cell *matCellDef="let listPiece"> {{listPiece.categorie?.categoriePiece?.libelle}}
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="reference">
+                                        <th mat-header-cell *matHeaderCellDef> Référence </th>
+                                        <td mat-cell *matCellDef="let listPiece"> {{listPiece.reference}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="autorite">
+                                        <th mat-header-cell *matHeaderCellDef> Autorité de délivrance </th>
+                                        <td mat-cell *matCellDef="let listPiece"> {{listPiece.autoriteDeDelivrance}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="dateDelivrance">
+                                        <th mat-header-cell *matHeaderCellDef> Date de délivrance </th>
+                                        <td mat-cell *matCellDef="let listPiece"> {{listPiece.dateDelivrance | date: 'dd/MM/yyyy'}}
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="dateExpiration">
+                                        <th mat-header-cell *matHeaderCellDef> Date d'expiration </th>
+                                        <td mat-cell *matCellDef="let listPiece"> {{listPiece.dateExpiration| date: 'dd/MM/yyyy'}}
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="imageUrl">
+                                        <th mat-header-cell *matHeaderCellDef> Pièce jointe </th>
+                                        <td mat-cell *matCellDef="let listPiece">
+
+                                          <span *ngIf="!listPiece.pieceJointe">Aucune pièce jointe</span>
+                                          <ng-container *ngIf="listPiece.pieceJointe">
+                                            <span *ngFor="let piece of listPiece.pieceJointe; let i = index"  class="piece-telechargeable"> <a   href="{{piece | generalDownload}}">Télécharger {{i+1}}</a></span>
+                                          </ng-container>
+                                      </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumnsPiece"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumnsPiece;"></tr>
+                                </table>
+                            </mat-tab>
+                            <mat-tab>
+                                <form>
+                                    <ng-template mat-tab-label>
+                                        <mat-icon>business</mat-icon>
+                                        Structure
+                                    </ng-template>
+                                    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px"
+                                        fxLayoutAlign="start">
+
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                            [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                                            <mat-label>Structure</mat-label>
+                                            <input matInput value="{{mutation.transmission?.structure?.nom}}" [readonly]="true">
+                                        </mat-form-field>
+
+                                    </div>
+                                    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px"
+                                        fxLayoutAlign="start">
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                            [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                                            <mat-label>Service</mat-label>
+                                            <input matInput value="{{mutation.transmission?.service?.nom}}" [readonly]="true">
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px"
+                                        fxLayoutAlign="start">
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                            [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                                            <mat-label>Bureau</mat-label>
+                                            <input matInput value="{{mutation.transmission?.bureau?.nom}}" [readonly]="true">
+                                        </mat-form-field>
+                                    </div>
+                                </form>
+                            </mat-tab>
+                            <mat-tab>
+                                <form>
+                                    <ng-template mat-tab-label>
+                                        <mat-icon>list_alt</mat-icon>
+                                        Document
+                                    </ng-template>
+                                    <div fxLayout="row" fxLayout="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start"
+                                        *ngIf="document">
+                                        <table mat-table [dataSource]="dataSourceDocument" class="mat-elevation-z8"
+                                            [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+                                            <ng-container matColumnDef="code">
+                                                <th mat-header-cell *matHeaderCellDef> Numéro </th>
+                                                <td mat-cell *matCellDef="let document"> {{document.numero}} </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="libelle">
+                                                <th mat-header-cell *matHeaderCellDef> Libelle </th>
+                                                <td mat-cell *matCellDef="let document"> {{document.libelle}} </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="dateEdition">
+                                                <th mat-header-cell *matHeaderCellDef> Date d'édition </th>
+                                                <td mat-cell *matCellDef="let document"> {{document.dateDoc | date : 'dd/MM/yyyy'}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="dateValidite">
+                                                <th mat-header-cell *matHeaderCellDef> Date de validité </th>
+                                                <td mat-cell *matCellDef="let document"> {{document.dateValidite | date :
+                                                    'dd/MM/yyyy'}} </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="typeDocument">
+                                                <th mat-header-cell *matHeaderCellDef>Type de document </th>
+                                                <td mat-cell *matCellDef="let document"> {{document.documentType.libelle}} </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="action">
+                                                <th mat-header-cell *matHeaderCellDef> Pièce jointe </th>
+                                                <td mat-cell *matCellDef="let document">
+
+
+
+                                                        <span *ngIf="!document.pieceJointe">Aucune pièce jointe</span>
+                                                        <ng-container *ngIf="document.pieceJointe">
+                                                          <span *ngFor="let piece of document.pieceJointe; let i = index"  class="piece-telechargeable"> <a   href="{{piece | generalDownload}}">Télécharger {{i+1}}</a></span>
+                                                        </ng-container>
+                                                </td>
+                                            </ng-container>
+
+                                            <tr mat-header-row *matHeaderRowDef="displayedColumnsDocument"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedColumnsDocument;"></tr>
+
+
+                                        </table>
+
+
+                                    </div>
+                                </form>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </form>
+                </mat-tab>
+
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>content_paste</mat-icon>
+                            Propriété
+                        </ng-template>
+                        <mat-tab-group>
+                            <mat-tab>
+                                <form>
+                                    <ng-template mat-tab-label>
+                                        <mat-icon>list_alt</mat-icon>
+                                        Parcelle
+                                    </ng-template>
+
+                                    <app-parcelle-visualiser [attribution]="mutation"></app-parcelle-visualiser>
+
+                                </form>
+                                <app-cycledevie-parcelle [icad]="mutation.parcelle?.icad"></app-cycledevie-parcelle>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </form>
+                </mat-tab>
+
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>content_paste</mat-icon>
+                            Contribuable
+                        </ng-template>
+                        <mat-tab-group>
+                            <mat-tab>
+                                <ng-template mat-tab-label>
+                                    <mat-icon>person</mat-icon>
+                                    Cédant
+                                </ng-template>
+                                <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                    <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100"
+                                        [fxFlex.xl]="100">
+                                        <mat-card-header>
+                                            <mat-card-title>
+                                                Détail Cédant
+                                            </mat-card-title>
+                                        </mat-card-header>
+                                        <mat-card-content>
+                                            <app-card-general-contribuable-form [contribuable]="mutation.cedant">
+                                            </app-card-general-contribuable-form>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            </mat-tab>
+
+                            <mat-tab>
+                                <ng-template mat-tab-label>
+                                    <mat-icon>person_add</mat-icon>
+                                    Cessionnaire
+                                </ng-template>
+                                <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                    <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100"
+                                        [fxFlex.xl]="100">
+                                        <mat-card-header>
+                                            <mat-card-title>
+                                                Détail Cessionnaire
+                                            </mat-card-title>
+                                        </mat-card-header>
+                                        <mat-card-content>
+                                            <app-card-general-contribuable-form [contribuable]="mutation.cessionnaire">
+                                            </app-card-general-contribuable-form>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            </mat-tab>
+
+                            <mat-tab *ngIf="mutation.acteur">
+                                <ng-template mat-tab-label>
+                                    <mat-icon>person</mat-icon>
+                                    Acteur promoteur
+                                </ng-template>
+                                <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                    <mat-card class="p-0 " [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="60"
+                                        [fxFlex.xl]="50">
+                                        <div class="bg-primary " fxLayout="row" fxLayoutAlign="space-between center">
+                                            <h3 class="user-name"> {{ mutation.acteur.denomination }} {{
+                                                mutation.acteur?.categorie?.libelle }}</h3>
+                                        </div>
+
+                                        <div class="user-content" fxLayout="row" fxLayoutAlign="space-around center">
+                                            <div fxFlex="30" fxLayout="column" fxLayoutAlign="center center">
+                                                <div class="user-img">
+                                                    <img [src]="  mutation.acteur | acteurLogo" class="transition-2">
+
+                                                </div>
+
+                                            </div>
+                                            <div fxFlex="70" fxLayout="column" class="user-details transition-2">
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">money</mat-icon>
+                                                    <span>{{ mutation.acteur.codeUnique }}</span>
+                                                </p>
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">calendar_today</mat-icon>
+                                                    <span>{{ mutation.acteur.dateDeCreation | date:'dd/MM/yyyy' }}</span>
+                                                </p>
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">work</mat-icon>
+                                                    <span>{{ mutation.acteur.statusJuridique?.libelle }}</span>
+                                                </p>
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">star</mat-icon>
+                                                    <span>{{ mutation.acteur.nationalite?.libelle }}</span>
+                                                </p>
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">business_center</mat-icon>
+                                                    <span>{{ mutation.acteur.regimeFiscal?.libelle }}</span>
+                                                </p>
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">looks_3</mat-icon>
+                                                    <span>{{ mutation.acteur.numCNSS }}</span>
+                                                </p>
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">euro</mat-icon>
+                                                    <span>{{ mutation.acteur.capitalFiscal }}</span>
+                                                </p>
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">work</mat-icon>
+                                                    <span>{{ mutation.acteur.activitePrincipale?.nom }}</span>
+                                                </p>
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">mail_outline</mat-icon>
+                                                    <span>{{ mutation.acteur.emails | principalContactFilter }}</span>
+                                                    <ng-template [ngIf]="mutation.acteur.emails.length>1">
+                                                        <span [matMenuTriggerFor]="listEmailActeur" class="bouton-voir-plus">
+                                                            <strong>voir
+                                                                plus +</strong> </span>
+                                                        <mat-menu #listEmailActeur="matMenu" class="sycad-menu-panel">
+                                                            <ng-template ngFor let-email
+                                                                [ngForOf]="mutation.acteur.emails | exceptPrincipalFilter">
+
+                                                                <p mat-menu-item [class]="'detail-list-resume'"
+                                                                    click-stop-propagation>
+                                                                    <mat-icon>mail_outline</mat-icon>
+                                                                    <span>({{ email.level }}) {{ email.value }}</span>
+                                                                </p>
+                                                            </ng-template>
+                                                        </mat-menu>
+
+                                                    </ng-template>
+
+                                                </p>
+
+                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="muted-text">call</mat-icon>
+                                                    <span>{{ mutation.acteur.telephones | principalContactFilter }}</span>
+                                                    <ng-template [ngIf]="mutation.acteur.telephones.length>1">
+                                                        <span [matMenuTriggerFor]="listTelephoneActeur" class="bouton-voir-plus">
+                                                            <strong>voir+</strong> </span>
+                                                        <mat-menu #listTelephoneActeur="matMenu" class="sycad-menu-panel">
+                                                            <ng-template ngFor let-telephone
+                                                                [ngForOf]="mutation.acteur.telephones | exceptPrincipalFilter">
+                                                                <p mat-menu-item [class]="'detail-list-resume'"
+                                                                    click-stop-propagation>
+                                                                    <mat-icon>call</mat-icon>
+                                                                    <span>({{ telephone.level }}) {{ telephone.value }}</span>
+                                                                </p>
+                                                            </ng-template>
+                                                        </mat-menu>
+
+                                                    </ng-template>
+                                                </p>
+
+
+                                            </div>
+                                        </div>
+                                    </mat-card>
+                                </div>
+                            </mat-tab>
+
+                            <mat-tab>
+                                <ng-template mat-tab-label>
+                                    <mat-icon>move_to_inbox</mat-icon>
+                                    Mandats
+                                </ng-template>
+                                <div fxLayout="row" fxLayout="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                    <table mat-table [dataSource]="dataSourceMandat" class="mat-elevation-z8" [fxFlex.xs]="100"
+                                        [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="70">
+                                        <ng-container matColumnDef="objet">
+                                            <th mat-header-cell *matHeaderCellDef> Objet </th>
+                                            <td mat-cell *matCellDef="let mandat"> {{mandat.objet}} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="debut">
+                                            <th mat-header-cell *matHeaderCellDef> Debut </th>
+                                            <td mat-cell *matCellDef="let mandat"> {{mandat.debut | date : 'dd/MM/yyyy'}} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="fin">
+                                            <th mat-header-cell *matHeaderCellDef> Fin </th>
+                                            <td mat-cell *matCellDef="let mandat"> {{mandat.fin | date : 'dd/MM/yyyy'}} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="reference">
+                                            <th mat-header-cell *matHeaderCellDef> Reference </th>
+                                            <td mat-cell *matCellDef="let mandat"> {{mandat.reference}} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="description">
+                                            <th mat-header-cell *matHeaderCellDef> Description </th>
+                                            <td mat-cell *matCellDef="let mandat"> {{mandat.description}} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="mandant">
+                                            <th mat-header-cell *matHeaderCellDef>Mandant </th>
+                                            <td mat-cell *matCellDef="let mandat"> {{mandat.mandant?.libelle}} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="mandataire">
+                                            <th mat-header-cell *matHeaderCellDef>Mandataire </th>
+                                            <td mat-cell *matCellDef="let mandat"> {{mandat.mandataire?.libelle}} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="action">
+                                            <th mat-header-cell *matHeaderCellDef> Piece jointe </th>
+                                            <td mat-cell *matCellDef="let mandat">
+                                                <a href="{{mandat.pieceJointe | generalDownload}}" target="_blank" color="primary">
+                                                    Telecharger</a>
+                                            </td>
+                                        </ng-container>
+
+                                        <tr mat-header-row *matHeaderRowDef="displayedColumnsMandat"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedColumnsMandat;"></tr>
+                                    </table>
+                                </div>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </form>
+                </mat-tab>
+
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>content_paste</mat-icon>
+                            Fiscalite
+                        </ng-template>
+
+
+                    </form>
+                </mat-tab>
+
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                    </ng-template>
+                    <div fxLayout="row" fxLayoutAlign="start">
+                        <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="50" [fxFlex.xl]="60">
+                            <app-historique [numero]="mutation.numero"></app-historique>
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+
+        </mat-card-content>
+    </form>
+</mat-card>

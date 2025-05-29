@@ -1,0 +1,91 @@
+<mat-card>
+  <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <form [formGroup]="formulaire" class="user-form" (ngSubmit)="onSubmit()">
+    <mat-card-header>
+      <mat-card-subtitle>
+        <h3>
+          <span *ngIf="!agent.guid">Créer une agent </span>
+          <span *ngIf="agent.guid">Modifier: [{{agent.matricule}}] {{agent.nom}} {{agent.prenoms}}</span>
+        </h3>
+        <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+          La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+        </mat-error>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-tab-group>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="sycad-form-tab-label-icon">security</mat-icon>
+            Compte utilisateur
+          </ng-template>
+
+          <div fxLayout="column" class="flex-p">
+
+            <app-credential-form [formGroup]="formulaire"></app-credential-form>
+          </div>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="sycad-form-tab-label-icon">verified_user</mat-icon>
+            Habilitations
+          </ng-template>
+
+          <div fxLayout="column" class="flex-p">
+            <div fxLayout="row" class="sycad-form-ng-select-start-tab" fxLayoutAlign="start">
+              <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="60" [fxFlex.xl]="60">
+                <ng-select [items]="profileRemoteAutocomplete.listRessource$ | async" [typeahead]="profileRemoteAutocomplete.term" [multiple]="true" [loading]="profileRemoteAutocomplete.loading" (search)="onSearchProfile($event)" appendTo="body" [selectOnTab]="true"
+                           bindLabel="libelle" bindValue="id" placeholder="Profils" formControlName="profils">
+                  <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
+                  </ng-template>
+                </ng-select>
+
+              </div>
+            </div>
+
+            <div fxLayout="row" class="sycad-form-ng-select-start-tab" fxLayoutAlign="start">
+              <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="60" [fxFlex.xl]="60">
+                <ng-select [items]="roleRemoteAutocomplete.listRessource$ | async" [typeahead]="roleRemoteAutocomplete.term" [multiple]="true" [loading]="roleRemoteAutocomplete.loading" (search)="onSearchRole($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle"
+                           bindValue="id" placeholder="Roles" formControlName="roles">
+                  <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
+                  </ng-template>
+                </ng-select>
+
+              </div>
+            </div>
+          </div>
+
+        </mat-tab>
+
+      </mat-tab-group>
+    </mat-card-content>
+
+    <mat-card-actions [ngClass]="{'card-action-form': (activeMediaQuery === 'lg' || activeMediaQuery === 'xl' ), 'card-action-form-small': (activeMediaQuery === 'sm') }">
+      <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+        <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+          <span *ngIf="!agent.guid">Enregistrer</span><span *ngIf="agent.guid">Mettre à
+                        jour</span>
+        </button>
+      </div>
+    </mat-card-actions>
+
+  </form>
+</mat-card>

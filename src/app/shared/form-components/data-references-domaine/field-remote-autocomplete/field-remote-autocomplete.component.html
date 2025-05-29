@@ -1,0 +1,39 @@
+<div class="input-list-popup" [formGroup]="dataForm.customNgSelectConfig.formulaire">
+    <!-- NB: Si vous souhaitez changer des éléments parmi ceux qui s'affichent, inutile de chercher ici.
+    Pour Contribuable, par exemple,
+    Consultez plutôt le décorateur au niveau du backend dans src/main/java/bf/gov/dgi/core/library/common/endpoints/users/mappers/web/GeneralContribuableWebMapper.java
+    et testez l'endpoint autocomplete sur le swagger ui (recherchez Endpoint Contribuable) -->
+    <ng-select #adNgSecl [items]="dataForm.customNgSelectConfig.listRessource$ | async" [typeahead]="dataForm.customNgSelectConfig.term" [loading]="dataForm.customNgSelectConfig.loading" (search)="onSearch($event)" [appendTo]="dataForm.nativeNgSelectConfig.appendTo"
+        [multiple]="dataForm.customNgSelectConfig.multiple" [selectOnTab]="true" [bindLabel]="dataForm.customNgSelectConfig.libelle" [bindValue]="dataForm.nativeNgSelectConfig.bindValue" class="align-btn" [placeholder]="dataForm.nativeNgSelectConfig.placeholder"
+        (change)="fieldChange($event)" formControlName="{{dataForm.customNgSelectConfig.controlName}}">
+        <ng-template ng-loadingspinner-tmp>
+            <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </ng-template>
+
+        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+            <div class="ng-value" *ngFor="let item of items | slice:0:2">
+                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">× </span>
+                <span class="ng-value-label"> {{item[dataForm.customNgSelectConfig.libelle]}}</span>
+
+            </div>
+
+
+
+            <div class="ng-value" *ngIf="items.length > 2">
+                <span class="ng-value-label">{{items.length - 2}} plus...</span>
+            </div>
+        </ng-template>
+    </ng-select>
+</div>
+
+<button class="button-list-popup " type="button" (click)="openTableauModal()" [disabled]="adNgSecl.disabled">
+  <mat-icon [ngStyle]="{'color':'white'}">dialpad</mat-icon>
+</button>
+<button class="button-list-popup " type="button" *ngIf="formAddModal.observers.length>0" [disabled]="adNgSecl.disabled" (click)="openFormAddModal()">
+  <mat-icon [ngStyle]="{'color':'white'}">add</mat-icon>
+</button>

@@ -1,0 +1,20 @@
+
+.sycad-table-container {
+  td,
+  th {
+    &.mat-column-parcelle-icad {
+      min-width: 200px;
+      //border: 2px solid red!important;
+    }
+    &.mat-column-attributaire-prenoms {
+      min-width: 200px;
+      //border: 2px solid red!important;
+    }
+    &.mat-column-attributaire-nom {
+      min-width: 150px;
+      //border: 2px solid red!important;
+    }
+  }
+}
+
+

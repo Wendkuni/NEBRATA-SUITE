@@ -1,0 +1,52 @@
+<form [formGroup]="transitionFonctionnelleForm">
+  <mat-card-content>
+    <div fxLayout="column">
+      <div class="sycad-form-ng-select" fxFlex="100">
+        <ng-select
+          [items]="typeTransitionRemoteAutocomplete.listRessource$ | async"
+          [typeahead]="typeTransitionRemoteAutocomplete.term"
+          [loading]="typeTransitionRemoteAutocomplete.loading"
+          (search)="onSearchTypeTransition($event)"
+          appendTo="body"
+          [selectOnTab]="true"
+          bindLabel="libelle"
+          bindValue="id"
+          placeholder="Type Transition(*)"
+          formControlName="typeTransition">
+          <ng-template ng-loadingspinner-tmp>
+            <div class="lds-ellipsis">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+
+      <div class="sycad-form-ng-select" fxFlex="100">
+        <ng-select
+          [items]="domaineFonctionnelRemoteAutocomplete.listRessource$ | async"
+          [typeahead]="domaineFonctionnelRemoteAutocomplete.term"
+          [multiple]="true"
+          [loading]="domaineFonctionnelRemoteAutocomplete.loading"
+          (search)="onSearchDomaineFonctionnel($event)"
+          appendTo="body"
+          [selectOnTab]="true"
+          bindLabel="libelle"
+          bindValue="id"
+          placeholder="Domaines Fonctionnels"
+          formControlName="domaineFonctionnels">
+          <ng-template ng-loadingspinner-tmp>
+            <div class="lds-ellipsis">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+    </div>
+  </mat-card-content>
+</form>

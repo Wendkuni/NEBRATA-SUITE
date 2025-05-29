@@ -1,0 +1,24 @@
+<div fxLayout="column">
+    <div class="flex-p">
+        <ng-template #datatable1></ng-template>
+    </div>
+</div>
+
+
+<ng-template #templateStructure let-structure="data">
+    <mat-card style="max-width: 70%;">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>{{structure?.nom}}</mat-card-title>
+            <mat-card-subtitle>{{structure?.sigle}}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image *ngIf="structure?.logo" [src]="structure.logo | generalDownload" alt="Logo {{structure?.nom}}" style="width: 200px; ">
+        <mat-card-content>
+            <div class="custom-structure-classe">Longitude: {{structure?.localisation?.longitude}}</div>
+            <div class="custom-structure-classe">Latitude: {{structure?.localisation?.lattitude}}</div>
+            <div class="custom-structure-classe">Désignation: {{structure?.localisation?.designation}}</div>
+            <div class="custom-structure-classe"> Localité: {{structure?.localisation?.localite?.nom}}</div>
+          <div class="custom-structure-classe"> Quartier: {{structure?.localisation?.quartier?.nom}}</div>
+        </mat-card-content>
+    </mat-card>
+</ng-template>

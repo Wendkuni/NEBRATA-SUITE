@@ -1,0 +1,42 @@
+<div fxLayout="column" fxLayout.gt-sm="row wrap" class="menu mat-elevation-z12 bg-primary">
+    <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+        <div fxLayout="row" class="menu-element" fxLayout.lt-md="row wrap">
+            <button routerLink="/" mat-button class="logo-mobile" fxLayoutAlign="center center" [fxFlex.xs]="20" [fxFlex.sm]="20" [fxFlex.md]="0" [fxFlex.lg]="0" [fxFlex.xl]="0">
+        <img [fxFlex.xs]="60" [fxFlex.sm]="30" [fxFlex.md]="20" [fxFlex.lg]="20" [fxFlex.xl]="20" src="/assets/img/landing/logodgi2.png" class="img-dgi">
+        <p>SYC@D</p>
+      </button>
+            <button routerLink="/" mat-button class="logo" fxLayoutAlign="start center" [fxFlex.xs]="0" [fxFlex.sm]="0" [fxFlex.md]="0" [fxFlex.lg]="40" [fxFlex.xl]="40">
+              <p>Ministère de l’Économie et des Finances | Direction des Impôts</p>
+            </button>
+            <a mat-button class="connection" routerLink="/{{login_lien}}" fxLayoutAlign="end center" [fxFlex.xs]="40" [fxFlex.sm]="60" [fxFlex.md]="60" [fxFlex.lg]="60" [fxFlex.xl]="60">SE CONNECTER</a>
+        </div>
+    </div>
+</div>
+<div class="bannier" fxLayoutAlign="center center">
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayout.lt-md="row wrap" [fxFlex.xs]="90" [fxFlex.sm]="90" [fxFlex.md]="90" [fxFlex.lg]="90" [fxFlex.xl]="90" class="element">
+        <div class="haut">
+            <div class="bienvenu">
+                <p>BIENVENUE SUR <span style="color: rgb(243, 239, 11);">SYC@D</span></p>
+            </div>
+            <div class="definition">
+                <p>La plateforme cloud de Gestion des Processus</p>
+                <p>du Cadastre des Domaines et du Foncier du Burkina</p>
+            </div>
+            <div class="mot">
+                <p><i>Désormais, faites vos opérations cadastrales et foncières en ligne en toute simplicité et sécurité</i></p>
+            </div>
+        </div>
+        <div class="bas" fxLayoutAlign="center center">
+            <img [fxFlex.xs]="15" [fxFlex.sm]="15" [fxFlex.md]="15" [fxFlex.lg]="8" [fxFlex.xl]="8" src="/assets/img/landing/chevaux.png" class="img-chevaux">
+            <div class="text-chevaux" [fxFlex.xs]="85" [fxFlex.sm]="85" [fxFlex.md]="85" [fxFlex.lg]="85" [fxFlex.xl]="85">
+                <h4>Burkina Faso</h4>
+                <p>Ministère de l’Économie et des Finances</p>
+            </div>
+            <div class="text-impot" [fxFlex.xs]="85" [fxFlex.sm]="85" [fxFlex.md]="85" [fxFlex.lg]="85" [fxFlex.xl]="85">
+                <h4>DGI</h4>
+                <p>Direction Générale des Impôts</p>
+            </div>
+            <img [fxFlex.xs]="15" [fxFlex.sm]="15" [fxFlex.md]="15" [fxFlex.lg]="10" [fxFlex.xl]="10" src="/assets/img/landing/logodgi2.png" class="img-dgi">
+        </div>
+    </div>
+</div>

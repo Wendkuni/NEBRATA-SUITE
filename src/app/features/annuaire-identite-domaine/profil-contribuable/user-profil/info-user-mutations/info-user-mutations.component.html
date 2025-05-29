@@ -1,0 +1,73 @@
+
+<div class="mat-elevation-z8">
+  <mat-table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="numero">
+      <mat-header-cell *matHeaderCellDef>Numéro</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.numero}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="icad">
+      <mat-header-cell *matHeaderCellDef>ICAD</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.icad}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="etat">
+      <mat-header-cell *matHeaderCellDef>Etat</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+         <span *ngIf="element.etatDossier">OUI</span>
+        <span *ngIf="!element.etatDossier">NON</span></mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="dateCreation">
+      <mat-header-cell *matHeaderCellDef> Date création </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.dateCreationDossier | date: 'dd/MM/yyyy'}} </mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="dateModification">
+      <mat-header-cell *matHeaderCellDef> Date modification </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.dateModificationDossier | date:'dd/MM/yyyy'}} </mat-cell>
+    </ng-container>
+
+
+
+
+    <ng-container matColumnDef="objet">
+      <mat-header-cell *matHeaderCellDef>Objet</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.objet}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="terminer">
+      <mat-header-cell *matHeaderCellDef>Terminer</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+          <span *ngIf="element.terminer">OUI</span>
+          <span *ngIf="!element.terminer">NON</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="structure">
+      <mat-header-cell *matHeaderCellDef>Structure</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.transmission.structure.nom}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+
+        <button mat-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="ouvrirLeDossier(element)"><mat-icon>edit</mat-icon>Voir le dossier</button>
+  <button mat-menu-item (click)="ouvrirModalCycleDeVie(element)"><mat-icon>edit</mat-icon>Cycle de vie</button>
+</mat-menu>
+
+
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+</div>
+
+
+

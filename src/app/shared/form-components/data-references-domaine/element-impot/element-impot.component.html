@@ -1,0 +1,76 @@
+<form [formGroup]="elementImpotForm" class="form-container">
+    <mat-card-content>
+        <mat-tab-group>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Element impôt
+                </ng-template>
+                <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                    <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="40" [fxFlex.xl]="20">
+                        <ng-select [items]="liquidationRemoteAutocomplete.listRessource$ | async" [typeahead]="liquidationRemoteAutocomplete.term"  [loading]="liquidationRemoteAutocomplete.loading" (search)="onSearchLiquidation($event)" (change)="onChangeLiquidation($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle"
+                            bindValue="id" placeholder="Elément de liquidation" formControlName="elementLiquidation">
+                            <ng-template ng-loadingspinner-tmp>
+                                <div class="lds-ellipsis">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </ng-template>
+                        </ng-select>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                        <mat-label>Ordre trie</mat-label>
+                        <input matInput placeholder="Ordre" [attr.autocomplete]="'off'" formControlName="ordreTrie" type="number" />
+                    </mat-form-field>
+
+                    <mat-slide-toggle formControlName="modifiable">Modifiable</mat-slide-toggle>
+                </div>
+            </mat-tab>
+
+            <mat-tab>
+                <form [formGroup]="baseImpot">
+                    <ng-template mat-tab-label>
+                        Formule Base Imposable
+                    </ng-template>
+                    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="45" [fxFlex.xl]="20">
+                            <mat-label>Titre</mat-label>
+                            <input matInput placeholder="Titre" [attr.autocomplete]="'off'" formControlName="titre" />
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                        <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="45" [fxFlex.xl]="20">
+                            <mat-label>Expression</mat-label>
+                            <textarea matInput placeholder="Expression" [attr.autocomplete]="'off'" formControlName="expression"></textarea>
+                            <mat-hint>{{liquidationChoisie?.fonctions}}</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </form>
+            </mat-tab>
+
+            <mat-tab>
+                <form [formGroup]="taux">
+                    <ng-template mat-tab-label>
+                        Formulme Taux (sans la division par 100. Exemple : 75)
+                    </ng-template>
+                    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="45" [fxFlex.xl]="20">
+                            <mat-label>Titre</mat-label>
+                            <input matInput placeholder="Titre" [attr.autocomplete]="'off'" formControlName="titre" />
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                        <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="45" [fxFlex.xl]="20">
+                            <mat-label>Expression</mat-label>
+                            <textarea matInput placeholder="Expression" [attr.autocomplete]="'off'" formControlName="expression"></textarea>
+                            <mat-hint>{{liquidationChoisie?.fonctions}}</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </form>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+</form>

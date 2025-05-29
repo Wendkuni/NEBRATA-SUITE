@@ -1,0 +1,31 @@
+.sycad-table-container {
+    td,
+    th {
+        &.mat-column-parcelle-icad {
+            min-width: 200px;
+            //border: 2px solid red!important;
+        }
+        &.mat-column-objet {
+            min-width: 200px;
+            //border: 2px solid red!important;
+        }
+        &.mat-column-contribuable-libelle {
+            min-width: 230px;
+            //border: 2px solid red!important;
+        }
+    }
+}
+
+::ng-deep .mat-tab-active-color .mat-tab-label-active {
+    background-color: rgb(245, 245, 245);
+    opacity: 1;
+}
+  
+  .mat-row:nth-child(even){
+    background: #efefef;
+  }
+
+  .mat-header-cell {
+    background-color: rgba(0, 0, 0, 0.015);
+    
+  }

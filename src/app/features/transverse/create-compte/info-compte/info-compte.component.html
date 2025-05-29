@@ -1,0 +1,34 @@
+<mat-sidenav-container>
+    <div fxLayout="row" fxLayoutAlign="center center" class="h-100">
+
+        <div fxFlex="80" fxFlex.gt-sm="40" fxFlex.sm="100">
+
+            <mat-card class="bg-primary">
+                <div fxLayout="column" fxLayoutAlign="center center" >
+                    <h2 class="error">Information</h2>
+                    <h4>
+                    <p class="box-text">
+                        Votre demande de création de compte a été soumise avec succès.<br>
+                        Après vérification et validation des informations soumises sous 24h, vous recevrez par mail à l'adresse <i>{{email}}</i> une notification des informations d'accès à la plateforme vous permettant d'effectuer vos formalités cadastrales et foncières.</p><br>
+                        <p>
+                            Vous pourriez également recevoir des notifications emails pour besoins de compléments d'informations.<br>
+                            Pour ce faire, nous vous prions de bien suivre votre boite Email pour ne manquer aucun email.
+                        <br>
+                        Cliquez sur retour pour revenir à la page d'accueil.
+                    </p>
+                </h4>  
+                        
+                   
+                <p style="line-height: 56px;">
+                        <button mat-raised-button color="accent" class="mat-elevation-z12 box-button" type="button" (click)="return()">Retour</button>
+
+                </p>
+                </div>
+
+            </mat-card>
+       
+        </div>
+
+    </div>
+
+</mat-sidenav-container>

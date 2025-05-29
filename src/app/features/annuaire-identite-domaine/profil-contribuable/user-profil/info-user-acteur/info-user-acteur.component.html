@@ -1,0 +1,27 @@
+<!-- <div fxFlex="100" class="flex-p"> -->
+<mat-accordion class="list-profil-infos">
+    <mat-expansion-panel>
+      
+          <mat-expansion-panel-header>
+            <mat-panel-title class="panel-header-adresse" fxLayout="row" fxLayoutAlign="start start">
+              <h3>Informations</h3>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+    <mat-card-content perfectScrollbar>
+      <mat-list>
+        <app-profil-list-item-icon [value]="userData?.codeUnique" label="IFU-Code" ></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.denomination" label="Dénomination" ></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.sigle" label="Sigle" ></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.categorie?.libelle" label="Catégorie" ></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.dateDeCreation | date : 'longDate'" label="Date de création" ></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.regimeFiscal?.libelle" label="Regime Fiscal" ></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.nationalite?.libelle" label="Nationalité" ></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.statusJuridique?.libelle" label="Statut juridique" ></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.numCNSS" label="Numéro CNSS" ></app-profil-list-item-icon>
+
+      </mat-list>
+    </mat-card-content>
+<!-- </div> -->
+  </mat-expansion-panel>
+</mat-accordion>

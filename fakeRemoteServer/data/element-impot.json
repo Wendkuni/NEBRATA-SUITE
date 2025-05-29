@@ -1,0 +1,42 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "baseImpot": "Base de retenu",
+      "taux": "100%",
+      "signe": "+",
+      "modifiable": "Oui",
+      "ordreTri": "1",
+      "elementLiquidation": "Base de retenu",
+      "packageImpot": "Package 1 "
+    },
+    {
+      "id": 2,
+      "baseImpot": "Droit d'enregistrement",
+      "taux": "8%",
+      "signe": "+",
+      "modifiable": "Oui",
+      "ordreTri": "2",
+      "elementLiquidation": "Taxe sur le droit de résidence",
+      "packageImpot": "Package 1 "
+    },
+    {
+      "id": 3,
+      "baseImpot": "Base insufisant",
+      "taux": "18%",
+      "signe": "-",
+      "modifiable": "Non",
+      "ordreTri": "3",
+      "elementLiquidation": "Taxe sur le droit de résidence",
+      "packageImpot": "Package 1 "
+    }
+  ]
+}

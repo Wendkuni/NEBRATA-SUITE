@@ -1,0 +1,25 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "code": "IM01",
+      "libelle": "Habitation",
+      "tutelle": "Ministère de l'habitat"
+
+    },
+    {
+      "id": 2,
+      "code": "IM02",
+      "libelle": "Elévage",
+      "tutelle": "Ministère des ressources animales"
+    }
+  ]
+}

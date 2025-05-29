@@ -1,0 +1,61 @@
+{
+    "page": 0,
+    "limit": 10,
+    "totalCount": 13,
+    "order": null,
+    "search": "",
+    "filters": {
+    },
+    "sort": null,
+    "items": [
+      {
+        "id": 1,
+        "reference": "IM01",
+        "description": "Parcelle",
+        "objet": "250 m2",
+        " actif": "20/04/2021",
+        "mandataire": "PAR-00258",
+        "mandant": "Batiment",
+        "debut":  "20/04/2021",
+       "fin":  "20/04/2021"
+      },
+      {
+        
+        "id": 2,
+        "reference": "IM01",
+        "description": "Parcelle",
+        "objet": "250 m2",
+        " actif": "20/04/2021",
+        "mandataire": "PAR-00258",
+        "mandant": "Batiment",
+        "debut":  "20/04/2021",
+       "fin":  "20/04/2021"
+      },
+      {
+       
+        "id": 3,
+        "reference": "IM01",
+        "description": "Parcelle",
+        "objet": "250 m2",
+        " actif": "20/04/2021",
+        "mandataire": "PAR-00258",
+        "mandant": "Batiment",
+        "debut":  "20/04/2021",
+       "fin":  "20/04/2021"
+      },
+      {
+        
+        "id": 4,
+        "reference": "IM01",
+        "description": "Parcelle",
+        "objet": "250 m2",
+        " actif": "20/04/2021",
+        "mandataire": "PAR-00258",
+        "mandant": "Batiment",
+        "debut":  "20/04/2021",
+       "fin":  "20/04/2021"
+      }
+  
+    ]
+  }
+  

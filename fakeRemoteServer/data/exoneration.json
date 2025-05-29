@@ -1,0 +1,68 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "motif": "Construction",
+      "refExterne": "REF00258",
+      "dateDebut": "12/05/1996",
+      "dateFin": "25/02/2020",
+      "natureImpot": "Imposition",
+      "parcelle": "PAR00258",
+      "contribuable": "CONT02569",
+      "categorie": "CAT0215",
+      "taux": "18%",
+      "montant": "200000000",
+      "observation": "Accompli"
+    },
+    {
+      "id": 2,
+      "motif": "Construction",
+      "refExterne": "REF00258",
+      "dateDebut": "12/05/1996",
+      "dateFin": "25/02/2020",
+      "natureImpot": "Imposition",
+      "parcelle": "PAR00258",
+      "contribuable": "CONT02569",
+      "categorie": "CAT0215",
+      "taux": "18%",
+      "montant": "200000000",
+      "observation": "Néant"
+    },
+    {
+      "id": 3,
+      "motif": "Construction",
+      "refExterne": "REF00258",
+      "dateDebut": "12/05/1996",
+      "dateFin": "25/02/2020",
+      "natureImpot": "Imposition",
+      "parcelle": "PAR00258",
+      "categorie": "CAT0215",
+      "contribuable": "CONT02569",
+      "taux": "18%",
+      "montant": "200000000",
+      "observation": "A moitié"
+    },
+    {
+      "id": 4,
+      "motif": "Construction",
+      "refExterne": "REF00258",
+      "dateDebut": "12/05/1996",
+      "dateFin": "25/02/2020",
+      "categorie": "CAT0215",
+      "natureImpot": "Imposition",
+      "parcelle": "PAR00258",
+      "contribuable": "CONT02569",
+      "taux": "18%",
+      "montant": "200000000",
+      "observation": "Accompli"
+    }
+  ]
+}

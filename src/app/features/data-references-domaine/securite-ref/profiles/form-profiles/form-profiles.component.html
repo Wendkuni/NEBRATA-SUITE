@@ -1,0 +1,104 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-subtitle>
+            <h3>
+                <span *ngIf="!profile.id">Créer un Profile </span>
+                <span *ngIf="profile.id">Modifier le Profile : {{profile.libelle}}</span>
+            </h3>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <form [formGroup]="formulaire">
+        <mat-card-content>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                
+                    <mat-form-field appearance="outline" fxFlex="90" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                        <mat-label>Libelle (*)</mat-label>
+                        <input matInput placeholder="Libelle" [attr.autocomplete]="'off'" formControlName="libelle" />
+                        <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && libelle.errors?.required">
+                            Le libelle est obligatoire
+                        </mat-error>
+                        <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && ( libelle.errors?.minlength || libelle.errors?.maxlength )">
+                            La taille du libelle est limité entre 2 et 150 caractères
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="90" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                        <mat-label>Type acteur</mat-label>
+                        <mat-select formControlName="type">
+                            <mat-option [value]="type" *ngFor="let type of types">
+                                {{type}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+            </div>
+
+            <div fxLayout="row wrap" fxLayoutAlign="start center">
+                <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="40" [fxFlex.xl]="40">
+                    <ng-select [items]="permissionsRemoteAutocomplete.listRessource$ | async" [typeahead]="permissionsRemoteAutocomplete.term" [multiple]="true" [loading]="permissionsRemoteAutocomplete.loading" (search)="onSearchPermission($event)" appendTo="body" [selectOnTab]="true"
+                        bindLabel="libelle" bindValue="id" placeholder="Permissions" formControlName="permissions">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                </div>
+                <div fxLayout="row wrap" fxLayoutAlign="start center">
+                    <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="40" [fxFlex.xl]="40">
+                    <ng-select [items]="excludesRemoteAutocomplete.listRessource$ | async" [multiple]="true" [typeahead]="excludesRemoteAutocomplete.term" [loading]="excludesRemoteAutocomplete.loading" (search)="onSearchExlucision($event)" appendTo="body" [selectOnTab]="true"
+                        bindLabel="libelle" bindValue="id" placeholder="Exclusions" formControlName="excludes">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="start center">
+                <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="40" [fxFlex.xl]="40">
+                    <ng-select [items]="roleRemoteAutocomplete.listRessource$ | async" [multiple]="true" [typeahead]="roleRemoteAutocomplete.term" [loading]="roleRemoteAutocomplete.loading" (search)="onSearchRole($event)" (change)="onChangeRole($event)" appendTo="body" [selectOnTab]="true"
+                        bindLabel="libelle" bindValue="id" placeholder="Roles" formControlName="roles">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <table mat-table [dataSource]="dataSourceRoles" class="mat-elevation-z8 sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+
+                    <ng-container matColumnDef="libelle">
+                        <th mat-header-cell *matHeaderCellDef> Libelle </th>
+                        <td mat-cell *matCellDef="let element"> {{element.libelle}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsRoles"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsRoles;"></tr>
+                </table>
+            </div>
+            <mat-card-actions class="footerAction" [ngClass]="{'card-action-form': (activeMediaQuery === 'lg' || activeMediaQuery === 'xl' ), 'card-action-form-small': (activeMediaQuery === 'sm') }">
+                <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button color="warn" type="button" (click)="annuler()">Annuler</button>
+
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid" (click)="onSubmit()">
+                        <span *ngIf="!profile.libelle">Enregistrer</span>
+                        <span *ngIf="profile.libelle">Mise à jour</span>
+                    </button>
+                </div>
+            </mat-card-actions>
+        </mat-card-content>
+    </form>
+</mat-card>

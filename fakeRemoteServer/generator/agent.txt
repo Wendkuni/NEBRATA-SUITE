@@ -1,0 +1,169 @@
+
+[
+  '{{repeat(100, 100)}}',
+  {
+     index: '{{index()+1}}',
+    guid: '{{guid()}}',
+    matricule: '{{random("A", "B", "C")}}-{{integer(100, 999)}}-{{integer(5555, 9999)}}',
+    fonction: '{{random("Product designer", "Product manager", "Software Engineer","Software Architect","Sales manager","Office manager","CTO")}}',
+    password : 'user12345',
+    username : 'user{{index()+1}}',
+    avatar : function() {
+     var index = Math.floor(Math.random() * 10)+1;
+
+      
+      return "assets/img/avatars/avatar-"+index+".png";
+    
+    },
+    prenom: function () {
+     var index = Math.floor(Math.random() * 14);
+      var list = ['Abdou', 'Abdoulaye', 'Sophie','Penda','Jean','Macky','Sokhna','Mouhamed','Aida','Samba','Aissatou','Absa','Ousmane','Demba','Joseph'];
+      return list[index];
+    },
+     prenomPere: function () {
+     var index = Math.floor(Math.random() * 14);
+      var list = ['Abdou', 'Abdoulaye', 'Jean','Macky','Mouhamed','Samba','Ousmane','Demba','Joseph'];
+      return list[index];
+    },
+      nomPere: function () {
+     var index = Math.floor(Math.random() * 6);
+      var list = ['Fall', 'Diop', 'Gomis','Dieng','Faye','Sall','Ndiaye','Diakhaté','Kane','Bâ','Diallo'];
+      return list[index];
+    },
+       prenomMere: function () {
+     var index = Math.floor(Math.random() * 14);
+      var list = ['Sophie', 'Aida', 'Penda','Marie','Stéphanie','Raissa'];
+      return list[index];
+    },
+      nomMere: function () {
+     var index = Math.floor(Math.random() * 6);
+      var list = ['Fall', 'Diop', 'Gomis','Dieng','Faye','Sall','Ndiaye','Diakhaté','Kane','Bâ','Diallo'];
+      return list[index];
+    },
+     nom: function () {
+     var index = Math.floor(Math.random() * 6);
+      var list = ['Fall', 'Diop', 'Gomis','Dieng','Faye','Sall','Ndiaye','Diakhaté','Kane','Bâ','Diallo'];
+      return list[index];
+    },
+      bureau: function () {
+         var listBureau = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+     var index = Math.floor(Math.random() * 16);
+        return  {
+          id: listBureau[index],
+          nom : "Bureau de travail "+listBureau[index]
+        };
+    },
+          service: function () {
+            
+     var listService = [4,5,6,7,8,9];
+     var index = Math.floor(Math.random() * 6);
+        return  {
+          id: listService[index],
+          nom : "service de travail "+listService[index],
+          sigle : "SERV"+listService[index]
+        };
+    },
+          structure: function () {
+      var listStructure = [4,5,6];
+     var index = Math.floor(Math.random() * 2);
+        return  {
+          id: listStructure[index],
+          nom : "structure de travail "+listStructure[index],
+            sigle : "STRUC"+listStructure[index]
+        };
+    },
+    emails :  function () {
+        var index = Math.floor(Math.random() * 4)+1;
+        var list = [];
+       var levels = ["pro","perso"];
+       for(var i =1; i<=index; i++) {
+        var isPrincipal = (i===1)?true:false;
+       list.push({
+      
+        value:this.prenom.toLowerCase()+"."+this.nom.toLowerCase()+"-"+i+"@sycad.com",
+        level: levels[Math.floor(Math.random() * 2)],
+        type : "EMAIL",
+        principal: isPrincipal
+      });
+      }
+              return list;
+          },
+        adresses :  function () {
+        var index = Math.floor(Math.random() * 4)+1;
+        var list = [];
+       for(var i =1; i<=index; i++) {
+        var isPrincipal = (i===1)?true:false;
+       list.push({
+        libelle : this.nom+'607 Troy Avenue, Garnet,  9503',
+        principal: isPrincipal
+      });
+      }
+              return list;
+          },
+    telephones: function () {  
+      
+      function getNumber(min,max) {
+      var rand= Math.floor(Math.random() * min)+min;
+        
+        if(rand>max) return rand-(rand-max);
+        
+        return rand;
+      }
+    var index = Math.floor(Math.random() * 4)+1;
+     var levels = ["pro","perso","home"];
+      var list = [];
+       for(var i =1; i<=index; i++) {
+        var isPrincipal = (i===1)?true:false;
+       list.push({
+      
+        value: "(00221) 7"+(getNumber(6,8))+" "+(getNumber(150,950))+" "+(getNumber(11,99))+" "+(getNumber(11,99)),
+        level: levels[Math.floor(Math.random() * 2)],
+        type : "PHONE",
+        principal: isPrincipal
+      });
+      }
+      return list;
+    },
+    dateNaissance:'{{date(new Date(1975, 0, 1), new Date(1995, 0, 1), "YYYY-MM-ddThh:mm:ss.fZ")}}',
+    lieuNaissance: '{{integer(100, 999)}} {{street()}}, {{random("Dakar", "Thies", "Saint-Louis","Tamba")}}, Sénégal',
+    createdAt:'{{date(new Date(2019, 0, 1), new Date(2020, 0, 1), "YYYY-MM-ddThh:mm:ss.fZ")}}',
+    editedAt:'{{date(new Date(2019, 0, 1), new Date(2020, 0, 1), "YYYY-MM-ddThh:mm:ss.fZ")}}',
+      personnesContacts: [
+      '{{repeat(2,4)}}',
+       '{{integer(1,10)}}'
+    ],
+        pieceIdentites: [
+      '{{repeat(2,4)}}',
+       '{{integer(1,10)}}'
+    ],
+    profils : [],
+    roles : [],
+    active: '{{random("true", "false")}}',
+    permissions : [],
+  
+    genre : function () {
+     
+      var sexe = {
+        Abdou:"HOMME",
+        Sophie : "FEMME",
+        Penda : "FEMME",
+        Sokhna : "FEMME",
+        Aida : "FEMME",
+        Aissatou : "FEMME",
+        Absa : "FEMME",
+        Abdoulaye : "HOMME",
+        Jean : "HOMME",
+        Macky : "HOMME",
+        Mouhamed : "HOMME",
+        Samba : "HOMME",
+        Ousmane : "HOMME",
+        Demba : "HOMME",
+        Joseph : "HOMME"
+      };
+      return sexe[this.firstName];
+    },
+      civilite :   function () {
+        return this.gender==="Man"?"Mr":"Ms";
+    }
+  }
+]

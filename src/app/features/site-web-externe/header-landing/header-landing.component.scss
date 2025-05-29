@@ -1,0 +1,125 @@
+.menu{
+  //position: absolute;
+  width: 100%;
+  position: fixed;
+  .menu-element{
+    padding: 10px;
+    .logo-mobile{
+      display: none;
+      .img-dgi, p{
+        display: none;
+      }
+    }
+    .logo{
+      margin-left: -150px;
+    }
+  }
+
+}
+
+.bannier{
+  width: 100%;
+  height: 95%;
+  background-image: url("./../../../../assets/img/landing/bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  .element{
+    background-color: rgba(0, 0, 0, 0.849);
+    padding: 10px;
+    .haut{
+      padding: 25px;
+      padding-bottom: 30px;
+      .bienvenu{
+        color: white;
+        text-align: center;
+        font-size: 45px;
+        font-weight: bold;
+      }
+      .definition{
+        margin-top: 40px;
+        color: white;
+        font-size: 25px;
+        text-align: center;
+        font-weight: bold;
+      }
+      .mot{
+        color: white;
+        font-size: 23px;
+        text-align: center;
+        margin-top: 70px;
+      }
+    }
+    .bas{
+      font-size: 18px;
+      color: white;
+      .text-chevaux{
+        padding: 10px;
+      }
+      .text-impot{
+        text-align: right;
+        padding: 10px;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 100px) and (max-width: 1041px){
+
+  .bannier{
+    width: 100%;
+    height: 95%;
+    background-image: url("./../../../../assets/img/landing/Sycad-slide-mobile.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    .element{
+      background-color: rgba(0, 0, 0, 0.849);
+      padding: 10px;
+      .haut{
+        padding: 25px;
+        padding-bottom: 100px;
+        .bienvenu{
+          color: white;
+          text-align: center;
+          font-size: 20px;
+          font-weight: bold;
+        }
+        .definition{
+          margin-top: 40px;
+          color: white;
+          font-size: 15px;
+          text-align: center;
+          font-weight: bold;
+        }
+        .mot{
+          color: white;
+          font-size: 10px;
+          text-align: center;
+          margin-top: 40px;
+        }
+      }
+      .bas{
+        .img-chevaux, .text-chevaux, .img-dgi, .text-impot{
+          display: none;
+        }
+      }
+    }
+  }
+
+  .menu{
+    .menu-element{
+      padding: 10px;
+      .logo-mobile{
+        display: flex;
+        .img-dgi, p{
+          display: flex;
+        }
+      }
+      .logo{
+        p{
+          display: none;
+        }
+      }
+    }
+
+  }
+}

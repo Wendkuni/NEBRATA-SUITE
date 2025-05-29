@@ -1,0 +1,30 @@
+<mat-card fxLayout="row" fxLayoutAlign="center center" fxLayoutGap.gt-xs="20px">
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+
+
+    <form (ngSubmit)="onSubmit()" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="95" [fxFlex.lg]="90" [fxFlex.xl]="80">
+        <app-form-agent [formGroup]="formulaire" [compteContribuable]="compteContribuable" *ngIf="typeCompte === 'AGENT'"></app-form-agent>
+        <app-form-contribuable-moral [formGroup]="formulaire" [compteContribuable]="compteContribuable" [processus]="processus" *ngIf="typeCompte === 'CONTRIBUABLEMORALE'"></app-form-contribuable-moral>
+        <app-form-contribuable-physique [formGroup]="formulaire" [compteContribuable]="compteContribuable" [processus]="processus" *ngIf="typeCompte === 'CONTRIBUABLEPHYSIQUE'"></app-form-contribuable-physique>
+        <app-form-acteur [formGroup]="formulaire" [compteContribuable]="compteContribuable" *ngIf="typeCompte === 'ACTEUR'"></app-form-acteur>
+
+        <mat-card-actions [ngClass]="{'card-action-form': (activeMediaQuery === 'lg' || activeMediaQuery === 'xl' ), 'card-action-form-small': (activeMediaQuery === 'sm') }" *ngIf="typeCompte">
+            <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                <button mat-raised-button color="warn" type="button" (click)="resetForm()">Annuler</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+                    <span>Enregistrer</span>
+            </button>
+            </div>
+        </mat-card-actions>
+
+        <!--
+
+         <recaptcha [size]="'invisible'" #recaptchaForm [hide]="false" (captchaResponse)="onCaptchaResponse($event)" (captchaExpired)="onCaptchaExpired()">
+        </recaptcha>
+       -->
+    </form>
+
+
+</mat-card>

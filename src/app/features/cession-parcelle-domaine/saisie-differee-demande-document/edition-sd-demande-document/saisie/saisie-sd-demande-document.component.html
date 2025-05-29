@@ -1,0 +1,371 @@
+<form [formGroup]="formulaire">
+
+    <mat-horizontal-stepper linear #stepper>
+
+        <mat-step [editable]="true">
+
+            <ng-template matStepLabel>Informations de base</ng-template>
+
+            <div [formGroup]="dossier" fxLayout="row" fxLayoutAlign="start">
+
+                <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="45" [fxFlex.xl]="40">
+                    <ng-select [items]="typeDocuments" appendTo="body" (change)="onChangeTypeDocument($event)" [selectOnTab]="true" bindLabel="libelle" bindValue="libelle" placeholder="Objet de la demande de document" formControlName="objet">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                    <mat-error *ngIf="objet.invalid && (objet.dirty || objet.touched) && objet.errors?.required">
+                        Le objet est obligatoire
+                    </mat-error>
+                </div>
+
+
+            </div>
+
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="45" [fxFlex.xl]="30">
+                    <app-field-remote-autocomplete [dataForm]="acteurRemoteAutocomplete" (subjectCompleteEvent)="receiveSubjectActeur($event)"></app-field-remote-autocomplete>
+                </div>
+            </div>
+
+
+
+
+
+            <div [formGroup]="dossier" fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="25" [fxFlex.lg]="19" [fxFlex.xl]="20">
+                    <mat-label>Date externe (*)</mat-label>
+                    <input matInput [matDatepicker]="dateExternePicker" [attr.autocomplete]="'off'" placeholder="Date de création" formControlName="dateExterne">
+                    <mat-datepicker-toggle matSuffix [for]="dateExternePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #dateExternePicker></mat-datepicker>
+                    <mat-error *ngIf="dateExterne.invalid && (dateExterne.dirty || dateExterne.touched) && dateExterne.errors?.required">
+                        La date externe est obligatoire
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                    <mat-label>Référence externe (*)</mat-label>
+                    <input matInput [attr.autocomplete]="'off'" formControlName="refExterne" />
+
+                    <mat-error *ngIf="refExterne.invalid && (refExterne.dirty || refExterne.touched) && refExterne.errors?.required">
+                        Le refExterne est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="refExterne.invalid && (refExterne.dirty || refExterne.touched) && ( refExterne.errors?.minlength || refExterne.errors?.maxlength)">
+                        La taille du refExterne est limité entre 2 et 150 caractères
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div [formGroup]="dossier" fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <div class="sycad-form-line container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                    <label id="etatDossier-active">Etat du dossier</label>
+                    <mat-slide-toggle formControlName="etatDossier" aria-labelledby="etatDossier-active"></mat-slide-toggle>
+
+                </div>
+            </div>
+
+
+            <div fxLayout="row" fxLayoutAlign="start">
+                <app-observation-form [formGroup]="dossier"></app-observation-form>
+
+            </div>
+            <!--
+ <app-dossier-form [formGroup]="dossier"></app-dossier-form>
+
+            -->
+            <div class="card-action-form">
+                <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                    <button mat-raised-button color="primary" type="button" matStepperNext>Suivant</button>
+                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+                </div>
+            </div>
+
+        </mat-step>
+
+        <mat-step [editable]="true">
+
+            <ng-template matStepLabel>Autres Informations</ng-template>
+
+
+
+            <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                    <mat-label>Numéro PV d'évaluation </mat-label>
+                    <input matInput [attr.autocomplete]="'off'" formControlName="numeroPVEvaluation" />
+
+                </mat-form-field>
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                    <mat-label>Date d'évaluation</mat-label>
+                    <input matInput [matDatepicker]="dateEvaluationPicker" placeholder="Date d'évaluation" formControlName="dateEvaluation">
+                    <mat-datepicker-toggle matSuffix [for]="dateEvaluationPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #dateEvaluationPicker></mat-datepicker>
+
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                    <mat-label>Valeur d'investissement </mat-label>
+                    <input matInput [attr.autocomplete]="'off'" formControlName="valeurInvestissement" type="number" />
+
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                    <mat-label>Numero DBT </mat-label>
+                    <input matInput [attr.autocomplete]="'off'" formControlName="numeroDBT" />
+
+                </mat-form-field>
+
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                    <mat-label>Date DBT</mat-label>
+                    <input matInput [matDatepicker]="dateDBTPicker" placeholder="Date d'évaluation" formControlName="dateDBT">
+                    <mat-datepicker-toggle matSuffix [for]="dateDBTPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #dateDBTPicker></mat-datepicker>
+
+
+                </mat-form-field>
+            </div>
+            <!--
+ <app-dossier-form [formGroup]="dossier"></app-dossier-form>
+
+            -->
+            <div class="card-action-form">
+                <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                    <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>
+                    <button mat-raised-button color="primary" type="button" matStepperNext>Suivant</button>
+                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+                </div>
+            </div>
+
+        </mat-step>
+        <mat-step [editable]="true">
+            <ng-template matStepLabel>Bénéficiaire</ng-template>
+
+            <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="45" [fxFlex.xl]="23">
+                    <app-field-remote-autocomplete [dataForm]="contribuableBeneficiaireRemoteAutocomplete" (formAddModal)="openFormAddModal($event)" (subjectCompleteEvent)="receiveSubjectContribuableBeneficiaire($event)">
+                    </app-field-remote-autocomplete>
+                </div>
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="45" [fxFlex.xl]="30">
+                    <ng-select [items]="structureRemoteAutocomplete.listRessource$ | async" [typeahead]="structureRemoteAutocomplete.term" (change)="onChangeStructure($event)" [loading]="structureRemoteAutocomplete.loading" (search)="onSearchStructure($event)" appendTo="body"
+                        [selectOnTab]="true" bindLabel="nom" bindValue="id" placeholder="Structure bénéficiaire" formControlName="structureBeneficiaire">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+            </div>
+
+            <div *ngIf="contribuableBeneficiaireChoisie" fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+                    <mat-card-header>
+                        <mat-card-title>
+                            Détail contribuable
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <app-card-general-contribuable-form [contribuable]="contribuableBeneficiaireChoisie"></app-card-general-contribuable-form>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+            <div class="card-action-form">
+                <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                    <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>
+                    <button mat-raised-button type="button" color="primary" mat-button matStepperNext>Suivant</button>
+                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+                </div>
+            </div>
+        </mat-step>
+        <mat-step [editable]="true">
+
+            <form [formGroup]="formulaire">
+                <ng-template matStepLabel>Référence de la parcelle</ng-template>
+
+
+                <app-choix-parcelle-form formControlName="parcelle" [callbackAutocompleteParcelle]="autocompletionByIlotByOwn" [parcelleChoisie]="demandeDocument.parcelle" [proprietaire]="contribuableBeneficiaireChoisie?.guid" [structure]="structureBeneficiaireChoisie?.id"
+                    [touched]="parcelle.touched"></app-choix-parcelle-form>
+
+                <div class="card-action-form">
+                    <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                        <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                        <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                        <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>
+                        <button mat-raised-button type="button" color="primary" mat-button matStepperNext>Suivant</button>
+                        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+
+
+
+        <mat-step [stepControl]="pieces" [editable]="true">
+            <form [formGroup]="pieces">
+                <ng-template matStepLabel>Pièces jointes</ng-template>
+                <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                    <div fxLayout="column" class="flex-p" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="50">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <button type="button" mat-flat-button color="primary" [disabled]="categoriePieceProcessus$.length==0" (click)="addNewDossierPiece()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10"
+                                [fxFlex.lg]="50" [fxFlexOffset.md]="10" [fxFlex.xl]="50" [fxFlexOffset]="10">
+                              <mat-icon class="icon-sm">add</mat-icon> Ajouter une nouvelle pièce
+                          </button>
+                        </div>
+                        <ng-template ngFor let-pieces [ngForOf]="pieces.controls" let-i="index">
+                            <div class="card-container-form-element y-1" fxLayout="row" fxLayoutAlign="start">
+                                <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+
+                                    <button mat-icon-button matSuffix color="warn" class="delete-icons" type="button">
+                                      <mat-icon (click)="removeDossierPiece(i)">remove_circle</mat-icon>
+                                  </button>
+                                    <app-dossier-piece-form [formGroup]="pieces" [categoriePieceProcessus]="categoriePieceProcessus$" (changeCategoriePiece)="changeCategoriePiece($event)" [touched]="pieces.touched"></app-dossier-piece-form>
+                                </mat-card>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="card-action-form">
+                    <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                        <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                        <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                        <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>
+                        <button mat-raised-button type="button" color="primary" mat-button matStepperNext>Suivant</button>
+                        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step [editable]="true" *ngIf="contribuableBeneficiaireChoisie">
+            <form [formGroup]="mandats">
+                <ng-template matStepLabel>Mandats</ng-template>
+                <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                    <div fxLayout="column" class="flex-p" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="50">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <button type="button" mat-flat-button color="primary" (click)="addMandat()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10" [fxFlex.lg]="50" [fxFlexOffset.md]="10" [fxFlex.xl]="50"
+                                [fxFlexOffset]="10">
+                  <mat-icon class="icon-sm">add</mat-icon> Ajouter un mandat
+                </button>
+                        </div>
+                        <ng-template ngFor let-mandat [ngForOf]="mandats.controls" let-i="index">
+                            <div class="card-container-form-element y-1" fxLayout="row" fxLayoutAlign="start">
+                                <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+                                    <button mat-icon-button matSuffix color="warn" class="delete-icons" type="button">
+                      <mat-icon (click)="removeMandat(i)">remove_circle</mat-icon>
+                    </button>
+
+                                    <app-mandat-form [formGroup]="mandat" (changeMandat)="changeMandat($event)" [filteredListMandat]="filteredListMandat" [choixMandant]="contribuableBeneficiaireChoisie" [withMandant]="false" [withMandat]="true" [withMandataire]="true"></app-mandat-form>
+
+                                </mat-card>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="card-action-form">
+                    <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                        <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                        <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                        <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>
+                        <button mat-raised-button type="button" color="primary" mat-button matStepperNext>Suivant</button>
+                        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step [editable]="true">
+
+            <ng-template matStepLabel>Document de sortie</ng-template>
+
+
+            <div [formGroup]="documentDeSortie" fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <div fxLayout="column" class="flex-p" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="50">
+                    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="90" [fxFlex.xl]="80">
+                            <mat-label>Libellé (*)</mat-label>
+                            <input matInput [attr.autocomplete]="'off'" formControlName="libelle" />
+
+                            <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && libelle.errors?.required">
+                                Le libelle est obligatoire
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="90" [fxFlex.xl]="80">
+                            <mat-label>Numéro (*)</mat-label>
+                            <input matInput [attr.autocomplete]="'off'" formControlName="numero" />
+
+                            <mat-error *ngIf="numero.invalid && (numero.dirty || numero.touched) && numero.errors?.required">
+                                Le numero est obligatoire
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="45" [fxFlex.xl]="45">
+                            <mat-label>Date de validité </mat-label>
+                            <input matInput [matDatepicker]="dateValiditePicker" placeholder="Date de validité création" formControlName="dateValidite">
+                            <mat-datepicker-toggle matSuffix [for]="dateValiditePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #dateValiditePicker></mat-datepicker>
+
+                        </mat-form-field>
+
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="45" [fxFlex.xl]="45">
+                            <mat-label>Date du document (*)</mat-label>
+                            <input matInput [matDatepicker]="dateRegistrePicker" placeholder="Date du document" formControlName="dateDoc">
+                            <mat-datepicker-toggle matSuffix [for]="dateRegistrePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #dateRegistrePicker></mat-datepicker>
+                            <mat-error *ngIf="dateDoc.invalid && (dateDoc.dirty || dateDoc.touched) && dateDoc.errors?.required">
+                                La date du registre est obligatoire
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+                        <div [fxFlex]="100">
+                            <button mat-icon-button color="warn" class="delete-icons-2" type="button">
+                                <mat-icon (click)="resetDropZone()">clear</mat-icon>
+                              </button>
+                            <span *ngIf="documentPiece"> <a href="{{documentPiece | generalDownload}}">Télécharger la pièce jointe</a></span>
+                            <dropzone class="dropzone-container" [config]="config" [message]="'Cliquez ou faites glisser la pièce ici jointe'" (init)="onUploadInit($event)" (error)="onUploadError($event)" (success)="onUploadSuccess($event)">
+                            </dropzone>
+                        </div>
+
+                    </div>
+                    <!--
+         <app-dossier-form [formGroup]="dossier"></app-dossier-form>
+
+                    -->
+                    <div class="card-action-form">
+                        <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                            <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                            <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                            <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>
+                            <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </mat-step>
+    </mat-horizontal-stepper>
+
+</form>

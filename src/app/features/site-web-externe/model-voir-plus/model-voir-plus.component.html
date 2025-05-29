@@ -1,0 +1,73 @@
+<div fxLayout="column" fxLayout.gt-sm="row wrap"  class="menu bg-primary">
+  <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+    <div fxLayout="row" class="menu-element" fxLayout.lt-md="row wrap" >
+      <button mat-button class="logo-mobile" fxLayoutAlign="center center" [fxFlex.xs]="20" [fxFlex.sm]="20" [fxFlex.md]="0" [fxFlex.lg]="0" [fxFlex.xl]="0">
+        <img [fxFlex.xs]="60" [fxFlex.sm]="30" [fxFlex.md]="20" [fxFlex.lg]="20" [fxFlex.xl]="20" src="/assets/img/landing/logodgi2.png" class="img-dgi">
+        <p>SyC@D</p>
+      </button>
+      <button mat-button class="logo" fxLayoutAlign="start center" [fxFlex.xs]="0" [fxFlex.sm]="0" [fxFlex.md]="0" [fxFlex.lg]="40" [fxFlex.xl]="40"><p>Ministère des Finances | Direction des Impôts</p></button>
+      <button mat-button routerLink="/login" class="connection" fxLayoutAlign="end center"  [fxFlex.xs]="40" [fxFlex.sm]="60" [fxFlex.md]="60" [fxFlex.lg]="60" [fxFlex.xl]="60">SE CONNECTER</button>
+    </div>
+  </div>
+</div>
+<div class="bannier" fxLayoutAlign="center center">
+
+</div>
+
+  <div class="documentation" >
+    <app-page-detail></app-page-detail>
+  </div>
+
+
+
+
+  <div class="footer">
+    <div class="all-elements" fxLayout="row wrap" fxLayoutAlign="center start">
+      <div class="element" [fxFlex.xs]="80" [fxFlex.sm]="80" [fxFlex.md]="30" [fxFlex.lg]="30" [fxFlex.xl]="30">
+        <h3 class="titre-element" fxLayoutAlign="start center">Contact</h3>
+        <div class="contenu">
+          <p>Tel : (+226) 25 30 89 85/86/87 - 25 31 60 03/05</p>
+          <p>Mail : contact@sif.gouv.fr</p>
+          <p>Adresse : Direction Générale des Impôts,
+            01 BP 119 Ouagadougou 01, Burkina Faso</p>
+        </div>
+    </div>
+
+      <div class="element disp" [fxFlex.xs]="100" [fxFlex.sm]="50" [fxFlex.md]="20" [fxFlex.lg]="20" [fxFlex.xl]="20">
+        <h3 class="titre-element" fxLayoutAlign="start center">SyC@D</h3>
+        <div class="contenue">
+          <a mat-stroked-button>Accueil</a><br/>
+          <a target="_blanck" href="http://project.nebrata.com/" mat-stroked-button>Assistance</a>
+        </div>
+    </div>
+        <div class="element disp" [fxFlex.xs]="100" [fxFlex.sm]="50" [fxFlex.md]="20" [fxFlex.lg]="20" [fxFlex.xl]="20">
+          <h3 class="titre-element" fxLayoutAlign="start center">Documentation</h3>
+          <div class="contenue">
+            <a target="_blanck" href="/assets/img/landing/Contribution fonciere.pdf" mat-stroked-button>Guide contribuable</a><br/>
+            <a target="_blanck" href="/assets/img/landing/Contribution fonciere.pdf" mat-stroked-button>Guide utilisateur acteur privée</a><br/>
+            <a target="_blanck" href="/assets/img/landing/Contribution fonciere.pdf" mat-stroked-button>Guide utilisateur des agents de l’administration.</a><br/>
+            <a target="_blanck" href="https://www.google.com/intl/fr/chrome/" mat-stroked-button>Télécharger Google Chrome</a><br/>
+            <a target="_blanck" href="https://www.mozilla.org/fr/firefox/" mat-stroked-button>Télécharger Mozilla Firefox</a>
+
+          </div>
+      </div>
+
+      <div class="element disp" [fxFlex.xs]="100" [fxFlex.sm]="50" [fxFlex.md]="20" [fxFlex.lg]="20" [fxFlex.xl]="20">
+        <h3 class="titre-element" fxLayoutAlign="start center">Nos sites officiels</h3>
+        <div class="contenue">
+          <a target="_blanck" href="https://www.impots.gov.bf/accueil" mat-stroked-button>Ministère | finances.gov.bf</a><br/>
+          <a target="_blanck" href="https://www.finances.gov.bf/accueil" mat-stroked-button>DGI | impots.gov.bf</a><br/>
+          <a target="_blanck" mat-stroked-button href="https://esintax.bf/">eSintax</a>
+        </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="copy" fxLayoutAlign="center center">
+    <div class="all-elements" fxLayout="row wrap" [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="80" [fxFlex.lg]="80" [fxFlex.xl]="80">
+      <div fxLayoutAlign="start center" class="element" [fxFlex.xs]="90" [fxFlex.sm]="90" [fxFlex.md]="75" [fxFlex.lg]="85" [fxFlex.xl]="85">
+        <h3>© Copyright 2021 – Direction Générale des Impôts – Burkina Faso | Réalisation : NEBRATA Consulting and Innovations </h3>
+      </div>
+    <img [fxFlex.xs]="15" [fxFlex.sm]="15" [fxFlex.md]="15" [fxFlex.lg]="10" [fxFlex.xl]="10" src="/assets/img/landing/nebrata.png" class="img-dgi">
+    </div>
+  </div>

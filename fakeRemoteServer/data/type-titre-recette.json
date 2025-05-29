@@ -1,0 +1,32 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "code": "T01",
+      "libelle": "Type 1"
+    },
+    {
+      "id": 2,
+      "code": "T02",
+      "libelle": "Type 2"
+    },
+    {
+      "id": 3,
+      "code": "T03",
+      "libelle": "Type 3"
+    },
+    {
+      "id": 4,
+      "code": "T04",
+      "libelle": "Type 4"
+    }
+  ]
+}

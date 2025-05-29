@@ -1,0 +1,45 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "annee":"1996",
+      "libelle": "Libelle 1",
+      "dateDebut": "12/05/1996",
+      "dateFin": "25/02/2020",
+      "etat": "CLOS"
+
+    },
+    {
+      "id": 2,
+      "annee":"1996",
+      "libelle": "Libelle 2",
+      "dateDebut": "12/05/1996",
+      "dateFin": "25/02/2020",
+      "etat": "CLOS"
+    },
+    {
+      "id": 3,
+      "annee":"1996",
+      "libelle": "Libelle 3",
+      "dateDebut": "12/05/1996",
+      "dateFin": "25/02/2020",
+      "etat": "OUVERT"
+    },
+    {
+      "id": 4,
+      "annee":"1996",
+      "libelle": "Libelle 4",
+      "dateDebut": "12/05/1996",
+      "dateFin": "25/02/2020",
+      "etat": "PROVISOIRE"
+    }
+  ]
+}

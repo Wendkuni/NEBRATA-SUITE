@@ -1,0 +1,206 @@
+<form [formGroup]="formulaire" class="role-form" (ngSubmit)="onSubmit()">
+
+<div fxLayout="row wrap" fxLayoutAlign="start center">
+    <app-recherche-ifu [typeContribuable]="'INDIVISION'" (trouveContribuable)="trouveContribuable($event)" (importContribuable)="importContribuable($event)" [updateContribuable]="contribuableUpdate" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="100"></app-recherche-ifu>
+</div>
+
+  <mat-horizontal-stepper linear #stepper>
+    <mat-step [editable]="true">
+      <ng-template matStepLabel>Identification</ng-template>
+
+    <div class="sycad-attributaire-modal-form-edition" mat-dialog-content perfectScrollbar>
+      <div fxLayout="column" class="flex-p">
+
+          <div fxLayout="row" class="debut-form-container" fxLayout.lt-md="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+            <div class=" sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+              <input type="hidden" formControlName="relation">
+              <ng-select [items]="relationRemoteAutocomplete.listRessource$ | async" [typeahead]="relationRemoteAutocomplete.term" [attr.autocomplete]="'off'" [loading]="relationRemoteAutocomplete.loading" (search)="onSearchRelation($event)" (change)="onChangeRelation($event)"
+                  appendTo="body" [selectOnTab]="true" bindLabel="libelle" bindValue="id" labelForId="relation" placeholder="Relation (*)" formControlName="relation">
+                  <ng-template ng-loadingspinner-tmp>
+                      <div class="lds-ellipsis">
+                      </div>
+                  </ng-template>
+              </ng-select>
+              <mat-error *ngIf="relation.invalid && (relation.dirty || relation.touched) && relation.errors?.required">
+                  La relation sur cette indivision est obligatoire
+              </mat-error>
+            </div>
+
+              <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="100" [fxFlex.xl]="50">
+                <mat-label>Date de création (*)</mat-label>
+                <input matInput [matDatepicker]="dateDeCreationPicker" placeholder="Date de création" formControlName="dateDeCreation">
+                <mat-datepicker-toggle matSuffix [for]="dateDeCreationPicker"></mat-datepicker-toggle>
+                <mat-datepicker #dateDeCreationPicker></mat-datepicker>
+                <mat-error *ngIf="dateDeCreation.invalid && (dateDeCreation.dirty || dateDeCreation.touched) && dateDeCreation.errors?.required">
+                    La date de création est obligatoire
+                </mat-error>
+              </mat-form-field>
+          </div>
+
+          <div fxLayout="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center ">
+            <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+              <mat-label>Dénommination(*) </mat-label>
+              <input matInput placeholder="Dénommination" [attr.autocomplete]="'off'" formControlName="denomination" />
+              <mat-error *ngIf="denomination.invalid && (denomination.dirty || denomination.touched) && denomination.errors?.required">
+                  La dénommination est obligatoire
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start">
+          <mat-card class="card-container-form-element y-1" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+              <mat-card-header>
+                  <mat-card-title>Pièce d'identification </mat-card-title>
+              </mat-card-header>
+              <app-piece-officielle-form [formGroup]="pieceOfficielle" [contribuableType]="'INDIVISION'" [touched]="pieceOfficielle.touched"></app-piece-officielle-form>
+          </mat-card>
+        </div>
+        </div>
+
+        <!-- Les boutons d'action en bas du formulaire -->
+        <div fxLayout="row" [fxLayoutGap]="'10px'" fxLayoutAlign="end">
+          <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+          <button mat-raised-button color="warn" (click)="closeFormModal()">Annuler</button>
+          <button mat-raised-button type="button" mat-button matStepperNext>Suivant</button>
+        </div>
+
+    </mat-step>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <mat-step>
+      <ng-template matStepLabel>Membres Indivision</ng-template>
+    <div fxLayout="column" class="flex-p">
+
+      <div fxLayout="row" fxLayoutAlign="start center">
+          <button type="button" mat-flat-button color="primary" (click)="addNewMembre()" [disabled]="!currentRelation" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10" [fxFlex.lg]="25" [fxFlexOffset.md]="10"
+              [fxFlex.xl]="30" [fxFlexOffset]="10">
+              <mat-icon class="icon-sm">add</mat-icon> Ajouter un membre indivision
+          </button>
+      </div>
+
+      <ng-container formArrayName="membres">
+        <div fxLayout="row" fxLayoutAlign="start" *ngFor="let item of membres.controls; index as idx" [formGroupName]="idx">
+            <mat-card class="card-container-form-element y-1" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="70" [fxFlex.xl]="60">
+
+                <button type="button" mat-icon-button matSuffix color="warn" class="delete-icons">
+                    <mat-icon (click)="removeMembre(idx)">remove_circle</mat-icon>
+                </button>
+
+                <mat-card-content>
+                    <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="start center" class="sycad-form-line">
+                        <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="70" [fxFlex.xl]="60">
+                            <ng-select [items]="qualiteList$" appendTo="body" [selectOnTab]="true" bindLabel="libelle" bindValue="id" placeholder="Qualite" formControlName="qualite" (change)="onChangeQualite()" class="disable-clear-all" [clearable]="false">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+
+                        </div>
+                    </div>
+                    <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="start center" class="sycad-form-line">
+                        <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="70" [fxFlex.xl]="60">
+                            <ng-select [items]="contribuableRemoteAutocomplete.listRessource$ | async" [typeahead]="contribuableRemoteAutocomplete.term" [attr.autocomplete]="'off'" [loading]="contribuableRemoteAutocomplete.loading" (search)="onSearchContribuable($event)" appendTo="body"
+                                [selectOnTab]="true" bindLabel="codeUnique" bindValue="guid" placeholder="Contribuable (*)" formControlName="membre">
+                                <ng-template ng-label-tmp let-contribuable="item">
+                                    <mat-list>
+                                        <mat-list-item>
+                                            <img *ngIf="contribuable.denomination" matListAvatar [src]="contribuable | avatarLogo " alt="image">
+                                            <img *ngIf="contribuable.genre" matListAvatar [src]="contribuable | avatarUser " alt="image">
+
+                                            <h3 matLine>
+                                                (<span>{{contribuable.codeUnique}}</span>)
+                                                <small *ngIf="contribuable.denomination">{{contribuable.denomination}}
+                                                    <span>{{contribuable.sigle}} </span></small>
+                                                <small *ngIf="contribuable.genre">
+                                                    {{contribuable.civilite}}
+                                                    {{contribuable.prenom}}
+                                                    {{contribuable.nomDeJeuneFille}}
+                                                    {{contribuable.nom}}</small>
+                                            </h3>
+                                            <p matLine>
+                                                <span *ngIf="contribuable.denomination">{{contribuable.sigle}}
+                                                </span>
+                                                <small *ngIf="contribuable.genre">Né(e) le
+                                                    {{contribuable.dateNaissance}}
+                                                    {{contribuable.lieuNaissance}}</small>
+                                            </p>
+                                        </mat-list-item>
+                                    </mat-list>
+
+                                </ng-template>
+                                <ng-template ng-option-tmp let-contribuable="item" let-index="index" let-search="searchTerm">
+
+                                    <mat-list>
+                                        <mat-list-item>
+                                            <img *ngIf="contribuable.denomination" matListAvatar [src]="contribuable | avatarLogo " alt="image">
+                                            <img *ngIf="contribuable.genre" matListAvatar [src]="contribuable | avatarUser " alt="image">
+
+                                            <h3 matLine>
+                                                (<span *ngIf="contribuable.pieceOfficielle">{{contribuable.pieceOfficielle.numero}}</span>
+                                                <span *ngIf="contribuable.pieceOfficielle == null">{{contribuable.codeUnique}}</span>)
+                                                <small *ngIf="contribuable.denomination" [ngOptionHighlight]="search">{{contribuable.denomination}}
+                                                    ({{contribuable.sigle}})</small>
+                                                <small *ngIf="contribuable.genre" [ngOptionHighlight]="search">
+                                                    {{contribuable.civilite}}
+                                                    {{contribuable.prenoms}}
+                                                    {{contribuable.nomDeJeuneFille}}
+                                                    {{contribuable.nom}}</small>
+                                            </h3>
+                                            <p matLine>
+                                                <small *ngIf="contribuable.denomination" [ngOptionHighlight]="search">{{contribuable.sigle}}
+                                                </small>
+                                                <small *ngIf="contribuable.genre">
+                                                    Né(e) le {{contribuable.dateNaissance}}
+                                                    <ng-container [ngOptionHighlight]="search">
+                                                        {{contribuable.lieuNaissance}}
+                                                    </ng-container>
+                                                </small>
+                                            </p>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </ng-template>
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                      </div>
+                  </mat-card-content>
+              </mat-card>
+            </div>
+          </ng-container>
+      </div>
+
+      <!-- Les boutons d'action en bas du formulaire -->
+      <div fxLayout="row" [fxLayoutGap]="'10px'" fxLayoutAlign="end">
+        <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+        <button mat-raised-button color="warn" (click)="closeFormModal()">Annuler</button>
+        <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+            Enregistrer
+        </button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+
+  </form>

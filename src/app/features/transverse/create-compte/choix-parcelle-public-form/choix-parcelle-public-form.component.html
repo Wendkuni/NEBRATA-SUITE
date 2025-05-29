@@ -1,0 +1,95 @@
+<form [formGroup]="parcelleForm" class="form-container">
+
+
+
+
+
+    <div fxLayout="row" fxLayoutAlign="start" class="step-creation">
+        <div class="sycad-form-ng-select sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="70" [fxFlex.xl]="60">
+            <ng-select [items]="communeRemoteAutocomplete.listRessource$ | async" [typeahead]="communeRemoteAutocomplete.term" [loading]="communeRemoteAutocomplete.loading" (search)="onSearchCommune($event)" (change)="onChangeCommune($event)" appendTo="body" [selectOnTab]="true"
+                bindLabel="nom" bindValue="id" labelForId="commune" formControlName="commune" placeholder="Commune (*)">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+            </ng-select>
+
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start">
+        <div class="sycad-form-ng-select sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="70" [fxFlex.xl]="60">
+            <ng-select [items]="sectionRemoteAutocomplete.listRessource$ | async" [typeahead]="sectionRemoteAutocomplete.term" [virtualScroll]="true" [loading]="sectionRemoteAutocomplete.loading" (search)="onSearchSection($event)" (change)="onChangeSection($event)"
+                appendTo="body" [selectOnTab]="true" bindLabel="libelle" bindValue="id" formControlName="section" labelForId="section" placeholder="Section (*)">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                    <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                    <span *ngIf="item.numeroAncien">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span>{{item.numero}}</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                    <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                    <span *ngIf="item.numeroAncien" [ngOptionHighlight]="search">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span [ngOptionHighlight]="search">{{item.numero}}</span>
+                </ng-template>
+            </ng-select>
+
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start">
+        <div class="sycad-form-ng-select sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="70" [fxFlex.xl]="60">
+            <ng-select [items]="ilotRemoteAutocomplete.listRessource$ | async" [typeahead]="ilotRemoteAutocomplete.term" (change)="onChangeIlot($event)" formControlName="ilot" [loading]="ilotRemoteAutocomplete.loading" (search)="onSearchIlot($event)" appendTo="body"
+                [selectOnTab]="true" bindLabel="nom" bindValue="id" labelForId="ilot" placeholder="Ilot (*)">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                    <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                    <span *ngIf="item.numeroAncien">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span>{{item.numero}}</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                    <span *ngIf="item.numeroAncien"> Numéro ancien : </span>
+                    <span *ngIf="item.numeroAncien" [ngOptionHighlight]="search">{{item.numeroAncien}}</span> <span *ngIf="item.numeroAncien"> -- </span> Numéro : <span [ngOptionHighlight]="search">{{item.numero}}</span>
+                </ng-template>
+            </ng-select>
+
+        </div>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+            <mat-label>Numéro parcelle (*)</mat-label>
+            <input matInput placeholder="Numéro (*)" [attr.autocomplete]="'off'" formControlName="numero" />
+
+            <mat-error *ngIf="numero.invalid && (numero.dirty || numero.touched) && numero.errors?.required">
+                Le numero est obligatoire
+            </mat-error>
+            <mat-error *ngIf="numero.invalid && (numero.dirty || numero.touched) && ( numero.errors?.pattern)">
+                Le numéro de la parcelle est sur 4 chiffres
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30">
+            <mat-label>Numéro ancien parcelle </mat-label>
+            <input matInput placeholder="Numéro" [attr.autocomplete]="'off'" formControlName="numeroAncien" />
+
+            <mat-error *ngIf="numeroAncien.invalid && (numeroAncien.dirty || numeroAncien.touched) && numeroAncien.errors?.required">
+                Le numero est obligatoire
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+</form>

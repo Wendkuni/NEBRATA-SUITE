@@ -1,0 +1,61 @@
+.form-table-ilot-container {
+    height: 400px;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+  }
+  
+  table {
+    min-width: 1000px;
+    padding-left: 5px;
+  }
+  
+  td,
+  th {
+    padding-left: 7px;
+    &.mat-column-numero {
+      width: 200px;
+    }
+    &.mat-column-numeroAncien {
+      width: 200px;
+      //  border: 1px solid yellow;
+    }
+    &.mat-column-section {
+      width: 200px;
+      //   border: 1px solid blue;
+    }
+    &.mat-form-field-wrapper {
+      padding-bottom: 0px;
+    }
+  }
+  
+  .mat-table-sticky:first-child {
+    border-right: 1px solid #e0e0e0;
+  }
+  
+  .mat-table-sticky:last-child {
+    border-left: 1px solid #e0e0e0;
+  }
+  
+  .sycad-form-ng-select-in-table {
+    margin-top: -0.7em;
+    .mat-error {
+      position: absolute;
+      font-size: 75%;
+    }
+    .ng-select {
+      min-width: 200px;
+    }
+  }
+  
+  
+  .ajoutParc{
+    margin-bottom: 10px;
+    margin-top:10px;
+  }
+  
+  .sycad-form-ng-select-in-table .ilotField {
+    width: 300px;
+    //  border: 1px solid blue;
+  }
+  

@@ -1,0 +1,34 @@
+[{
+        "id": 1,
+        "username": "user1",
+        "password": "pass12345",
+        "firstName": "user 1",
+        "fonction": "Administrateur 1",
+        "lastName": "One",
+        "avatar": "/assets/img/avatars/avatar-1.png"
+    },
+    {
+        "id": 2,
+        "username": "user2",
+        "password": "pass12345",
+        "firstName": "user 2",
+        "lastName": "Two",
+        "avatar": "/assets/img/avatars/avatar-2.png"
+    },
+    {
+        "id": 3,
+        "username": "user3",
+        "password": "pass12345",
+        "firstName": "user 3",
+        "lastName": "Three",
+        "avatar": "/assets/img/avatars/avatar-3.png"
+    },
+    {
+        "username": "user4",
+        "password": "pass12345",
+        "firstName": "user 4",
+        "lastName": "Fourt",
+        "avatar": "/assets/img/avatars/avatar-4.png",
+        "id": 4
+    }
+]

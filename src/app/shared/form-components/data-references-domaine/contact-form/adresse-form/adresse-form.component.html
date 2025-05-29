@@ -1,0 +1,98 @@
+<form [formGroup]="adesseForm" class="form-container">
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <mat-label id="titre2" class="label-title">Principal ?</mat-label>&nbsp;&nbsp;&nbsp;
+        <mat-slide-toggle formControlName="principal" aria-labelledby="titre2"></mat-slide-toggle>
+    </div>
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+        <div class="sycad-form-adresse-ng-select sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="45" [fxFlex.xl]="45">
+            <ng-select [items]="paysList" [searchable]="true" appendTo="body" [selectOnTab]="true" placeholder="Pays" formControlName="pays" (change)="onChangePays($event)">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+            </ng-select>
+            <mat-error *ngIf="pays.invalid && (pays.dirty || pays.touched) && pays.errors?.required">
+                Le Pays est obligatoire
+            </mat-error>
+        </div>
+
+        <div class="sycad-form-adresse-ng-select sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="45" [fxFlex.xl]="45">
+            <ng-select [items]="communeRemoteAutocomplete.listRessource$ | async" [addTag]="addVille" [typeahead]="communeRemoteAutocomplete.term" [loading]="communeRemoteAutocomplete.loading" (search)="onSearchVille($event)" (change)="onChangeVille($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom"
+            bindValue="nom" placeholder="Ville" formControlName="ville">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+            </ng-select>
+            <mat-error *ngIf="ville.invalid && (ville.dirty || ville.touched) && ville.errors?.required">
+                La ville est obligatoire
+            </mat-error>
+        </div>
+
+    </div>
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutAlign="start" [fxLayoutGap]="'20px'">
+        <mat-form-field appearance="outline" class="sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="93" [fxFlex.xl]="100">
+            <mat-label>Libellé</mat-label>
+            <input matInput placeholder="libellé adresse complète" [attr.autocomplete]="'off'" formControlName="libelle" />
+        </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+        
+        <mat-form-field appearance="outline" class="sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="45" [fxFlex.xl]="45">
+          <mat-label>Rue</mat-label>
+          <input matInput placeholder="rue" [attr.autocomplete]="'off'" formControlName="rue" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="45" [fxFlex.xl]="45">
+            <mat-label>Porte</mat-label>
+            <input matInput placeholder="porte" [attr.autocomplete]="'off'" formControlName="porte" />
+        </mat-form-field>
+
+    </div>
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start" *ngIf="initializedCommune">
+
+        <div class="sycad-form-adresse-ng-select sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="45" [fxFlex.xl]="45">
+            <ng-select [items]="localiteRemoteAutocomplete.listRessource$ | async" [typeahead]="localiteRemoteAutocomplete.term" [loading]="localiteRemoteAutocomplete.loading" (search)="onSearchLocalite($event)" appendTo="body" [selectOnTab]="true" bindLabel="nomArrondissement"
+                bindValue="id" placeholder="Localité" formControlName="localite">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+            </ng-select>
+        </div>
+
+        <div class="sycad-form-adresse-ng-select sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="45" [fxFlex.xl]="45">
+            <ng-select [addTag]="addQuartier" [items]="quartierRemoteAutocomplete.listRessource$ | async" [typeahead]="quartierRemoteAutocomplete.term" [loading]="quartierRemoteAutocomplete.loading" appendTo="body" [selectOnTab]="true" bindLabel="nom"
+            bindValue="nom" placeholder="Quartier" formControlName="quartier">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+            </ng-select>
+        </div>
+
+    </div>
+
+</form>

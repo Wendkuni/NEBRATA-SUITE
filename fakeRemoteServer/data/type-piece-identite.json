@@ -1,0 +1,46 @@
+[{
+        "id": 1,
+        "libelle": "Carte nationale d'identité",
+        "autoriser": true
+    },
+    {
+        "id": 2,
+        "libelle": "Passport CEDEAO",
+         "autoriser": true
+    },
+    {
+        "id": 3,
+        "libelle": "Permis de conduire",
+         "autoriser": true
+    },
+    {
+        "id": 4,
+        "libelle": "Carte de retraité",
+         "autoriser": true
+    },
+    {
+        "id": 5,
+        "libelle": "Passport nationale",
+         "autoriser": false
+    },
+    {
+        "id": 6,
+        "libelle": "Titre de séjour",
+         "autoriser": true
+    },
+    {
+        "id": 7,
+        "libelle": "Carte étudiante",
+         "autoriser": true
+    },
+    {
+        "id": 8,
+        "libelle": "Carte alpha",
+         "autoriser": false
+    },
+    {
+        "id": 9,
+        "libelle": "Permis de construire",
+         "autoriser": false
+    }
+]

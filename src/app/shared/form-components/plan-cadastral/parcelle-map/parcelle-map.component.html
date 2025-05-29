@@ -1,0 +1,11 @@
+<div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap="10px">
+  <mat-checkbox [(ngModel)]="showSatellite" class="custom-checkbox" (change)="updateLayers()" > Activer google</mat-checkbox>
+  <mat-checkbox [(ngModel)]="showBndt"  class="custom-checkbox" (change)="updateLayers()">Activer la BNDT</mat-checkbox>
+</div>
+<div>
+  <div id="map" #elementRef></div>
+</div>
+
+<div *ngIf="loading" class="loading-spinner">
+  <mat-spinner [diameter]="50"></mat-spinner> <!-- Spinner Angular Material -->
+</div>

@@ -1,0 +1,11 @@
+<div class="sycad-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
+<mat-card class="card-avatar-edition card-profil-right">
+
+    <mat-card-content fxLayout="row" fxLayoutAlign="center end">
+        <dropzone #dropzoneAvatar (clickOutside)="onClickedOutside($event)" class="dropzone-tag" [config]="config" (error)="onUploadError($event)" (success)="onUploadSuccess($event)">
+        </dropzone>
+    </mat-card-content>
+
+</mat-card>

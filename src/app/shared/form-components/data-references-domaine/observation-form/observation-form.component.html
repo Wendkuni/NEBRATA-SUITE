@@ -1,0 +1,10 @@
+<form [formGroup]="dossierForm" class="form-observation">
+
+    <div fxLayout="row" fxLayoutAlign="start">
+        <h2>Observation</h2>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start">
+        <angular-editor [fxFlex]="100" formControlName="observation" [config]="editorConfig">
+        </angular-editor>
+    </div>
+</form>

@@ -1,0 +1,38 @@
+<button mat-icon-button [matMenuTriggerFor]="userMenu" #userMenuTrigger="matMenuTrigger">
+    <mat-icon>account_circle</mat-icon>
+</button>
+
+<mat-menu #userMenu="matMenu" [overlapTrigger]="false" class="toolbar-dropdown-menu user-menu">
+    <!--<span (mouseleave)="userMenuTrigger.closeMenu()">-->
+    <mat-toolbar color="primary">
+        <div *ngIf="userConnected$ | async as userOnline ; else loadingProfile" fxLayout="row" fxLayoutAlign="space-around center" class="user-info">
+            <img [src]="userOnline | avatarUser" alt="user-image" width="80" class="rounded mat-elevation-z6">
+            <p>{{userOnline.prenom}} <br> <small>{{userOnline.nom}}</small></p>
+        </div>
+        <ng-template #loadingProfile>
+            <div class="app-spinner-element">
+                <mat-progress-spinner diameter="20" color="warn" mode="indeterminate"></mat-progress-spinner>
+            </div>
+        </ng-template>
+
+    </mat-toolbar>
+    <a mat-menu-item routerLink="/contribuables/profil">
+        <mat-icon>person</mat-icon>
+        <span>Profil</span>
+    </a>
+    <a mat-menu-item (click)="openSettings()">
+        <mat-icon>settings</mat-icon>
+        <span>Préférence</span>
+    </a>
+
+    <a mat-menu-item href="https://www.youtube.com/@nebrataitconsultinginnovat7641" target="_blank">
+        <mat-icon>help</mat-icon>
+        <span>Aide</span>
+    </a>
+    <div class="divider"></div>
+    <a mat-menu-item (click)="logout()">
+        <mat-icon>power_settings_new</mat-icon>
+        <span>Déconnexion</span>
+    </a>
+    <!--</span>-->
+</mat-menu>

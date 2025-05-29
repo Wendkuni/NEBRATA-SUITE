@@ -1,0 +1,40 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "code": "T01",
+      "libelle": "Type 1",
+      "signe": "Positif",
+      "unite": "test"
+    },
+    {
+      "id": 2,
+      "code": "T02",
+      "libelle": "Type 2",
+      "signe": "NEGATIF",
+      "unite": "test"
+    },
+    {
+      "id": 3,
+      "code": "T03",
+      "libelle": "Type 3",
+      "signe": "NULL",
+      "unite": "test"
+    },
+    {
+      "id": 4,
+      "code": "T04",
+      "libelle": "Type 4",
+      "signe": "POSITIF",
+      "unite": "test"
+    }
+  ]
+}

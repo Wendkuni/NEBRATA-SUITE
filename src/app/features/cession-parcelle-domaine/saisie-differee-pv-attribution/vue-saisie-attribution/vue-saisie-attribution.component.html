@@ -1,0 +1,185 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{entetePV.etat.libelle}}</mat-card-title>
+    <mat-card-subtitle>{{entetePV.etat.description}}</mat-card-subtitle>
+    <ng-container *ngIf="entetePV && !noOpenActions && entetePV?.transitions?.length > 0">
+      <app-action-detail-dossier [numero]="entetePV.numero" [url]="urlAction" [transitions]="entetePV.transitions"></app-action-detail-dossier>
+    </ng-container>
+  </mat-card-header>
+  <form class="user-form" *ngIf="entetePV">
+    <mat-card-content>
+      <mat-tab-group class="mat-tab-active-color">
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>content_paste</mat-icon>
+            Formalite
+          </ng-template>
+          <mat-tab-group>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon>content_paste</mat-icon>
+                Informations de base
+              </ng-template>
+              <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                  <mat-label>Commune</mat-label>
+                  <input matInput value="{{entetePV?.arrondissement?.commune?.nom}}" [readonly]="true">
+                </mat-form-field>
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                  <mat-label>Arrondissement</mat-label>
+                  <input matInput value="{{entetePV?.arrondissement?.nom}}" [readonly]="true">
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                  <mat-label>Source de session</mat-label>
+                  <input matInput [attr.autocomplete]="'off'" value="{{entetePV.cessionSource?.libelle}}" [readonly]="true" />
+                </mat-form-field>
+
+
+              </div>
+
+              <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                  <mat-label>Numéro Dossier</mat-label>
+                  <input matInput value="{{entetePV.numero}}" [readonly]="true">
+                </mat-form-field>
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                  <mat-label>Date dossier (*)</mat-label>
+                  <input matInput value="{{entetePV.dateCreationDossier | date:'dd/MM/yyyy'}}" [readonly]="true">
+                </mat-form-field>
+
+              </div>
+              <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                  <mat-label>Mode de cession</mat-label>
+                  <input matInput [attr.autocomplete]="'off'" value="{{entetePV.cessionSource?.libelle}}" [readonly]="true" />
+                </mat-form-field>
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                  <mat-label>Commune</mat-label>
+                  <input matInput value="{{entetePV?.arrondissement?.commune?.nom}}" [readonly]="true">
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                  <mat-label>Arrondissement</mat-label>
+                  <input matInput value="{{entetePV?.arrondissement?.nom}}" [readonly]="true">
+                </mat-form-field>
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                  <mat-label>Motif(Annulé/rejet)</mat-label>
+                  <input matInput value="{{entetePV?.motifRejet?.libelle}}" [readonly]="true">
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                  <mat-label>Etat du dossier</mat-label>
+                  <input matInput value="{{entetePV?.etat.libelle}}" [readonly]="true">
+                </mat-form-field>
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                  <mat-label>Statut du dossier</mat-label>
+                  <input matInput value="{{entetePV?.statusDossier}}" [readonly]="true">
+                </mat-form-field>
+
+              </div>
+
+              <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                  <mat-label>Motif(Annulé/rejet)</mat-label>
+                  <input matInput value="{{entetePV?.motifRejet?.libelle}}" [readonly]="true">
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="start">
+                <h2>Observation</h2>
+              </div>
+              <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+                <div class="editor-container"
+                >
+
+                  <angular-editor [fxFlex]="100"
+                                  [formControl]="formGroup.get('observation')"
+                                  [config]="editorConfig">
+                  </angular-editor>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon>list_alt</mat-icon>
+                Document PV
+              </ng-template>
+              <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                  <mat-label>Libellé</mat-label>
+                  <input matInput value="{{entetePV.documentDeSortie.libelle}}" [readonly]="true">
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                  <mat-label>Numéro</mat-label>
+                  <input matInput value="{{entetePV.documentDeSortie.numero}}" [readonly]="true">
+                </mat-form-field>
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                  <mat-label>Date document</mat-label>
+                  <input matInput value="{{entetePV.documentDeSortie.dateDoc | date:'dd/MM/yyyy'}}" [readonly]="true">
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                  <span *ngIf="!entetePV.documentDeSortie.pieceJointe">Aucune pièce jointe</span>
+                  <ng-container *ngIf="entetePV.documentDeSortie.pieceJointe">
+                <span *ngFor="let piece of entetePV.documentDeSortie.pieceJointe; let i = index" class="piece-telechargeable">
+                  <a href="{{piece | generalDownload}}">Télécharger {{i + 1}}</a>
+                </span>
+                  </ng-container>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon>business</mat-icon>
+                Structure
+              </ng-template>
+              <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                  <mat-label>Structure</mat-label>
+                  <input matInput value="{{entetePV.transmission?.structure?.nom}}" [readonly]="true">
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                  <mat-label>Service</mat-label>
+                  <input matInput value="{{entetePV.transmission?.service?.nom}}" [readonly]="true">
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                  <mat-label>Bureau</mat-label>
+                  <input matInput value="{{entetePV.transmission?.bureau?.nom}}" [readonly]="true">
+                </mat-form-field>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </mat-tab>
+
+
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>chrome_reader_mode</mat-icon>
+            Historique
+          </ng-template>
+          <div fxLayout="row" fxLayoutAlign="start">
+            <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="50" [fxFlex.xl]="60">
+              <app-historique [numero]="entetePV.numero"></app-historique>
+            </div>
+          </div>
+        </mat-tab>
+
+      </mat-tab-group>
+    </mat-card-content>
+  </form>
+</mat-card>

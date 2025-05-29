@@ -1,0 +1,722 @@
+[{
+        "id": 1,
+        "titre": "Tableau de bord",
+        "href": null,
+        "routerLink": "/",
+        "icon": "dashboard",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 0
+    },
+    {
+        "id": 2,
+        "titre": "Annuaire Identités",
+        "href": null,
+        "routerLink": null,
+        "icon": "people",
+        "target": null,
+        "hasSubMenu": true,
+        "parentId": 0
+    },
+    {
+        "id": 3,
+        "titre": "Contribuable physique",
+        "href": null,
+        "routerLink": "/contribuables/contribuable-physique",
+        "icon": "perm_identity",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 2
+    },
+    {
+        "id": 4,
+        "titre": "Contribuable moral",
+        "href": null,
+        "routerLink": "/contribuables/contribuable-moral",
+        "icon": "store_mall_directory",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 2
+    },
+    {
+        "id": 5,
+        "titre": "Indivision",
+        "href": null,
+        "routerLink": "/contribuables/indivisions",
+        "icon": "view_module",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 2
+    },
+    {
+        "id": 6,
+        "titre": "Acteur",
+        "href": null,
+        "routerLink": "/contribuables/acteurs",
+        "icon": "person",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 2
+    },
+    {
+        "id": 7,
+        "titre": "Agents",
+        "href": null,
+        "routerLink": "/contribuables/agents",
+        "icon": "person",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 2
+    },
+    {
+        "id": 8,
+        "titre": "Territoire",
+        "href": null,
+        "routerLink": null,
+        "icon": "map",
+        "target": null,
+        "hasSubMenu": true,
+        "parentId": 0
+    },
+    {
+        "id": 9,
+        "titre": "Régions",
+        "href": null,
+        "routerLink": "/territoire/regions",
+        "icon": "flag",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 8
+    },
+    {
+        "id": 10,
+        "titre": "Provinces",
+        "href": null,
+        "routerLink": "/territoire/provinces",
+        "icon": "flag",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 8
+    },
+    {
+        "id": 11,
+        "titre": "Communes",
+        "href": null,
+        "routerLink": "/territoire/communes",
+        "icon": "museum",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 8
+    },
+    {
+        "id": 12,
+        "titre": "Arrrondissements",
+        "href": null,
+        "routerLink": "/territoire/arrondissements",
+        "icon": "terrain",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 8
+    },
+    {
+        "id": 13,
+        "titre": "Localité",
+        "href": null,
+        "routerLink": "/territoire/localite",
+        "icon": "location_on",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 8
+    },
+    {
+        "id": 14,
+        "titre": "Organisation",
+        "href": null,
+        "routerLink": null,
+        "icon": "account_balance",
+        "target": null,
+        "hasSubMenu": true,
+        "parentId": 0
+    },
+    {
+        "id": 15,
+        "titre": " Catégories structures",
+        "href": null,
+        "routerLink": "/organisation/type-structure",
+        "icon": "home_work",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 14
+    },
+    {
+        "id": 16,
+        "titre": "Structures",
+        "href": null,
+        "routerLink": "/organisation/structure",
+        "icon": "business",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 14
+    },
+    {
+        "id": 17,
+        "titre": "Services",
+        "href": null,
+        "routerLink": "/organisation/services",
+        "icon": "apartment",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 14
+    },
+    {
+        "id": 18,
+        "titre": "Bureau",
+        "href": null,
+        "routerLink": "/organisation/bureau",
+        "icon": "account_balance",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 14
+    },
+    {
+        "id": 19,
+        "titre": "Configuration",
+        "href": null,
+        "routerLink": null,
+        "icon": "settings",
+        "target": null,
+        "hasSubMenu": true,
+        "parentId": 0
+    },
+    {
+        "id": 20,
+        "titre": "Catégorie acteur",
+        "href": null,
+        "routerLink": "/configuration/categorie-acteur",
+        "icon": "category",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 26
+    },
+    {
+        "id": 21,
+        "titre": "Catégorie pièce",
+        "href": null,
+        "routerLink": "/configuration/categorie-piece-identite",
+        "icon": "contact_mail",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 26
+    },
+    {
+        "id": 22,
+        "titre": "Relation Indivision",
+        "href": null,
+        "routerLink": "/configuration/relation-indivision",
+        "icon": "wc",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 26
+    },
+    {
+        "id": 23,
+        "titre": "Status juridique",
+        "href": null,
+        "routerLink": "/configuration/status-juridique",
+        "icon": "description",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 26
+    },
+    {
+        "id": 24,
+        "titre": "Les roles",
+        "href": null,
+        "routerLink": "/security/roles",
+        "icon": "security",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 30
+    },
+    {
+        "id": 25,
+        "titre": "Les profiles",
+        "href": null,
+        "routerLink": "/security/profiles",
+        "icon": "account_circle",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 30
+    },
+    {
+        "id": 26,
+        "titre": "Identités",
+        "href": null,
+        "routerLink": null,
+        "icon": "how_to_reg",
+        "target": null,
+        "hasSubMenu": true,
+        "parentId": 19
+    },
+    {
+        "id": 27,
+        "titre": "Paramètre",
+        "href": null,
+        "routerLink": "/configuration/data-store",
+        "icon": "build",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 19
+    },
+    {
+        "id": 28,
+        "titre": "Template email",
+        "href": null,
+        "routerLink": "/configuration/template-email",
+        "icon": "email",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 19
+    },
+    {
+        "id": 29,
+        "titre": "Audit",
+        "href": null,
+        "routerLink": "/audit",
+        "icon": "3d_rotation",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 0
+    },
+    {
+        "id": 30,
+        "titre": "Securité",
+        "href": null,
+        "routerLink": null,
+        "icon": "email",
+        "target": null,
+        "hasSubMenu": true,
+        "parentId": 0
+    },
+
+    {
+        "id": 31,
+        "titre": "Processus",
+        "href": null,
+        "routerLink": null,
+        "icon": "people",
+        "target": null,
+        "hasSubMenu": true,
+        "parentId": 0
+    },
+    {
+        "id": 33,
+        "titre": "Profession",
+        "href": null,
+        "routerLink": "/configuration/profession",
+        "icon": "business_center",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 26
+    },
+    {
+        "id": 34,
+        "titre": "Secteur d'activité",
+        "href": null,
+        "routerLink": "/configuration/secteur-activite",
+        "icon": "card_travel",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 26
+    },
+    {
+        "id": 35,
+        "titre": "Régime fiscal",
+        "href": null,
+        "routerLink": "/configuration/regime-fiscal",
+        "icon": "monetization_on",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 26
+    },
+    {
+        "id": 38,
+        "titre": "Titre honorifique",
+        "href": null,
+        "routerLink": "/configuration/titre-honorifique",
+        "icon": "local_police",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 26
+    },
+    {
+        "id": 36,
+        "titre": "Situation matrimoniale",
+        "href": null,
+        "routerLink": "/configuration/situation-matrimoniale",
+        "icon": "family_restroom",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 26
+    },
+    {
+        "id": 37,
+        "titre": "Nationalité",
+        "href": null,
+        "routerLink": "/configuration/nationalite",
+        "icon": "family_restroom",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 26
+    },
+    {
+        "id": 39,
+        "titre": "Civilité",
+        "href": null,
+        "routerLink": "/configuration/civilites",
+        "icon": "how_to_reg",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 26
+    },
+    {
+        "id": 40,
+        "titre": "Type Immeuble",
+        "href": null,
+        "routerLink": "/configuration-metier/type-immeuble",
+        "icon": "home_work",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 41
+    },
+    {
+        "id": 41,
+        "titre": "Propriété",
+        "href": null,
+        "routerLink": null,
+        "icon": "home_work",
+        "target": null,
+        "hasSubMenu": true,
+        "parentId": 44
+    },
+    {
+        "id": 56,
+        "titre": "Liquidation",
+        "href": null,
+        "routerLink": null,
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": true,
+        "parentId": 44
+    },
+    {
+        "id": 42,
+        "titre": "Destination parcelle",
+        "href": null,
+        "routerLink": "/configuration-metier/destination-parcelle",
+        "icon": "check_box_outline_blank",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 44
+    },
+    {
+        "id": 43,
+        "titre": "Type de bâtiment",
+        "href": null,
+        "routerLink": "/configuration-metier/type-batiment",
+        "icon": "domain",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 41
+    },
+    {
+        "id": 44,
+        "titre": "Configuration métier",
+        "href": null,
+        "routerLink": null,
+        "icon": "settings_applications",
+        "target": null,
+        "hasSubMenu": true,
+        "parentId": 0
+    },
+    {
+        "id": 45,
+        "titre": "Quartier",
+        "href": null,
+        "routerLink": "/configuration-metier/quartier",
+        "icon": "domain",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 44
+    },
+    {
+        "id": 46,
+        "titre": "Source d'attribution",
+        "href": null,
+        "routerLink": "/configuration-metier/cession-source",
+        "icon": "reduce_capacity",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 44
+    },
+    {
+        "id": 47,
+        "titre": "Arrondissement zone",
+        "href": null,
+        "routerLink": "/processus/arrondissement-zone",
+        "icon": "reduce_capacity",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 44
+    },
+    {
+        "id": 48,
+        "titre": "Type aménagement particuliert",
+        "href": null,
+        "routerLink": "/configuration-metier/ap-type",
+        "icon": "reduce_capacity",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 41
+    },
+    {
+        "id": 49,
+        "titre": "Catégorie immeuble",
+        "href": null,
+        "routerLink": "/configuration-metier/categorie-immeuble",
+        "icon": "reduce_capacity",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 41
+    },
+    {
+        "id": 50,
+        "titre": "Plan source",
+        "href": null,
+        "routerLink": "/configuration-metier/plan-source",
+        "icon": "reduce_capacity",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 44
+    },
+    {
+        "id": 51,
+        "titre": "Coefficient VECR",
+        "href": null,
+        "routerLink": "/configuration-metier/coefficient",
+        "icon": "subscript",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 44
+    },
+    {
+        "id": 52,
+        "titre": "Type documment",
+        "href": null,
+        "routerLink": "/configuration-metier/document-type",
+        "icon": "description",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 44
+    },
+    {
+        "id": 53,
+        "titre": "Barême parcelle",
+        "href": null,
+        "routerLink": "/configuration-metier/parcelle-bareme",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 44
+    },
+    {
+        "id": 54,
+        "titre": "Gestion",
+        "href": null,
+        "routerLink": "/configuration-metier/gestion",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 44
+    },
+    {
+        "id": 55,
+        "titre": "Nature impôt",
+        "href": null,
+        "routerLink": "/configuration-metier/nature-impot",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 56
+    },
+    {
+        "id": 57,
+        "titre": "Type titre recette",
+        "href": null,
+        "routerLink": "/configuration-metier/type-titre-recette",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 56
+    },
+    {
+        "id": 58,
+        "titre": "Element liquidation",
+        "href": null,
+        "routerLink": "/configuration-metier/element-liquidation",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 56
+    },
+    {
+        "id": 59,
+        "titre": "Package impôt",
+        "href": null,
+        "routerLink": "/configuration-metier/package-impot",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 56
+    },
+    {
+        "id": 60,
+        "titre": "Element impôt",
+        "href": null,
+        "routerLink": "/configuration-metier/element-impot",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 56
+    },
+    {
+        "id": 61,
+        "titre": "Immeuble",
+        "href": null,
+        "routerLink": "/configuration-metier/immeuble",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 41
+    },
+    {
+        "id": 62,
+        "titre": "Délimitation parcelle",
+        "href": null,
+        "routerLink": "/configuration-metier/parcelle-delimitation",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 41
+    },
+    {
+        "id": 63,
+        "titre": "Exoneration categorie",
+        "href": null,
+        "routerLink": "/configuration-metier/categorie-exoneration",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 56
+    },
+    {
+        "id": 64,
+        "titre": "Mode de règlement ",
+        "href": null,
+        "routerLink": "/configuration-metier/mode-reglement",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 56
+    },
+    {
+        "id": 65,
+        "titre": "Exoneration",
+        "href": null,
+        "routerLink": "/configuration-metier/exoneration",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 56
+    },
+    {
+        "id": 66,
+        "titre": "Systeme imposition",
+        "href": null,
+        "routerLink": "/configuration-metier/system-imposition",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 56
+    },
+    {
+        "id": 67,
+        "titre": "Degré successoral",
+        "href": null,
+        "routerLink": "/configuration-metier/degre-successoral",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 56
+    },
+    {
+        "id": 68,
+        "titre": "Exercice fiscal",
+        "href": null,
+        "routerLink": "/configuration-metier/exercice-fiscale",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 56
+    },
+    {
+        "id": 69,
+        "titre": "Barème impôt",
+        "href": null,
+        "routerLink": "/configuration-metier/bareme-impot",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 56
+    },
+    {
+        "id": 70,
+        "titre": "Formule",
+        "href": null,
+        "routerLink": "/configuration-metier/formule",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 56
+    },
+    {
+        "id": 71,
+        "titre": "Saisie différée",
+        "href": null,
+        "routerLink": null,
+        "icon": "settings_applications",
+        "target": null,
+        "hasSubMenu": true,
+        "parentId": 0
+    },
+    {
+        "id": 72,
+        "titre": "Attribution",
+        "href": null,
+        "routerLink": "/saisie-differee/attribution",
+        "icon": "exposure",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 71
+    },
+    {
+        "id": 73,
+        "titre": "Mandat",
+        "href": null,
+        "routerLink": "/configuration/mandat",
+        "icon": "description",
+        "target": null,
+        "hasSubMenu": false,
+        "parentId": 44
+    }
+]

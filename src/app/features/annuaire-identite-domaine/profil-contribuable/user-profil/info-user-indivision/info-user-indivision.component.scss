@@ -1,0 +1,31 @@
+.list-profil-infos {
+    mat-expansion-panel-header{
+      height: 40px;
+      border-bottom: 2px solid #f0f0f0;
+      color: rgba(0, 0, 0, 0.87);
+      text-align: center;
+    }
+  
+  
+   
+  
+   mat-card-content{
+     height: 300px;
+     overflow: auto;
+     padding: 15px!important;
+   }
+  
+  
+  }
+  
+  mat-card-actions, .mat-card-subtitle, .mat-card-content {
+    display: block;
+    margin-bottom: 2px!important;
+  }
+  
+  ::ng-deep .mat-expansion-panel-body {
+    padding: 0px 0px 0px!important;
+  }
+  span{
+    white-space: normal;
+  }

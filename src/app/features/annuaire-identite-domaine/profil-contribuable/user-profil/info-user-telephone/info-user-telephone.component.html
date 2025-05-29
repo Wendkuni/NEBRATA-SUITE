@@ -1,0 +1,35 @@
+<mat-accordion class="profil-panel">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title class="panel-header-telephone" fxLayout="row" fxLayoutAlign="start start">
+                 <h3>Téléphones</h3>
+
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card-content>
+
+            <mat-list>
+
+                 <mat-list-item *ngIf="principalTelephone$  | async as principalTelephone">
+                <div matLine>
+                    <h3>Type {{principalTelephone?.level | lowercase}}</h3> 
+                    <span>
+                        {{principalTelephone?.value}}
+                    </span> 
+                </div>
+                </mat-list-item>
+                <mat-divider *ngIf="principalTelephone$ | async"></mat-divider> 
+                <ng-container *ngFor="let telephone of telephones">
+                    <mat-list-item *ngIf="telephone?.principal === false">
+                        <div  matLine >
+                          <h3>Telephone {{telephone?.level | lowercase}} </h3><span>{{ telephone?.value ? telephone?.value : '...'}}</span>
+                        </div> 
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                </ng-container>
+
+            </mat-list>
+
+        </mat-card-content>
+    </mat-expansion-panel>
+</mat-accordion>

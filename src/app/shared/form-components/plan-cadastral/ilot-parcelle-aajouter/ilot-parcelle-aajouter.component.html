@@ -1,0 +1,173 @@
+<div fxLayout="row" fxLayoutAlign="start">
+  <div class="sycad-form-ng-select" [fxFlex.xs]="100"
+       [fxFlex.sm]="100" [fxFlex.md]="55" [fxFlex.lg]="40"
+       [fxFlex.xl]="30">
+    <ng-select
+      [items]="sectionRemoteAutocomplete.listRessource$ | async"
+      [typeahead]="sectionRemoteAutocomplete.term"
+      [virtualScroll]="true"
+      [loading]="sectionRemoteAutocomplete.loading"
+      (search)="onSearchSection($event)"
+      (change)="onChangeSection($event)"
+      appendTo="body" [selectOnTab]="true"
+      bindLabel="libelle" bindValue="id"
+      [(ngModel)]="sectionChoisieIdIlotA"
+      [ngModelOptions]="{standalone: true}"
+      labelForId="sectionI" placeholder="Section">
+      <ng-template ng-loadingspinner-tmp>
+        <div class="lds-ellipsis">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </ng-template>
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item.numero">{{item.numero}}</span>
+        <span *ngIf="item.numeroAncien">({{item.numeroAncien}})</span>
+      </ng-template>
+      <ng-template ng-option-tmp let-item="item"
+                   let-index="index"
+                   let-search="searchTerm">
+        <span *ngIf="item.numero"
+              [ngOptionHighlight]="search">{{item.numero}}</span>
+         <span *ngIf="item.numeroAncien"
+        [ngOptionHighlight]="search">({{item.numeroAncien}})</span>
+      </ng-template>
+    </ng-select>
+
+  </div>
+</div>
+<button class="ajoutParc" mat-raised-button type="button"
+        mat-button (click)="initializeForm()">Charger les ilots
+</button>
+<form [formGroup]="ilotsAAjouter" id="ilot-parcelles">
+  <div fxLayout="row wrap"
+       fxLayoutGap="10px"
+       fxLayoutAlign="start" class="table-container">
+    <table mat-table [dataSource]="dataSource"
+           multiTemplateDataRows matSort
+           class="master-table mat-elevation-z8"
+           [fxFlex.xs]="100"
+           [fxFlex.sm]="100" [fxFlex.md]="90"
+           [fxFlex.lg]="80" [fxFlex.xl]="70">
+      <ng-container matColumnDef="numero">
+        <th mat-header-cell *matHeaderCellDef
+            mat-sort-header> Numéro ilot
+        </th>
+        <td mat-cell
+            *matCellDef="let element"> {{element.numero}} </td>
+      </ng-container>
+      <ng-container matColumnDef="numeroAncien">
+        <th mat-header-cell *matHeaderCellDef> Numéro
+          ancien ilot
+        </th>
+        <td mat-cell
+            *matCellDef="let element"> {{element.numeroAncien}} </td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions</th>
+        <td mat-cell
+            *matCellDef="let element; let i = index">
+          <button mat-icon-button
+                  (click)="supprimerIlot(element)">
+            <mat-icon class="sycad-element-clickable">
+              delete_forever
+            </mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element"
+            [attr.colspan]="columnsToDisplay.length">
+          <div class="nested-table-element-detail"
+               [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+
+            <table mat-table [dataSource]="element.parcelles" class="slave-table mat-elevation-z8">
+              <ng-container matColumnDef="numero">
+                <th mat-header-cell *matHeaderCellDef>
+                  Numéro
+                </th>
+                <td mat-cell
+                    *matCellDef="let parcelle"> {{parcelle.numero}} </td>
+              </ng-container>
+              <ng-container matColumnDef="numeroAncien">
+                <th mat-header-cell *matHeaderCellDef>
+                  Numéro ancien
+                </th>
+                <td mat-cell
+                    *matCellDef="let parcelle"> {{parcelle.numeroAncien}} </td>
+              </ng-container>
+              <ng-container matColumnDef="destination">
+                <th mat-header-cell *matHeaderCellDef>
+                  Destination
+                </th>
+                <td mat-cell
+                    *matCellDef="let parcelle"> {{parcelle.destination?.libelle}} </td>
+              </ng-container>
+              <ng-container matColumnDef="superficie">
+                <th mat-header-cell *matHeaderCellDef>
+                  Superficie
+                </th>
+                <td mat-cell
+                    *matCellDef="let parcelle"> {{parcelle?.superficie}} </td>
+              </ng-container>
+              <ng-container matColumnDef="localite">
+                <th mat-header-cell *matHeaderCellDef>
+                  Localité
+                </th>
+                <td mat-cell
+                    *matCellDef="let parcelle"> {{parcelle.localite?.nom}} </td>
+              </ng-container>
+              <ng-container matColumnDef="arrondissement">
+                <th mat-header-cell *matHeaderCellDef>
+                  Arrondissement
+                </th>
+                <td mat-cell
+                    *matCellDef="let parcelle"> {{parcelle.arrondissement?.nom}} </td>
+              </ng-container>
+              <ng-container matColumnDef="quartier">
+                <th mat-header-cell *matHeaderCellDef>
+                  Quartier
+                </th>
+                <td mat-cell
+                    *matCellDef="let parcelle"> {{parcelle.quartier?.nom}} </td>
+              </ng-container>
+
+
+              <tr mat-header-row
+                  *matHeaderRowDef="columnsToDisplay2"></tr>
+              <tr mat-row
+                  *matRowDef="let myRowData; columns: columnsToDisplay2"></tr>
+            </table>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row
+          *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row
+          *matRowDef="let element; columns: columnsToDisplay;"
+          class="nested-table-element-row"
+          [class.nested-table-expanded-row]="expandedElement === element"
+          (click)="expandedElement = expandedElement === element ? null : element">
+      </tr>
+      <tr mat-row
+          *matRowDef="let row; columns: ['expandedDetail']"
+          class="nested-table-detail-row"></tr>
+    </table>
+    <mat-paginator [length]="totalElements"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="[5, 10, 25,100]"
+                   (page)="onPageChange($event)"
+                   [fxFlex.xs]="100"
+                   [fxFlex.sm]="100" [fxFlex.md]="90"
+                   [fxFlex.lg]="80" [fxFlex.xl]="70"
+                   showFirstLastButtons>
+    </mat-paginator>
+  </div>
+
+</form>
+

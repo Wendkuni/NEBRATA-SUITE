@@ -1,0 +1,56 @@
+<form [formGroup]="formulaire" class="form-observation">
+
+
+    <div fxLayout="row" fxLayout.lt-sm="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+            <mat-label>Télephone </mat-label>
+            <input matInput placeholder="Telephone" [attr.autocomplete]="'off'" formControlName="telephone">
+
+            <mat-error *ngIf="telephone.invalid && (telephone.dirty || telephone.touched) && telephone.errors?.pattern">
+                Exemple (00226) XX XX XX XX ou (00226)XXXXXXXX ou 00226XXXXXXXX ou +226XXXXXXXX
+            </mat-error>
+
+            <mat-hint class="lds-ellipsis" *ngIf="telephone.status === 'PENDING'">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </mat-hint>
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+            <mat-label>Email(*)</mat-label>
+
+            <input matInput placeholder="Email" [attr.autocomplete]="'off'" formControlName="email">
+            <mat-error *ngIf="email.invalid && (email.dirty || email.touched) && email.errors?.required">
+                La valeur de l'email est obligatoire
+            </mat-error>
+            <mat-error *ngIf="email.invalid && (email.dirty || email.touched) && email.errors?.required">
+                L'email est invalide
+            </mat-error>
+
+            <mat-hint class="lds-ellipsis" *ngIf="email.status === 'PENDING'">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </mat-hint>
+
+        </mat-form-field>
+    </div>
+
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="90" [fxFlex.xl]="70">
+
+
+            <div fxLayout="row" fxLayoutAlign="start">
+                <app-observation-form [formGroup]="formulaire"></app-observation-form>
+            </div>
+        </div>
+    </div>
+
+    <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+        <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+    </div>
+</form>

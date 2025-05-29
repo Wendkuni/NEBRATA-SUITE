@@ -1,0 +1,36 @@
+<div class="container-otp" fxLayout="row wrap">
+
+
+    <div fxFlex="100" class="flex-p">
+        <mat-card>
+            <mat-card-header fxLayoutAlign="center center">
+                <mat-card-title>Valider la double authentification</mat-card-title>
+
+
+            </mat-card-header>
+            <mat-card-content>
+
+                <div fxLayout="row" fxLayoutAlign="space-around">
+                    <form [formGroup]="form" class="w-50" (ngSubmit)="onSubmit(form.value)">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <input matInput [textMask]="{mask: codemask}" class="text-code" placeholder="Code TOTP" [attr.autocomplete]="'off'" formControlName="code">
+                            <mat-error class="w-100 text-code" *ngIf="f.code.errors?.required">Le code OTP est obligatoire</mat-error>
+                            <mat-error class="w-100 text-code" *ngIf="f.code.errors?.codeTotpFormat">Il faut un code à 6 chiffres</mat-error>
+
+                            <mat-icon matSuffix>smartphone</mat-icon>
+                            <mat-hint class="w-100 text-code">Code à 6 chiffres</mat-hint>
+
+                        </mat-form-field>
+                        <button mat-raised-button [disabled]="!form.valid" color="primary" class="mat-elevation-z15 box-button w-100" type="submit">Valider la configuration
+                        </button>
+
+                        <button mat-raised-button (click)="logout()" color="warn" class="mat-elevation-z15 box-button w-100 decallage-bouton">Annuler
+                        </button>
+                    </form>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+</div>

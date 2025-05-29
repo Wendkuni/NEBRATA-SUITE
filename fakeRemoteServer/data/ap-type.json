@@ -1,0 +1,28 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "code": "AP01",
+      "libelle": "Jardin"
+
+    },
+    {
+      "id": 2,
+      "code": "AP02",
+      "libelle": "Piscine"
+    },
+    {
+      "id": 3,
+      "code": "AP03",
+      "libelle": "Parking"
+    }
+  ]
+}

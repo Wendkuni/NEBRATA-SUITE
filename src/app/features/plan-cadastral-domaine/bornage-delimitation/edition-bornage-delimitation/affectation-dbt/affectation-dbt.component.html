@@ -1,0 +1,43 @@
+<form [formGroup]="formulaire">
+
+    <mat-horizontal-stepper linear #stepper>
+
+        <mat-step [editable]="true">
+
+            <ng-template matStepLabel>Informations quelconque</ng-template>
+
+
+            <div *ngIf="!acteurExterneChoisie" fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="45" [fxFlex.xl]="30">
+                    <app-field-remote-autocomplete [dataForm]="acteurRemoteAutocomplete" (subjectCompleteEvent)="receiveSubjectActeur($event)"></app-field-remote-autocomplete>
+                </div>
+            </div>
+
+            <div *ngIf="acteurExterneChoisie" fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+                    <mat-card-header>
+                        <mat-card-title>
+                            Détail acteur externe
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <app-card-general-contribuable-form [contribuable]="acteurExterneChoisie"></app-card-general-contribuable-form>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+            <div class="card-action-form">
+                <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+                </div>
+            </div>
+
+        </mat-step>
+
+
+
+    </mat-horizontal-stepper>
+
+</form>

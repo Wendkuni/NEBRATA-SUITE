@@ -1,0 +1,37 @@
+.role-form {
+  .ng-select {
+      width: 90%;
+  }
+}
+
+.sycad-attributaire-modal-form-edition {
+  height: 60vh;
+  max-height: 60vh;
+}
+
+.modifier-text {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+}
+
+.mat-grid-list {
+  overflow: hidden;
+}
+
+.sycad-field-radio-button-horizontal {
+  margin-left: 5px;
+}
+
+.sycad-form-line-margin-bottom {
+  margin-bottom: 1em;
+}
+
+hr {
+color: silver;
+width: 80%;
+margin: 0 auto;
+margin-top: 5%;
+margin-bottom: 5%;
+}

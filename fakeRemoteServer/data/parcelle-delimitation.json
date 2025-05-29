@@ -1,0 +1,57 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "point": "IM01",
+      "lattitude": "1253.965",
+      "longitude": "205239.25",
+      "gissement": "test ",
+      "distance": "1000m2",
+      "sens": "pante coupée",
+      "limitation": "guache droite",
+      "parcelle": "PAR-025585"
+    },
+    {
+      "id": 2,
+      "point": "IM01",
+      "lattitude": "1253.965",
+      "longitude": "205239.25",
+      "gissement": "test ",
+      "distance": "1000m2",
+      "sens": "pante coupée",
+      "limitation": "guache droite",
+      "parcelle": "PAR-025585"
+    },
+    {
+      "id": 3,
+      "point": "IM01",
+      "lattitude": "1253.965",
+      "longitude": "205239.25",
+      "gissement": "test ",
+      "distance": "1000m2",
+      "sens": "pante coupée",
+      "limitation": "guache droite",
+      "parcelle": "PAR-025585"
+    },
+    {
+      "id": 4,
+      "point": "IM01",
+      "lattitude": "1253.965",
+      "longitude": "205239.25",
+      "gissement": "test ",
+      "distance": "1000m2",
+      "sens": "pante coupée",
+      "limitation": "guache droite",
+      "parcelle": "PAR-025585"
+    }
+
+  ]
+}

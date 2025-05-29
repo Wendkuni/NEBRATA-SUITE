@@ -1,0 +1,86 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <form [formGroup]="formulaire" class="exonerationCategorie-form" (ngSubmit)="onSubmit()">
+        <mat-card-header>
+            <mat-card-subtitle>
+                <h3>
+                    <span *ngIf="!exonerationCategorie.id">Créer une nouvelle Catégorie d'exoneration</span>
+                    <span *ngIf="exonerationCategorie.id">Modifier: {{exonerationCategorie.code}}</span>
+                </h3>
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="50" [fxFlex.xl]="20">
+                    <ng-select [items]="processusRemoteAutocomplete.listRessource$ | async" [typeahead]="processusRemoteAutocomplete.term" [loading]="processusRemoteAutocomplete.loading" (search)="onSearchProcessus($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle" bindValue="code" placeholder="Processus"
+                        formControlName="codeProcessus">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <mat-label>Code(*)</mat-label>
+                    <input matInput placeholder="Code(*)" [attr.autocomplete]="'off'" formControlName="code" />
+                    <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && code.errors?.required">
+                        Le code est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && ( code.errors?.minlength || code.errors?.maxlength)">
+                        La taille du code est limité entre 2 et 150 caractères
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <mat-label>Motif</mat-label>
+                    <textarea matInput placeholder="Motif" [attr.autocomplete]="'off'" formControlName="motif"></textarea>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <mat-label>Taux</mat-label>
+                    <input matInput placeholder="Taux" [attr.autocomplete]="'off'" formControlName="taux" type="number" />
+                </mat-form-field>
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+                    <mat-label>Montant</mat-label>
+                    <input matInput placeholder="Montant" [attr.autocomplete]="'off'" formControlName="montant" type="number" />
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="50" [fxFlex.xl]="20">
+                    <mat-label>Référence loi</mat-label>
+                    <textarea matInput placeholder="Référence loi" [attr.autocomplete]="'off'" formControlName="refLoi"></textarea>
+                </mat-form-field>
+                <mat-slide-toggle formControlName="actif">Actif</mat-slide-toggle>
+            </div>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                <mat-radio-group formControlName="etatMev" class="sycad-form-line container-form-field-radio " [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="20">
+                    <label id="contribuable-etatMev">Choisir l'état </label>
+                    <mat-radio-button value="NU" labelPosition="after" class="sycad-field-radio-button-horizontal">Nu</mat-radio-button>
+                    <mat-radio-button value="BATI" labelPosition="after" class="sycad-field-radio-button-horizontal">Bati</mat-radio-button>
+
+                    <mat-error *ngIf="etatMev.invalid && (etatMev.dirty || etatMev.touched) && etatMev.errors?.required">
+                        L'état de mise en oeuvre est obligatoire
+                    </mat-error>
+                </mat-radio-group>
+            </div>
+            <mat-card-actions [ngClass]="{'card-action-form': (activeMediaQuery === 'lg' || activeMediaQuery === 'xl' ), 'card-action-form-small': (activeMediaQuery === 'sm') }">
+                <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                    <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+            <span *ngIf="!exonerationCategorie.id">Enregistrer</span><span *ngIf="exonerationCategorie.id">Mettre à
+                        jour</span>
+          </button>
+                </div>
+            </mat-card-actions>
+        </mat-card-content>
+    </form>
+</mat-card>

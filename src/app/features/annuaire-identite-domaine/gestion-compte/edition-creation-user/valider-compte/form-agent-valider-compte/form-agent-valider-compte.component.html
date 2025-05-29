@@ -1,0 +1,252 @@
+<form class="user-form">
+  <mat-card>
+    <mat-card-content>
+            <mat-tab-group>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon>face</mat-icon>
+                  Identification
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+
+                  <div fxLayout="row" fxLayout.lt-sm="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                    <div class="content-container" [fxFlex]="100">
+                      <span  [fxFlex]="100"> Les informations sont en lecture seule</span>
+                    </div>
+                  </div>
+
+                  <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Type de compte (*)</mat-label>
+                      <input matInput placeholder="Type compte" [attr.autocomplete]="'off'" value="{{compteContribuable?.typeCompte}}" [readonly]="true" />
+
+                    </mat-form-field>
+
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Nom (*)</mat-label>
+                      <input matInput placeholder="Nom" [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.nom}}" [readonly]="true" />
+                    </mat-form-field>
+
+
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                      <mat-label>Nom Jeune fille</mat-label>
+                      <input matInput placeholder="Nom jeune fille" [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.nomDeJeuneFille}}" [readonly]="true" />
+                    </mat-form-field>
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="40" [fxFlex.xl]="30">
+                      <mat-label>Prénom(s) (*)</mat-label>
+                      <input matInput placeholder="Prénom(s)" [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.prenoms}}" [readonly]="true" />
+                    </mat-form-field>
+
+                  </div>
+
+                  <div fxLayout="row" fxLayout.lt-sm="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Date de naissance (*)</mat-label>
+                      <input matInput  value="{{compteContribuable?.informationsContribuable?.dateNaissance | date: 'dd/MM/yyyy'}}" [readonly]="true">
+
+                    </mat-form-field>
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Lieu de naissance</mat-label>
+                      <input matInput placeholder="lieuNaissance" [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.lieuNaissance}}" [readonly]="true"  />
+                    </mat-form-field>
+                  </div>
+
+                  <div fxLayout="row" fxLayout.lt-sm="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Télephone (*)</mat-label>
+                      <input matInput placeholder="Telephone" [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.telephone}}" [readonly]="true" >
+                    </mat-form-field>
+
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Email(*)</mat-label>
+
+                      <input matInput placeholder="Email" [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.email}}" [readonly]="true" >
+
+
+                    </mat-form-field>
+
+
+                  </div>
+
+                  <div fxLayout="row" fxLayout.lt-sm="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Genre </mat-label>
+                      <input matInput  [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.genre}}" [readonly]="true">
+                    </mat-form-field>
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Numéro IFU</mat-label>
+
+                      <input matInput  [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.numeroIfu}}" [readonly]="true">
+
+                    </mat-form-field>
+                  </div>
+
+                  <div fxLayout="row" fxLayout.lt-sm="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Civilité</mat-label>
+                      <input matInput  [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.civilite?.libelle}}" [readonly]="true"  />
+                    </mat-form-field>
+
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Situation matrimoniale</mat-label>
+                      <input matInput  [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.situationMatrimoniale?.libelle}}" [readonly]="true"  />
+                    </mat-form-field>
+
+                  </div>
+
+                  <div fxLayout="row" fxLayout.lt-sm="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Nationalité</mat-label>
+                      <input matInput  [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.nationalite?.libelle}}" [readonly]="true"  />
+                    </mat-form-field>
+
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>profession</mat-label>
+                      <input matInput  [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.profession?.nom}}"  [readonly]="true" />
+                    </mat-form-field>
+
+                  </div>
+
+                  <div fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start" fxLayoutGap.gt-xs="20px">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Catégorie Piece d'identite</mat-label>
+                      <input matInput placeholder="Catégorie" value="{{compteContribuable.informationsContribuable?.pieceOfficielle?.categorie?.libelle}}" [readonly]="true">
+                    </mat-form-field>
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>N° pièce</mat-label>
+                      <input matInput placeholder="Numéro pièce" value="{{compteContribuable.informationsContribuable?.pieceOfficielle?.numero}}" [readonly]="true">
+                    </mat-form-field>
+
+                  </div>
+
+                  <div fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start" fxLayoutGap.gt-xs="20px">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>NIP</mat-label>
+                      <input matInput placeholder="NIP" value="{{compteContribuable.informationsContribuable?.pieceOfficielle?.nip}}" [readonly]="true">
+                    </mat-form-field>
+
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Autorité</mat-label>
+                      <input matInput placeholder="Autorité de délivrance" value="{{compteContribuable.informationsContribuable?.pieceOfficielle?.autoriteDeDelivrance}}" [readonly]="true">
+                    </mat-form-field>
+
+                  </div>
+
+                  <div fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start" fxLayoutGap.gt-xs="20px">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Lieu de délivrance</mat-label>
+                      <input matInput placeholder="Lieu de délivrance" value="{{compteContribuable.informationsContribuable?.pieceOfficielle?.lieuDeDelivrance}}" [readonly]="true">
+                    </mat-form-field>
+
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Date de delivrance</mat-label>
+                      <input matInput placeholder="Date délivrance" value="{{compteContribuable.informationsContribuable?.pieceOfficielle?.dateObtention | date: 'dd/MM/yyyy'}}" [readonly]="true">
+                    </mat-form-field>
+
+                  </div>
+
+                  <div fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start" fxLayoutGap.gt-xs="20px">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Date d'expiration</mat-label>
+                      <input matInput placeholder="Date d'expiration" value="{{compteContribuable.informationsContribuable?.pieceOfficielle?.dateExpiration | date: 'dd/MM/yyyy'}}" [readonly]="true">
+                    </mat-form-field>
+                    <div class="content-container" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <span *ngIf="compteContribuable.informationsContribuable?.pieceOfficielle?.documentPiece" [fxFlex]="100"> <a href="{{compteContribuable.informationsContribuable?.pieceOfficielle?.documentPiece | generalDownload}}">Télécharger la pièce jointe</a></span>
+                    </div>
+
+                  </div>
+
+
+                  </div>
+              </mat-tab>
+
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon>work</mat-icon>
+                  Informations professionnelles
+                </ng-template>
+                <div fxLayout="column" class="flex-p">
+
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="30" [fxFlex.xl]="30">
+                      <mat-label>Matricule (*)</mat-label>
+                      <input matInput placeholder="Matricule" [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.matricule}}" [readonly]="true" />
+
+                    </mat-form-field>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="40" [fxFlex.xl]="40">
+                      <mat-label>Fonction</mat-label>
+                      <input matInput placeholder="Fonction" [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.fonction}}" [readonly]="true" />
+                    </mat-form-field>
+                  </div>
+
+                  <div fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start" fxLayoutGap.gt-xs="20px">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="40" [fxFlex.xl]="40">
+                      <mat-label>Structure</mat-label>
+                      <input matInput value="{{compteContribuable.informationsContribuable?.affectation?.structure?.nom}}" [readonly]="true">
+                    </mat-form-field>
+                  </div>
+
+                  <div fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start" fxLayoutGap.gt-xs="20px">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="40" [fxFlex.xl]="40">
+                      <mat-label>Service</mat-label>
+                      <input matInput value="{{compteContribuable.informationsContribuable?.affectation?.service?.nom}}" [readonly]="true">
+                    </mat-form-field>
+                  </div>
+
+                  <div fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start" fxLayoutGap.gt-xs="20px">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="40" [fxFlex.xl]="40">
+                      <mat-label>Service</mat-label>
+                      <input matInput value="{{compteContribuable.informationsContribuable?.affectation?.bureau?.nom}}" [readonly]="true">
+                    </mat-form-field>
+                  </div>
+
+
+                </div>
+
+              </mat-tab>
+
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon>face</mat-icon>
+                  Filiation
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+                  <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="40" [fxFlex.xl]="30">
+                      <mat-label>Prénom(s) du père</mat-label>
+                      <input matInput placeholder="Prénom(s) du père" [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.prenomsPere}}" [readonly]="true" />
+                    </mat-form-field>
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Nom du père</mat-label>
+                      <input matInput placeholder="Nom du père" [attr.autocomplete]="'off'"value="{{compteContribuable?.informationsContribuable?.nomPere}}" [readonly]="true" />
+                    </mat-form-field>
+
+                  </div>
+                  <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="40" [fxFlex.xl]="30">
+                      <mat-label>Prénom(s) de la mère</mat-label>
+                      <input matInput placeholder="Prénom(s) de la mère" [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.prenomsMere}}" [readonly]="true" />
+                    </mat-form-field>
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                      <mat-label>Nom de la mère</mat-label>
+                      <input matInput placeholder="Nom de la mère" [attr.autocomplete]="'off'" value="{{compteContribuable?.informationsContribuable?.nomMere}}" [readonly]="true" />
+                    </mat-form-field>
+
+                  </div>
+
+                </div>
+              </mat-tab>
+
+            </mat-tab-group>
+          </mat-card-content>
+  </mat-card>
+</form>
+
+

@@ -1,0 +1,70 @@
+.list-profil-infos .mat-list-avatar {
+  width: 24px;
+  height: 24px;
+  box-sizing: content-box;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.list-profil-infos {
+  mat-expansion-panel-header{
+    height: 40px;
+    border-bottom: 2px solid #f0f0f0;
+    color: rgba(0, 0, 0, 0.87);
+    text-align: center;
+  }
+
+
+ 
+
+ mat-card-content{
+   height: 280px;
+   overflow: auto;
+   padding: 15px!important;
+ }
+
+
+}
+
+mat-card-actions, .mat-card-subtitle, .mat-card-content {
+  display: block;
+  margin-bottom: 2px!important;
+}
+
+::ng-deep .mat-expansion-panel-body {
+  padding: 0px 0px 0px!important;
+}
+span{
+  white-space: normal;
+}
+
+::ng-deep .mat-line h3,span {
+  font-size: 11px !important;
+}
+
+
+::ng-deep .sycad-menu-panel{
+  width: 240px;
+  max-width: 240px;;
+  height: 300px;
+  margin-right:130px
+}
+::ng-deep .mat-menu-content:not(:empty) {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+::ng-deep mat-list{
+  display: inline;
+  width: 100%;
+}
+
+::ng-deep .container-card-piece mat-card-content{
+  margin-top: -15px;
+}
+::ng-deep .sycad-menu-panel a {
+  font-weight:600;
+  letter-spacing: 0.5px;
+}
+::ng-deep .sycad-menu-panel a:visited {
+  font-weight:600;
+}

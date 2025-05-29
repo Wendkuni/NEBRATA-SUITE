@@ -1,0 +1,14 @@
+<button class="close" mat-button (click)="closeAvatarEditor()"><mat-icon >close</mat-icon></button>
+
+<h1 mat-dialog-title class="text-center">Redimensionner mon avatar</h1>
+
+<div class="sycad-resize-avatar">
+    <div mat-dialog-content>
+        <image-cropper #imageCroppedElement [imageFile]="imageFile" [autoCrop]="true" [cropperMinWidth]="200" [resizeToWidth]="200" [autoCrop]="false" format="png" [aspectRatio]="4 / 4" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (loadImageFailed)="loadImageFailed()">
+        </image-cropper>
+    </div>
+
+    <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end end">
+        <button mat-raised-button color="primary" (click)="cropeImage();">Enregistrer</button>
+    </div>
+</div>

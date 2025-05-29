@@ -1,0 +1,364 @@
+
+<div fxLayout="row" fxLayout.lt-lg="row wrap"
+     fxLayout.lt-md="column" fxLayoutAlign="start stretch"
+     fxLayoutGap="10px">
+  <div [fxFlex.lt-md]="100" [fxFlex]="100"
+       [fxFlex.xs]="100" [fxFlex.sm]="100"
+       [fxFlex.md]="100" [fxFlex.lg]="30"
+       [fxFlex.xl]="30"
+       [@expandCollapse]="afficherPremiereColonne ? 'expanded' : 'collapsed'">
+    <div *ngIf="parcelleChoisie && parcelleChoisie.id"
+         fxLayout="row" fxLayout.lt-lg="row wrap"
+         fxLayoutGap="10px" fxLayoutAlign="start">
+      <mat-form-field appearance="outline"
+                      [fxFlex.lt-md]="100" [fxFlex]="100"
+                      [fxFlex.xs]="100" [fxFlex.sm]="100"
+                      [fxFlex.md]="55" [fxFlex.lg]="55"
+                      [fxFlex.xl]="55">
+        <mat-label>Région</mat-label>
+        <input matInput
+               value="{{parcelleChoisie.arrondissement?.commune?.province?.region?.nom}}"
+               [readonly]="true">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline"
+                      [fxFlex.lt-md]="100" [fxFlex]="100"
+                      [fxFlex.xs]="100" [fxFlex.sm]="100"
+                      [fxFlex.md]="45" [fxFlex.lg]="45"
+                      [fxFlex.xl]="45">
+        <mat-label>Province</mat-label>
+        <input matInput
+               value="{{parcelleChoisie.arrondissement?.commune?.province?.nom}}"
+               [readonly]="true">
+      </mat-form-field>
+
+    </div>
+    <div *ngIf="parcelleChoisie && parcelleChoisie.id"
+         fxLayout="row" fxLayout.lt-lg="row wrap"
+         fxLayoutGap="10px" fxLayoutAlign="start">
+      <mat-form-field appearance="outline"
+                      [fxFlex.lt-md]="100" [fxFlex]="100"
+                      [fxFlex.xs]="100" [fxFlex.sm]="60"
+                      [fxFlex.md]="55" [fxFlex.lg]="55"
+                      [fxFlex.xl]="55">
+        <mat-label>Arrondissement</mat-label>
+        <input matInput
+               value="{{parcelleChoisie.arrondissement?.nom}}"
+               [readonly]="true">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline"
+                      [fxFlex.lt-md]="100" [fxFlex]="100"
+                      [fxFlex.xs]="100" [fxFlex.sm]="60"
+                      [fxFlex.md]="45" [fxFlex.lg]="45"
+                      [fxFlex.xl]="45">
+        <mat-label>Localité</mat-label>
+        <input matInput
+               value="{{parcelleChoisie.localite?.nom}}"
+               [readonly]="true">
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayout.lt-lg="row wrap"
+         fxLayoutAlign="start" fxLayoutGap="10px">
+
+      <div class="sycad-form-ng-select" [fxFlex.lt-md]="100"
+           [fxFlex]="100" [fxFlex.xs]="100" [fxFlex.sm]="100"
+           [fxFlex.md]="55" [fxFlex.lg]="55"
+           [fxFlex.xl]="55">
+        <ng-select
+          [items]="communeRemoteAutocomplete.listRessource$ | async"
+          [typeahead]="communeRemoteAutocomplete.term"
+          [loading]="communeRemoteAutocomplete.loading"
+          (search)="onSearchCommune($event)"
+          (change)="onChangeCommune($event)" appendTo="body"
+          [selectOnTab]="true"
+          bindLabel="nom" bindValue="id"
+          labelForId="commune" [(ngModel)]="communeId"
+          [ngModelOptions]="{standalone: true}"
+          placeholder="Commune">
+          <ng-template ng-loadingspinner-tmp>
+            <div class="lds-ellipsis">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="sycad-form-ng-select" [fxFlex.lt-md]="100"
+           [fxFlex]="100" [fxFlex.xs]="100"
+           [fxFlex.sm]="100"
+           [fxFlex.md]="55" [fxFlex.lg]="55"
+           [fxFlex.xl]="55">
+        <ng-select
+          [items]="arrondissementRemoteAutocomplete.listRessource$ | async"
+          [typeahead]="arrondissementRemoteAutocomplete.term"
+          [loading]="arrondissementRemoteAutocomplete.loading"
+          (search)="onSearchArrondissement($event)"
+          (change)="onChangeArrondissement($event)"
+          appendTo="body" [selectOnTab]="true"
+          bindLabel="nom" bindValue="id"
+          [(ngModel)]="idArrondissementChoisie"
+          [ngModelOptions]="{standalone: true}"
+          placeholder="Arrondissement">
+          <ng-template ng-loadingspinner-tmp>
+            <div class="lds-ellipsis">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+    </div>
+
+    <div fxLayout="row" fxLayout.lt-lg="row wrap"
+          fxLayoutAlign="start" fxLayoutGap="10px">
+      <div class="sycad-form-ng-select" [fxFlex.lt-md]="100"
+           [fxFlex]="100" [fxFlex.xs]="100" [fxFlex.sm]="100"
+           [fxFlex.md]="45" [fxFlex.lg]="45"
+           [fxFlex.xl]="45">
+        <ng-select
+          [items]="sectionRemoteAutocomplete.listRessource$ | async"
+          [typeahead]="sectionRemoteAutocomplete.term"
+          [virtualScroll]="true"
+          [loading]="sectionRemoteAutocomplete.loading"
+          (search)="onSearchSection($event)"
+          (change)="onChangeSection($event)"
+          appendTo="body" [selectOnTab]="true"
+          bindLabel="libelle" bindValue="id"
+          [(ngModel)]="sectionChoisieId"
+          [ngModelOptions]="{standalone: true}"
+          labelForId="section" placeholder="Section">
+          <ng-template ng-loadingspinner-tmp>
+            <div class="lds-ellipsis">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </ng-template>
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item.numero">{{item.numero}}</span>
+            <span
+              *ngIf="item.numeroAncien"> ({{item.numeroAncien}}
+              )</span>
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item"
+                       let-index="index"
+                       let-search="searchTerm">
+            <span *ngIf="item.numero"
+                  [ngOptionHighlight]="search">{{item.numero}}</span>
+            <span *ngIf="item.numeroAncien"
+                  [ngOptionHighlight]="search"> ({{item.numeroAncien}}
+              )</span>
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="sycad-form-ng-select" [fxFlex.lt-md]="100"
+           [fxFlex]="100" [fxFlex.xs]="100" [fxFlex.sm]="100"
+           [fxFlex.md]="55" [fxFlex.lg]="55"
+           [fxFlex.xl]="55">
+        <ng-select
+          [items]="ilotRemoteAutocomplete.listRessource$ | async"
+          [typeahead]="ilotRemoteAutocomplete.term"
+          [(ngModel)]="ilotChoisieId"
+          (change)="onChangeIlot($event)"
+          [ngModelOptions]="{standalone: true}"
+          [loading]="ilotRemoteAutocomplete.loading"
+          (search)="onSearchIlot($event)"
+          appendTo="body" [selectOnTab]="true"
+          bindLabel="nom" bindValue="id" labelForId="ilot"
+          placeholder="Ilot">
+          <ng-template ng-loadingspinner-tmp>
+            <div class="lds-ellipsis">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </ng-template>
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item.numero">{{item.numero}}</span>
+            <span
+              *ngIf="item.numeroAncien"> ({{item.numeroAncien}}
+              )</span>
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item"
+                       let-index="index"
+                       let-search="searchTerm">
+                  <span *ngIf="item.numero"
+                        [ngOptionHighlight]="search">{{item.numero}}</span>
+            <span *ngIf="item.numeroAncien"
+                  [ngOptionHighlight]="search"> ({{item.numeroAncien}}
+              )</span>
+          </ng-template>
+        </ng-select>
+
+      </div>
+
+    </div>
+
+    <div fxLayout="row" fxLayout.lt-lg="row wrap"
+         fxLayoutAlign="start" fxLayoutGap="10px">
+      <div class="sycad-form-line sycad-form-ng-select"
+           [fxFlex.lt-md]="100" [fxFlex]="100"
+           [fxFlex.xs]="100" [fxFlex.sm]="100"
+           [fxFlex.md]="45" [fxFlex.lg]="45"
+           [fxFlex.xl]="45">
+        <ng-select
+          [items]="parcelleRemoteAutocomplte.listRessource$ | async"
+          [typeahead]="parcelleRemoteAutocomplte.term"
+          (change)="onChangeParcelle($event)"
+          [loading]="parcelleRemoteAutocomplte.loading"
+          (search)="onSearchParcelle($event)"
+          appendTo="body" [selectOnTab]="true"
+          bindLabel="numero" bindValue="id"
+          labelForId="parcelle"
+          [(ngModel)]="parcelleChoisieId"
+          placeholder="Parcelle">
+          <ng-template ng-loadingspinner-tmp>
+            <div class="lds-ellipsis">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </ng-template>
+          <ng-template ng-label-tmp let-item="item">
+            <span *ngIf="item.numero">{{item.numero}}</span>
+            <span
+              *ngIf="item.numeroAncien"> ({{item.numeroAncien}}
+              )</span>
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item"
+                       let-index="index"
+                       let-search="searchTerm">
+                  <span *ngIf="item.numero"
+                        [ngOptionHighlight]="search">{{item.numero}}</span>
+            <span *ngIf="item.numeroAncien"
+                  [ngOptionHighlight]="search"> ({{item.numeroAncien}}
+              )</span>
+          </ng-template>
+        </ng-select>
+      </div>
+    </div>
+
+    <div *ngIf="parcelleChoisie && parcelleChoisie.id"
+         fxLayout="row" fxLayout.lt-lg="row wrap"
+         fxLayoutGap="10px" fxLayoutAlign="start">
+      <mat-form-field appearance="outline" [fxFlex]="100"
+                      [fxFlex.xs]="100" [fxFlex.sm]="100"
+                      [fxFlex.md]="55" [fxFlex.lg]="55"
+                      [fxFlex.xl]="55">
+        <mat-label>ICAD</mat-label>
+        <input matInput value="{{parcelleChoisie?.icad}}"
+               [readonly]="true">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" [fxFlex]="100"
+                      [fxFlex.xs]="100" [fxFlex.sm]="100"
+                      [fxFlex.md]="45" [fxFlex.lg]="45"
+                      [fxFlex.xl]="45">
+        <mat-label>Superficie</mat-label>
+        <input matInput
+               value="{{parcelleChoisie?.superficie}} m² environ"
+               [readonly]="true">
+      </mat-form-field>
+    </div>
+    <div *ngIf="parcelleChoisie && parcelleChoisie.id"
+         fxLayout="row" fxLayout.lt-lg="row wrap"
+         fxLayoutGap="10px" fxLayoutAlign="start">
+      <mat-form-field appearance="outline" [fxFlex]="100"
+                      [fxFlex.xs]="100" [fxFlex.sm]="100"
+                      [fxFlex.md]="55" [fxFlex.lg]="55"
+                      [fxFlex.xl]="55">
+        <mat-label>Destination</mat-label>
+        <input matInput
+               value="{{parcelleChoisie?.destination?.libelle}}"
+               [readonly]="true">
+      </mat-form-field>
+      <mat-form-field appearance="outline" [fxFlex]="100"
+                      [fxFlex.xs]="100" [fxFlex.sm]="100"
+                      [fxFlex.md]="45" [fxFlex.lg]="45"
+                      [fxFlex.xl]="45">
+        <mat-label>Libellé de la parcelle</mat-label>
+        <input matInput value="{{parcelleChoisie?.libelle}}"
+               [readonly]="true">
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="parcelleChoisie && parcelleChoisie.id"
+         fxLayout="row" fxLayout.lt-lg="row wrap"
+         fxLayoutGap="10px" fxLayoutAlign="start">
+      <mat-form-field appearance="outline" [fxFlex]="100"
+                      [fxFlex.xs]="100" [fxFlex.sm]="100"
+                      [fxFlex.md]="55" [fxFlex.lg]="55"
+                      [fxFlex.xl]="55">
+        <mat-label>Etat attribution</mat-label>
+        <input matInput
+               value="{{parcelleChoisie?.etatAttribution}}"
+               [readonly]="true">
+      </mat-form-field>
+      <mat-form-field appearance="outline" [fxFlex]="100"
+                      [fxFlex.xs]="100" [fxFlex.sm]="100"
+                      [fxFlex.md]="45" [fxFlex.lg]="45"
+                      [fxFlex.xl]="45">
+        <mat-label>Etat mise en valeur</mat-label>
+        <input matInput value="{{parcelleChoisie?.etatMev}}"
+               [readonly]="true">
+      </mat-form-field>
+    </div>
+    <div *ngIf="parcelleChoisie && parcelleChoisie.id"
+         fxLayout="row" fxLayout.lt-lg="row wrap"
+         fxLayoutGap="10px" fxLayoutAlign="start">
+      <mat-form-field appearance="outline" [fxFlex]="100"
+                      [fxFlex.xs]="100"
+                      [fxFlex.sm]="100"
+                      [fxFlex.md]="55"
+                      [fxFlex.lg]="55"
+                      [fxFlex.xl]="55">
+        <mat-label>Délais de mise en valeur</mat-label>
+        <input matInput
+               value="{{parcelleChoisie?.dateEtatMev | date:'dd/MM/yyyy'}}"
+               [readonly]="true">
+
+      </mat-form-field>
+    </div>
+
+  </div>
+  <div [fxFlex]="afficherPremiereColonne ? '100%' : '100%'" [fxFlex.xs]="afficherPremiereColonne ? '100%' : '100%'" [fxFlex.sm]="afficherPremiereColonne ? '100%' : '100%'"
+       [fxFlex.md]="afficherPremiereColonne ? '100%' : '100%'"
+       [fxFlex.lg]="afficherPremiereColonne ? '70%' : '100%'"
+       [fxFlex.xl]="afficherPremiereColonne ? '70%' : '100%'"
+       class="map-container">
+    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap="10px">
+      <mat-checkbox [(ngModel)]="showSatellite"
+                    class="custom-checkbox"
+                    (change)="toggleGoogleSatelliteLayer()">Activer google
+      </mat-checkbox>
+      <mat-checkbox [(ngModel)]="showBndt"
+                    class="custom-checkbox"
+                    (change)="updateLayers()">Activer la BNDT
+      </mat-checkbox>
+    </div>
+    <div>
+      <div id="map" #mapContainer></div>
+      <div *ngIf="loading" class="loading-spinner">
+        <mat-spinner [diameter]="50"></mat-spinner>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<div *ngIf="parcelleChoisie" fxLayout="row" fxLayout.lt-lg="row wrap"
+     fxLayout.lt-md="column" fxLayoutAlign="start stretch"
+     fxLayoutGap="10px">
+  <app-cycledevie-parcelle *ngIf="parcelleChoisie.icad" [icad]="parcelleChoisie?.icad"></app-cycledevie-parcelle>
+</div>
+
+

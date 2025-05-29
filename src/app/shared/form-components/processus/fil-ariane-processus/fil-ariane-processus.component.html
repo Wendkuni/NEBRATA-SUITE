@@ -1,0 +1,22 @@
+<div class="container-file-ariane">
+
+    <button mat-button color="primary" class="box-ariane bouton-chevron" (click)="previousEtape()">
+        <span class="material-icons">keyboard_arrow_left</span>
+    </button>
+
+    <div class="box-ariane container-file-ariane-content">
+        <div fxLayout="row nowrap" class="container-file-ariane-content-body ">
+            <div @listItemState *ngFor="let etape of listEtapesActive; let i=index" class="etape-processus" [ngClass]="{'current-etape-processus': (etape.current===true) }" [fxFlex.xs]="50" [fxFlex.sm]="33.33" [fxFlex.md]="25" [fxFlex.lg]="20" [fxFlex.xl]="20">
+                <span class="etape-processus__text"> {{etape.libelle}}</span>
+            </div>
+
+        </div>
+    </div>
+
+    <button mat-button color="primary" class="box-ariane bouton-chevron" (click)="nextEtape()">
+        <span class="material-icons">keyboard_arrow_right</span>
+    </button>
+
+
+
+</div>

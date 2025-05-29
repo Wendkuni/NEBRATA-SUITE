@@ -1,0 +1,53 @@
+<div fxLayout="row wrap" fxLayoutAlign="start center">
+  <app-recherche-ifu [typeContribuable]="'CONTRIBUABLEMORAL'" (trouveContribuable)="trouveContribuable($event)" (importContribuable)="importContribuable($event)" [updateContribuable]="contribuableUpdate" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="100"></app-recherche-ifu>
+</div>
+<!-- ++++ EDIT ++++ : Abandonnée, le formulaire est à supprimer -->
+<!--form [formGroup]="formulaire" class="role-form" (ngSubmit)="onSubmit()" *ngIf="foundContribuable == false && triedIfuSearch == true">
+    <div class="sycad-attributaire-modal-form-edition" mat-dialog-content perfectScrollbar>
+
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+                <mat-label>Dénommination(*) </mat-label>
+                <input matInput placeholder="Dénommination" [attr.autocomplete]="'off'" formControlName="denomination" />
+                <mat-error *ngIf="denomination.invalid && (denomination.dirty || denomination.touched) && denomination.errors?.required">
+                    La dénommination est obligatoire
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+                <mat-label>Sigle(*)</mat-label>
+                <input matInput placeholder="Sigle" [attr.autocomplete]="'off'" formControlName="sigle" />
+                <mat-error *ngIf="sigle.invalid && (sigle.dirty || sigle.touched) && sigle.errors?.required">
+                    La sigle est obligatoire
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <div class=" sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="90" [fxFlex.xl]="90">
+                <ng-select [items]="statusJuridiqueRemoteAutocomplete.listRessource$ | async" [typeahead]="statusJuridiqueRemoteAutocomplete.term" [attr.autocomplete]="'off'" [loading]="statusJuridiqueRemoteAutocomplete.loading" (search)="onSearchStatusJuridique($event)"
+                    appendTo="body" [selectOnTab]="true" bindLabel="libelle" bindValue="id" labelForId="statusJuridique" placeholder="Statut juridique (*)" formControlName="statusJuridique">
+                    <ng-template ng-loadingspinner-tmp>
+                        <div class="lds-ellipsis">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+        </div>
+
+
+        <app-piece-officielle-form [formGroup]="pieceOfficielle" [contribuableType]="'CONTRIBUABLEMORAL'" [touched]="pieceOfficielle.touched"></app-piece-officielle-form>
+
+
+    </div>
+    <div fxLayout="row" [fxLayoutGap]="'10px'" fxLayoutAlign="end">
+        <button mat-raised-button color="warn" (click)="closeFormModal()">Annuler</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+            Enregistrer
+      </button>
+    </div>
+</!--form-->

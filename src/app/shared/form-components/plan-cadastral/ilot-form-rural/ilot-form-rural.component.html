@@ -1,0 +1,120 @@
+<form [formGroup]="ilotForm" class="form-container">
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <div class="sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+            <ng-select [items]="sectionRemoteAutocomplete.listRessource$ | async" [typeahead]="sectionRemoteAutocomplete.term" [loading]="sectionRemoteAutocomplete.loading" (search)="onSearchSection($event)" appendTo="body" [selectOnTab]="true" bindLabel="numero"
+                bindValue="id" placeholder="Section" formControlName="section">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+            </ng-select>
+            <mat-error *ngIf="section.invalid && (section.dirty || section.touched) && section.errors?.required">
+                La catégorie est obligatoire
+            </mat-error>
+        </div>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+            <mat-label>Numéro ancien ilot</mat-label>
+            <input matInput [attr.autocomplete]="'off'" formControlName="numeroAncien">
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+            <mat-label>Numéro ilot </mat-label>
+            <input matInput [attr.autocomplete]="'off'" formControlName="numero">
+            <mat-error *ngIf="numero.invalid && (numero.dirty ||numero.touched) && numero.errors?.required">
+                Le numéro est obligatoire
+            </mat-error>
+
+        </mat-form-field>
+
+
+    </div>
+
+
+    <div fxLayout="row" fxLayoutAlign="start" style="margin-bottom: 10px;">
+        <button mat-raised-button type="button" (click)="addNewParcelle()">  Ajouter une parcelle </button>
+    </div>
+
+
+    <div fxLayout="row" fxLayoutAlign="start">
+
+        <div class="form-table-ilot-container mat-elevation-z8">
+
+            <table mat-table [dataSource]="dataSource">
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
+
+
+                <ng-container matColumnDef="numero" sticky>
+                    <th mat-header-cell *matHeaderCellDef> Numéro </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+                        <mat-form-field appearance="outline">
+                            <input matInput [attr.autocomplete]="'off'" formControlName="numero">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="numeroAncien">
+                    <th mat-header-cell *matHeaderCellDef> Numéro ancien </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+
+                        <mat-form-field appearance="outline">
+                            <input matInput [attr.autocomplete]="'off'" formControlName="numeroAncien">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+
+                <ng-container matColumnDef="libelle">
+                    <th mat-header-cell *matHeaderCellDef> libelle </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+                        <mat-form-field appearance="outline">
+                            <input matInput [attr.autocomplete]="'off'" formControlName="libelle">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+
+                <ng-container matColumnDef="superficie">
+                    <th mat-header-cell *matHeaderCellDef> Superficie </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+
+                        <mat-form-field appearance="outline">
+                            <input matInput type="number" [attr.autocomplete]="'off'" formControlName="superficie">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="localite">
+                    <th mat-header-cell *matHeaderCellDef> Localité </th>
+                    <td mat-cell *matCellDef="let element" [formGroup]="element">
+                        <div class="sycad-form-ng-select-in-table">
+                            <ng-select [items]="localiteRemoteAutocomplete.listRessource$ | async" [typeahead]="localiteRemoteAutocomplete.term" [loading]="localiteRemoteAutocomplete.loading" (search)="onSearchLocalite($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom"
+                                bindValue="id" placeholder="Localité (*)" formControlName="localite">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="action" stickyEnd>
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element;let i = index">
+                        <mat-icon class="sycad-element-clickable" (click)="supprimerParcelle(i)">delete_forever</mat-icon>
+                    </td>
+                </ng-container>
+
+            </table>
+        </div>
+    </div>
+</form>

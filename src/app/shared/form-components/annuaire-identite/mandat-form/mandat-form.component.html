@@ -1,0 +1,104 @@
+<form [formGroup]="mandatForm">
+
+    <div *ngIf="withMandat" fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <div class="sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="70">
+            <ng-select [items]="mandatRemoteAutocomplete.listRessource$ | async" [typeahead]="mandatRemoteAutocomplete.term" [loading]="mandatRemoteAutocomplete.loading" (change)="onChangeMandat($event)" (search)="onSearchMandat($event)" appendTo="body" [selectOnTab]="true"
+                bindLabel="objet" bindValue="id" placeholder="Mandat" [(ngModel)]="mandatId" [ngModelOptions]="{standalone: true}">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+
+            </ng-select>
+
+        </div>
+    </div>
+    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="70">
+            <mat-label>Objet (*)</mat-label>
+            <input matInput [attr.autocomplete]="'off'" formControlName="objet" />
+            <mat-error *ngIf="objet.invalid && (objet.dirty || objet.touched) && objet.errors?.required">
+                Le objet est obligatoire
+            </mat-error>
+            <mat-error *ngIf="objet.invalid && (objet.dirty || objet.touched) && ( objet.errors?.minlength || objet.errors?.maxlength)">
+                La taille du objet est limité entre 2 et 150 caractères
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="34" [fxFlex.xl]="70">
+            <mat-label>Date debut (*)</mat-label>
+            <input matInput [matDatepicker]="dateDebutPicker" placeholder="Date de début" formControlName="debut">
+            <mat-datepicker-toggle matSuffix [for]="dateDebutPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dateDebutPicker></mat-datepicker>
+            <mat-error *ngIf="debut.invalid && (debut.dirty || debut.touched) && debut.errors?.required">
+                La date début est obligatoire
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="34" [fxFlex.xl]="45">
+            <mat-label>Date fin</mat-label>
+            <input matInput [matDatepicker]="dateFinPicker" placeholder="Date de fin" formControlName="fin">
+            <mat-datepicker-toggle matSuffix [for]="dateFinPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dateFinPicker></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="70">
+            <mat-label>description </mat-label>
+            <input matInput [attr.autocomplete]="'off'" formControlName="description" />
+
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <!--  <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="45" [fxFlex.xl]="45"> -->
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="39" [fxFlex.xl]="70">
+            <mat-label>Référence </mat-label>
+            <input matInput [attr.autocomplete]="'off'" formControlName="reference" />
+
+            <mat-error *ngIf="reference.invalid && (reference.dirty || reference.touched) && reference.errors?.required">
+                Le reference est obligatoire
+            </mat-error>
+            <mat-error *ngIf="reference.invalid && (reference.dirty || reference.touched) && ( reference.errors?.minlength || reference.errors?.maxlength)">
+                La taille du reference est limité entre 2 et 150 caractères
+            </mat-error>
+        </mat-form-field>
+
+        <div class="sycad-form-line container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="20" [fxFlex.xl]="20">
+            <label id="etatMadat-active">Actif</label>
+            <mat-slide-toggle formControlName="actif" aria-labelledby="etatMadat-active"></mat-slide-toggle>
+
+        </div>
+    </div>
+
+    <div *ngIf="withMandataire || withMandant" fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <div *ngIf="withMandataire" class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="60" [fxFlex.lg]="50" [fxFlex.xl]="45">
+            <app-field-remote-autocomplete [dataForm]="mandataireRemoteAutocomplete" (formAddModal)="openFormAddModal($event, 'mandataire')" (subjectCompleteEvent)="receiveSubjectMandataire($event)">
+            </app-field-remote-autocomplete>
+        </div>
+
+
+        <div *ngIf="withMandant" class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="60" [fxFlex.lg]="50" [fxFlex.xl]="45">
+            <app-field-remote-autocomplete [dataForm]="mandantRemoteAutocomplete" (formAddModal)="openFormAddModal($event, 'mandant')" (subjectCompleteEvent)="receiveSubjectMandant($event)">
+            </app-field-remote-autocomplete>
+        </div>
+    </div>
+
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+        <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+            <button mat-icon-button color="warn" class="delete-icons-2" type="button">
+                <mat-icon (click)="resetDropZone()">clear</mat-icon>
+              </button>
+            <span *ngIf="documentPiece"> <a href="{{documentPiece | generalDownload}}">Télécharger la pièce jointe</a></span>
+            <dropzone class="dropzone-container" [config]="config" [message]="'Cliquez ou faites glisser la pièce ici jointe'" (init)="onUploadInit($event)" (error)="onUploadError($event)" (success)="onUploadSuccess($event)">
+            </dropzone>
+        </div>
+
+    </div>
+
+</form>

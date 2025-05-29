@@ -1,0 +1,171 @@
+<form [formGroup]="documentTypeFormulaire" class="user-form form-group" (ngSubmit)="onSubmit()">
+<mat-card>
+  <mat-card-header>
+    <mat-card-subtitle>
+        <h3 *ngIf="!documentType.id" class="custom-title">Créer une nouveau  type de document</h3>
+        <h3 *ngIf="documentType.id" class="custom-title">Modifier: {{documentType.libelle}}</h3>
+
+    </mat-card-subtitle>
+</mat-card-header>
+<mat-card-content>
+
+  <mat-tab-group>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>info</mat-icon>
+        Informations de base
+      </ng-template>
+        <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+          <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+        </div>
+            <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+              <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+            </div>
+              <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+                  <mat-label>Code</mat-label>
+                  <input matInput placeholder="Code" [attr.autocomplete]="'off'" formControlName="code" />
+                  <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && code.errors?.required">
+                    Le code est obligatoire
+                  </mat-error>
+                  <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && ( code.errors?.minlength || code.errors?.maxlength )">
+                    La taille du code est limité entre 4 et 50 caractères
+                  </mat-error>
+                  <mat-error *ngIf="code.invalid && (code.dirty || code.touched) && ( code.errors?.minlength || code.errors?.pattern )">
+                    Ce champ doit ne doit contenir que des caractères majuscules et undercore
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+                  <mat-label>libelle</mat-label>
+                  <input matInput placeholder="libelle" [attr.autocomplete]="'off'" formControlName="libelle" />
+                  <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && libelle.errors?.required">
+                    Le libelle est obligatoire
+                  </mat-error>
+                  <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && ( libelle.errors?.minlength || libelle.errors?.maxlength )">
+                    La libelle est limité entre 2 et 150 caractères
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div style="width: 30%; margin-bottom: 4%;">
+                <div fxLayoutAlign="space-between center">
+                  <mat-label id="titre1" class="label-title">Titre</mat-label>
+                  <mat-slide-toggle formControlName="estTitreParcelle" aria-labelledby="titre1"></mat-slide-toggle>
+
+                  <mat-label id="titre2" class="label-title">Titre foncier</mat-label>
+                  <mat-slide-toggle formControlName="estTitreFoncier" aria-labelledby="titre2"></mat-slide-toggle>
+
+                  <div class="sycad-form-ng-select"  [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                    <ng-select [items]="typeActes" [loading]="typeActeRemoteAutocomplete.loading"  appendTo="body" [selectOnTab]="true" bindLabel="label" bindValue="value"
+                               labelForId="typeActe" placeholder="Type d'acte" formControlName="typeActe">
+                      <ng-template ng-loadingspinner-tmp>
+                        <div class="lds-ellipsis">
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                        </div>
+                      </ng-template>
+                    </ng-select>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div fxLayout="row wrap" fxLayoutAlign="start center">
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="60" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                    <ng-select [items]="destinationRemoteAutoComplete.listRessource$ | async" [typeahead]="destinationRemoteAutoComplete.term" [loading]="destinationRemoteAutoComplete.loading" (search)="onSearchDestination($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle"
+                        bindValue="id" labelForId="destinations" placeholder="Destinations" formControlName="destinations" [multiple]="true">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+              </div>
+
+              <div fxLayout="row wrap" fxLayoutAlign="start center">
+                <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="60" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                    <ng-select [items]="droitsReelsRemoteAutocomplete.listRessource$ | async" [typeahead]="droitsReelsRemoteAutocomplete.term" [loading]="droitsReelsRemoteAutocomplete.loading" (search)="onSearchDroitImmobilier($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle"
+                        bindValue="id" labelForId="droitsImmobiliers" placeholder="Droits réels immobiliers" formControlName="droitsImmobiliers" [multiple]="true">
+                        <ng-template ng-loadingspinner-tmp>
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+              </div>
+
+              <div fxLayout="column" fxLayoutGap="0" style="width: 30%;">
+                <div fxLayout="row" fxLayoutAlign="space-between center" [fxFlex]="100">
+                  <mat-label id="titre3" class="label-title">Actif</mat-label>
+                  <mat-slide-toggle formControlName="actif" aria-labelledby="titre3"></mat-slide-toggle>
+                </div>
+              </div>
+
+              <mat-card-actions [ngClass]="{'card-action-form': (activeMediaQuery === 'lg' || activeMediaQuery === 'xl' ), 'card-action-form-small': (activeMediaQuery === 'sm') }">
+                <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                  <button mat-raised-button color="warn" type="button" (click)="goBack()">Annuler</button>
+                  <button mat-raised-button color="primary" type="submit" [disabled]="!documentTypeFormulaire.valid">
+                    <span *ngIf="!documentType.id">Enregistrer</span><span *ngIf="documentType.id">Mettre à jour</span>
+                  </button>
+                </div>
+              </mat-card-actions>
+
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>description</mat-icon>
+        Templates Report
+      </ng-template>
+      <form [formGroup]="templates">
+        <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+            <div fxLayout="column" class="flex-p" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="50">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <button type="button" mat-flat-button color="primary" (click)="addNewParametreReport()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10"
+                        [fxFlex.lg]="50" [fxFlexOffset.md]="10" [fxFlex.xl]="50" [fxFlexOffset]="10">
+                      <mat-icon class="icon-sm">add</mat-icon> Ajouter un nouveau template
+                  </button>
+                </div>
+                <ng-template ngFor let-templates [ngForOf]="templates.controls" let-i="index">
+                    <div class="card-container-form-element y-1" fxLayout="row" fxLayoutAlign="start">
+                        <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+
+                            <button mat-icon-button matSuffix color="warn" class="delete-icons" type="button">
+                              <mat-icon (click)="removeParametreReport(i)">remove_circle</mat-icon>
+                          </button>
+                            <app-dossier-parametre-report [formGroup]="templates" [touched]="templates.touched"></app-dossier-parametre-report>
+                        </mat-card>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+      </form>
+      <mat-card-actions [ngClass]="{'card-action-form': (activeMediaQuery === 'lg' || activeMediaQuery === 'xl' ), 'card-action-form-small': (activeMediaQuery === 'sm') }">
+        <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+          <button mat-raised-button color="warn" type="button" (click)="goBack()">Annuler</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!documentTypeFormulaire.valid">
+            <span *ngIf="!documentType.id">Enregistrer</span><span *ngIf="documentType.id">Mettre à jour</span>
+          </button>
+        </div>
+      </mat-card-actions>
+
+    </mat-tab>
+  </mat-tab-group>
+  </mat-card-content>
+</mat-card>
+</form>

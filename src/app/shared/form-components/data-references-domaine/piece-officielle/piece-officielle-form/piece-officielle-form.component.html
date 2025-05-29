@@ -1,0 +1,111 @@
+<form [formGroup]="pieceOfficielle" class="form-container">
+
+
+    <div fxLayout="row" fxLayoutAlign="start" [fxLayoutGap]="'20px'" *ngIf="showCateg">
+
+        <div class="sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+            <ng-select [items]="typePieceIdentiteRemoteAutocomplete.listRessource$ | async" [typeahead]="typePieceIdentiteRemoteAutocomplete.term" [loading]="typePieceIdentiteRemoteAutocomplete.loading" (search)="onSearchTypePieceIdentite($event)" (change)="onChangeypePieceIdentite($event)"
+                appendTo="body" [selectOnTab]="true" bindLabel="libelle" bindValue="id" placeholder="Catégorie de pièce" formControlName="categorie">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+            </ng-select>
+            <mat-error *ngIf="categorie.invalid && (categorie.dirty || categorie.touched) && categorie.errors?.required">
+                La catégorie est obligatoire
+            </mat-error>
+        </div>
+
+    </div>
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+            <mat-label>Numéro de la pièce(*)</mat-label>
+            <input matInput placeholder="Numéro de la pièce" [attr.autocomplete]="'off'" formControlName="numero" />
+            <mat-error *ngIf="numero.invalid && (numero.dirty || numero.touched) && numero.errors?.required">
+                Le numéro de la pièce est obligatoire
+            </mat-error>
+            <mat-error *ngIf="numero.invalid && (numero.dirty || numero.touched) && ( numero.errors?.minlength || numero.errors?.maxlength)">
+                La taille du numéro de la pièce est limité entre 2 et 150 caractères
+            </mat-error>
+            <mat-error *ngIf="numero.invalid && (numero.dirty || numero.touched) && numero.errors?.numeroPieceExist ">
+                Ce numero pièce est indisponible
+            </mat-error>
+            <mat-hint class="lds-ellipsis" *ngIf="numero.status === 'PENDING'">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </mat-hint>
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+            <mat-label>NIPPiece</mat-label>
+            <input matInput placeholder="NIPPiece" [attr.autocomplete]="'off'" formControlName="nip" [readonly]="true"/>
+            <mat-hint class="lds-ellipsis" *ngIf="nip.status === 'PENDING'">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </mat-hint>
+        </mat-form-field>
+
+    </div>
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+      <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+          <mat-label>Date délivrance(*)</mat-label>
+          <input matInput [matDatepicker]="datePiece" placeholder="Délivré le " formControlName="dateObtention" [max]="today">
+          <mat-datepicker-toggle matSuffix [for]="datePiece"></mat-datepicker-toggle>
+          <mat-datepicker #datePiece></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+          <mat-label>Date d'expiration</mat-label>
+          <input matInput [matDatepicker]="dateExpiration" placeholder="Date d'expiration " formControlName="dateExpiration">
+          <mat-datepicker-toggle matSuffix [for]="dateExpiration"></mat-datepicker-toggle>
+          <mat-datepicker #dateExpiration></mat-datepicker>
+      </mat-form-field>
+
+    </div>
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+            <mat-label>Autorité de délivrance </mat-label>
+            <input matInput placeholder="Autorité de délivrance" [attr.autocomplete]="'off'" formControlName="autoriteDeDelivrance" />
+
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="50" [fxFlex.xl]="50">
+            <mat-label>Lieu de délivrance </mat-label>
+            <input matInput placeholder="Lieu de délivrance " [attr.autocomplete]="'off'" formControlName="lieuDeDelivrance" />
+
+        </mat-form-field>
+
+    </div>
+
+
+
+    <div fxLayout="row wrap" fxLayoutAlign="start">
+        <div class="content-container" [fxFlex]="100">
+            <span *ngIf="documentPiece" [fxFlex]="100"> <a href="{{documentPiece | generalDownload}}">Télécharger la pièce jointe</a></span>
+        </div>
+
+        <div class="content-container" [fxFlex]="100">
+
+
+            <dropzone class="dropzone-container" [fxFlex]="100" [config]="config" (sending)="onSending($event)" [message]="'Cliquez ou faites glisser la pièce ici jointe' + ((apiPublic)?'(*)':'') " (init)="onUploadInit($event)" (error)="onUploadError($event)" (success)="onUploadSuccess($event)">
+            </dropzone>
+
+            <button mat-icon-button color="warn" class="delete-icons-2" type="button">
+                <mat-icon (click)="resetDropZone()">clear</mat-icon>
+              </button>
+        </div>
+
+    </div>
+
+</form>

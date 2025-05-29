@@ -1,0 +1,30 @@
+<mat-accordion class="list-profil-infos profil-panel">
+  <mat-expansion-panel>
+      <mat-expansion-panel-header>
+          <mat-panel-title class="panel-header-parents" fxLayout="row" fxLayoutAlign="start start">
+              <h3>Pièces complémentaire</h3>
+          </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-card-content perfectScrollbar>
+          <mat-list>
+            <ng-container *ngFor="let piece of pieces;  let i=index">
+              <h3>{{piece?.categorie?.libelle}}</h3>
+              <app-profil-list-item-icon [value]="piece?.nip" label="NIP"></app-profil-list-item-icon>
+              <app-profil-list-item-icon [value]="piece?.numero" label="Numéro"></app-profil-list-item-icon>
+             <!--  <app-profil-list-item-icon [value]="piece?.categorie?.libelle" label="Catégorie"></app-profil-list-item-icon> -->
+              <app-profil-list-item-icon [value]="piece?.dateObtention | date : 'longDate'" label="Délivrée le"></app-profil-list-item-icon>
+              <app-profil-list-item-icon [value]="piece?.dateExpiration | date : 'longDate'" label="Expire le"></app-profil-list-item-icon>
+              <app-profil-list-item-icon [value]="piece?.autoriteDeDelivrance" label="Délivrée par"></app-profil-list-item-icon>
+              <app-profil-list-item-icon [value]="piece?.lieuDeDelivrance" label="Délivrée à"></app-profil-list-item-icon>
+              <mat-list-item class="list-item-piece-info" *ngIf="piece?.documentPiece">
+                <p matLine>
+                    <span> <a href="{{piece?.documentPiece | generalDownload}}">Télécharger la pièce jointe</a></span>
+                </p>
+              </mat-list-item>
+              <br>
+              <mat-divider></mat-divider>
+            </ng-container>
+          </mat-list>
+      </mat-card-content>
+  </mat-expansion-panel>
+</mat-accordion>

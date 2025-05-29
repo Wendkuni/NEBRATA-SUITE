@@ -1,0 +1,23 @@
+<mat-accordion class="list-profil-infos profil-panel">
+  <mat-expansion-panel>
+      <mat-expansion-panel-header>
+          <mat-panel-title class="panel-header-parents" fxLayout="row" fxLayoutAlign="start start">
+             <h3>Personnes contacts</h3>
+          </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-card-content>
+          <mat-list>
+            <ng-container *ngFor="let personneContact of personnesContacts">
+              <app-profil-list-item-icon [value]="personneContact.nom" label="Nom" ></app-profil-list-item-icon>
+              <app-profil-list-item-icon [value]="personneContact?.prenom" label="Prénoms"></app-profil-list-item-icon>
+              <app-profil-list-item-icon [value]="personneContact?.telephone" label="Téléphone"></app-profil-list-item-icon>
+              <app-profil-list-item-icon [value]="personneContact?.email" label="Email"></app-profil-list-item-icon>
+              <app-profil-list-item-icon [value]="personneContact?.adresse?.libelle" label="Adresse"></app-profil-list-item-icon>
+              <app-profil-list-item-icon [value]="personneContact?.genre" label="Genre"></app-profil-list-item-icon>
+              <app-profil-list-item-icon [value]="personneContact?.profession" label="Profession"></app-profil-list-item-icon>
+              <mat-divider></mat-divider>
+            </ng-container>
+          </mat-list>
+      </mat-card-content>
+  </mat-expansion-panel>
+</mat-accordion>

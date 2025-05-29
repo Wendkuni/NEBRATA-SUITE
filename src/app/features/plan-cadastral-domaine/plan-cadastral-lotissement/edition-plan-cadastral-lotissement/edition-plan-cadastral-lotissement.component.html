@@ -1,0 +1,149 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+
+
+    <mat-card-header>
+        <mat-card-subtitle>
+            <h3>
+                <span *ngIf="!planCadastral">Démarrer un lotissement plan cadastral </span>
+                <span *ngIf="planCadastral?.numero">{{transition.libelle}} : sur le dossier {{planCadastral.numero}}</span>
+            </h3>
+
+
+            <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+                La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+            </mat-error>
+
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+
+        <mat-tab-group>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">face</mat-icon>
+
+                    <ng-container *ngIf="planCadastral?.numero">Formulaire transition {{transition.libelle}}</ng-container>
+                    <ng-container *ngIf="!planCadastral">Création d'un lotissement cadastral</ng-container>
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+                    <ng-container [ngSwitch]="true">
+                        <ng-template [ngSwitchCase]="transition?.code==='LOTISSEMENT_BROUILLON_TO_BROUILLON'">
+                            <pc-saisie-lotissement (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [planCadastral]="planCadastral" [transition]="transition"></pc-saisie-lotissement>
+                        </ng-template>
+                        <ng-template [ngSwitchCase]="transition?.code==='LOTISSEMENT_BROUILLON_TO_IMMATRICULE' || transition?.code==='LOTISSEMENT_IMMATRICULE_TO_IMMATRICULE'">
+                            <pc-lotissement-immatriculation (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [planCadastral]="planCadastral" [transition]="transition"></pc-lotissement-immatriculation>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="transition?.code==='LOTISSEMENT_IMMATRICULE_TO_CONTROLE_VALIDATION'">
+                            <pc-envoyer-pour-controle-validation (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [planCadastral]="planCadastral" [transition]="transition"></pc-envoyer-pour-controle-validation>
+                        </ng-template>
+
+
+                        <ng-template [ngSwitchCase]="transition?.code==='LOTISSEMENT_CONTROLE_VALIDATION_TO_CONTROLE_VALIDATION'">
+                            <pc-completer-avant-validation (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [planCadastral]="planCadastral" [transition]="transition"></pc-completer-avant-validation>
+                        </ng-template>
+                        <ng-template [ngSwitchCase]="transition?.code==='LOTISSEMENT_CONTROLE_VALIDATION_TO_REJETE'">
+                            <pc-rejet-saisie-lotissement (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [planCadastral]="planCadastral" [transition]="transition"></pc-rejet-saisie-lotissement>
+                        </ng-template>
+
+
+
+                        <ng-template [ngSwitchCase]="transition?.code==='LOTISSEMENT_CONTROLE_VALIDATION_TO_EDITION_DOCUMENT' || transition?.code==='LOTISSEMENT_EDITION_DOCUMENT_TO_EDITION_DOCUMENT'">
+                            <lo-constructeur-document (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [planCadastral]="planCadastral" [processus]="processus" [transition]="transition"></lo-constructeur-document>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="transition?.code==='LOTISSEMENT_EDITION_DOCUMENT_TO_VALIDE'">
+                            <pc-validation-saisie-lotissement (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [planCadastral]="planCadastral" [transition]="transition"></pc-validation-saisie-lotissement>
+                        </ng-template>
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'LOTISSEMENT_BROUILLON_TO_ANNULER' || transition?.code === 'LOTISSEMENT_EDITION_DOCUMENT_TO_ANNULER' || transition?.code === 'LOTISSEMENT_IMMATRICULE_TO_ANNULER' || transition?.code === 'LOTISSEMENT_CONTROLE_VALIDATION_TO_ANNULER'   ">
+                            <app-annulation-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="planCadastral" [transition]="transition" [processusService]="planCadastralService" [frontendUrl]="getFrontendTemplate()"></app-annulation-dossier-transition>
+                        </ng-template>
+
+
+
+
+
+                        <ng-template [ngSwitchCase]="transition?.code === 'LOTISSEMENT_TRANSMISSION_BROUILLON' ||
+                        transition?.code === 'LOTISSEMENT_TRANSMISSION_CONTROLE_VALIDATION'
+                        || transition?.code === 'LOTISSEMENT_TRANSMISSION_EDITION_DOCUMENT'
+                        || transition?.code === 'LOTISSEMENT_TRANSMISSION_VALIDE'
+                        || transition?.code === 'LOTISSEMENT_TRANSMISSION_EDITION_DOCUMENT_TO_EDITION_DOCUMENT'
+                        || transition?.code=== 'LOTISSEMENT_TRANSMISSION_BROUILLON_ACTEUR'
+                        || transition?.code==='LOTISSEMENT_TRANSMISSION_IMMATRICULE'">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="planCadastral" [fixedStructures]="true" [processusService]="planCadastralService" [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                        </ng-template>
+                        <ng-template [ngSwitchCase]=" transition?.code === 'LOTISSEMENT_TRANSMISSION_VALIDE_TO_VALIDE' ">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [codeArrrondissement]="planCadastral?.arrondissement?.code" [codeCommune]="planCadastral?.arrondissement?.commune?.code" [dossierProcessus]="planCadastral"
+                                [fixedStructures]="false" [processusService]="planCadastralService" [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="authentificatedUser?.typeUser===typeActeur &&  !transition">
+                            <lo-creation-par-acteur (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus"></lo-creation-par-acteur>
+                        </ng-template>
+                        <ng-template [ngSwitchDefault]>
+                            <pc-creation-lotissement (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus"></pc-creation-lotissement>
+                        </ng-template>
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'LOTISSEMENT_RENVOIE_BROUILLON_TO_BROUILLON_ACTEUR'
+                      || transition?.code==='LOTISSEMENT_RENVOIE_CONTROLE_VALIDATION_TO_IMMATRICULE'
+                      || transition?.code=== 'LOTISSEMENT_RENVOIE_EDITION_DOCUMENT_TO_CONTROLE_VALIDATION'
+                      || transition?.code==='LOTISSEMENT_RENVOIE_IMMATRICULE_TO_BROUILLON'">
+                            <app-renvoyer-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="planCadastral" [transition]="transition" [processusService]="planCadastralService" [frontendUrl]="getFrontendTemplate()"></app-renvoyer-dossier-transition>
+                        </ng-template>
+
+
+                    </ng-container>
+
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="planCadastral?.numero">
+                <ng-template mat-tab-label>
+                    <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                </ng-template>
+                <div fxLayout="column" class="flex-p">
+                    <app-historique [numero]="planCadastral?.numero"></app-historique>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="planCadastral">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Entête du dossier
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+
+                    <app-entete [numero]="planCadastral?.numero" [processus]="'WRKFProcessLotissementCadastral'"></app-entete>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="planCadastral">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Détail du dossier
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+
+                    <app-vue-lotissement [noOpenActions]="true"></app-vue-lotissement>
+                </div>
+            </mat-tab>
+
+
+        </mat-tab-group>
+    </mat-card-content>
+
+
+
+
+
+
+
+</mat-card>

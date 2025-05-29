@@ -1,0 +1,77 @@
+<mat-card class="bg-secondary">
+  <mat-card-header class="bg-primary">
+    <mat-card-title>Informations sur la Parcelle</mat-card-title>
+  </mat-card-header>
+  <mat-card-content style="padding-top: 10px">
+    <div fxLayout="row" fxLayout.lt-lg="row wrap"
+         fxLayoutGap="10px" fxLayoutAlign="start">
+      <mat-form-field [fxFlex]="50">
+        <mat-label>Commune</mat-label>
+        <input matInput [value]="parcelleElement?.ilot?.section?.commune?.nom || data.commune || ''" readonly>
+      </mat-form-field>
+      <mat-form-field [fxFlex]="50">
+        <mat-label>Arrondissement</mat-label>
+        <input matInput [value]="parcelleElement?.arrondissement?.nom || data.arrdt || ''" readonly>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayout.lt-lg="row wrap"
+         fxLayoutGap="10px" fxLayoutAlign="start">
+      <mat-form-field [fxFlex]="100">
+        <mat-label>ICAD</mat-label>
+        <input matInput [value]="parcelleElement?.icad || ''" readonly>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.lt-lg="row wrap"
+         fxLayoutGap="10px" fxLayoutAlign="start">
+      <mat-form-field [fxFlex]="50">
+        <mat-label>Section</mat-label>
+        <input matInput [value]="parcelleElement?.ilot?.section?.numero || data.nston || ''" readonly>
+      </mat-form-field>
+      <mat-form-field [fxFlex]="50">
+        <mat-label>Ilot</mat-label>
+        <input matInput [value]="parcelleElement?.ilot?.numero || data.nilotn || ''" readonly>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.lt-lg="row wrap"
+         fxLayoutGap="10px" fxLayoutAlign="start">
+      <mat-form-field [fxFlex]="50">
+        <mat-label>Parcelle</mat-label>
+        <input matInput [value]="parcelleElement?.numero || data.nplen || ''" readonly>
+      </mat-form-field>
+      <mat-form-field [fxFlex]="50">
+        <mat-label>Superficie (m²)</mat-label>
+        <input matInput [value]="parcelleElement?.superficie || data.supm2 || ''" readonly>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.lt-lg="row wrap"
+         fxLayoutGap="10px" fxLayoutAlign="start">
+      <mat-form-field [fxFlex]="100">
+        <mat-label>Destination</mat-label>
+        <input matInput [value]="parcelleElement?.destination?.libelle || data.destinat || ''" readonly>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.lt-lg="row wrap"
+         fxLayoutGap="10px" fxLayoutAlign="start">
+      <mat-form-field [fxFlex]="50">
+        <mat-label>Localité</mat-label>
+        <input matInput [value]="parcelleElement?.localite?.nom || data.nsect || ''" readonly>
+      </mat-form-field>
+      <mat-form-field [fxFlex]="50">
+        <mat-label>Quartier</mat-label>
+        <input matInput [value]="parcelleElement?.quartier?.nom || data.nqart || ''" readonly>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.lt-lg="row wrap"
+         fxLayoutGap="10px" fxLayoutAlign="start">
+      <mat-form-field [fxFlex]="50">
+        <mat-label>Numéro DT</mat-label>
+        <input matInput readonly>
+      </mat-form-field>
+      <mat-form-field [fxFlex]="50">
+        <mat-label>Numéro immatriculation</mat-label>
+        <input matInput readonly>
+      </mat-form-field>
+    </div>
+  </mat-card-content>
+</mat-card>

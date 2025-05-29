@@ -1,0 +1,47 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "code": "BT01",
+      "libelle": "VILLA F1"
+    },
+    {
+      "id": 2,
+      "code": "BT02",
+      "libelle": "VILLA F2"
+    },
+    {
+      "id": 3,
+      "code": "BT03",
+      "libelle": "VILLA F3"
+    },
+    {
+      "id": 4,
+      "code": "BT04",
+      "libelle": "VILLA F4"
+    },
+    {
+      "id": 5,
+      "code": "BT05",
+      "libelle": "VILLA F5"
+    },
+    {
+      "id": 6,
+      "code": "BT06",
+      "libelle": "R+"
+    },
+    {
+      "id": 7,
+      "code": "BT07",
+      "libelle": "Hangar"
+    }
+  ]
+}

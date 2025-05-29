@@ -1,0 +1,66 @@
+<form [formGroup]="temoinForm" class="role-form">
+    <div class="sycad-attributaire-modal-form-edition" mat-dialog-content perfectScrollbar>
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="75" [fxFlex.lg]="75" [fxFlex.xl]="75">
+                <mat-label>Nom(*) </mat-label>
+                <input matInput placeholder="nom" [attr.autocomplete]="'off'" formControlName="nom" />
+                <mat-error *ngIf="nom.invalid && (nom.dirty || nom.touched) && nom.errors?.required">
+                    La nom est obligatoire
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="75" [fxFlex.lg]="75" [fxFlex.xl]="75">
+                <mat-label>Prenoms(*)</mat-label>
+                <input matInput placeholder="prenoms" [attr.autocomplete]="'off'" formControlName="prenoms" />
+                <mat-error *ngIf="prenoms.invalid && (prenoms.dirty || prenoms.touched) && prenoms.errors?.required">
+                    Le prenom est obligatoire
+                </mat-error>
+            </mat-form-field>
+
+            <mat-radio-group class="sycad-form-line-margin-bottom" formControlName="genre" aria-labelledby="attributaire-sexe" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="90" [fxFlex.xl]="60">
+                <label id="attributaire-sexe">Choisir le genre </label>
+                <mat-radio-button value="FEMME" labelPosition="after" class="sycad-field-radio-button-horizontal">Femme
+                </mat-radio-button>
+                <mat-radio-button value="HOMME" labelPosition="after" class="sycad-field-radio-button-horizontal">Homme
+                </mat-radio-button>
+            </mat-radio-group>
+
+            <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="75" [fxFlex.lg]="75" [fxFlex.xl]="75">
+                <mat-label>Email(*)</mat-label>
+                <input matInput placeholder="email" [attr.autocomplete]="'off'" formControlName="email" />
+            </mat-form-field>
+            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="75" [fxFlex.lg]="75" [fxFlex.xl]="75">
+                <mat-label>Telephone (*)</mat-label>
+                <input matInput [textMask]="{mask: maskTelephone, guide: true}" [attr.autocomplete]="'off'" formControlName="telephone" />
+                <mat-error *ngIf="telephone.invalid && (telephone.dirty || telephone.touched) && telephone.errors?.required">
+                    Le numéro de téléphone est obligatoire
+                </mat-error>
+                <mat-error *ngIf="telephone.invalid && (telephone.dirty || telephone.touched) && telephone.errors?.pattern">
+                    Exemple (00226) XX XX XX XX ou (00226)XXXXXXXX ou 00226XXXXXXXX ou +226XXXXXXXX
+                </mat-error>
+                <mat-error *ngIf="telephone.invalid && (telephone.dirty || telephone.touched) && telephone.errors?.telephoneExist ">
+                    Ce numéro de téléphone est indisponible
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="75" [fxFlex.lg]="75" [fxFlex.xl]="75">
+                <ng-select [items]="professionRemoteAutocomplete.listRessource$ | async" [typeahead]="professionRemoteAutocomplete.term" [loading]="professionRemoteAutocomplete.loading" (search)="onSearchProfession($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom"
+                    bindValue="id" labelForId="profession" placeholder="Profession" formControlName="profession">
+                    <ng-template ng-loadingspinner-tmp>
+                        <div class="lds-ellipsis">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+        </div>
+        <h2>Piece officielle</h2>
+        <app-piece-officielle-form [formGroup]="pieceOfficielle" [contribuableType]="'AGENT'" [touched]="pieceOfficielle?.touched"></app-piece-officielle-form>
+
+    </div>
+</form>

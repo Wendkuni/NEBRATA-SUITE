@@ -1,0 +1,76 @@
+<h3>
+  La liste des sections à ajouter
+</h3>
+
+<button class="ajoutParc" mat-raised-button type="button" mat-button (click)="initializeForm()">Récupérer les sections</button>
+
+<div fxLayout="row wrap"
+     fxLayoutGap="10px"
+     fxLayoutAlign="start" class="table-container">
+  <mat-form-field class="full-width" [fxFlex]="100"
+                  [fxFlex.xs]="100"
+                  [fxFlex.sm]="100" [fxFlex.md]="100"
+                  [fxFlex.lg]="80" [fxFlex.xl]="70">
+    <mat-label>Rechercher une section</mat-label>
+    <input matInput (keyup)="applyFilter($event.target.value)"
+           #inputFilterSection>
+    <mat-icon matSuffix
+              (click)="inputFilterSection.value=''"
+              class="sycad-element-clickable">
+      clear
+    </mat-icon>
+  </mat-form-field>
+</div>
+<form [formGroup]="sectionAAjouter"class="form-container" fxLayout="column" fxLayoutGap="10px">
+  <div fxLayout="row" fxLayout="row wrap" fxLayoutGap="10px"
+       fxLayoutAlign="start" class="table-container">
+
+    <table mat-table [dataSource]="dataSourceSection" class=" mat-elevation-z8" matSort
+           [fxFlex.xs]="100"
+           [fxFlex.sm]="100" [fxFlex.md]="100"
+           [fxFlex.lg]="80" [fxFlex.xl]="70">
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
+
+      <ng-container matColumnDef="numero" appearance="outline" class="full-width">
+        <th mat-header-cell *matHeaderCellDef [hidden]="live" mat-sort-header> Numéro </th>
+        <td mat-cell *matCellDef="let element" [hidden]="live" >
+          {{ element.numero }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="numeroAncien" appearance="outline" class="full-width">
+        <th mat-header-cell *matHeaderCellDef> Numéro ancien </th>
+        <td mat-cell *matCellDef="let element">
+
+          {{ element.numeroAncien }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="commune" appearance="outline" class="full-width">
+        <th mat-header-cell *matHeaderCellDef> Commune
+        </th>
+        <td mat-cell
+            *matCellDef="let element">{{ this.commune.nom }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="action" appearance="outline" class="full-width">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element;let i = index">
+          <mat-icon class="sycad-element-clickable" (click)="supprimerSection(i)">delete_forever</mat-icon>
+        </td>
+      </ng-container>
+
+    </table>
+    <mat-paginator [length]="totalElements"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="[5, 10, 25,100]"
+                   (page)="onPageChange($event)"
+                   [fxFlex]="100"
+                   [fxFlex.xs]="100"
+                   [fxFlex.sm]="100" [fxFlex.md]="100"
+                   [fxFlex.lg]="80" [fxFlex.xl]="70"
+                   showFirstLastButtons>
+    </mat-paginator>
+  </div>
+</form>
+

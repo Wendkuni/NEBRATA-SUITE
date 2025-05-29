@@ -1,0 +1,26 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "code": "AZ01",
+      "libelle": "Zone centrale",
+      "arrondissement": "Boulmiougou"
+
+    },
+    {
+      "id": 2,
+      "code": "AZ02",
+      "libelle": "Zone sud",
+      "arrondissement": "Arrondissement 10"
+    }
+  ]
+}
+

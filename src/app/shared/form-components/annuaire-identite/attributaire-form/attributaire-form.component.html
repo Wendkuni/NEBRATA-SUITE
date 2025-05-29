@@ -1,0 +1,81 @@
+<form [formGroup]="attributaireForm" class="form-container">
+
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+            <mat-label>Type contribuable</mat-label>
+            <mat-select formControlName="typeContribuable">
+                <mat-option [value]="typecontribuable" *ngFor="let typecontribuable of typeContribuables">
+                    {{typecontribuable}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+            <mat-label>Nom (*)</mat-label>
+            <input matInput [attr.autocomplete]="'off'" formControlName="nom" />
+            <mat-error *ngIf="nom.invalid && (nom.dirty || nom.touched) && nom.errors?.required">
+                Le nom est obligatoire
+            </mat-error>
+            <mat-error *ngIf="nom.invalid && (nom.dirty || nom.touched) && ( nom.errors?.minlength || nom.errors?.maxlength)">
+                La taille du nom est limité entre 2 et 150 caractères
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+            <mat-label>Prénoms (*)</mat-label>
+            <input matInput [attr.autocomplete]="'off'" formControlName="prenoms" />
+            <mat-error *ngIf="prenoms.invalid && (prenoms.dirty || prenoms.touched) && prenoms.errors?.required">
+                Le prenom est obligatoire
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+            <mat-label>Nom de jeune fille</mat-label>
+            <input matInput [attr.autocomplete]="'off'" formControlName="nomJeuneFille" />
+        </mat-form-field>
+        <mat-radio-group formControlName="sexe" aria-labelledby="attributaire-sexe" class="sycad-form-line container-form-field-radio ">
+            <label id="attributaire-sexe">Choisir le genre </label>
+            <mat-radio-button value="FEMME" labelPosition="after" class="sycad-field-radio-button-horizontal">Femme</mat-radio-button>
+            <mat-radio-button value="HOMME" labelPosition="after" class="sycad-field-radio-button-horizontal">Homme</mat-radio-button>
+        </mat-radio-group>
+    </div>
+
+    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+            <mat-label>Date de naissance (*)</mat-label>
+            <input matInput [matDatepicker]="dateDeNaissance" formControlName="dateNaissance">
+            <mat-datepicker-toggle matSuffix [for]="dateDeNaissance"></mat-datepicker-toggle>
+            <mat-datepicker #dateDeNaissance></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+            <mat-label>Lieu de naissance</mat-label>
+            <input matInput placeholder="lieuNaissance" [attr.autocomplete]="'off'" formControlName="lieuNaissance" />
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+            <mat-label>Prénom(s) du père</mat-label>
+            <input matInput placeholder="Prénom(s) du père" [attr.autocomplete]="'off'" formControlName="prenomsPere" />
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+            <mat-label>Nom du père</mat-label>
+            <input matInput placeholder="Nom du père" [attr.autocomplete]="'off'" formControlName="nomPere" />
+        </mat-form-field>
+
+    </div>
+    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+            <mat-label>Prénom(s) de la mère</mat-label>
+            <input matInput placeholder="Prénom(s) de la mère" [attr.autocomplete]="'off'" formControlName="prenomsMere" />
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+            <mat-label>Nom de la mère</mat-label>
+            <input matInput placeholder="Nom de la mère" [attr.autocomplete]="'off'" formControlName="nomMere" />
+        </mat-form-field>
+
+    </div>
+
+</form>

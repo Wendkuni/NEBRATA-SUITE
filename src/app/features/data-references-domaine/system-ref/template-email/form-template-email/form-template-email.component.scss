@@ -1,0 +1,26 @@
+.service-form {
+    .ng-select {
+        width: 100%;
+    }
+}
+
+.sycad-text-riche {
+    height: 400px;
+    border: 2px solid red;
+}
+
+.mat-dialog-content {
+    overflow: hidden;
+}
+.sycad-zone-modal-form-edition {
+  height: 40vh;
+}
+.modifier-text {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+}
+.mat-grid-list {
+  overflow: hidden;
+}

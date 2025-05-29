@@ -1,0 +1,51 @@
+import { ParcelleElement } from '@sycadApp/models/data-references/territoire/localite.model';
+
+
+export class ParcelleDelimitation{
+  id: number;
+  point: Point;
+  gpsX: number;
+   gpsY: number;
+  gissement: string;
+  distance: number;
+  sens: Sens;
+  limitation: string;
+}
+
+export enum Sens {
+  NORD="Nord",
+  OUEST="Ouest",
+  EST= "Est",
+  SUD="Sud"
+
+}
+export enum Point {
+
+  A="A",
+  B="B",
+  C="C",
+  D="D",
+  E="E",
+  F="F",
+  G="G",
+  H="H",
+  I="I",
+  J="J",
+  K="K",
+  L="L",
+  M="M",
+  N="N",
+  O="O",
+  P="P",
+  Q="Q",
+  R="R",
+  S="S",
+  T="T",
+  U="U",
+  V="V",
+  W="W",
+  X="X",
+  Y="Y",
+  Z="Z",
+
+}

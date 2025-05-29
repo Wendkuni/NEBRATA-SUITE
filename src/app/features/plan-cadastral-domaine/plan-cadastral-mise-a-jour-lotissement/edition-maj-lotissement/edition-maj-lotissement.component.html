@@ -1,0 +1,186 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+
+
+    <mat-card-header>
+        <mat-card-subtitle>
+            <h3>
+                <span *ngIf="!majLotissement">Démarrer une mise à jour de lotissement plan cadastral </span>
+                <span *ngIf="majLotissement?.numero">{{transition.libelle}} : sur le dossier {{majLotissement.numero}}</span>
+            </h3>
+
+
+            <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+                La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+            </mat-error>
+
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+
+        <mat-tab-group>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">face</mat-icon>
+
+                    <ng-container *ngIf="majLotissement?.numero">Formulaire transition {{transition.libelle}}</ng-container>
+                    <ng-container *ngIf="!majLotissement">Création d'une mise à jour de lotissement cadastral</ng-container>
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+                    <ng-container [ngSwitch]="true">
+
+                      <ng-template [ngSwitchCase]=" transition?.code === 'MAJPLAN_TRANSMIS_TO_AFFECTE_AGENT' || transition?.code === 'MAJPLAN_BROUILLON_TO_AFFECTE_AGENT'  ">
+                        <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)"
+                                                  [codeCommune]="majLotissement?.parcellesAAjouter[0]?.ilot?.section?.commune?.code
+                                                  || majLotissement?.parcellesAAjouter[0]?.ilot?.section?.commune?.code
+                                                  || majLotissement?.parcellesADesactive[0]?.ilot?.section?.commune?.code
+                                                  || majLotissement?.sectionsADesactive[0]?.commune?.code
+                                                  || majLotissement?.ilotsADesactive[0]?.section?.commune?.code
+                                                  || majLotissement?.parcellesAModifier[0]?.ilot?.section?.commune?.code"
+                                                  [dossierProcessus]="majLotissement" [fixedStructures]="false" [processusService]="majLotissmentService"
+                                                  [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                      </ng-template>
+
+                      <ng-template [ngSwitchCase]=" transition?.code === 'MAJPLAN_BROUILLON_TO_TRANSMIS' ">
+                        <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [avecPiece]="false"
+                                                  [codeCommune]="majLotissement?.parcellesAAjouter[0]?.ilot?.section?.commune?.code
+                                                  || majLotissement?.parcellesAAjouter[0]?.ilot?.section?.commune?.code
+                                                  || majLotissement?.parcellesADesactive[0]?.ilot?.section?.commune?.code
+                                                  || majLotissement?.sectionsADesactive[0]?.commune?.code
+                                                  || majLotissement?.ilotsADesactive[0]?.section?.commune?.code
+                                                  || majLotissement?.parcellesAModifier[0]?.ilot?.section?.commune?.code"
+                                                  [dossierProcessus]="majLotissement" [fixedStructures]="false" [processusService]="majLotissmentService"
+                                                  [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                      </ng-template>
+
+                      <ng-template [ngSwitchCase]=" transition?.code === 'MAJPLAN_TRANSMISSION_BROUILLON_TO_BROUILLON'
+                        || transition?.code === 'MAJPLAN_TRANSMISSION_TRANSMIS_TO_TRANSMIS'
+                        || transition?.code === 'MAJPLAN_TRANSMISSION_AFFECTE_TO_AFFECTE'
+                        || transition?.code === 'MAJPLAN_TRANSMISSION_NUMEROTATION_TO_NUMEROTATION'
+                        || transition?.code === 'MAJPLAN_TRANSMISSION_VALIDE_TO_VALIDE' ">
+                        <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" (formErrors)="onFormError($event)"
+                                                  [codeCommune]="majLotissement?.parcellesAAjouter[0]?.ilot?.section?.commune?.code
+                                                  || majLotissement?.parcellesAAjouter[0]?.ilot?.section?.commune?.code
+                                                  || majLotissement?.parcellesADesactive[0]?.ilot?.section?.commune?.code
+                                                  || majLotissement?.sectionsADesactive[0]?.commune?.code
+                                                  || majLotissement?.ilotsADesactive[0]?.section?.commune?.code
+                                                  || majLotissement?.parcellesAModifier[0]?.ilot?.section?.commune?.code" [dossierProcessus]="majLotissement" [fixedStructures]="false"
+                                                  [processusService]="majLotissmentService" [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                      </ng-template>
+
+                      <ng-template [ngSwitchCase]=" transition?.code === 'MAJPLAN_TRANSMIS_TO_BROUILLON'  || transition?.code === 'MAJPLAN_AFFECTE_TO_TRANSMIS'  || transition?.code === 'MAJPLAN_NUMEROTATION_TO_MAJ'   || transition?.code === 'MAJPLAN_NUMEROTATION_TO_ATTENTE_NUMEROTATION'">
+                        <app-renvoyer-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="majLotissement" [transition]="transition" [processusService]="majLotissmentService" [frontendUrl]="getFrontendTemplate()"></app-renvoyer-dossier-transition>
+                      </ng-template>
+
+                      <ng-template [ngSwitchDefault]>
+                        <ng-container *ngIf="authentificatedUser?.typeUser==='AGENT' && hasPermissionNumerotation(); else acteurPromoteurCondition">
+                          <app-creation-maj-lotissement-par-agent (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus">
+                          </app-creation-maj-lotissement-par-agent>
+                        </ng-container>
+
+                        <ng-template #acteurPromoteurCondition>
+                          <ng-container *ngIf="authentificatedUser?.typeUser==='ACTEUR' && authentificatedUser?.categorie?.libelle==='PROMOTEUR IMMOBILIER'">
+                            <app-creation-maj-lotissement-par-acteur (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus">
+                            </app-creation-maj-lotissement-par-acteur>
+                          </ng-container>
+                        </ng-template>
+
+
+                      </ng-template>
+
+                      <ng-template [ngSwitchCase]=" transition?.code === 'MAJPLAN_BROUILLON_TO_BROUILLON' ">
+                        <ng-container *ngIf="authentificatedUser?.typeUser==='AGENT' && hasPermissionNumerotation(); else acteurPromoteurCondition">
+                          <app-saisie-maj-lotissement-par-agent (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [majLotissement]="majLotissement" [transition]="transition">
+                          </app-saisie-maj-lotissement-par-agent>
+                        </ng-container>
+
+                        <ng-template #acteurPromoteurCondition>
+                          <ng-container *ngIf="authentificatedUser?.typeUser==='ACTEUR' && authentificatedUser?.categorie?.libelle==='PROMOTEUR IMMOBILIER'">
+                            <app-saisie-maj-lotissement-par-acteur (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [majLotissement]="majLotissement" [transition]="transition">
+                            </app-saisie-maj-lotissement-par-acteur>
+                          </ng-container>
+                        </ng-template>
+
+                      </ng-template>
+
+                      <ng-template [ngSwitchCase]=" transition?.code === 'MAJPLAN_BROUILLON_TO_ANNULER' ">
+                        <ng-container *ngIf="authentificatedUser?.typeUser==='AGENT' && hasPermissionNumerotation()">
+                          <app-annuler-maj-lotissement (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [majLotissement]="majLotissement" [transition]="transition">
+                          </app-annuler-maj-lotissement>
+                        </ng-container>
+                      </ng-template>
+
+                      <ng-template [ngSwitchCase]=" transition?.code === 'MAJPLAN_ATTENTE_NUMEROTATION_TO_NUMEROTATION' ">
+                        <ng-container *ngIf="authentificatedUser?.typeUser==='AGENT' && hasPermissionNumerotation()">
+                          <app-numerotation-maj-lotissement (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [majLotissement]="majLotissement" [transition]="transition">
+                          </app-numerotation-maj-lotissement>
+                        </ng-container>
+                      </ng-template>
+
+
+
+                      <ng-template [ngSwitchCase]=" transition?.code === 'MAJPLAN_NUMEROTATION_TO_VALIDE' || transition?.code === 'MAJPLAN_ATTENTE_NUMEROTATION_TO_VALIDE'">
+                        <ng-container *ngIf="authentificatedUser?.typeUser==='AGENT' && hasPermissionNumerotation()">
+                          <app-valider-maj-lotissement (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [majLotissement]="majLotissement" [transition]="transition">
+                          </app-valider-maj-lotissement>
+                        </ng-container>
+                      </ng-template>
+
+                      <ng-template [ngSwitchCase]=" transition?.code === 'MAJPLAN_TRANSMIS_TO_AFFECTE' ||  transition?.code === 'MAJPLAN_BROUILLON_TO_AFFECTE' ">
+                        <app-affectation-dmaj (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [majLotissement]="majLotissement" [transition]="transition"></app-affectation-dmaj>
+                      </ng-template>
+
+                      <ng-template [ngSwitchCase]=" transition?.code === 'MAJPLAN_AFFECTE_TO_MAJ' ||  transition?.code === 'MAJPLAN_MAJ_TO_MAJ' ">
+                        <app-mise-ajour-plan (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [majLotissement]="majLotissement" [transition]="transition"></app-mise-ajour-plan>
+                      </ng-template>
+
+                      <ng-template [ngSwitchCase]=" transition?.code === 'MAJPLAN_TRANSMISSION_MAJ_TO_ATTENTE_NUMEROTATION' ">
+                        <app-envoyer-pour-controle-apres-maj (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [majLotissement]="majLotissement" [transition]="transition"></app-envoyer-pour-controle-apres-maj>
+                      </ng-template>
+
+
+
+                    </ng-container>
+
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="majLotissement?.numero">
+                <ng-template mat-tab-label>
+                    <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                </ng-template>
+                <div fxLayout="column" class="flex-p">
+                    <app-historique [numero]="majLotissement?.numero"></app-historique>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="majLotissement">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Entête de dossier
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+
+                    <app-entete [numero]="majLotissement?.numero" [processus]="'WRKFProcessMiseAJourPlanCadastral'"></app-entete>
+                </div>
+            </mat-tab>
+
+          <mat-tab *ngIf="majLotissement">
+            <ng-template mat-tab-label>
+              <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+              Détail du dossier
+            </ng-template>
+            <div fxLayout="column" class="flex-p">
+              <app-vue-mise-a-jour-lotissement [noOpenActions]="true"></app-vue-mise-a-jour-lotissement>
+            </div>
+          </mat-tab>
+
+
+        </mat-tab-group>
+    </mat-card-content>
+
+</mat-card>

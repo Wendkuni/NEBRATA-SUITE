@@ -1,0 +1,44 @@
+<form [formGroup]="quittanceForm" >
+   
+
+<div>
+    <div *ngIf="!isLoading" fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="30" [fxFlex.lg]="30" [fxFlex.xl]="70">
+            <mat-label>Reférence (*)</mat-label>
+            <input matInput [attr.autocomplete]="'off'" formControlName="reference"  (blur)="onBlurReference()"  (input)="onInputChange($event)" />
+            <mat-error *ngIf="reference.invalid && (reference.dirty || reference.touched) && reference.errors?.required">
+                La reférence est obligatoire
+            </mat-error>
+            <mat-error *ngIf="reference.invalid && (reference.dirty || reference.touched) && ( reference.errors?.minlength || reference.errors?.maxlength)">
+                La taille de la reference est limité entre 2 et 150 caractères
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="30" [fxFlex.lg]="30" [fxFlex.xl]="70">
+            <mat-label>Date(*)</mat-label>
+           
+            <input matInput [matDatepicker]="datePicker" 
+            placeholder="JJ/MM/AAAA"
+            [attr.autocomplete]="'off'" [max]="maxDate"
+            placeholder="Date" 
+            formControlName="date"  [readonly]="readOnlyFields">
+            <mat-datepicker-toggle matSuffix [for]="datePicker" [disabled]="readOnlyFields"></mat-datepicker-toggle>
+            <mat-datepicker #datePicker></mat-datepicker>
+            <mat-error *ngIf="date.invalid && (date.dirty || date.touched) && date.errors?.required">
+                La date est obligatoire
+            </mat-error>
+        </mat-form-field>
+        
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="30" [fxFlex.xl]="45">
+            <mat-label>Montant (*)</mat-label>
+            <input type="number" matInput [attr.autocomplete]="'off'" formControlName="montant"  />
+            <mat-error *ngIf="montant.invalid && (montant.dirty || montant.touched) && montant.errors?.required">
+                Le montant est obligatoire
+            </mat-error>
+        </mat-form-field>
+    </div>
+</div>
+
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+
+
+</form>

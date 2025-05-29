@@ -1,0 +1,173 @@
+<form [formGroup]="formulaire">
+<div class="sycad-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <mat-accordion [fxFlex]="100">
+        <mat-expansion-panel (opened)="toggleRechercheSintax = true" (closed)="toggleRechercheSintax = false" [expanded]="isExpended">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Rechercher dans ONI
+                </mat-panel-title>
+                <mat-panel-description fxLayoutAlign="end center">
+                    <mat-icon>person_search</mat-icon>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
+
+            <div fxLayout="row" fxLayoutAlign="start">
+                <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="90" [fxFlex.xl]="80">
+                    <mat-label>Numéro de pièce</mat-label>
+                    <input matInput [attr.autocomplete]="'off'" oninput="this.value = this.value.toUpperCase()" formControlName="numeroPiece"/>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start">
+              <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="90" [fxFlex.xl]="80">
+                  <mat-label>Nom de famille</mat-label>
+                  <input matInput [attr.autocomplete]="'off'" formControlName="nom" (keyup.enter)="rechercherContribuable()"/>
+              </mat-form-field>
+          </div>
+            <div *ngIf="rechercheContribuableONI?.success">
+              
+
+            <mat-tab-group>
+
+              <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">account_box</mat-icon>
+                    Résumé
+                </ng-template>
+                <app-card-general-contribuable-form [contribuable]="rechercheContribuableONI.contribuable" [fxFlex]="100">
+                </app-card-general-contribuable-form>
+              </mat-tab>
+          
+              <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">subject</mat-icon>
+                    Informations
+                </ng-template>
+                  <div fxLayout="row wrap" fxLayoutAlign="start center">
+                    <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="60" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                        <ng-select [items]="situationMatrimonialeAutocomplete.listRessource$ | async" [typeahead]="situationMatrimonialeAutocomplete.term" [loading]="situationMatrimonialeAutocomplete.loading" (search)="onSearchSituationMatrimoniale($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle"
+                            bindValue="id" labelForId="situationMatrimoniale" placeholder="Situation Matrimoniale" formControlName="situationMatrimoniale">
+                            <ng-template ng-loadingspinner-tmp>
+                                <div class="lds-ellipsis">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </ng-template>
+                        </ng-select>
+                    </div>
+                </div>
+              </mat-tab>
+          
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon class="sycad-form-tab-label-icon">home</mat-icon>
+                  Adresses
+                </ng-template>
+                <div class="sycad-attributaire-modal-form-edition" mat-dialog-content perfectScrollbar>
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    <button mat-raised-button type="button" color="primary" (click)="addNewAdresse()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10" [fxFlex.lg]="25" [fxFlexOffset.md]="10" [fxFlex.xl]="30"
+                        [fxFlexOffset]="10">
+                      <mat-icon class="icon-sm">add</mat-icon>
+                      Ajouter une Adresse
+                    </button>
+                  </div>
+                  <ng-container *ngIf="adresses.controls.length>0">
+                    <ng-template ngFor let-adresse [ngForOf]="adresses.controls" let-i="index">
+                        <div fxLayout="row" fxLayoutAlign="start">
+                            <mat-card class="card-container-form-element y-1" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="60">
+                                <button mat-icon-button matSuffix type="button" color="warn" class="delete-icons">
+                                  <mat-icon (click)="removeAdresse(i)">remove_circle</mat-icon>
+                              </button>
+                                <app-adresse-form [formGroup]="adresse" (changeAdressePrincipal)="onChangeAdressePrincipal($event)" [touched]="adresse.touched"></app-adresse-form>
+                            </mat-card>
+                        </div>
+                    </ng-template>
+                  </ng-container>
+                </div>
+              </mat-tab>
+          
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon class="sycad-form-tab-label-icon">alternate_email</mat-icon>
+                  Emails
+                </ng-template>
+                <div class="sycad-attributaire-modal-form-edition" mat-dialog-content perfectScrollbar>
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    <button mat-raised-button type="button" color="primary" (click)="addNewEmail()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10" [fxFlex.lg]="25" [fxFlexOffset.md]="10" [fxFlex.xl]="30"
+                              [fxFlexOffset]="10">
+                        <mat-icon class="icon-sm">add</mat-icon>
+                      Ajouter une adresse mail
+                    </button>
+                  </div>
+                    <ng-container *ngIf="emails.controls.length>0">
+                      <ng-template ngFor let-email [ngForOf]="emails.controls" let-i="index">
+                          <div fxLayout="row" fxLayoutAlign="start">
+                              <mat-card class="card-container-form-element y-1" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="60">
+                                  <button mat-icon-button matSuffix type="button" color="warn" class="delete-icons">
+                                    <mat-icon (click)="removeEmails(i)">remove_circle</mat-icon>
+                                </button>
+                                  <app-email-form [formGroup]="email" (changeEmailPrincipal)="onChangeEmailPrincipal($event)" [touched]="email.touched"></app-email-form>
+                              </mat-card>
+                          </div>
+                      </ng-template>
+                  </ng-container>
+                </div>
+              </mat-tab>
+          
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon class="sycad-form-tab-label-icon">call</mat-icon>
+                  Téléphones
+                </ng-template>
+                <div class="sycad-attributaire-modal-form-edition" mat-dialog-content perfectScrollbar>
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    <button mat-raised-button type="button" color="primary" (click)="addNewTelephone()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10" [fxFlex.lg]="25" [fxFlexOffset.md]="10" [fxFlex.xl]="30"
+                              [fxFlexOffset]="10">
+                        <mat-icon class="icon-sm">add</mat-icon>
+                        Ajouter un numéro de téléphone
+                    </button>
+                  </div>
+                  <ng-container *ngIf="telephones.controls.length>0">
+                    <ng-template ngFor let-telephone [ngForOf]="telephones.controls" let-i="index">
+          
+                        <div fxLayout="row" fxLayoutAlign="start">
+                            <mat-card class="card-container-form-element y-1" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="60">
+                                <button mat-icon-button matSuffix color="warn" type="button" class="delete-icons">
+                                  <mat-icon (click)="removeTelephones(i)">remove_circle</mat-icon>
+                              </button>
+          
+                                <app-telephone-form [formGroup]="telephone" (changeTelephonePrincipal)="onChangeTelephonePrincipal($event)" [touched]="telephone.touched"></app-telephone-form>
+          
+                            </mat-card>
+                        </div>
+                    </ng-template>
+                </ng-container>
+                </div>
+              </mat-tab>
+              
+            </mat-tab-group>
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="start" *ngIf="rechercheContribuableONI?.success && updateContribuable == null">
+                <button type="button" mat-flat-button color="primary" [fxFlex]="100" (click)="importerContribuableONI()">
+                    <mat-icon class="icon-sm">add</mat-icon> Importer le contribuable
+                   </button>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="start" *ngIf="rechercheContribuableONI?.success && updateContribuable != null">
+                <button type="button" mat-flat-button color="primary" [fxFlex]="100" (click)="updateContribuableONI()">
+                    <mat-icon class="icon-sm">add</mat-icon> Mettre à jour le contribuable
+                   </button>
+              </div>
+
+            <mat-action-row>
+                <button mat-button color="primary" type="button" (click)="rechercherContribuable()">Rechercher</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>
+</form>

@@ -1,0 +1,441 @@
+<mat-card class="p-0 sycad-card-contribuable" *ngIf="type == 'grid'">
+    <div class="bg-primary" fxLayout="row" fxLayoutAlign="space-between center">
+        <h3 class="user-name"> {{ contribuable.denomination }}</h3>
+
+        <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    </div>
+    <mat-menu #menu="matMenu" xPosition="before" overlapTrigger="true">
+        <span (mouseleave)="menuTrigger.closeMenu()">
+      <button mat-menu-item (click)="onEdition(contribuable)">
+        <mat-icon>mode_edit</mat-icon>
+        <span>Edit</span>
+        </button>
+
+        <button mat-menu-item (click)="onDelete(contribuable);">
+        <mat-icon>delete</mat-icon>
+        <span>Delete</span>
+      </button>
+        <button mat-menu-item (click)="onViewProfil(contribuable?.guid);">
+      <mat-icon>account_circle</mat-icon>
+      <span>Profil</span>
+    </button>
+        </span>
+    </mat-menu>
+    <div class="user-content" fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="10px" fxLayout="row" fxLayout.lt-lg="row wrap" fxLayout.lt-md="column">
+        <div fxFlex="30" fxFlex.xs="100" fxLayout="column" fxLayoutAlign="center center">
+            <div class="user-img">
+                <img [src]=" contribuable | avatarLogo" class="transition-2" [class.blocked]="!contribuable.active">
+                <mat-icon *ngIf="!contribuable.active" class="warn-color">block</mat-icon>
+            </div>
+            <div class="user-social">
+                <mat-slide-toggle color="primary" [checked]="contribuable.active" (change)="contribuable.active = !contribuable.active"></mat-slide-toggle>
+            </div>
+        </div>
+        <div fxFlex="70" fxFlex.xs="100" fxLayout="column" class="user-details transition-2" [class.blocked]="!contribuable.active">
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">money</mat-icon>
+                <span>{{ contribuable.codeUnique }}</span>
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">group</mat-icon>
+                <span>{{ contribuable.relation }}</span>
+            </p>
+
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">date_range</mat-icon>
+                <span>{{ contribuable.dateDeCreation | date:'dd/MM/yyyy' }}</span>
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">star</mat-icon>
+                <span>{{ contribuable.nationalite }}</span>
+            </p>
+
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">topic</mat-icon>
+                <span>{{ contribuable.statusJuridique }}</span>
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">mail_outline</mat-icon>
+                <span>{{ contribuable.emails | principalContactFilter }}</span>
+                <ng-template [ngIf]="contribuable.emails.length>0">
+                    <button mat-button [matMenuTriggerFor]="listEmailActeur" class="bouton-voir-plus">voir+</button>
+                    <mat-menu #listEmailActeur="matMenu" class="sycad-menu-panel">
+                        <ng-template ngFor let-email [ngForOf]="contribuable.emails">
+                            <mat-card class="container-card-contact" click-stop-propagation>
+                                <mat-card-content fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start">
+                                    <mat-list>
+                                        <mat-list-item>
+                                            <mat-icon matListIcon *ngIf="email.principal" color="primary">mail_outline</mat-icon>
+                                            <mat-icon matListIcon *ngIf="!email.principal">mail_outline</mat-icon>
+                                            <h3 matLine>{{ email.value }}</h3>
+                                            <p matLine>
+                                                <span>{{ email.level }}</span>
+                                            </p>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </mat-card-content>
+                            </mat-card>
+                        </ng-template>
+                    </mat-menu>
+                </ng-template>
+
+            </p>
+
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">call</mat-icon>
+                <span>{{ contribuable.telephones | principalContactFilter }}</span>
+                <ng-template [ngIf]="contribuable.telephones.length>0">
+                    <button mat-button [matMenuTriggerFor]="listTelephoneContribuable" class="bouton-voir-plus"> voir+</button>
+                    <mat-menu #listTelephoneContribuable="matMenu" class="sycad-menu-panel">
+                        <ng-template ngFor let-telephone [ngForOf]="contribuable.telephones">
+                            <mat-card class="container-card-contact" click-stop-propagation>
+                                <mat-card-content fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start">
+                                    <mat-list>
+                                        <mat-list-item>
+                                            <mat-icon matListIcon *ngIf="telephone.principal" color="primary">call</mat-icon>
+                                            <mat-icon matListIcon *ngIf="!telephone.principal">call</mat-icon>
+                                            <h3 matLine>{{ telephone.value }}</h3>
+                                            <p matLine>
+                                                <span>{{ telephone.level }}</span>
+                                            </p>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </mat-card-content>
+                            </mat-card>
+                        </ng-template>
+                    </mat-menu>
+                </ng-template>
+
+            </p>
+
+
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">perm_contact_calendar</mat-icon>
+                <span>{{ contribuable.membres?.length || 0 }} Membre(s)</span>
+                <ng-template [ngIf]="contribuable.membres.length>0">
+                    <button mat-button [matMenuTriggerFor]="listMembreIndivision" class="bouton-voir-plus">
+            voir+ </button>
+                    <mat-menu #listMembreIndivision="matMenu" class="sycad-menu-panel">
+
+
+                        <ng-template ngFor let-membre [ngForOf]="contribuable.membres">
+
+                            <mat-list>
+                                <mat-list-item>
+                                    <img matListAvatar [src]=" membre.membre | avatarLogo" alt="image">
+                                    <h3 matLine> {{ membre.qualite.libelle }} </h3>
+                                    <p matLine>
+                                        <small>{{ membre.membre.codeUnique}} </small>
+                                    </p>
+                                </mat-list-item>
+                            </mat-list>
+                        </ng-template>
+                    </mat-menu>
+
+                </ng-template>
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">payment</mat-icon>
+                <span>{{contribuable.pieceComplementaires.length+1}} Pièces fournies </span>
+
+                <button mat-button [matMenuTriggerFor]="listPieceIdentite" class="bouton-voir-plus"> voir+  </button>
+                <mat-menu #listPieceIdentite="matMenu" class="sycad-menu-panel">
+                    <mat-card class="container-card-contact" click-stop-propagation>
+                        <mat-card-header>
+                            <mat-card-title>
+
+                                <mat-icon class="muted-text" color="primary" style="font-size: 80%;">verified_user</mat-icon>
+                                <span>{{contribuable.pieceOfficielle?.categorie?.libelle}}</span>
+
+                            </mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start">
+                            <mat-list>
+                                <mat-list-item class="list-item-piece-info">
+                                    <p matLine>
+                                        <strong>Numéro</strong> : <span> {{contribuable.pieceOfficielle?.numero}}</span>
+                                    </p>
+
+                                </mat-list-item>
+                                <mat-list-item class="list-item-piece-info">
+                                    <p matLine>
+                                        <strong>Nip</strong> : <span> {{contribuable.pieceOfficielle?.nip}}</span>
+                                    </p>
+                                </mat-list-item>
+                                <mat-list-item class="list-item-piece-info">
+                                    <p matLine>
+                                        <strong>Délivrée par </strong> : <span> {{contribuable.pieceOfficielle?.autoriteDeDelivrance}}</span>
+                                    </p>
+                                </mat-list-item>
+                                <mat-list-item class="list-item-piece-info">
+                                    <p matLine>
+                                        <strong>Délivrée le</strong> : <span> {{contribuable.pieceOfficielle?.dateObtention  | date:'dd/MM/yyyy' }}</span>
+                                    </p>
+                                </mat-list-item>
+                                <mat-list-item class="list-item-piece-info">
+                                    <p matLine>
+                                        <strong>Expire le</strong> : <span> {{contribuable.pieceOfficielle?.dateExpiration | date:'dd/MM/yyyy' }}</span>
+                                    </p>
+                                </mat-list-item>
+                                <mat-list-item class="list-item-piece-info">
+                                    <p matLine>
+                                        <strong>Délivrée à </strong> : <span> {{contribuable.pieceOfficielle?.lieuDeDelivrance}}</span>
+                                    </p>
+                                </mat-list-item>
+                                <mat-list-item class="list-item-piece-info" *ngIf="contribuable.pieceOfficielle?.documentPiece">
+                                    <p matLine>
+                                        <span> <a href="{{contribuable.pieceOfficielle?.documentPiece | generalDownload}}">Télécharger la pièce jointe</a></span>
+                                    </p>
+                                </mat-list-item>
+                            </mat-list>
+                        </mat-card-content>
+                    </mat-card>
+                    <ng-template ngFor let-pieceIdentite [ngForOf]="contribuable.pieceComplementaires">
+
+                        <mat-card class="container-card-contact" click-stop-propagation>
+                            <mat-card-header>
+                                <mat-card-title>{{pieceIdentite.categorie}}</mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start">
+                                <mat-list>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Numéro</strong> : <span> {{pieceIdentite.numero}}</span>
+                                        </p>
+
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Nip</strong> : <span> {{pieceIdentite.nip}}</span>
+                                        </p>
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Délivrée par </strong> : <span> {{pieceIdentite.autoriteDeDelivrance}}</span>
+                                        </p>
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Délivrée le</strong> : <span> {{pieceIdentite.dateObtention | date:'dd/MM/yyyy' }}</span>
+                                        </p>
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Expire le</strong> : <span> {{pieceIdentite.dateExpiration | date:'dd/MM/yyyy' }}</span>
+                                        </p>
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Délivrée à </strong> : <span> {{pieceIdentite.lieuDeDelivrance}}</span>
+                                        </p>
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info" *ngIf="pieceIdentite.documentPiece">
+                                        <p matLine>
+                                            <span> <a href="{{pieceIdentite.documentPiece | generalDownload}}">Télécharger la pièce jointe</a></span>
+                                        </p>
+                                    </mat-list-item>
+                                </mat-list>
+                            </mat-card-content>
+                        </mat-card>
+
+
+                    </ng-template>
+                </mat-menu>
+
+
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">call</mat-icon>
+                <span>{{ contribuable.telephones | principalContactFilter }}</span>
+                <ng-template [ngIf]="contribuable.telephones.length>0">
+                    <button mat-button [matMenuTriggerFor]="listTelephoneContribuable" class="bouton-voir-plus"> voir+</button>
+                    <mat-menu #listTelephoneContribuable="matMenu" class="sycad-menu-panel">
+                        <ng-template ngFor let-telephone [ngForOf]="contribuable.telephones">
+                            <mat-card class="container-card-contact" click-stop-propagation>
+                                <mat-card-content fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start">
+                                    <mat-list>
+                                        <mat-list-item>
+                                            <mat-icon matListIcon *ngIf="telephone.principal" color="primary">call</mat-icon>
+                                            <mat-icon matListIcon *ngIf="!telephone.principal">call</mat-icon>
+                                            <h3 matLine>{{ telephone.value }}</h3>
+                                            <p matLine>
+                                                <span>{{ telephone.level }}</span>
+                                            </p>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </mat-card-content>
+                            </mat-card>
+                        </ng-template>
+                    </mat-menu>
+                </ng-template>
+
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">home</mat-icon>
+                <span>{{contribuable.adresses.length}} adresses fournies</span>
+                <ng-template [ngIf]="contribuable.adresses.length>0">
+                    <button mat-button [matMenuTriggerFor]="listAdresseContribuable" class="bouton-voir-plus"> voir+</button>
+                    <mat-menu #listAdresseContribuable="matMenu" class="sycad-menu-panel">
+                        <ng-template ngFor let-adresse [ngForOf]="contribuable.adresses">
+                            <mat-card class="container-card-contact" click-stop-propagation>
+                                <mat-card-content fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start">
+                                    <mat-list>
+                                        <mat-list-item>
+                                            <mat-icon matListIcon *ngIf="adresse.principal" color="primary">home</mat-icon>
+                                            <mat-icon matListIcon *ngIf="!adresse.principal">call</mat-icon>
+                                            <h3 matLine>{{ adresse.libelle }}</h3>
+                                            <p matLine> <strong>Localité</strong> : <span>{{ adresse.localite }}</span> </p>
+                                            <p matLine> <strong>Quartier</strong> : <span>{{ adresse.quartier }}</span> </p>
+                                            <p matLine> <strong>Rue</strong> : <span>{{ adresse.rue }}</span> </p>
+                                            <p matLine> <strong>Porte</strong> : <span>{{ adresse.porte }}</span> </p>
+                                            <p matLine> <strong>Parcelle</strong> : <span>{{ adresse.parcelle }}</span> </p>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </mat-card-content>
+                            </mat-card>
+                        </ng-template>
+                    </mat-menu>
+                </ng-template>
+
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">home</mat-icon>
+                <span>{{contribuable.reseauSociaux.length}} reseauSociaux fournies</span>
+                <ng-template [ngIf]="contribuable.reseauSociaux.length>0">
+                    <button mat-button [matMenuTriggerFor]="listreseauSocialContribuable" class="bouton-voir-plus"> voir+</button>
+                    <mat-menu #listreseauSocialContribuable="matMenu" class="sycad-menu-panel">
+                        <ng-template ngFor let-reseauSocial [ngForOf]="contribuable.reseauSociaux">
+                            <mat-card class="container-card-contact" click-stop-propagation>
+                                <mat-card-content fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start">
+                                    <mat-list>
+                                        <mat-list-item>
+
+                                            <h3 matLine>{{ reseauSocial.profil }}</h3>
+                                            <p matLine><span>{{ reseauSocial.type }}</span></p>
+
+                                        </mat-list-item>
+                                    </mat-list>
+                                </mat-card-content>
+                            </mat-card>
+                        </ng-template>
+                    </mat-menu>
+                </ng-template>
+
+            </p>
+        </div>
+    </div>
+</mat-card>
+
+<mat-card class="p-0 sycad-card-agent" *ngIf="type == 'list'">
+    <div class="bg-primary" fxLayout="row" fxLayoutAlign="space-between center">
+        <h3 class="user-name"> {{ contribuable.denomination }} </h3>
+        <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    </div>
+    <mat-menu #menu="matMenu" xPosition="before" overlapTrigger="true">
+        <span (mouseleave)="menuTrigger.closeMenu()">
+      <button mat-menu-item (click)="onEdition(contribuable)">
+        <mat-icon>mode_edit</mat-icon>
+        <span>Edit</span>
+        </button>
+        <button mat-menu-item (click)="onDelete(contribuable);">
+        <mat-icon>delete</mat-icon>
+        <span>Delete</span>
+      </button>
+        <button mat-menu-item (click)="onViewProfil(contribuable?.guid);">
+      <mat-icon>account_circle</mat-icon>
+      <span>Profil</span>
+    </button>
+        </span>
+    </mat-menu>
+    <div class="user-content" fxLayout="row" fxLayoutAlign="space-around center">
+        <div fxFlex="20" fxFlex.xs="30" fxLayout="column" fxLayoutAlign="center center">
+            <div class="user-img">
+                <img [src]="contribuable | avatarLogo" class="transition-2" [class.blocked]="!contribuable.active">
+                <mat-icon *ngIf="!contribuable.active" class="warn-color">block</mat-icon>
+            </div>
+            <div class="user-social">
+                <mat-slide-toggle color="primary" [checked]="contribuable.active" (change)="contribuable.active = !contribuable.active"></mat-slide-toggle>
+            </div>
+        </div>
+        <div fxFlex="80" fxFlex.xs="70" fxLayout="row" fxLayout.xs="column" class="user-details transition-2" [class.blocked]="!contribuable  .active">
+            <div fxFlex="50" fxFlex.xs="100" fxLayout="column">
+
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">money</mat-icon>
+                    <span>{{ contribuable.codeUnique }}</span>
+                </p>
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">group</mat-icon>
+                    <span>{{ contribuable.relation }}</span>
+                </p>
+
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">date_range</mat-icon>
+                    <span>{{ contribuable.dateDeCreation | date:'dd/MM/yyyy' }}</span>
+                </p>
+
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">mail_outline</mat-icon>
+                    <span>{{ contribuable.emails | principalContactFilter }}</span>
+                    <ng-template [ngIf]="contribuable.emails.length>0">
+                        <button mat-button [matMenuTriggerFor]="listEmailActeur" class="bouton-voir-plus"> voir
+              plus + </button>
+                        <mat-menu #listEmailActeur="matMenu" class="sycad-menu-panel">
+                            <ng-template ngFor let-email [ngForOf]="contribuable.emails | exceptPrincipalFilter">
+                                <p mat-menu-item [class]="'detail-list-resume'" click-stop-propagation>
+                                    <mat-icon>mail_outline</mat-icon>
+                                    <span>({{ email.level }}) {{ email.value }}</span>
+                                </p>
+                            </ng-template>
+                        </mat-menu>
+
+                    </ng-template>
+
+                </p>
+
+            </div>
+
+            <div fxFlex="50" fxFlex.xs="100" fxLayout="column">
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">star</mat-icon>
+                    <span>{{ contribuable.nationalite }}</span>
+                </p>
+
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">topic</mat-icon>
+                    <span>{{ contribuable.statusJuridique }}</span>
+                </p>
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">call</mat-icon>
+                    <span>{{ contribuable.telephones | principalContactFilter }}</span>
+                    <ng-template [ngIf]="contribuable.telephones.length>0">
+                        <button mat-button [matMenuTriggerFor]="listTelephoneContribuable" class="bouton-voir-plus"> voir+ </button>
+                        <mat-menu #listTelephoneContribuable="matMenu" class="sycad-menu-panel">
+                            <ng-template ngFor let-telephone [ngForOf]="contribuable.telephones | exceptPrincipalFilter">
+                                <p mat-menu-item [class]="'detail-list-resume'" click-stop-propagation>
+                                    <mat-icon>call</mat-icon>
+                                    <span>({{ telephone.level }}) {{ telephone.value }}</span>
+                                </p>
+                            </ng-template>
+                        </mat-menu>
+
+                    </ng-template>
+                </p>
+
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">perm_contact_calendar</mat-icon>
+                    <span>Mmebre indivision</span>
+
+                </p>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</mat-card>

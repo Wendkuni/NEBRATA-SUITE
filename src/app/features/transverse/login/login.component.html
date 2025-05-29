@@ -1,0 +1,55 @@
+<mat-sidenav-container id="login-container">
+
+    <div fxLayout="row" fxLayoutAlign="center top" class="h-100 login_page_wrapper">
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" [fxFlex.xs]="90" [fxFlex.sm]="70" [fxFlex.md]="55" [fxFlex.lg]="45" [fxFlex.xl]="30">
+
+            <mat-card class="p-0 mat-elevation-z24 box">
+                <div fxLayout="column" fxLayoutAlign="center center" class="bg-primary box-header">
+                    <div class="logo">
+                        <img src="/assets/img/bg/logo.webp">
+                    </div>
+                </div>
+                <br>
+                <mat-card-content fxLayout="column" fxLayoutAlign="end center" class="box-content">
+                    <mat-card fxLayout="column" fxLayoutAlign="center center" class="mat-elevation-z12 box-content-inner">
+                        <span class="box-content-header">Connexion à SYCAD</span>
+
+                        <mat-form-field class="w-100">
+                            <input matInput placeholder="Votre identifiant" #login [attr.autocomplete]="'off'" formControlName="identity">
+                            <mat-error *ngIf="form.controls.identity.errors?.required">identity obligatoire</mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="w-100">
+                            <input matInput placeholder="Mot de passe" #password [type]="passwordHide ? 'password' : 'text'" formControlName="password">
+                            <mat-icon matSuffix (click)="passwordHide = !passwordHide">{{passwordHide ? 'visibility' : 'visibility_off'}}</mat-icon>
+                            <mat-error *ngIf="form.controls.password.errors?.required">Mot de passe obligatoire</mat-error>
+                            <mat-error *ngIf="form.controls.password.hasError('minlength')"> Le mot de passe doit comporter au moins 5 caractères</mat-error>
+                        </mat-form-field>
+
+                        <div class="w-100" fxLayout="row" fxLayoutAlign="end center">
+                            <mat-checkbox formControlName="rememberMe" [color]="'primary'">
+                                Rester Connecter
+                            </mat-checkbox>
+
+                        </div>
+
+                    </mat-card>
+
+                    <button mat-raised-button color="primary" class="mat-elevation-z15 box-button" type="submit">Se connecter</button>
+
+
+                </mat-card-content>
+
+                <mat-card-content  fxLayout="column" fxLayoutAlign="end center">
+                    <button mat-raised-button type="button" color="primary" class="mat-elevation-z15 box-button" [fxFlex.xs]="90" [fxFlex.sm]="70" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30" routerLink="/{{urlRecuperation}}">Mot de passe oublié ?</button>
+                    <br>
+                    <h3>Vous n'avez pas encore de compte SYCAD ?</h3>
+                    <br>
+                    <button mat-raised-button type="button" color="primary" class="mat-elevation-z15 box-button" [fxFlex.xs]="90" [fxFlex.sm]="70" [fxFlex.md]="55" [fxFlex.lg]="40" [fxFlex.xl]="30" routerLink="/{{urlCreerCompte}}">Créer mon compte  </button>
+                    <br>
+                </mat-card-content>
+
+            </mat-card>
+        </form>
+    </div>
+</mat-sidenav-container>

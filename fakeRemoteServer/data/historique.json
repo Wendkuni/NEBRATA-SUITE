@@ -1,0 +1,55 @@
+[{
+        "etatInitial": "etat 1",
+        "etatFinal": "etat 2",
+        "transition": "Archiver",
+        "executeur": "agent 1",
+        "structureInitial": "structure 1",
+        "structureFinal": "structure 2",
+        "dateAction": "2020-08-08"
+    },
+    {
+        "etatInitial": "etat 3",
+        "etatFinal": "etat 4",
+        "transition": "Calculer les droits de taxes",
+        "executeur": "agent 2",
+        "structureInitial": "structure 1",
+        "structureFinal": "structure 2",
+        "dateAction": "2020-08-08"
+    },
+    {
+        "etatInitial": "etat 2",
+        "etatFinal": "etat 4",
+        "transition": "Délivrer la quittance",
+        "executeur": "agent 3",
+        "structureInitial": "structure 1",
+        "structureFinal": "structure 2",
+        "dateAction": "2020-08-08"
+    },
+    {
+        "etatInitial": "etat 6",
+        "etatFinal": "etat 8",
+        "transition": "Générer un numero",
+        "executeur": "agent 4",
+        "structureInitial": "structure 1",
+        "structureFinal": "structure 2",
+        "dateAction": "2020-08-08"
+    },
+    {
+        "etatInitial": "etat 4",
+        "etatFinal": "etat 2",
+        "transition": "Payer les droits de taxes",
+        "executeur": "agent 5",
+        "structureInitial": "structure 1",
+        "structureFinal": "structure 2",
+        "dateAction": "2020-08-08"
+    },
+    {
+        "etatInitial": "etat 1",
+        "etatFinal": "etat 2",
+        "transition": "Générer un numero",
+        "executeur": "agent 6",
+        "structureInitial": "structure 1",
+        "structureFinal": "structure 2",
+        "dateAction": "2020-08-08"
+    }
+]

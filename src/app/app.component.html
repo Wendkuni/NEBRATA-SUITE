@@ -1,0 +1,8 @@
+<div id="sycad-app" class="sycad-app" [dir]="(settings.preference.rtl) ? 'rtl' : 'ltr'" [ngClass]="settings.preference.theme" [class.fixed-header]="settings.preference.fixedHeader" [class.horizontal-menu]="settings.preference.menu == 'horizontal'" [class.compact]="settings.preference.menuType == 'compact'"
+    [class.mini]="settings.preference.menuType == 'mini'">
+    <router-outlet></router-outlet>
+    <div id="app-spinner" *ngIf="settings.loadingSpinner">
+        <mat-spinner color="primary"></mat-spinner>
+        <h4>Chargement...</h4>
+    </div>
+</div>

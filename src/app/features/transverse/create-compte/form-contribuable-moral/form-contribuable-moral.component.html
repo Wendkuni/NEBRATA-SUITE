@@ -1,0 +1,235 @@
+<form [formGroup]="formulaireContribuable" class="user-form">
+
+    <mat-card-header>
+        <mat-card-subtitle>
+            <h3>
+                <span>Création d'un contribuable moral </span>
+            </h3>
+            <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+                La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+            </mat-error>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div fxLayout="row"  fxLayoutAlign="start">
+        <div class="container-form-field-radio" [fxFlex]="100" >
+          <label id="contribuable-detientParcelle">J'ai une parcelle ?</label>
+          <mat-slide-toggle  [color]="'primary'" formControlName="detientParcelle" aria-labelledby="contribuable-detientParcelle"></mat-slide-toggle>
+        </div>
+    </div>
+
+        <mat-tab-group>
+          <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="sycad-form-tab-label-icon">face</mat-icon>
+                Identification
+            </ng-template>
+
+            <div fxLayout="column" class="flex-p">
+
+
+                <div fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start" fxLayoutGap.gt-xs="20px">
+
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="70" [fxFlex.md]="70" [fxFlex.lg]="60" [fxFlex.xl]="30">
+                        <mat-label>Numéro IFU (*)</mat-label>
+                        <input matInput placeholder="Numéro IFU " [attr.autocomplete]="'off'" formControlName="numeroIfu" />
+                        <mat-error *ngIf="numeroIfu.invalid && (numeroIfu.dirty || numeroIfu.touched) && numeroIfu.errors?.required">
+                          La sigle est obligatoire
+                      </mat-error>
+                      </mat-form-field>
+
+                </div>
+                <div fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start" fxLayoutGap.gt-xs="20px">
+
+                  <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="70" [fxFlex.md]="70" [fxFlex.lg]="60" [fxFlex.xl]="30">
+                      <mat-label>Sigle (*)</mat-label>
+                      <input matInput placeholder="Sigle" [attr.autocomplete]="'off'" formControlName="sigle" />
+                      <mat-error *ngIf="sigle.invalid && (sigle.dirty || sigle.touched) && sigle.errors?.required">
+                          La sigle est obligatoire
+                      </mat-error>
+                  </mat-form-field>
+
+              </div>
+
+
+                <div fxLayout="row" fxLayout.lt-sm="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="70" [fxFlex.md]="70" [fxFlex.lg]="60" [fxFlex.xl]="30">
+                        <mat-label>Télephone (*)</mat-label>
+                        <input matInput placeholder="Telephone" [textMask]="{mask: maskTelephone, guide: true}" [attr.autocomplete]="'off'" formControlName="telephone">
+
+                        <mat-error *ngIf="telephone.invalid && (telephone.dirty || telephone.touched) && telephone.errors?.pattern">
+                            Exemple (00226) XX XX XX XX ou (00226)XXXXXXXX ou 00226XXXXXXXX ou +226XXXXXXXX
+                        </mat-error>
+                        <mat-error *ngIf="telephone.invalid && (telephone.dirty || telephone.touched) && telephone.errors?.required">
+                          Le téléphone est obligatoire
+                      </mat-error>
+                        <mat-error *ngIf="telephone.invalid && (telephone.dirty || telephone.touched) && telephone.errors?.telephoneExist ">
+                            Ce numéro de téléphone est indisponible
+                        </mat-error>
+                        <mat-hint class="lds-ellipsis" *ngIf="telephone.status === 'PENDING'">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </mat-hint>
+                    </mat-form-field>
+
+                </div>
+
+                <div fxLayout="row" fxLayout.lt-sm="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+
+                  <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="70" [fxFlex.md]="70" [fxFlex.lg]="60" [fxFlex.xl]="30">
+                      <mat-label>Email(*)</mat-label>
+
+                      <input matInput placeholder="Email" [attr.autocomplete]="'off'" formControlName="email">
+                      <mat-error *ngIf="email.invalid && (email.dirty || email.touched) && email.errors?.required">
+                          La valeur de l'email est obligatoire
+                      </mat-error>
+                      <mat-error *ngIf="email.invalid && (email.dirty || email.touched) && email.errors?.required">
+                          L'email est invalide
+                      </mat-error>
+                      <mat-error *ngIf="email.invalid && (email.dirty || email.touched) && email.errors?.emailExist ">
+                          Ce email est indisponible
+                      </mat-error>
+                      <mat-hint class="lds-ellipsis" *ngIf="email.status === 'PENDING'">
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                      </mat-hint>
+
+                  </mat-form-field>
+              </div>
+
+
+           <!--
+                <div fxLayout="row" fxLayoutAlign="start">
+                    <mat-card class="card-container-form-element y-1" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="50">
+                        <mat-card-header>
+                            <mat-card-title>Pièce officielle </mat-card-title>
+                        </mat-card-header>
+                        <app-piece-officielle-public-form [formGroup]="pieceOfficielle" [contribuableType]="'CONTRIBUABLEMORAL'" [public]="true" [touched]="pieceOfficielle.touched"></app-piece-officielle-public-form>
+
+                    </mat-card>
+                </div>
+           -->
+            </div>
+        </mat-tab>
+        <mat-tab *ngIf="detientParcelle.value">
+          <ng-template mat-tab-label>
+              <mat-icon>face</mat-icon>
+              Information parcelle
+          </ng-template>
+
+          <mat-card [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="80" [fxFlex.lg]="70" [fxFlex.xl]="60">
+              <mat-card-header>
+                  <mat-card-title>Localisation de la parcelle</mat-card-title>
+              </mat-card-header>
+              <app-choix-parcelle-public-form [formGroup]="parcelle" [infoParcelle]="compteContribuable?.informationsContribuable?.infoParcelle"></app-choix-parcelle-public-form>
+          </mat-card>
+
+
+
+          <mat-card [fxFlex.xs]="100" [fxFlex.sm]="90" [fxFlex.md]="80" [fxFlex.lg]="70" [fxFlex.xl]="60">
+              <mat-card-header>
+                  <mat-card-title>Document officiel de la parcelle (*)</mat-card-title>
+              </mat-card-header>
+              <app-document-parcelle-form [formGroup]="document" [typeDocuments]="processus?.typeDocuments"></app-document-parcelle-form>
+          </mat-card>
+
+
+
+      </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+              <mat-icon class="sycad-form-tab-label-icon">location_on</mat-icon>
+              Adresse
+          </ng-template>
+
+          <div fxLayout="column" class="flex-p">
+
+              <div fxLayout="row" fxLayoutAlign="start center">
+
+
+                  <button mat-raised-button type="button" color="primary" (click)="addNewAdresse()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10" [fxFlex.lg]="25" [fxFlexOffset.md]="10" [fxFlex.xl]="30"
+                      [fxFlexOffset]="10">
+      <mat-icon class="icon-sm">add</mat-icon>
+      Ajouter une Adresse
+    </button>
+              </div>
+
+              <ng-container *ngIf="adresses.controls.length>0">
+                  <ng-template ngFor let-adresse [ngForOf]="adresses.controls" let-i="index">
+
+                      <div fxLayout="row" fxLayoutAlign="start">
+                          <mat-card class="card-container-form-element y-1" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="60">
+                              <button mat-icon-button matSuffix type="button" color="warn" class="delete-icons">
+            <mat-icon (click)="removeAdresse(i)">remove_circle</mat-icon>
+          </button>
+
+                              <app-adresse-form [formGroup]="adresse" [publicApi]="true" (changeAdressePrincipal)="onChangeAdressePrincipal($event)" [touched]="adresse.touched"></app-adresse-form>
+
+                          </mat-card>
+                      </div>
+                  </ng-template>
+              </ng-container>
+          </div>
+      </mat-tab>
+
+       <!--
+           <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Fiscalité
+                </ng-template>
+                <div fxLayout="column" class="flex-p">
+                    <div fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start" fxLayoutGap.gt-xs="20px">
+                        <div class="sycad-form-ng-select sycad-form-line" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="25" [fxFlex.xl]="25">
+                            <ng-select [items]="regimeFiscalRemoteAutocomplete.listRessource$ | async" [typeahead]="regimeFiscalRemoteAutocomplete.term" [loading]="regimeFiscalRemoteAutocomplete.loading" (search)="onSearchRegimeFiscal($event)" appendTo="body" [selectOnTab]="true"
+                                bindLabel="libelle" labelForId="regimeFiscal" bindValue="id" placeholder="Régime fiscal " formControlName="regimeFiscal">
+                                <ng-template ng-loadingspinner-tmp>
+                                    <div class="lds-ellipsis">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="start center" class="sycad-form-line">
+                        <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="50" [fxFlex.md]="50" [fxFlex.lg]="25" [fxFlex.xl]="25">
+                            <mat-label>Numéro CNSS</mat-label>
+                            <input matInput placeholder="Numéro CNSS" [attr.autocomplete]="'off'" formControlName="numCNSS" />
+                            <mat-error *ngIf="numCNSS.invalid && (numCNSS.dirty || numCNSS.touched) && numCNSS.errors?.numCNSSExist ">
+                                Ce numéro CNSS est indisponible
+                            </mat-error>
+                            <mat-hint class="lds-ellipsis" *ngIf="numCNSS.status === 'PENDING'">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </mat-hint>
+
+
+                        </mat-form-field>
+                    </div>
+
+                </div>
+            </mat-tab>
+       -->
+
+
+        </mat-tab-group>
+    </mat-card-content>
+    <mat-card-actions [ngClass]="{'card-action-form': (activeMediaQuery === 'lg' || activeMediaQuery === 'xl' ), 'card-action-form-small': (activeMediaQuery === 'sm') }">
+        <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+            <button mat-raised-button color="warn" type="button">Annuler</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!formulaireContribuable.valid">
+        <span>Enregistrer</span>
+      </button>
+        </div>
+    </mat-card-actions>
+
+</form>

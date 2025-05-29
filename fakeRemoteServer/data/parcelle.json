@@ -1,0 +1,39 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "numeroAncien": "150055",
+      "numero": "257032",
+      "icad": "PAR-0041258",
+      "libelle": "parcelle 1",
+      "superficie": "500 m2",
+      "etatAttribution": "Atrribué",
+      "delaisMev": "5 ans",
+      "vci": "250",
+      "dateEval": "10/05/2025",
+      "etatMev": "Fait"
+
+    },
+    {
+      "id": 2,
+      "numeroAncien": "147055",
+      "numero": "220132",
+      "icad": "PAR-00258",
+      "libelle": "parcelle 1",
+      "superficie": "500 m2",
+      "etatAttribution": "Atrribué",
+      "delaisMev": "5 ans",
+      "vci": "250",
+      "dateEval": "10/05/2025",
+      "etatMev": "Fait"
+    }
+  ]
+}

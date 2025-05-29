@@ -1,0 +1,42 @@
+<form [formGroup]="formulaireAdresses" (ngSubmit)="onSubmitAdresses()">
+  <mat-grid-list cols="4" rowHeight="80px">
+    <mat-grid-tile [colspan]="2" class="list-grid-contact">
+      <div fxFlex="80" class="select-button">
+        <button mat-raised-button type="button" color="primary" (click)="addNewAdresse()"> <mat-icon class="icon-sm">add_circle_outline</mat-icon>
+        </button>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="3" rowHeight="80px" *ngIf="getFormAdresses.controls.length>0">
+
+    <ng-template ngFor let-adresses [ngForOf]="getFormAdresses.controls" let-i="index">
+      <mat-grid-tile [colspan]="3" [rowspan]="1" [formGroup]="adresses">
+        <mat-form-field appearance="fill" fxFlex="50">
+          <mat-label>Adresse (*)</mat-label>
+          <input type="hidden" formControlName="id">
+          <input matInput placeholder="Adresse" [attr.autocomplete]="'off'" formControlName="libelle">
+          <button mat-icon-button matSuffix color="warn">
+            <mat-icon (click)="removeAdresse(i,adresses)">remove_circle</mat-icon>
+          </button>
+          <mat-hint>Adresse ({{i+1}})</mat-hint>
+          <mat-error *ngIf="adresses.controls.libelle.invalid  && (adresses.controls.libelle.dirty || adresses.controls.libelle.touched) && ( adresses.controls.libelle.errors?.minlength || adresses.controls.libelle.errors?.maxlength )">
+            L'adresse est limité entre 2 et 150 caractères
+          </mat-error>
+          <mat-error *ngIf="adresses.controls.libelle.invalid && (adresses.controls.libelle.dirty || adresses.controls.libelle.touched) && adresses.controls.libelle.errors?.required">
+            L'adresse est obligatoire
+          </mat-error>
+        </mat-form-field>
+
+        <div fxFlex="50" class="container-form-field-radio">
+          <mat-slide-toggle formControlName="principal" (change)="onChangeAdressePrincipal(adresses)" fxFlex="100">Adresse principale ?</mat-slide-toggle>
+        </div>
+
+      </mat-grid-tile>
+    </ng-template>
+  </mat-grid-list>
+  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
+    <button mat-raised-button color="primary" type="submit" [disabled]="!formulaireAdresses.valid">
+      <span>Enregistrer</span>
+    </button>
+  </div>
+</form>

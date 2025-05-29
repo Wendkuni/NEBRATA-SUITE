@@ -1,0 +1,114 @@
+<div fxLayout="row" fxLayout.sm="column-reverse" fxLayout.xs="column-reverse" perfectScrollbar class="user-profile-container">
+    <!--
+fxLayout="row-reverse"
+  
+-->
+    <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="65" [fxFlex.lg]="70" [fxFlex.xl]="80">
+
+        <ng-template #profilUserComponent></ng-template>
+
+    </div>
+    <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="35" [fxFlex.lg]="30" [fxFlex.xl]="20">
+        <!--  Info profil user  -->
+        <ng-template #loadingProfile>
+            <div class="app-spinner-element">
+                <mat-progress-spinner diameter="20" color="warn" mode="indeterminate"></mat-progress-spinner>
+            </div>
+        </ng-template>
+        <ng-container *ngIf="userConnected$  | async as userOnline ; else loadingProfile">
+            <div fxLayout="column" fxLayoutAlign="space-between stretch" class="grid-user-infos">
+
+
+                <!-- user avatar -->
+                <div fxFlex="auto">
+
+
+                    <app-avatar-show *ngIf="!toggleAvatarEdition" [userOnline]="userOnline" (toggleAvatarEdition)="toggleAvatarEdition=!toggleAvatarEdition"></app-avatar-show>
+
+                    <app-avatar-edition *ngIf="toggleAvatarEdition" (finishAvatarUpdate)="finishAvatarUpdate($event)" (toggleAvatarEdition)="toggleAvatarEdition=!toggleAvatarEdition"></app-avatar-edition>
+
+
+
+
+                </div>
+                <!-- end user avatar -->
+
+                <!-- action edit formulaire  -->
+                <div fxFlex="auto">
+                    <button mat-raised-button (click)="openBottomSheet()" id="edit-profil-btn"> modifier mes informations</button>
+                </div>
+                <!-- end action edit formulaire   <app-info-user [userOnline]="userOnline"></app-info-user> -->
+
+                <!-- Agent Infos -->
+                <ng-container *ngIf="userOnline?.typeUser === 'AGENT'">
+                    <div fxFlex="auto">
+                        <app-info-user-agent [userData]="userOnline"></app-info-user-agent>
+                    </div>
+                </ng-container>
+
+                <!-- Contribuable Physique Infos -->
+                <ng-container *ngIf="userOnline?.typeUser === 'CONTRIBUABLEPHYSIQUE'">
+                    <div fxFlex="auto">
+                        <app-info-user-contibuable-physique [userData]="userOnline"></app-info-user-contibuable-physique>
+                    </div>
+                </ng-container>
+
+                <!-- Contribuable Contribuable Moral Infos -->
+                <ng-container *ngIf="userOnline?.typeUser === 'CONTRIBUABLEMORAL'">
+                    <div fxFlex="auto">
+                        <app-info-user-contibuable-morale [userData]="userOnline"></app-info-user-contibuable-morale>
+                    </div>
+                </ng-container>
+
+                <!-- Contribuable Acteur Infos -->
+                <ng-container *ngIf="userOnline?.typeUser === 'ACTEUR'">
+                    <div fxFlex="auto">
+                        <app-info-user-acteur [userData]="userOnline"></app-info-user-acteur>
+                    </div>
+                </ng-container>
+
+                <!-- Contribuable Indivision Infos -->
+                <ng-container *ngIf="userOnline?.typeUser === 'INDIVISION'">
+                    <div fxFlex="auto">
+                        <app-info-user-indivision [userData]="userOnline"></app-info-user-indivision>
+                    </div>
+                </ng-container>
+
+                <div fxFlex="auto">
+                    <app-info-user-emails [emails]="userOnline?.emails"> </app-info-user-emails>
+                </div>
+                <div fxFlex="auto">
+                    <app-info-user-telephone [telephones]="userOnline?.telephones"></app-info-user-telephone>
+                </div>
+                <div fxFlex="auto">
+                    <app-info-user-adresse [adresses]="userOnline?.adresses"></app-info-user-adresse>
+                </div>
+                <div fxFlex="auto">
+                    <app-info-user-piece-officiellle [piece]="userOnline?.pieceOfficielle" ></app-info-user-piece-officiellle>
+                </div>
+                <div fxFlex="auto">
+                    <app-info-user-piece-complementaires [pieces]="userOnline?.pieceComplementaires"></app-info-user-piece-complementaires>
+                </div>
+                
+                <div fxFlex="auto"  *ngIf="userOnline?.typeUser === 'AGENT' || userOnline?.typeUser === 'CONTRIBUABLEPHYSIQUE'">
+                    <app-info-user-personnes-contacts [personnesContacts]="userOnline?.personnesContacts"></app-info-user-personnes-contacts>
+                </div>
+                <div fxFlex="auto">
+                    <app-info-user-reseaux-sociaux [reseauxSociaux]="userOnline?.reseauSociaux"></app-info-user-reseaux-sociaux>
+                </div>
+                <div fxFlex="auto"  *ngIf="userOnline?.typeUser ==='ACTEUR' || userOnline?.typeUser ==='CONTRIBUABLEMORAL'">
+                    <app-info-user-activites [activitePrincipale]="userOnline?.activitePrincipale"  [activitesSecondaires]="userOnline?.activiteSecondaires"></app-info-user-activites>
+                </div>
+               <!-- 
+                <div fxFlex="auto" *ngIf="userOnline?.typeUser ==='ACTEUR' || userOnline?.typeUser ==='CONTRIBUABLEMORAL'">
+                    <app-info-user-contact-entreprises [contactEntreprises]="userOnline?.contactEntreprises"></app-info-user-contact-entreprises>
+                </div> 
+                <div fxFlex="auto" *ngIf="userOnline?.typeUser === 'AGENT' || userOnline?.typeUser === 'CONTRIBUABLEPHYSIQUE'" >
+                    <app-info-user-parents [userData]="userOnline"></app-info-user-parents>
+                </div> -->
+            </div>
+        </ng-container>
+
+        <!-- end  Info profil user  -->
+    </div>
+</div>

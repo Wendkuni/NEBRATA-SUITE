@@ -1,0 +1,122 @@
+<div class="container" *ngIf="historiques">
+    <div class="timeline">
+        <div class="timeline-section" *ngFor="let historique of historiques">
+            <div class="timeline-date">
+                Date exécution : {{historique.dateAction | date:'dd/MM/yyyy HH:mm:ss'}}
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="timeline-box">
+                        <div class="bg-primary p-1">
+                            {{historique?.etatInitial?.libelle || "CREATION"}} à {{historique.etatFinal.libelle}}
+                        </div>
+                        <div class="box-content">
+
+                            <mat-list>
+                                <mat-list-item>
+                                    <img *ngIf="historique.executeur?.denomination" matListAvatar [src]="historique.executeur | avatarLogo " alt="image">
+                                    <img *ngIf="historique.executeur?.genre" matListAvatar [src]="historique.executeur | avatarUser " alt="image">
+
+                                    <h3 matLine>
+                                        <small *ngIf="historique.executeur?.denomination">{{historique.executeur?.denomination}}
+                                        <span>{{historique.executeur?.sigle}} </span></small>
+                                        <small *ngIf="historique.executeur?.genre">
+                                        {{historique.executeur?.civilite}}
+                                        {{historique.executeur?.prenoms}}
+                                        {{historique.executeur?.nomDeJeuneFille}}
+                                        {{historique.executeur?.nom}}</small>
+                                    </h3>
+                                    <p matLine>
+                                        <span *ngIf="historique.executeur?.denomination">{{historique.executeur?.sigle}}
+                                    </span>
+                                        <small *ngIf="historique.executeur?.genre">Né(e) le
+                                        {{historique.executeur?.dateNaissance | date:'dd/MM/yyyy'}}
+                                        {{historique.executeur?.lieuNaissance}}</small>
+                                    </p>
+                                </mat-list-item>
+                                <mat-divider></mat-divider>
+                                <div mat-subheader>Information sur l'exécuteur</div>
+                                <mat-list-item class="custom-list-item">
+                                    <mat-icon mat-list-icon>account_circle</mat-icon>
+                                    <div mat-line> <strong>Nom d'utilisateur</strong> : {{historique.executeur?.username}} </div>
+                                </mat-list-item>
+                                <mat-list-item class="custom-list-item">
+                                    <mat-icon mat-list-icon>account_circle</mat-icon>
+                                    <div mat-line><strong>Code contribuable</strong> : {{historique.executeur?.codeUnique}}</div>
+                                </mat-list-item>
+                                <mat-list-item class="custom-list-item" *ngIf="historique.executeur?.denomination">
+                                    <mat-icon mat-list-icon>account_circle</mat-icon>
+                                    <div mat-line> <strong>Dénommination</strong> : {{historique.executeur?.denomination}} </div>
+                                </mat-list-item>
+                                <mat-list-item class="custom-list-item" *ngIf="historique.executeur?.sigle">
+                                    <mat-icon mat-list-icon>account_circle</mat-icon>
+                                    <div mat-line> <strong>Sigle</strong> : {{historique.executeur?.sigle}} </div>
+                                </mat-list-item>
+                                <mat-list-item class="custom-list-item" *ngIf="historique.executeur?.civilite">
+                                    <mat-icon mat-list-icon>account_circle</mat-icon>
+                                    <div mat-line> <strong>Civilité</strong> : {{historique.executeur?.civilite}} </div>
+                                </mat-list-item>
+                                <mat-list-item class="custom-list-item" *ngIf="historique.executeur?.genre">
+                                    <mat-icon mat-list-icon>account_circle</mat-icon>
+                                    <div mat-line> <strong>Genre</strong> : {{historique.executeur?.genre}} </div>
+                                </mat-list-item>
+
+
+                                <mat-divider></mat-divider>
+                                <div mat-subheader>Information sur l'exécution</div>
+                                <mat-list-item class="custom-list-item">
+                                    <mat-icon mat-list-icon>build_circle</mat-icon>
+                                    <div mat-line> <strong>Type d'action</strong> : {{historique?.transition?.description || "Création du dossier"}} </div>
+                                </mat-list-item>
+
+                                <mat-list-item class="custom-list-item">
+                                    <mat-icon mat-list-icon>corporate_fare</mat-icon>
+                                    <div mat-line> <strong>Structure</strong> : {{historique?.transmission?.structure?.nom || "...."}} </div>
+                                </mat-list-item>
+
+                                <mat-list-item class="custom-list-item">
+                                    <mat-icon mat-list-icon>account_tree</mat-icon>
+                                    <div mat-line> <strong>Service</strong> : {{historique?.transmission?.service?.nom || "...."}} </div>
+                                </mat-list-item>
+
+                                <mat-list-item class="custom-list-item">
+                                    <mat-icon mat-list-icon>work</mat-icon>
+                                    <div mat-line> <strong>Bureau</strong> : {{historique?.transmission?.bureau?.nom || "...."}} </div>
+                                </mat-list-item>
+
+                                <mat-divider></mat-divider>
+                                <div mat-subheader>Information sur le dossier</div>
+                                <mat-list-item class="custom-list-item">
+                                    <mat-icon mat-list-icon>build_circle</mat-icon>
+                                    <div mat-line> <strong>Étape actuelle</strong> : {{historique?.etatFinal?.description }} </div>
+                                </mat-list-item>
+                                <mat-list-item class="custom-list-item">
+                                    <mat-icon mat-list-icon>build_circle</mat-icon>
+                                    <div mat-line> <strong>Étape précédente</strong> : {{historique?.etatInitial?.description || "Non créé" }} </div>
+                                </mat-list-item>
+
+                                <mat-divider></mat-divider>
+                                <div mat-subheader>Observation</div>
+                                <div mat-line>
+                                    <p [innerHTML]="historique.observation"></p>
+                                </div>
+                            </mat-list>
+                            <!--
+
+                              
+                                
+                                <div [fxFlex.xs]="100" [fxFlex.sm]="45" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                    <p [innerHTML]="historique.observation"></p>
+                                </div>
+                                -->
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

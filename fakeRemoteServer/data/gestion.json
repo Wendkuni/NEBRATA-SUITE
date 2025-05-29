@@ -1,0 +1,44 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "annee": "1998",
+      "libelle": "Construction",
+      "dateDebut": "05-02-1890",
+      "dateFin": "05-02-1956",
+      "etat": "Inachevé"
+    },
+    {
+      "id": 2,
+      "annee": "1998",
+      "libelle": "Construction",
+      "dateDebut": "05-02-1890",
+      "dateFin": "05-02-1956",
+      "etat": "Inachevé"
+    },
+    {
+      "id": 3,
+      "annee": "1998",
+      "libelle": "Construction",
+      "dateDebut": "05-02-1890",
+      "dateFin": "05-02-1956",
+      "etat": "Inachevé"
+    },
+    {
+      "id": 4,
+      "annee": "1998",
+      "libelle": "Construction",
+      "dateDebut": "05-02-1890",
+      "dateFin": "05-02-1956",
+      "etat": "Inachevé"
+    }
+  ]
+}

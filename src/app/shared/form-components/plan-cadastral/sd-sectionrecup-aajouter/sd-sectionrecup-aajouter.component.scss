@@ -1,0 +1,73 @@
+
+table{
+  width: 100%;
+  border-collapse: collapse; /* Assure une bonne structure de tableau */
+}
+//td, th {
+//  //padding-left: 5px;
+//  min-width: 150px; /* Ajuste selon les besoins */
+//  padding: 8px;
+//  text-align: left;
+//  white-space: nowrap; /* Empêche le texte de se diviser en plusieurs lignes */
+//}
+//.mat-table {
+//  border: 1px solid #e0e0e0;
+//}
+/* Style spécifique pour la colonne "numero" */
+.mat-column-numero {
+  width: 200px;
+}
+
+/* Style spécifique pour la colonne "numeroAncien" */
+.mat-column-numeroAncien {
+  width: 200px;
+  /* border: 1px solid yellow; */
+}
+
+/* Style spécifique pour la colonne "numeroAncien" */
+.mat-column-commune {
+  width: 200px;
+}
+
+/* Style spécifique pour la colonne "section" */
+.mat-column-action {
+  width: 100px;
+  //text-align: center;
+  /* border: 1px solid blue; */
+}
+
+/* Style pour le conteneur du champ de formulaire Material */
+.mat-form-field-wrapper {
+  padding-bottom: 0px;
+}
+
+
+/* Pour les écrans de petite taille (moins de 768px) */
+@media screen and (max-width: 768px) {
+  .table-container {
+    overflow-x: auto; /* Scrolling horizontal seulement */
+    -webkit-overflow-scrolling: touch; /* Amélioration pour scrolling fluide sur iOS */
+  }
+
+  /* Ajuster les colonnes pour les petits écrans */
+  .mat-column-numero,
+  .mat-column-numeroAncien,
+  .mat-column-commune,
+  .mat-column-action {
+    min-width: 100px; /* Réduire la largeur des colonnes */
+  }
+}
+
+/* Pour les écrans très petits (moins de 480px) */
+@media screen and (max-width: 480px) {
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .mat-column-numero,
+  .mat-column-numeroAncien,
+  .mat-column-commune,
+  .mat-column-action {
+    min-width: 80px;
+  }
+}

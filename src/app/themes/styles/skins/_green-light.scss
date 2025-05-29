@@ -1,0 +1,62 @@
+@use '~@angular/material' as mat;
+$green-light-primary: mat.define-palette(mat.$green-palette, 900, 300, 900);
+$green-light-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$green-light-warn: mat.define-palette(mat.$red-palette, 500);
+$green-light-theme: mat.define-light-theme($green-light-primary, $green-light-accent, $green-light-warn);
+$color-yetti: mat.define-palette(mat.$green-palette, 500, 300, 900);
+.circle-yetti {
+    fill: mat.get-color-from-palette($color-yetti);
+}
+
+.background-primary {
+    background: mat.get-color-from-palette($green-light-primary)!important;
+    color: #fff!important;
+}
+
+.color-primary {
+    color: mat.get-color-from-palette($green-light-primary);
+}
+
+.color-warn {
+    color: mat.get-color-from-palette($green-light-warn);
+}
+
+.current-etape-processus {
+    @extend .background-primary;
+    &:after {
+        border-left: 30px solid mat.get-color-from-palette($green-light-primary)!important;
+    }
+}
+
+$ng-select-highlight: mat.get-color-from-palette($green-light-primary) !default;
+$ng-select-primary-text: rgba(black, 0.87) !default;
+$ng-select-primary-light-text: rgba(white, 0.87) !default;
+$ng-select-secondary-text: rgba(black, 0.54) !default;
+$ng-select-secondary-light-text: rgba(white, 0.54) !default;
+$ng-select-disabled-text: rgba(black, 0.38) !default;
+$ng-select-divider: rgba(black, 0.12) !default;
+$ng-select-bg: #ffffff !default;
+.sycad-table-first-header-row {
+    .mat-header-cell {
+        font-weight: 500;
+        font-size: 1em;
+    }
+}
+
+.sycad-table-container-expanded {
+    .mat-row:nth-child(2n+1) {
+        background-color: #f5f7f6;
+    }
+    .mat-row:not(:nth-child(4n+1)) {
+        background-color: #ffffff;
+    }
+}
+
+.sycad-table-container-not-expanded {
+    .mat-row:nth-child(even) {
+        background-color: #f5f7f6;
+    }
+    .mat-row:not(odd) {
+        background-color: #ffffff;
+    }
+}

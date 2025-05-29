@@ -1,0 +1,24 @@
+.attribution-table-container {
+    width: 100%;
+    td,
+    th {
+      &.mat-column-icad {
+        min-width: 400px;
+        margin-right:200px;
+        border: 2px solid red!important;
+      }
+      &.mat-column-dateCreation {
+        min-width: 400px;
+        //border: 2px solid red!important;
+      }
+      &.mat-column-etat {
+        min-width: 400px;
+        //border: 2px solid red!important;
+      }
+  }
+}
+  .example-full-width {
+    width: 60%;
+    cursor: pointer;
+  }
+

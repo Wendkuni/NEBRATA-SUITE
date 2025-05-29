@@ -1,0 +1,53 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "numero": "IM01",
+      "libelle": "Parcelle",
+      "dimenssion": "250 m2",
+      "dateRealisation": "20/04/2021",
+      "parcelle": "PAR-00258",
+      "typeImmeuble": "Amenagement particulier",
+      "apType": "Piscine"
+    },
+    {
+      "id": 2,
+      "numero": "IM01",
+      "libelle": "Parcelle",
+      "dimenssion": "250 m2",
+      "dateRealisation": "20/04/2021",
+      "parcelle": "PAR-00258",
+      "typeImmeuble": "Amenagement particulier",
+      "apType": "Parking"
+    },
+    {
+      "id": 3,
+      "numero": "IM01",
+      "libelle": "Parcelle",
+      "dimenssion": "250 m2",
+      "dateRealisation": "20/04/2021",
+      "parcelle": "PAR-00258",
+      "typeImmeuble": "Amenagement particulier",
+       "apType": "Jardin"
+    },
+    {
+      "id": 4,
+      "numero": "IM01",
+      "libelle": "Parcelle",
+      "dimenssion": "250 m2",
+      "dateRealisation": "20/04/2021",
+      "parcelle": "PAR-00258",
+      "typeImmeuble": "Amenagement particulier",
+      "apType": "Piscine"
+    }
+
+  ]
+}

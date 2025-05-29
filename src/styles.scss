@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import "app/themes/styles/base";
+@import "app/themes/styles/theme";
+@import "app/themes/styles/libs-override";
+@import "app/themes/styles/rtl";
+@import "global-styles/pulse.scss";
+@import "global-styles/users-list.scss";
+@import "global-styles/users-form.scss";
+//custom imports
+@import '~dropzone/dist/min/dropzone.min.css';
+@import "~@ng-select/ng-select/scss/material.theme.scss";
+@import "~leaflet/dist/leaflet.css";
+@import "~leaflet.fullscreen/Control.FullScreen.css";
+.app-spinner-element {
+    margin: auto;
+}
+
+.cdk-overlay-pane .mat-dialog-container {
+    position: relative!important;
+}
+
+.close.mat-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    line-height: 14px;
+    min-width: auto;
+}
+
+.mat-tab-body-wrapper {
+    width: 100%;
+}
+
+.ng-select {
+    padding-bottom: unset;
+    .ng-select-container {
+        min-height: 45px;
+        overflow: unset!important;
+    }
+    /*  &.ng-select-multiple {
+        .ng-select-container {
+            .ng-value-container {
+                .ng-value {
+                    background-color: #1b5e20;
+                }
+            }
+        }
+    }  */
+}
+
+.sycad-element-clickable {
+    cursor: pointer;
+}
+
+.mat-tab-label {
+    justify-content: start!important;
+}
+
+.ps__rail-y {
+    z-index: 999;
+}
+
+.ps__rail-x {
+    z-index: 999;
+}
+
+
+/*
+.mat-sort-header-container {
+    display: flex;
+    justify-content: center;
+}
+*/
+
+.lds-ellipsis {
+    display: inline-block;
+    position: relative;
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+    div {
+        position: absolute;
+        top: 22px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #c2c2c2;
+        animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    }
+    span {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #c2c2c2;
+        animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    }
+    div:nth-child(1),
+    span:nth-child(1) {
+        left: -9px;
+        animation: lds-ellipsis1 0.6s infinite;
+    }
+    div:nth-child(2),
+    span:nth-child(2) {
+        left: -10px;
+        animation: lds-ellipsis2 0.6s infinite;
+    }
+    div:nth-child(3),
+    span:nth-child(3) {
+        left: 2px;
+        animation: lds-ellipsis2 0.6s infinite;
+    }
+    div:nth-child(4),
+    span:nth-child(4) {
+        left: 24px;
+        animation: lds-ellipsis3 0.6s infinite;
+    }
+}
+
+@keyframes lds-ellipsis1 {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes lds-ellipsis3 {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0);
+    }
+}
+
+@keyframes lds-ellipsis2 {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(19px, 0);
+    }
+}
+
+.card-container-form-element {
+    position: relative;
+    margin: 5px;
+    box-shadow: 1px 0px 6px 2px rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 1px 3px 0 rgba(0, 0, 0, .12)!important;
+}
+
+.sycad-loading-shade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sycad-rate-limit-reached {
+    color: #980000;
+    max-width: 100%;
+    z-index: 999;
+    font-size: 26px;
+    text-align: center;
+}
+
+.bouton-voir-plus {
+    margin-left: 7px;
+    cursor: pointer;
+}
+
+.delete-icons {
+    position: absolute!important;
+    top: 0px;
+    right: 0px;
+    width: 25px!important;
+    height: 25px!important;
+    line-height: 20px!important;
+}
+
+.delete-icons-2 {
+    position: relative!important;
+    top: 0px;
+    float: right;
+    right: 0px;
+}
+
+.card-content-form-sycad {
+    padding: 10px;
+}
+
+::ng-deep .mat-menu-content:not(:empty) {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+
+/*
+.badge-secondary {
+    color: #fff;
+    background-color: #6c757d;
+}
+
+.badge {
+    display: inline-block;
+    padding: .25em .4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+*/
+
+.grecaptcha-badge {
+    z-index: 1;
+}
+
+.sycad-app.green-light .mat-snack-bar-container {
+  color: black;
+  background: #f4ca23;
+  font-weight: bolder;
+}
+
+
+.piece-telechargeable {
+  padding-left: 1em;
+}
+
+
+//green theme
+.green-light{
+
+ .mat-tab-label-active {
+  background-color:#1b5e20;
+  color: white !important;
+  opacity: 1;
+}
+
+}
+
+
+//orange theme
+.orange-light
+{
+  .mat-tab-label-active {
+   background-color: #fb8c00;
+   color: white !important;
+   opacity: 1;
+ }
+
+ }
+
+
+ //blue theme
+.blue-dark
+{
+  .mat-tab-label-active {
+   background-color: #0277bd;;
+   color: white !important;
+   opacity: 1;
+ }
+
+ }
+
+
+
+
+

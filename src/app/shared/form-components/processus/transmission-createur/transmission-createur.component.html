@@ -1,0 +1,54 @@
+<form [formGroup]="transmissionCreateurForm">
+
+    <div fxLayout="row" fxLayoutAlign="start" class="step-creation">
+        <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="70" [fxFlex.xl]="80">
+            <ng-select [items]="structureRemoteAutocomplete.listRessource$ | async" [typeahead]="structureRemoteAutocomplete.term" [searchFn]="customSearchFn" [loading]="structureRemoteAutocomplete.loading" (search)="onSearchStructure($event)" (change)="onChangeStructure($event)"
+                appendTo="body" [selectOnTab]="true" bindLabel="nom" bindValue="id" labelForId="structure" placeholder="Structure" formControlName="structure">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+            </ng-select>
+            <mat-error *ngIf="structure.errors?.minimumAffectationExist">
+                Un plan cadastral doit obligatoire être affecté à un bureau ou service ou à une structure
+            </mat-error>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start">
+        <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="60" [fxFlex.xl]="70">
+            <ng-select [items]="serviceRemoteAutocomplete.listRessource$ | async" [typeahead]="serviceRemoteAutocomplete.term" [searchFn]="customSearchFn" [loading]="serviceRemoteAutocomplete.loading" (search)="onSearchService($event)" (change)="onChangeService($event)"
+                appendTo="body" [selectOnTab]="true" bindLabel="nom" bindValue="id" placeholder="Service" formControlName="service">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+            </ng-select>
+        </div>
+
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="start">
+        <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="80" [fxFlex.lg]="60" [fxFlex.xl]="70">
+            <ng-select [items]="bureauRemoteAutocomplete.listRessource$ | async" [typeahead]="bureauRemoteAutocomplete.term" [searchFn]="customSearchFn" [loading]="bureauRemoteAutocomplete.loading" (search)="onSearchBureau($event)" appendTo="body" [selectOnTab]="true"
+                bindLabel="nom" bindValue="id" labelForId="bureau" placeholder="Bureau" formControlName="bureau">
+                <ng-template ng-loadingspinner-tmp>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+
+            </ng-select>
+        </div>
+    </div>
+</form>

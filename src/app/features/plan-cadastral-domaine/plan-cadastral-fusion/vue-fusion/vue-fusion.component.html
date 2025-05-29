@@ -1,0 +1,1619 @@
+<mat-card>
+
+  <mat-card-header>
+    <mat-card-title>{{fusion.etat.libelle}}</mat-card-title>
+    <mat-card-subtitle>{{fusion.etat.description}}</mat-card-subtitle>
+    <ng-container *ngIf="fusion && !noOpenActions && fusion?.transitions?.length>0">
+      <app-action-detail-dossier [numero]="fusion.numero" [url]="urlAction" [transitions]="fusion.transitions"></app-action-detail-dossier>
+    </ng-container>
+  </mat-card-header>
+    <form *ngIf="fusion">
+        <mat-card-content>
+            <mat-tab-group class="mat-tab-active-color">
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>content_paste</mat-icon>
+                            Informations de base
+                        </ng-template>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Numéro </mat-label>
+                                <input matInput placeholder="Date de création" value="{{fusion.numero}}"
+                                    [readonly]="true">
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Date dossier (*)</mat-label>
+                                <input matInput value="{{fusion.dateCreationDossier | date:'dd/MM/yyyy'}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Objet </mat-label>
+                                <input matInput [attr.autocomplete]="'off'" value="{{fusion.objet}}"
+                                    [readonly]="true" />
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Date externe (*)</mat-label>
+                                <input matInput placeholder="Date de création"
+                                    value="{{fusion.dateExterne | date:'dd/MM/yyyy'}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Référence externe </mat-label>
+                                <input matInput [attr.autocomplete]="'off'" value="{{fusion.refExterne}}"
+                                    [readonly]="true" />
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Statut actif du dossier </mat-label>
+                                <input matInput value="{{fusion.etatDossier | showBooleanValue}}" [readonly]="true">
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px"
+                            fxLayoutAlign="start">
+
+                        </div>
+
+                        <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px"
+                            fxLayoutAlign="start">
+
+                        </div>
+                    </form>
+                </mat-tab>
+
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>list_alt</mat-icon>
+                            Parcelle
+                        </ng-template>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>ICAD </mat-label>
+                                <input matInput value="{{fusion.parcelle?.icad}}" [readonly]="true">
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Numéro</mat-label>
+                                <input matInput value="{{fusion.parcelle?.numero}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Numéro ancien </mat-label>
+                                <input matInput value="{{fusion.parcelle?.numeroAncien}}" [readonly]="true">
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>libelle</mat-label>
+                                <input matInput value="{{fusion.parcelle?.libelle}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Etat mise en valeur </mat-label>
+                                <input matInput value="{{fusion.parcelle?.etatMev}}" [readonly]="true">
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Destination</mat-label>
+                                <input matInput value="{{fusion.parcelle?.destination?.libelle}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Superficie </mat-label>
+                                <input matInput value="{{fusion.parcelle?.superficie}}" [readonly]="true">
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Etat fusion</mat-label>
+                                <input matInput value="{{fusion.parcelle?.etatAttribution}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Numéro Ilot </mat-label>
+                                <input matInput value="{{fusion.parcelle?.ilot?.numero}}" [readonly]="true">
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Numéro ancien Ilot</mat-label>
+                                <input matInput value="{{fusion.parcelle?.ilot?.numeroAncien}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Arrondissement </mat-label>
+                                <input matInput value="{{fusion.parcelle?.arrondissement?.nom}}" [readonly]="true">
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Commune</mat-label>
+                                <input matInput value="{{fusion.parcelle?.arrondissement?.commune?.nom}}"
+                                    [readonly]="true">
+
+                            </mat-form-field>
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                <mat-label>Localité</mat-label>
+                                <input matInput value="{{fusion.parcelle?.localite?.nom}}" [readonly]="true">
+
+                            </mat-form-field>
+                        </div>
+                    </form>
+
+                    <app-cycledevie-parcelle [icad]="fusion.parcelle?.icad"></app-cycledevie-parcelle>
+                </mat-tab>
+
+                <mat-tab *ngIf="fusion.acteurExterne">
+                    <ng-template mat-tab-label>
+                        <mat-icon>person</mat-icon>
+                        Expert Geometre
+                    </ng-template>
+
+                    <div class="card-geometre-expert" fxLayout="column" fxLayoutGap.gt-sm="20px" [fxFlex.xs]="100"
+                        [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+
+                        <h3>Détails de l' {{ fusion.acteurExterne.denomination }}
+                            {{ fusion.acteurExterne.categorie?.libelle }}
+                        </h3>
+                        <mat-card class="p-0 m-5">
+                            <div class="bg-primary " fxLayout="row" fxLayoutAlign="space-between center">
+                                <h3 class="user-name"> {{ fusion.acteurExterne.denomination }} {{
+                                    fusion.acteurExterne.categorie?.libelle}}
+                                </h3>
+                            </div>
+                            <div class="user-content" fxLayout="row" fxLayoutAlign="space-around center">
+                                <div fxFlex="30" fxLayout="column" fxLayoutAlign="center center">
+                                    <div class="user-img">
+                                        <img [src]="  fusion.acteurExterne | acteurLogo" class="transition-2">
+                                    </div>
+                                </div>
+                                <div fxFlex="90" fxLayout="column"
+                                    class="user-details user-details-geometre transition-2">
+                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                        <mat-icon class="muted-text">money</mat-icon>
+                                        <strong>Code Unique:</strong>
+                                        <strong>{{ fusion.acteurExterne.codeUnique==null?
+                                            '...': fusion.acteurExterne.codeUnique }}
+                                        </strong>
+                                    </p>
+                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                        <mat-icon class="muted-text">business</mat-icon>
+                                        <strong>Sigle:</strong> <span> {{ fusion.acteurExterne.sigle==null? '...':
+                                            fusion.acteurExterne.sigle }}</span>
+                                    </p>
+                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                        <mat-icon class="muted-text">calendar_today</mat-icon>
+                                        <strong>Date Creation:</strong> <span>{{
+                                            fusion.acteurExterne.dateDeCreation==null? '...':
+                                            fusion.acteurExterne.dateDeCreation | date:'dd/MM/yyyy' }}</span>
+                                        <!-- <span *ngIf="bornage.acteurExterne.dateDeCreation==null">{{ ... }}</span> -->
+                                    </p>
+                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                        <mat-icon class="muted-text">person</mat-icon>
+                                        <strong>Categorie Acteur:</strong>
+                                        <span>{{
+                                            fusion.acteurExterne.categorie.libelle==null? '...':
+                                            fusion.acteurExterne.categorie.libelle }}
+                                        </span>
+                                    </p>
+                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                        <mat-icon class="muted-text">money</mat-icon>
+                                        <strong>Code Categorie Acteur:</strong> <span>{{
+                                            fusion.acteurExterne.categorie.code==null? '...':
+                                            fusion.acteurExterne.categorie.code }}</span>
+                                    </p>
+                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                        <mat-icon class="muted-text">account_balance</mat-icon>
+                                        <strong>Status juridique:</strong>
+                                        <span>{{fusion.acteurExterne.statusJuridique.libelle==null?
+                                            '...':fusion.acteurExterne.statusJuridique.libelle}}</span>
+                                    </p>
+                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                        <mat-icon class="muted-text">money</mat-icon>
+                                        <strong>Code Status juridique:</strong>
+                                        <span>{{fusion.acteurExterne.statusJuridique.code==null?
+                                            '...':fusion.acteurExterne.statusJuridique.code}}</span>
+                                    </p>
+                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                        <mat-icon class="muted-text">account_balance</mat-icon>
+                                        <strong>Regime Fiscale:</strong> <span>{{
+                                            fusion.acteurExterne.regimeFiscal?.libelle==null? '...':
+                                            fusion.acteurExterne.regimeFiscal?.libelle}}</span>
+
+                                    </p>
+
+
+
+                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                        <mat-icon class="muted-text">person</mat-icon>
+                                        <strong> Information profils:</strong>
+                                        <span mat-button [matMenuTriggerFor]="listProfilActeurs"
+                                            class="bouton-voir-plus">
+                                            <strong>Voir profils</strong>
+                                        </span>
+                                        <mat-menu #listProfilActeurs="matMenu" class="sycad-menu-panel-profil-info">
+                                            <ng-template [ngIf]="fusion.acteurExterne?.categorie.profils.length==0">
+
+                                                <mat-card click-stop-propagation>
+                                                    <mat-card-content>
+                                                        <div fxLayout="column" fxLayoutAlign="start center">
+                                                            <div class="user-img">
+                                                                <img [src]=" fusion.acteurExterne | avatarLogo"
+                                                                    class="transition-2">
+                                                            </div>
+                                                            <mat-icon class="text-muted">person</mat-icon>
+                                                            <span>Aucune profil trouvé</span>
+                                                        </div>
+                                                    </mat-card-content>
+                                                </mat-card>
+
+                                            </ng-template>
+
+                                            <mat-card class="container-card-fusion" click-stop-propagation>
+                                                <mat-card-header>
+                                                    <mat-card-title>
+
+                                                        <mat-icon color="primary">verified_user</mat-icon>
+                                                        <span>Information Profils Acteur</span>
+
+                                                    </mat-card-title>
+                                                </mat-card-header>
+                                                <mat-divider></mat-divider>
+                                                <mat-card-content class="card-profil-acteur">
+                                                    <ng-template ngFor let-profil
+                                                        [ngForOf]="fusion.acteurExterne?.categorie.profils">
+                                                        <mat-list>
+                                                            <mat-list-item>
+                                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                                    <mat-icon class="text-muted">person_pin</mat-icon>
+                                                                    &nbsp;
+                                                                    <strong>Profil de l'Acteur</strong>&nbsp;
+                                                                    <mat-icon class="text-muted icon_subdirectory">
+                                                                        subdirectory_arrow_right</mat-icon>
+                                                                    <span>{{profil.libelle }}</span>
+                                                                </p>
+                                                            </mat-list-item>
+                                                            <mat-list-item>
+                                                                <p fxLayout="row" fxLayoutAlign="start center">
+                                                                    <mat-icon class="text-muted">play_for_work
+                                                                    </mat-icon>
+                                                                    <strong>Les Roles de l'Acteur</strong>
+                                                                </p>
+                                                                <mat-divider></mat-divider>
+                                                            </mat-list-item>
+
+                                                            <mat-chip-list class="role-acteur">
+                                                                <ng-template ngFor let-role [ngForOf]="profil.roles">
+                                                                    <mat-chip>
+                                                                        <p fxLayout="row" fxLayoutAlign="start center">
+                                                                            <mat-icon class="muted-text">done</mat-icon>
+                                                                            <span>{{role.libelle }}</span>
+                                                                        </p>
+                                                                    </mat-chip>
+                                                                </ng-template>
+                                                            </mat-chip-list>
+
+
+
+                                                        </mat-list>
+                                                    </ng-template>
+                                                </mat-card-content>
+                                            </mat-card>
+                                        </mat-menu>
+                                    </p>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                </mat-tab>
+                <mat-tab *ngIf="fusion.contribuableBeneficiaire">
+                    <ng-template mat-tab-label>
+                        <mat-icon>person</mat-icon>
+                        Contribuable beneficiaire
+                    </ng-template>
+                    <div>
+
+                        <div *ngIf="fusion.contribuableBeneficiaire" fxLayout="row" fxLayout.lt-md="row wrap"
+                            fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                            <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100"
+                                [fxFlex.xl]="100">
+                                <mat-card-header>
+                                    <mat-card-title>
+                                        Détail contribuable
+                                    </mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <app-card-general-contribuable-form
+                                        [contribuable]="fusion.contribuableBeneficiaire">
+                                    </app-card-general-contribuable-form>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
+                </mat-tab>
+
+                <mat-tab *ngIf="fusion.structureBeneficiaire">
+                    <ng-template mat-tab-label>
+                        <mat-icon>business</mat-icon>
+                        Structure bénéficiaire
+                    </ng-template>
+                    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100"
+                            [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                            <mat-label>Code</mat-label>
+                            <input matInput value="{{fusion.structureBeneficiaire.code}}" [readonly]="true">
+                        </mat-form-field>
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100"
+                            [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                            <mat-label>Nom</mat-label>
+                            <input matInput value="{{fusion.structureBeneficiaire.nom}}" [readonly]="true">
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100"
+                            [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                            <mat-label>Type structure</mat-label>
+                            <input matInput value="{{fusion.structureBeneficiaire?.typeStructure?.nom}}"
+                                [readonly]="true">
+                        </mat-form-field>
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100"
+                            [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                            <mat-label>Sigle</mat-label>
+                            <input matInput value="{{fusion.structureBeneficiaire.sigle}}" [readonly]="true">
+                        </mat-form-field>
+                    </div>
+                </mat-tab>
+
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>business</mat-icon>
+                            Structure
+                        </ng-template>
+                        <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px"
+                            fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                                <mat-label>Structure</mat-label>
+                                <input matInput value="{{fusion.transmission?.structure?.nom}}" [readonly]="true">
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px"
+                            fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                                <mat-label>Service</mat-label>
+                                <input matInput value="{{fusion.transmission?.service?.nom}}" [readonly]="true">
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px"
+                            fxLayoutAlign="start">
+                            <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                                <mat-label>Bureau</mat-label>
+                                <input matInput value="{{fusion.transmission?.bureau?.nom}}" [readonly]="true">
+                            </mat-form-field>
+                        </div>
+                    </form>
+                </mat-tab>
+
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon> list_alt</mat-icon>
+                        Liste parcelles
+                    </ng-template>
+
+                    <div fxLayout="row" fxLayout="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+                        <table mat-table [dataSource]="dataSourceParcelles" class="mat-elevation-z8" [fxFlex.xs]="100"
+                            [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="70">
+                            <ng-container matColumnDef="icad">
+                                <th mat-header-cell *matHeaderCellDef> ICAD </th>
+                                <td mat-cell *matCellDef="let parcelle"> {{parcelle.icad}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="numero">
+                                <th mat-header-cell *matHeaderCellDef> Numero </th>
+                                <td mat-cell *matCellDef="let parcelle"> {{parcelle.numero}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="libelle">
+                                <th mat-header-cell *matHeaderCellDef>Libelle </th>
+                                <td mat-cell *matCellDef="let parcelle"> {{parcelle.libelle}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="etatMev">
+                                <th mat-header-cell *matHeaderCellDef>Etat Mise-En-Val </th>
+                                <td mat-cell *matCellDef="let parcelle"> {{parcelle.etatMev}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="destination">
+                                <th mat-header-cell *matHeaderCellDef>Destination </th>
+                                <td mat-cell *matCellDef="let parcelle"> {{parcelle.destination?.libelle}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="superficie">
+                                <th mat-header-cell *matHeaderCellDef>Superficie </th>
+                                <td mat-cell *matCellDef="let parcelle"> {{parcelle.superficie}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="etatAttribution">
+                                <th mat-header-cell *matHeaderCellDef>Etat Attribution </th>
+                                <td mat-cell *matCellDef="let parcelle"> {{parcelle.etatAttribution}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="numeroIlot">
+                                <th mat-header-cell *matHeaderCellDef>Numero Ilot </th>
+                                <td mat-cell *matCellDef="let parcelle"> {{parcelle.ilot?.numero}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="arrondissement">
+                                <th mat-header-cell *matHeaderCellDef>Arrondissement </th>
+                                <td mat-cell *matCellDef="let parcelle"> {{parcelle.arrondissement?.nom}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="commune">
+                                <th mat-header-cell *matHeaderCellDef>Commune </th>
+                                <td mat-cell *matCellDef="let parcelle"> {{parcelle.arrondissement?.commune?.nom}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="localite">
+                                <th mat-header-cell *matHeaderCellDef>Localité </th>
+                                <td mat-cell *matCellDef="let parcelle"> {{parcelle.localite?.nom}} </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsParcelle"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsParcelle;"></tr>
+
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="no-data-row" [attr.colspan]="displayedColumnsParcelle.length">
+                                <strong>Aucune donnée ne correspond à ce filtre </strong> </td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                </mat-tab>
+
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon>attach_file</mat-icon>
+                        Pièces fournies
+                    </ng-template>
+                    <div fxLayout="row" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+                        <table mat-table [dataSource]="dataSourcePiece" class="mat-elevation-z8" [fxFlex.xs]="100"
+                            [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="70">
+                            <ng-container matColumnDef="categorie">
+                                <th mat-header-cell *matHeaderCellDef> Catégorie</th>
+                                <td mat-cell *matCellDef="let listPiece">
+                                    {{listPiece.categorie?.categoriePiece?.libelle}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="reference">
+                                <th mat-header-cell *matHeaderCellDef> Référence </th>
+                                <td mat-cell *matCellDef="let listPiece"> {{listPiece.reference}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="autorite">
+                                <th mat-header-cell *matHeaderCellDef> Autorité de délivrance </th>
+                                <td mat-cell *matCellDef="let listPiece"> {{listPiece.autoriteDeDelivrance}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="dateDelivrance">
+                                <th mat-header-cell *matHeaderCellDef> Date de délivrance </th>
+                                <td mat-cell *matCellDef="let listPiece"> {{listPiece.dateDelivrance |
+                                    date:'dd/MM/yyyy'}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="dateExpiration">
+                                <th mat-header-cell *matHeaderCellDef> Date d'expiration </th>
+                                <td mat-cell *matCellDef="let listPiece"> {{listPiece.dateExpiration|
+                                    date:'dd/MM/yyyy'}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="imageUrl">
+                                <th mat-header-cell *matHeaderCellDef> Pièce jointe </th>
+                                <td mat-cell *matCellDef="let listPiece">
+
+                                  <span *ngIf="!listPiece.pieceJointe">Aucune pièce jointe</span>
+                                  <ng-container *ngIf="listPiece.pieceJointe">
+                                    <span *ngFor="let piece of listPiece.pieceJointe; let i = index"  class="piece-telechargeable"> <a   href="{{piece | generalDownload}}">Télécharger {{i+1}}</a></span>
+                                  </ng-container>
+                              </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsPiece"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsPiece;"></tr>
+
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="no-data-row" [attr.colspan]="displayedColumnsPiece.length"><strong>Aucune donnée ne
+                                    correspond à ce filtre</strong> </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </mat-tab>
+
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon>list_alt</mat-icon>
+                        Documents
+                    </ng-template>
+                    <div fxLayout="row" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+                        <table mat-table [dataSource]="dataSourceDocument" class="mat-elevation-z8" [fxFlex.xs]="100"
+                            [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="70">
+                            <ng-container matColumnDef="code">
+                                <th mat-header-cell *matHeaderCellDef> Code </th>
+                                <td mat-cell *matCellDef="let document"> {{document.code}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="libelle">
+                                <th mat-header-cell *matHeaderCellDef> Libelle </th>
+                                <td mat-cell *matCellDef="let document"> {{document.libelle}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="dateEdition">
+                                <th mat-header-cell *matHeaderCellDef> Date d'édition </th>
+                                <td mat-cell *matCellDef="let document"> {{document.dateDoc | date : 'dd/MM/yyyy'}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="dateValidite">
+                                <th mat-header-cell *matHeaderCellDef> Date de validité </th>
+                                <td mat-cell *matCellDef="let document"> {{document.dateValidite | date : 'dd/MM/yyyy'}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="typeDocument">
+                                <th mat-header-cell *matHeaderCellDef>Type de document </th>
+                                <td mat-cell *matCellDef="let document"> {{document.documentType.libelle}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef> Pièce jointe </th>
+                                <td mat-cell *matCellDef="let document">
+                                    <a href="{{document?.pieceJointe | generalDownload}}" target="_blank"
+                                        color="primary">
+                                        Télécharger
+                                        <mat-icon>save_alt</mat-icon>
+                                    </a>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsDocument"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsDocument;"></tr>
+
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="no-data-row" [attr.colspan]="displayedColumnsDocument.length"><strong>Aucune donnée ne
+                                    correspond à ce filtre</strong> </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </mat-tab>
+
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon>move_to_inbox</mat-icon>
+                        Mandats
+                    </ng-template>
+                    <div fxLayout="row" fxLayout="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+                        <table mat-table [dataSource]="dataSourceMandat" class="mat-elevation-z8" [fxFlex.xs]="100"
+                            [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="70">
+                            <ng-container matColumnDef="objet">
+                                <th mat-header-cell *matHeaderCellDef> Objet </th>
+                                <td mat-cell *matCellDef="let mandat"> {{mandat.objet}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="debut">
+                                <th mat-header-cell *matHeaderCellDef> Debut </th>
+                                <td mat-cell *matCellDef="let mandat"> {{mandat.debut | date : 'dd/MM/yyyy'}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="fin">
+                                <th mat-header-cell *matHeaderCellDef> Fin </th>
+                                <td mat-cell *matCellDef="let mandat"> {{mandat.fin | date : 'dd/MM/yyyy'}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="reference">
+                                <th mat-header-cell *matHeaderCellDef> Reference </th>
+                                <td mat-cell *matCellDef="let mandat"> {{mandat.reference}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="description">
+                                <th mat-header-cell *matHeaderCellDef> Description </th>
+                                <td mat-cell *matCellDef="let mandat"> {{mandat.description}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="mandant">
+                                <th mat-header-cell *matHeaderCellDef>Mandant </th>
+                                <td mat-cell *matCellDef="let mandat"> {{mandat.mandant?.libelle}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="mandataire">
+                                <th mat-header-cell *matHeaderCellDef>Mandataire </th>
+                                <td mat-cell *matCellDef="let mandat"> {{mandat.mandataire?.libelle}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef> Piece jointe </th>
+                                <td mat-cell *matCellDef="let mandat">
+                                    <a href="{{mandat.pieceJointe | generalDownload}}" target="_blank" color="primary">
+                                        Telecharger
+                                        <mat-icon>save_alt</mat-icon>
+                                    </a>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsMandat"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsMandat;"></tr>
+
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="no-data-row" [attr.colspan]="displayedColumnsMandat.length"><strong>Aucune donnée ne
+                                    correspond à ce filtre</strong> </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </mat-tab>
+
+                <mat-tab>
+                    <mat-tab-group>
+                        <ng-template mat-tab-label>
+                            <mat-icon>payment</mat-icon>
+                            Titres de recette
+                        </ng-template>
+
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <mat-icon>payment</mat-icon>
+                                Informations Base Titres Recette
+                            </ng-template>
+
+                            <div class="titre-recette-table" fxLayout="row" fxLayoutGap.gt-sm="20px"
+                                fxLayoutAlign="start">
+
+                                <table mat-table [dataSource]="dataSourceTitreRecette" class="mat-elevation-z8"
+                                    #outerSort="matSort" multiTemplateDataRows [fxFlex.xs]="100" [fxFlex.sm]="100"
+                                    [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="70" matSort>
+                                    <ng-container matColumnDef="numeroTitre">
+                                        <th mat-header-cell *matHeaderCellDef> N° Titre Recette </th>
+                                        <td mat-cell *matCellDef="let titreRecette"> {{titreRecette.numeroTitre}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="numeroTitreRecetteParent">
+                                        <th mat-header-cell *matHeaderCellDef> N° Titre Recette Parent </th>
+                                        <td mat-cell *matCellDef="let titreRecette">
+                                            {{titreRecette.numeroTitreRecetteParent}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="etatTitre">
+                                        <th mat-header-cell *matHeaderCellDef>Etat Titre Recette</th>
+                                        <td mat-cell *matCellDef="let titreRecette"> {{titreRecette.etatTitre }} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="typeTitreRecette">
+                                        <th mat-header-cell *matHeaderCellDef>Type Titre Recette</th>
+                                        <td mat-cell *matCellDef="let titreRecette">
+                                            {{titreRecette.typeTitreRecette.libelle }} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="natureTitreRecette">
+                                        <th mat-header-cell *matHeaderCellDef>Nature Titre Recette</th>
+                                        <td mat-cell *matCellDef="let titreRecette"> {{titreRecette.natureTitreRecette
+                                            }} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="dateTitre">
+                                        <th mat-header-cell *matHeaderCellDef>Date Titre</th>
+                                        <td mat-cell *matCellDef="let titreRecette"> {{ titreRecette.dateTitre }} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="montantGlobal">
+                                        <th mat-header-cell *matHeaderCellDef> Montant Global </th>
+                                        <td mat-cell *matCellDef="let titreRecette"> {{titreRecette.montantGlobal}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="montant">
+                                        <th mat-header-cell *matHeaderCellDef> Montant Net </th>
+                                        <td mat-cell *matCellDef="let titreRecette"> {{titreRecette.montant-titreRecette.montantExoneration}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="montantRestant">
+                                        <th mat-header-cell *matHeaderCellDef>Montant Restant</th>
+                                        <td mat-cell *matCellDef="let titreRecette"> {{titreRecette.montantRestant}}
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="montantReglement">
+                                        <th mat-header-cell *matHeaderCellDef> Montant Reglement</th>
+                                        <td mat-cell *matCellDef="let titreRecette"> {{titreRecette.montantReglement}}
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="estSolder">
+                                        <th mat-header-cell *matHeaderCellDef> Solde</th>
+                                        <td mat-cell *matCellDef="let titreRecette">
+                                            {{titreRecette.estSolder==true?'Soldé':'Non soldé'}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="montantExoneration">
+                                        <th mat-header-cell *matHeaderCellDef>Exoneration</th>
+                                        <td mat-cell *matCellDef="let titreRecette"> {{titreRecette.montantExoneration}}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="exerciceFiscale">
+                                        <th mat-header-cell *matHeaderCellDef>Exercice Fiscale</th>
+                                        <td mat-cell *matCellDef="let titreRecette">
+                                            {{titreRecette.exerciceFiscale.libelle}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="anneeExFiscale">
+                                        <th mat-header-cell *matHeaderCellDef>An Exercice Fiscale</th>
+                                        <td mat-cell *matCellDef="let titreRecette">
+                                            {{titreRecette.exerciceFiscale.annee}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="dateDebutExFiscale">
+                                        <th mat-header-cell *matHeaderCellDef>Debut Exercice Fiscale</th>
+                                        <td mat-cell *matCellDef="let titreRecette">
+                                            {{titreRecette.exerciceFiscale.dateDebut}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="dateFinExFiscale">
+                                        <th mat-header-cell *matHeaderCellDef>Fin Exercice Fiscale</th>
+                                        <td mat-cell *matCellDef="let titreRecette">
+                                            {{titreRecette.exerciceFiscale.dateFin}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="etatExFiscale">
+                                        <th mat-header-cell *matHeaderCellDef>Etat Exercice Fiscale</th>
+                                        <td mat-cell *matCellDef="let titreRecette">
+                                            {{titreRecette.exerciceFiscale.etat}} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="expandedDetail">
+                                        <td mat-cell *matCellDef="let element"
+                                            [attr.colspan]="displayedColumnsTitreRecette.length">
+                                            <div class="nested-table-element-detail"
+                                                *ngIf="element.reglements?.data?.length"
+                                                [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                                                <div fxLayout="column" class="inner-table-reg" *ngIf="expandedElement">
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="Rechercher un réglement"
+                                                            (keyup)="applyFilterReglement($event.target.value)"
+                                                            #inputFilterReglement>
+                                                        <mat-icon matSuffix
+                                                            (click)="inputFilterReglement.value='';clearFilterReglement()"
+                                                            class="sycad-element-clickable">clear</mat-icon>
+                                                    </mat-form-field>
+
+                                                    <table #innerTables mat-table #innerSort="matSort"
+                                                        [dataSource]="element.reglements" matSort
+                                                        class="mat-elevation-z8">
+                                                        <ng-container matColumnDef="numeroQuittance">
+                                                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                numeroQuittance </th>
+                                                            <td mat-cell *matCellDef="let element">
+                                                                {{element.numeroQuittance}}
+                                                            </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="dateReglement">
+                                                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                dateReglement
+                                                            </th>
+                                                            <td mat-cell *matCellDef="let element">
+                                                                {{element.dateReglement}}
+                                                            </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="montant">
+                                                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                montant </th>
+                                                            <td mat-cell *matCellDef="let element"> {{element.montant}}
+                                                            </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="modeReglement">
+                                                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                modeReglement
+                                                            </th>
+                                                            <td mat-cell *matCellDef="let element">
+                                                                {{element.modeReglement.libelle}} </td>
+                                                        </ng-container>
+                                                        <tr mat-header-row *matHeaderRowDef="displayedColumnsReglement">
+                                                        </tr>
+                                                        <tr mat-row
+                                                            *matRowDef="let row; columns: displayedColumnsReglement;">
+                                                        </tr>
+                                                        <tr class="mat-row" *matNoDataRow>
+                                                            <td class="no-data-row"
+                                                                [attr.colspan]="displayedColumnsReglement.length"><strong>Aucune
+                                                                donnée ne correspond à ce filtre</strong> </td>
+                                                        </tr>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumnsTitreRecette"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumnsTitreRecette;"
+                                        [class.nested-element-row]="row.reglements?.data?.length"
+                                        (click)="toggleRowReglement(row)"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']"
+                                        class="nested-detail-row">
+                                    </tr>
+
+                                    <tr class="mat-row" *matNoDataRow>
+                                        <td class="no-data-row" [attr.colspan]="displayedColumnsTitreRecette.length"><strong>Aucune
+                                            donnée ne correspond à ce filtre</strong> </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <mat-icon>payment</mat-icon>
+                                Impots
+                            </ng-template>
+                            <div class="cursor-mouse">
+                                <table multiTemplateDataRows mat-table [dataSource]="dataSourceImpot" [fxFlex.xs]="100"
+                                    [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="70"
+                                    class="mat-elevation-z8">
+                                    <ng-container matColumnDef="natureImpot">
+                                        <th mat-header-cell *matHeaderCellDef> Nature Impot </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.natureImpot?.libelle}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="typeNatureImpot">
+                                        <th mat-header-cell *matHeaderCellDef> Type Nature Impot </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.natureImpot?.typeNatureImpot}}
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="codeSI">
+                                        <th mat-header-cell *matHeaderCellDef> Code SI</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.natureImpot?.codeSI?.libelle}}
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="libelleCourt">
+                                        <th mat-header-cell *matHeaderCellDef> Libelle Court</th>
+                                        <td mat-cell *matCellDef="let element"> {{element?.natureImpot?.libelleCourt}}
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="montant">
+                                        <th mat-header-cell *matHeaderCellDef> Montant </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.montant}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="montantExoneration">
+                                        <th mat-header-cell *matHeaderCellDef> Exoneration </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.montantExoneration}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="montantNet">
+                                        <th mat-header-cell *matHeaderCellDef> Montant Net </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.montant - element.montantExoneration}} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="typeDroit">
+                                        <th mat-header-cell *matHeaderCellDef> Type Droit</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.typeDroit}} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="expandedDetail1">
+                                        <td mat-cell *matCellDef="let element"
+                                            [attr.colspan]="displayedColumnsImpot.length">
+                                            <div class="nested-table-element-detail-impot"
+                                                [@detailExpand]="element == expandedElement1 ? 'expanded' : 'collapsed'">
+                                                <div fxLayout="column" class="inner-table-val-liq"
+                                                    *ngIf="expandedElement1">
+                                                    <div>
+                                                        <mat-form-field [fxFlex.xs]="100" [fxFlex.sm]="100"
+                                                            [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="70">
+
+                                                            <input matInput
+                                                                placeholder="Rechercher une valeur element liquidation"
+                                                                (keyup)="applyFilterValeurElmntLiquid($event.target.value)"
+                                                                #inputFilterValeurElmntLiquid>
+                                                            <mat-icon matSuffix
+                                                                (click)="inputFilterValeurElmntLiquid.value='';clearFilterValeurElmntLiquid()"
+                                                                class="sycad-element-clickable">clear</mat-icon>
+                                                        </mat-form-field>
+                                                    </div>
+
+                                                    <table #innerTables1 mat-table
+                                                        [dataSource]="element.valeurElementLiquidations"
+                                                        [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100"
+                                                        [fxFlex.lg]="100" [fxFlex.xl]="70" #innerSort1="matSort" matSort
+                                                        class="mat-elevation-z8">
+                                                        <ng-container matColumnDef="baseImpot">
+                                                            <th mat-header-cell *matHeaderCellDef> Base Impot </th>
+                                                            <td mat-cell *matCellDef="let titreRecette">
+                                                                {{titreRecette.baseImpot}} </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="montant">
+                                                            <th mat-header-cell *matHeaderCellDef> Montant </th>
+                                                            <td mat-cell *matCellDef="let titreRecette">
+                                                                {{titreRecette.montant}} </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="taux">
+                                                            <th mat-header-cell *matHeaderCellDef> Taux </th>
+                                                            <td mat-cell *matCellDef="let titreRecette">
+                                                                {{titreRecette.taux}} </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="titrebaseImpot">
+                                                            <th mat-header-cell *matHeaderCellDef> Titre Base Imp
+                                                            </th>
+                                                            <td mat-cell *matCellDef="let titreRecette">
+                                                                {{titreRecette.elementImpot?.baseImpot?.titre}} </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="expressionbaseImpot">
+                                                            <th mat-header-cell *matHeaderCellDef> Expresion Base Imp
+                                                            </th>
+                                                            <td mat-cell *matCellDef="let titreRecette">
+                                                                {{titreRecette.elementImpot?.baseImpot?.expression}}
+                                                            </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="codeElmentLiq">
+                                                            <th mat-header-cell *matHeaderCellDef> Code </th>
+                                                            <td mat-cell *matCellDef="let titreRecette">
+                                                                {{titreRecette.elementImpot?.elementLiquidation?.code}}
+                                                            </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="libelleElmentLiq">
+                                                            <th mat-header-cell *matHeaderCellDef> Libelle </th>
+                                                            <td mat-cell *matCellDef="let titreRecette">
+                                                                {{titreRecette.elementImpot?.elementLiquidation?.libelle}}
+                                                            </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="signeElmentLiq">
+                                                            <th mat-header-cell *matHeaderCellDef> Signe </th>
+                                                            <td mat-cell *matCellDef="let titreRecette">
+                                                                {{titreRecette.elementImpot?.elementLiquidation?.signe}}
+                                                            </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="uniteElmentLiq">
+                                                            <th mat-header-cell *matHeaderCellDef> Unite </th>
+                                                            <td mat-cell *matCellDef="let titreRecette">
+                                                                {{titreRecette.elementImpot?.elementLiquidation?.unite}}
+                                                            </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="titreTaux">
+                                                            <th mat-header-cell *matHeaderCellDef> Titre Taux Elt Imp
+                                                            </th>
+                                                            <td mat-cell *matCellDef="let titreRecette">
+                                                                {{titreRecette.elementImpot?.taux?.titre}} </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="expressionTaux">
+                                                            <th mat-header-cell *matHeaderCellDef> Expression Taux Elt
+                                                                Imp </th>
+                                                            <td mat-cell *matCellDef="let titreRecette">
+                                                                {{titreRecette.elementImpot?.taux?.expression}} </td>
+                                                        </ng-container>
+
+
+                                                        <tr mat-header-row
+                                                            *matHeaderRowDef="displayedColumnsElemetLiquidation"></tr>
+                                                        <tr mat-row
+                                                            *matRowDef="let row; columns: displayedColumnsElemetLiquidation;">
+                                                        </tr>
+                                                        <tr class="mat-row" *matNoDataRow>
+                                                            <td class="no-data-row"
+                                                                [attr.colspan]="displayedColumnsElemetLiquidation.length">
+                                                            <strong>   Aucune donnée ne correspond à ce filtre </strong></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </ng-container>
+
+
+
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumnsImpot"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumnsImpot;"
+                                        [class.nested-element-row]="row.valeurElementLiquidations?.data?.length"
+                                        (click)="toggleRowValEltLiquid(row)"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: ['expandedDetail1']"
+                                        class="nested-detail-row">
+                                    </tr>
+                                    <tr class="mat-row" *matNoDataRow>
+                                        <td class="no-data-row" [attr.colspan]="displayedColumnsImpot.length"><strong>Aucune donnée
+                                            ne correspond à ce filtre</strong> </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <mat-icon>payment</mat-icon>
+                                Exonerations
+                            </ng-template>
+                            <div class="cursor-nested-table titre-recette-table">
+                                <table mat-table [dataSource]="dataSourceExoneration" class="mat-elevation-z8">
+                                    <ng-container matColumnDef="refExterne">
+                                        <th mat-header-cell *matHeaderCellDef> Ref Externe</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.refExterne}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="motif">
+                                        <th mat-header-cell *matHeaderCellDef>Motif</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.motif}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="dateDebut">
+                                        <th mat-header-cell *matHeaderCellDef>Date Debut</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.dateDebut}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="dateFin">
+                                        <th mat-header-cell *matHeaderCellDef>Date Fin</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.dateFin}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="etatMev">
+                                        <th mat-header-cell *matHeaderCellDef>Etat MEV</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.categorie?.etatMev}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="refLoi">
+                                        <th mat-header-cell *matHeaderCellDef>Ref Loi</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.categorie?.refLoi}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="parcelle">
+                                        <th mat-header-cell *matHeaderCellDef>Parcelle</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.parcelle?.numero}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="natureImpot">
+                                        <th mat-header-cell *matHeaderCellDef>Nature Impot</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.natureImpot?.libelle}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="typeNatureImpot">
+                                        <th mat-header-cell *matHeaderCellDef>Type Natutre Imp</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.natureImpot?.typeNatureImpot}}
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="categorie">
+                                        <th mat-header-cell *matHeaderCellDef>MtCategorie</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.categorie?.motant}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="codeSI">
+                                        <th mat-header-cell *matHeaderCellDef>Code SI</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.natureImpot?.codeSI?.libelle}}
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="code">
+                                        <th mat-header-cell *matHeaderCellDef>Code </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.natureImpot?.code}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="ordre">
+                                        <th mat-header-cell *matHeaderCellDef>Ordre</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.natureImpot?.ordre}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="libelleCourt">
+                                        <th mat-header-cell *matHeaderCellDef>Libelle court</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.natureImpot?.libelleCourt}}
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="taux">
+                                        <th mat-header-cell *matHeaderCellDef>Taux</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.taux}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="montant">
+                                        <th mat-header-cell *matHeaderCellDef>Montant</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.montant}} </td>
+                                    </ng-container>
+
+
+                                    <ng-container matColumnDef="contribuable">
+                                        <th mat-header-cell *matHeaderCellDef>Contribuable</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            {{element.contribuable?.libelle}}
+                                            <p fxLayout="row" fxLayoutAlign="start center">
+                                                <span mat-button [matMenuTriggerFor]="infoContribuable"
+                                                    class="bouton-voir-plus">
+                                                    <strong>voir + </strong>
+                                                </span>
+                                                <mat-menu #infoContribuable="matMenu"
+                                                    class="sycad-menu-panel-contri-info">
+                                                    <mat-card>
+                                                        <mat-card-content>
+                                                            <div class="user-img" fxLayoutAlign="center">
+                                                                <img [src]=" element.contribuable | avatarLogo"
+                                                                    class="transition-2"
+                                                                    [class.blocked]="!element.contribuable.active">
+                                                                <mat-icon *ngIf="!element.contribuable.active"
+                                                                    class="warn-color">block</mat-icon>
+                                                            </div>
+                                                            <div class="user-details">
+                                                                <p fxLayout="row" class="p-1"
+                                                                    fxLayoutAlign="start center">
+                                                                    <mat-icon class="muted-text p-1">money</mat-icon>
+                                                                    <span>
+                                                                        <p>Code Unique </p>
+                                                                        <strong>
+                                                                            {{element.contribuable.codeUnique==null?'...':element.contribuable?.codeUnique}}
+                                                                        </strong>
+                                                                    </span>
+                                                                </p>
+                                                                <p fxLayout="row" class="p-1"
+                                                                    fxLayoutAlign="start center">
+                                                                    <mat-icon class="muted-text p-1">person</mat-icon>
+                                                                    <span>
+                                                                        <p>Nom Prenom</p>
+                                                                        <strong>
+                                                                            {{element.contribuable?.nomDeJeuneFille==null?'...':element.contribuable?.libelle}}
+                                                                        </strong>
+                                                                    </span>
+                                                                </p>
+                                                                <p fxLayout="row" class="p-1"
+                                                                    fxLayoutAlign="start center">
+                                                                    <mat-icon class="muted-text p-1">person</mat-icon>
+                                                                    <span>
+                                                                        <p>Nom Jeune fille</p>
+                                                                        <strong>
+                                                                            {{
+                                                                            element.contribuable?.nomDeJeuneFille==null?'...':element.contribuable?.nomDeJeuneFille}}
+                                                                        </strong>
+                                                                    </span>
+                                                                </p>
+                                                                <p fxLayout="row" class="p-1"
+                                                                    fxLayoutAlign="start center">
+                                                                    <mat-icon class="muted-text p-1">person</mat-icon>
+                                                                    <mat-slide-toggle disabled color="primary"
+                                                                        [checked]="element.contribuable.active"
+                                                                        (change)="element.contribuable.active = !element.contribuable.active">
+                                                                        Actif </mat-slide-toggle>
+                                                                </p>
+                                                                <p fxLayout="row" class="p-1"
+                                                                    fxLayoutAlign="start center">
+                                                                    <mat-icon class="muted-text p-1">money</mat-icon>
+                                                                    <span>
+                                                                        <p>Civilte </p>
+                                                                        <strong>
+                                                                            {{element.contribuable.civilite==null?'...':element.contribuable?.civilite}}
+                                                                        </strong>
+                                                                    </span>
+                                                                </p>
+                                                                <p fxLayout="row" class="p-1"
+                                                                    fxLayoutAlign="start center">
+                                                                    <mat-icon class="muted-text p-1">wc</mat-icon>
+                                                                    <span>
+                                                                        <p> Genre</p>
+                                                                        <strong>
+                                                                            {{element.contribuable?.genre==null?'...':element.contribuable?.genre}}
+                                                                        </strong>
+                                                                    </span>
+                                                                </p>
+                                                                <p fxLayout="row" class="p-1"
+                                                                    fxLayoutAlign="start center">
+                                                                    <mat-icon class="muted-text p-1">place</mat-icon>
+                                                                    <span>
+                                                                        <p>Lieu Niassance</p>
+                                                                        <strong>
+                                                                            {{element.contribuable?.lieuNaissance==null?'...':element.contribuable?.lieuNaissance}}
+                                                                        </strong>
+                                                                    </span>
+                                                                </p>
+                                                                <p fxLayout="row" class="p-1"
+                                                                    fxLayoutAlign="start center">
+                                                                    <mat-icon class="muted-text p-1">insert_invitation
+                                                                    </mat-icon>
+                                                                    <span>
+                                                                        <p>Date Niassance
+                                                                        <p>
+                                                                            <strong>
+                                                                                {{element.contribuable?.dateNaissance==null?'...':
+                                                                                element.contribuable?.lieuNaissance |
+                                                                                date:'dd/MM/yyyy' }}
+                                                                            </strong>
+                                                                    </span>
+                                                                </p>
+                                                                <p fxLayout="row" class="p-1"
+                                                                    fxLayoutAlign="start center">
+                                                                    <mat-icon class="muted-text p-1">family_restroom
+                                                                    </mat-icon>
+                                                                    <span>
+                                                                        <p>Situation matrimoniale</p>
+                                                                        <strong>
+                                                                            {{element.contribuable?.situationMatrimoniale==null?'...':
+                                                                            element.contribuable?.situationMatrimoniale
+                                                                            }}
+                                                                        </strong>
+                                                                    </span>
+                                                                </p>
+                                                                <p fxLayout="row" class="p-1"
+                                                                    fxLayoutAlign="start center">
+                                                                    <mat-icon class="muted-text p-1">star</mat-icon>
+                                                                    <span>
+                                                                        <p>Nationalite</p>
+                                                                        <strong>
+                                                                            {{ element.contribuable?.nationalite==null ?
+                                                                            '...':
+                                                                            element.contribuable?.nationalite }}
+                                                                        </strong>
+                                                                    </span>
+                                                                </p>
+                                                                <p fxLayout="row" class="p-1"
+                                                                    fxLayoutAlign="start center">
+                                                                    <mat-icon class="muted-text p-1">business_center
+                                                                    </mat-icon>
+                                                                    <span>
+                                                                        <p>Profession</p>
+                                                                        <strong>
+                                                                            {{element.contribuable?.profession==null ?
+                                                                            '...':element.contribuable?.profession}}
+                                                                        </strong>
+                                                                    </span>
+                                                                </p>
+                                                            </div>
+                                                        </mat-card-content>
+                                                    </mat-card>
+                                                </mat-menu>
+                                            </p>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="pieceOfficielle">
+                                        <th mat-header-cell *matHeaderCellDef>Piece Officielle</th>
+                                        <td mat-cell *matCellDef="let element">
+
+                                            <strong>({{element.contribuable.pieceComplementaires.length +1}}) </strong>
+                                            Pièces fournies
+                                            <p fxLayout="row" fxLayoutAlign="start center">
+                                                <span mat-button [matMenuTriggerFor]="listPieceIdentite"
+                                                    class="bouton-voir-plus"> <strong>voir+</strong> </span>
+                                                <mat-menu #listPieceIdentite="matMenu"
+                                                    class="sycad-menu-panel-piece-contri">
+
+                                                    <mat-card class="container-card-fusion" click-stop-propagation>
+                                                        <mat-card-header>
+                                                            <mat-card-title>
+
+                                                                <mat-icon color="primary">verified_user</mat-icon>
+                                                                <span>Informations Pieces Fournies</span>
+
+                                                            </mat-card-title>
+                                                        </mat-card-header>
+                                                        <mat-divider></mat-divider>
+                                                        <mat-card-content fxLayout="row" fxLayout.xs="row wrap"
+                                                            fxLayoutAlign="start">
+                                                            <h3>{{element.contribuable.pieceOfficielle?.categorie?.libelle}}</h3>
+                                                            <h4>
+                                                                <mat-icon>subdirectory_arrow_right</mat-icon>
+                                                                {{element.contribuable.pieceOfficielle?.categorie?.libelle}}
+                                                            </h4>
+                                                            <mat-list>
+                                                                <mat-list-item class="list-item-piece-info">
+                                                                    <p matLine>
+                                                                        <strong>Numéro</strong> : <span>
+                                                                            {{element.contribuable.pieceOfficielle?.numero}}</span>
+                                                                    </p>
+
+                                                                </mat-list-item>
+                                                                <mat-list-item class="list-item-piece-info">
+                                                                    <p matLine>
+                                                                        <strong>Nip</strong> : <span>
+                                                                            {{element.contribuable.pieceOfficielle?.nip}}</span>
+                                                                    </p>
+                                                                </mat-list-item>
+                                                                <mat-list-item class="list-item-piece-info">
+                                                                    <p matLine>
+                                                                        <strong>Délivrée par </strong> : <span>
+                                                                            {{element.contribuable.pieceOfficielle?.autoriteDeDelivrance}}</span>
+                                                                    </p>
+                                                                </mat-list-item>
+                                                                <mat-list-item class="list-item-piece-info">
+                                                                    <p matLine>
+                                                                        <strong>Délivrée le</strong> : <span>
+                                                                            {{element.contribuable.pieceOfficielle?.dateObtention
+                                                                            | date:'dd/MM/yyyy' }}</span>
+                                                                    </p>
+                                                                </mat-list-item>
+                                                                <mat-list-item class="list-item-piece-info">
+                                                                    <p matLine>
+                                                                        <strong>Expire le</strong> : <span>
+                                                                            {{element.contribuable.pieceOfficielle?.dateExpiration
+                                                                            | date:'dd/MM/yyyy' }}</span>
+                                                                    </p>
+                                                                </mat-list-item>
+                                                                <mat-list-item class="list-item-piece-info">
+                                                                    <p matLine>
+                                                                        <strong>Délivrée à </strong> : <span>
+                                                                            {{element.contribuable.pieceOfficielle?.lieuDeDelivrance}}</span>
+                                                                    </p>
+                                                                </mat-list-item>
+                                                                <mat-list-item class="list-item-piece-info"
+                                                                    *ngIf="element.contribuable.pieceOfficielle?.documentPiece">
+                                                                    <p matLine>
+                                                                        <span>
+                                                                            <a
+                                                                                href="{{element.contribuable.pieceOfficielle?.documentPiece | generalDownload}}">Télécharger
+                                                                                la pièce jointe
+                                                                                <mat-icon>save_alt</mat-icon>
+                                                                            </a>
+                                                                        </span>
+                                                                    </p>
+                                                                </mat-list-item>
+                                                            </mat-list>
+                                                            <mat-divider></mat-divider>
+
+                                                            <ng-template
+                                                                [ngIf]="element.contribuable.pieceComplementaires.length">
+                                                                <mat-divider></mat-divider>
+                                                                <h3>Pieces complementaires</h3>
+                                                            </ng-template>
+                                                            <ng-template ngFor let-pieceIdentite
+                                                                [ngForOf]="element.contribuable.pieceComplementaires">
+                                                                <h4>
+                                                                    <mat-icon>subdirectory_arrow_right</mat-icon>
+                                                                    {{element.contribuable.pieceOfficielle?.categorie?.libelle}}
+                                                                </h4>
+
+                                                                <mat-divider [inset]="true"></mat-divider>
+                                                                <mat-list>
+                                                                    <mat-list-item class="list-item-piece-info">
+                                                                        <p matLine>
+                                                                            <strong>Numéro</strong> : <span>
+                                                                                {{pieceIdentite.numero}}</span>
+                                                                        </p>
+
+                                                                    </mat-list-item>
+                                                                    <mat-list-item class="list-item-piece-info">
+                                                                        <p matLine>
+                                                                            <strong>Nip</strong> : <span>
+                                                                                {{pieceIdentite.nip}}</span>
+                                                                        </p>
+                                                                    </mat-list-item>
+                                                                    <mat-list-item class="list-item-piece-info">
+                                                                        <p matLine>
+                                                                            <strong>Délivrée par </strong> : <span>
+                                                                                {{pieceIdentite.autoriteDeDelivrance}}</span>
+                                                                        </p>
+                                                                    </mat-list-item>
+                                                                    <mat-list-item class="list-item-piece-info">
+                                                                        <p matLine>
+                                                                            <strong>Délivrée le</strong> : <span>
+                                                                                {{pieceIdentite.dateObtention |
+                                                                                date:'dd/MM/yyyy' }}</span>
+                                                                        </p>
+                                                                    </mat-list-item>
+                                                                    <mat-list-item class="list-item-piece-info">
+                                                                        <p matLine>
+                                                                            <strong>Expire le</strong> : <span>
+                                                                                {{pieceIdentite.dateExpiration |
+                                                                                date:'dd/MM/yyyy' }}</span>
+                                                                        </p>
+                                                                    </mat-list-item>
+                                                                    <mat-list-item class="list-item-piece-info">
+                                                                        <p matLine>
+                                                                            <strong>Délivrée à </strong> : <span>
+                                                                                {{pieceIdentite.lieuDeDelivrance}}</span>
+                                                                        </p>
+                                                                    </mat-list-item>
+                                                                    <mat-list-item class="list-item-piece-info"
+                                                                        *ngIf="pieceIdentite.documentPiece">
+                                                                        <p matLine>
+                                                                            <span> <a
+                                                                                    href="{{pieceIdentite.documentPiece | generalDownload}}">Télécharger
+                                                                                    la pièce jointe
+                                                                                    <mat-icon>save_alt</mat-icon>
+                                                                                </a>
+                                                                            </span>
+                                                                        </p>
+                                                                    </mat-list-item>
+                                                                </mat-list>
+
+
+                                                            </ng-template>
+                                                        </mat-card-content>
+                                                    </mat-card>
+                                                </mat-menu>
+
+
+                                            </p>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="infoAdress">
+                                        <th mat-header-cell *matHeaderCellDef>Infos Adresse</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <strong> ({{element.contribuable?.adresses.length}}) </strong> adresses
+                                            fournies
+                                            <p fxLayout="row" fxLayoutAlign="start center">
+                                                <span mat-button [matMenuTriggerFor]="listAdresseContribuable"
+                                                    class="bouton-voir-plus">
+                                                    <strong>voir +</strong>
+                                                </span>
+                                                <mat-menu #listAdresseContribuable="matMenu"
+                                                    class="sycad-menu-panel-contri-info">
+                                                    <div class="user-img" fxLayoutAlign="center">
+                                                        <img [src]=" element.contribuable | avatarLogo"
+                                                            class="transition-2"
+                                                            [class.blocked]="!element.contribuable.active">
+                                                        <mat-icon *ngIf="!element.contribuable.active"
+                                                            class="warn-color">block</mat-icon>
+                                                    </div>
+                                                    <ng-template [ngIf]="element.contribuable?.adresses.length==0">
+
+                                                        <mat-card click-stop-propagation>
+                                                            <mat-card-content fxLayout="row" fxLayout.xs="row wrap">
+                                                                <p fxLayout="column" fxLayoutAlign="start center">
+                                                                    <mat-icon class="text-muted">place</mat-icon>
+                                                                    <span>Aucune adresse trouvé</span>
+                                                                </p>
+                                                            </mat-card-content>
+                                                        </mat-card>
+
+                                                    </ng-template>
+                                                    <ng-template ngFor let-adresse
+                                                        [ngForOf]="element.contribuable.adresses">
+                                                        <mat-card class="container-card-fusion" click-stop-propagation>
+
+                                                            <mat-card-content fxLayout="row" fxLayout.xs="row wrap"
+                                                                fxLayoutAlign="start">
+                                                                <mat-list>
+                                                                    <mat-list-item>
+                                                                        <mat-icon matListIcon *ngIf="adresse.principal"
+                                                                            color="primary">home
+                                                                        </mat-icon>
+                                                                        <mat-icon matListIcon
+                                                                            *ngIf="!adresse.principal">call
+                                                                        </mat-icon>
+                                                                        <h3 matLine>{{ adresse.libelle }}</h3>
+                                                                        <p matLine> <strong>Localité</strong> :
+                                                                            <span>{{adresse.localite }}</span>
+                                                                        </p>
+                                                                        <p matLine> <strong>Quartier</strong> :
+                                                                            <span>{{adresse.quartier }}</span>
+                                                                        </p>
+                                                                        <p matLine> <strong>Rue</strong> : <span>{{
+                                                                                adresse.rue }}</span>
+                                                                        </p>
+                                                                        <p matLine> <strong>Porte</strong> :
+                                                                            <span>{{adresse.porte }}</span>
+                                                                        </p>
+                                                                        <p matLine> <strong>Parcelle</strong> : <span>{{
+                                                                                adresse.parcelle }}</span>
+                                                                        </p>
+                                                                    </mat-list-item>
+                                                                </mat-list>
+                                                            </mat-card-content>
+                                                        </mat-card>
+                                                    </ng-template>
+                                                </mat-menu>
+                                            </p>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="email">
+                                        <th mat-header-cell *matHeaderCellDef>Infos Email</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            {{ element.contribuable.emails | principalContactFilter }}
+                                            {{ element.contribuable.emails.length==0?
+                                            '':element.contribuable.telephones.length + 'Numero de telephone trouvés' }}
+                                            <p fxLayout="row" fxLayoutAlign="start center">
+                                                <span mat-button [matMenuTriggerFor]="listEmailActeur"
+                                                    class="bouton-voir-plus"> <strong>voir +</strong> </span>
+                                                <mat-menu #listEmailActeur="matMenu"
+                                                    class="sycad-menu-panel-contri-info">
+                                                    <div class="user-img" fxLayoutAlign="center">
+                                                        <img [src]=" element.contribuable | avatarLogo"
+                                                            class="transition-2"
+                                                            [class.blocked]="!element.contribuable.active">
+                                                        <mat-icon *ngIf="!element.contribuable.active"
+                                                            class="warn-color">block</mat-icon>
+                                                    </div>
+                                                    <ng-template [ngIf]="element.contribuable?.emails.length==0">
+
+                                                        <mat-card click-stop-propagation>
+                                                            <mat-card-content fxLayout="row" fxLayout.xs="row wrap">
+                                                                <p fxLayout="column" fxLayoutAlign="start center">
+                                                                    <mat-icon class="text-muted">email</mat-icon>
+                                                                    <span>Aucun adresse email trouvé</span>
+                                                                </p>
+                                                            </mat-card-content>
+                                                        </mat-card>
+
+                                                    </ng-template>
+                                                    <ng-template ngFor let-email
+                                                        [ngForOf]="element.contribuable.emails">
+                                                        <mat-card class="container-card-fusion" click-stop-propagation>
+                                                            <mat-card-content fxLayout="row" fxLayout.xs="row wrap"
+                                                                fxLayoutAlign="start">
+                                                                <mat-list>
+                                                                    <mat-list-item>
+                                                                        <mat-icon matListIcon *ngIf="email.principal"
+                                                                            color="primary">
+                                                                            mail_outline</mat-icon>
+                                                                        <mat-icon matListIcon *ngIf="!email.principal">
+                                                                            mail_outline
+                                                                        </mat-icon>
+                                                                        <h3 matLine>{{ email.value }}</h3>
+                                                                        <p matLine>
+                                                                            <span>{{ email.level }}</span>
+                                                                        </p>
+                                                                    </mat-list-item>
+                                                                </mat-list>
+                                                            </mat-card-content>
+                                                        </mat-card>
+                                                    </ng-template>
+                                                </mat-menu>
+                                            </p>
+
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="infoPhone">
+                                        <th mat-header-cell *matHeaderCellDef>Infos Tel</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            {{ element.contribuable.telephones | principalContactFilter }}
+                                            {{ element.contribuable.telephones.length==0?
+                                            '':element.contribuable.telephones.length + 'Numero de telephone trouvés' }}
+                                            <p fxLayout="row" fxLayoutAlign="start center">
+                                                <span mat-button [matMenuTriggerFor]="listTelephoneContribuable"
+                                                    class="bouton-voir-plus">
+                                                    <strong>voir +</strong> </span>
+                                                <mat-menu #listTelephoneContribuable="matMenu"
+                                                    class="sycad-menu-panel-contri-info">
+                                                    <div class="user-img" fxLayoutAlign="center">
+                                                        <img [src]=" element.contribuable | avatarLogo"
+                                                            class="transition-2"
+                                                            [class.blocked]="!element.contribuable.active">
+                                                        <mat-icon *ngIf="!element.contribuable.active"
+                                                            class="warn-color">block</mat-icon>
+                                                    </div>
+                                                    <ng-template [ngIf]="element.contribuable?.telephones.length==0">
+
+                                                        <mat-card click-stop-propagation>
+                                                            <mat-card-content fxLayout="row" fxLayout.xs="row wrap">
+                                                                <p fxLayout="column" fxLayoutAlign="start center">
+                                                                    <mat-icon class="text-muted">phone</mat-icon>
+                                                                    <span>Aucun numero telephone trouvé</span>
+                                                                </p>
+                                                            </mat-card-content>
+                                                        </mat-card>
+
+                                                    </ng-template>
+                                                    <ng-template ngFor let-telephone
+                                                        [ngForOf]="element.contribuable.telephones">
+                                                        <mat-card class="container-card-fusion" click-stop-propagation>
+                                                            <mat-card-content fxLayout="row" fxLayout.xs="row wrap"
+                                                                fxLayoutAlign="start">
+                                                                <mat-list>
+                                                                    <mat-list-item>
+                                                                        <mat-icon matListIcon
+                                                                            *ngIf="telephone.principal" color="primary">
+                                                                            call</mat-icon>
+                                                                        <mat-icon matListIcon
+                                                                            *ngIf="!telephone.principal">call</mat-icon>
+                                                                        <h3 matLine>{{ telephone.value }}</h3>
+                                                                        <p matLine>
+                                                                            <span>{{ telephone.level }}</span>
+                                                                        </p>
+                                                                    </mat-list-item>
+                                                                </mat-list>
+                                                            </mat-card-content>
+                                                        </mat-card>
+                                                    </ng-template>
+                                                </mat-menu>
+
+                                            </p>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="modifDoc">
+                                        <th mat-header-cell *matHeaderCellDef> Doc modif </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <a href="{{element?.modifDoc | generalDownload}}" target="_blank"
+                                                color="primary">
+                                                Télécharger
+                                                <mat-icon>save_alt</mat-icon>
+                                            </a>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumnsExoneration"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumnsExoneration;"></tr>
+                                    <tr class="mat-row" *matNoDataRow>
+                                        <td class="no-data-row" [attr.colspan]="displayedColumnsExoneration.length"><strong>Aucune
+                                            donnée ne correspond à ce filtre</strong> </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-tab>
+
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                    </ng-template>
+                    <div fxLayout="row" fxLayoutAlign="start">
+                        <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="50" [fxFlex.xl]="60">
+                            <app-historique [numero]="fusion.numero"></app-historique>
+                        </div>
+
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card-content>
+    </form>
+</mat-card>

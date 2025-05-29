@@ -1,0 +1,11 @@
+<div fxLayout="column">
+  <div class="flex-p">
+    <ng-template #datatable1></ng-template>
+  </div>
+</div>
+<ng-template #templateCategoriePiece let-categoriePiece="data">
+  <div class="list-categoriePiece"  [ngStyle]="{'padding': categoriePiece.typePieceOficielles.length>0?'15px':'0'}">
+    <mat-chip-list>
+      <mat-chip *ngFor="let typePieceOficielle of categoriePiece.typePieceOficielles">{{typePieceOficielle}}</mat-chip>
+    </mat-chip-list>
+  </div>

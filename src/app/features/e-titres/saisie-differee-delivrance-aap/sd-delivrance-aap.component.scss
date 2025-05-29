@@ -1,0 +1,21 @@
+.sycad-table-container {
+  td,
+  th {
+      &.mat-column-parcelle-icad {
+          min-width: 200px;
+          //border: 2px solid red!important;
+      }
+      &.mat-column-objet {
+          min-width: 200px;
+          //border: 2px solid red!important;
+      }
+      &.mat-column-contribuableBeneficiaire-libelle {
+          min-width: 230px;
+          //border: 2px solid red!important;
+      }
+      &.mat-column-structureBeneficiaire-nom {
+          min-width: 260px;
+          //border: 2px solid red!important;
+      }
+  }
+}

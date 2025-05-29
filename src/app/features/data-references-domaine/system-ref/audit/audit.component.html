@@ -1,0 +1,11 @@
+<div fxLayout="column">
+    <div class="flex-p">
+        <ng-template #datatable1></ng-template>
+    </div>
+</div>
+
+<ng-template #templateAudits let-audit="data">
+    <div class="list-membres-expand">
+        {{audit.content.json_dto}}
+    </div>
+</ng-template>

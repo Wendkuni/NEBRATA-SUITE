@@ -1,0 +1,652 @@
+<mat-card class="p-0 sycad-card-agent" *ngIf="type == 'grid'">
+    <div class="bg-primary" fxLayout="row" fxLayoutAlign="space-between center">
+        <h3 class="user-name"> {{ acteur.denomination }} {{ acteur.categorie }}</h3>
+        <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    </div>
+    <mat-menu #menu="matMenu" xPosition="before" overlapTrigger="true">
+        <span (mouseleave)="menuTrigger.closeMenu()">
+      <button mat-menu-item (click)="onEdition(acteur)">
+        <mat-icon>mode_edit</mat-icon>
+        <span>Edit</span>
+        </button>
+        <button mat-menu-item (click)="onDelete(acteur);">
+        <mat-icon>delete</mat-icon>
+        <span>Delete</span>
+      </button>
+        <button mat-menu-item (click)="onViewProfil(acteur.guid);">
+        <mat-icon>account_circle</mat-icon>
+        <span>Profil</span>
+      </button>
+        </span>
+    </mat-menu>
+    <div class="user-content" fxLayout="row" fxLayoutAlign="space-around center">
+        <div fxFlex="30" fxLayout="column" fxLayoutAlign="center center">
+            <div class="user-img">
+                <img [src]=" acteur | acteurLogo" class="transition-2" [class.blocked]="!acteur.active">
+                <mat-icon *ngIf="!acteur.active" class="warn-color">block</mat-icon>
+            </div>
+            <div class="user-social">
+                <mat-slide-toggle color="primary" [checked]="acteur.active" (change)="acteur.active = !acteur.active"></mat-slide-toggle>
+            </div>
+        </div>
+        <div fxFlex="70" fxLayout="column" class="user-details transition-2" [class.blocked]="!acteur.active">
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">money</mat-icon>
+                <span>{{ acteur.codeUnique }}</span>
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">calendar_today</mat-icon>
+                <span>{{ acteur.dateDeCreation | date:'dd/MM/yyyy' }}</span>
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">work</mat-icon>
+                <span>{{ acteur.statusJuridique }}</span>
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">star</mat-icon>
+                <span>{{ acteur.nationalite }}</span>
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">business_center</mat-icon>
+                <span>{{ acteur.regimeFiscal }}</span>
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">looks_3</mat-icon>
+                <span>{{ acteur.numCNSS }}</span>
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">euro</mat-icon>
+                <span>{{ acteur.capitalFiscal }}</span>
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">work</mat-icon>
+                <span>{{ acteur.activitePrincipale }}</span>
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">mail_outline</mat-icon>
+                <span>{{ acteur.emails | principalContactFilter }}</span>
+                <ng-template [ngIf]="acteur.emails.length>1">
+                    <span [matMenuTriggerFor]="listEmailActeur" class="bouton-voir-plus"> <strong>voir
+                      plus +</strong>  </span>
+                    <mat-menu #listEmailActeur="matMenu" class="sycad-menu-panel">
+                        <ng-template ngFor let-email [ngForOf]="acteur.emails | exceptPrincipalFilter">
+
+                            <p mat-menu-item [class]="'detail-list-resume'" click-stop-propagation>
+                                <mat-icon>mail_outline</mat-icon>
+                                <span>({{ email.level }}) {{ email.value }}</span>
+                            </p>
+                        </ng-template>
+                    </mat-menu>
+
+                </ng-template>
+
+            </p>
+
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">call</mat-icon>
+                <span>{{ acteur.telephones | principalContactFilter }}</span>
+                <ng-template [ngIf]="acteur.telephones.length>1">
+                    <span [matMenuTriggerFor]="listTelephoneActeur" class="bouton-voir-plus">
+                      <strong>voir+</strong> </span>
+                    <mat-menu #listTelephoneActeur="matMenu" class="sycad-menu-panel">
+                        <ng-template ngFor let-telephone [ngForOf]="acteur.telephones | exceptPrincipalFilter">
+                            <p mat-menu-item [class]="'detail-list-resume'" click-stop-propagation>
+                                <mat-icon>call</mat-icon>
+                                <span>({{ telephone.level }}) {{ telephone.value }}</span>
+                            </p>
+                        </ng-template>
+                    </mat-menu>
+
+                </ng-template>
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">perm_contact_calendar</mat-icon>
+                <span>{{ acteur.contactEntreprises.length }} contact(s)</span>
+                <ng-template [ngIf]="acteur.contactEntreprises.length>0">
+                    <span [matMenuTriggerFor]="listContactEntrprise" class="bouton-voir-plus">
+                      <strong>voir+</strong></span>
+                    <mat-menu #listContactEntrprise="matMenu" class="sycad-menu-panel">
+                        <ng-template ngFor let-contactEntreprise [ngForOf]="acteur.contactEntreprises">
+                            <mat-card class="container-card-contact">
+                                <mat-card-header>
+                                    <mat-card-title>{{ contactEntreprise.prenom }}{{ contactEntreprise.nom }}
+                                    </mat-card-title>
+
+                                </mat-card-header>
+                                <mat-card-content>
+
+                                    <mat-grid-list cols="1" rowHeight="30px">
+
+                                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                            <mat-icon>call</mat-icon>
+                                            <span>{{ contactEntreprise.telephone }}</span>
+                                        </mat-grid-tile>
+                                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                            <mat-icon>mail_outline</mat-icon>
+                                            <span>{{ contactEntreprise.email }}</span>
+                                        </mat-grid-tile>
+
+                                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                            <mat-icon>location_on</mat-icon>
+                                            <span>{{ contactEntreprise.adresse }}</span>
+                                        </mat-grid-tile>
+
+                                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                            <mat-icon>work</mat-icon>
+                                            <span>{{ contactEntreprise.fonction }}</span>
+                                        </mat-grid-tile>
+
+                                    </mat-grid-list>
+                                </mat-card-content>
+
+                            </mat-card>
+                        </ng-template>
+                    </mat-menu>
+
+                </ng-template>
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">payment</mat-icon>
+                <span>{{acteur.pieceComplementaires.length +1}} Pièce fournie </span>
+
+                <span [matMenuTriggerFor]="listPieceIdentite" class="bouton-voir-plus">
+                      <strong>voir+</strong>  </span>
+                <mat-menu #listPieceIdentite="matMenu" class="sycad-menu-panel">
+                    <mat-card class="container-card-contact" click-stop-propagation>
+                        <mat-card-header>
+                            <mat-card-title>
+
+                                <mat-icon class="muted-text" color="primary" style="font-size: 80%;">verified_user</mat-icon>
+                                <span>{{acteur.pieceOfficielle?.categorie?.libelle}}</span>
+
+                            </mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start">
+                            <mat-list>
+                                <mat-list-item class="list-item-piece-info">
+                                    <p matLine>
+                                        <strong>Numéro</strong> : <span> {{acteur.pieceOfficielle?.numero}}</span>
+                                    </p>
+
+                                </mat-list-item>
+                                <mat-list-item class="list-item-piece-info">
+                                    <p matLine>
+                                        <strong>Nip</strong> : <span> {{acteur.pieceOfficielle?.nip}}</span>
+                                    </p>
+                                </mat-list-item>
+                                <mat-list-item class="list-item-piece-info">
+                                    <p matLine>
+                                        <strong>Délivrée par </strong> : <span> {{acteur.pieceOfficielle?.autoriteDeDelivrance}}</span>
+                                    </p>
+                                </mat-list-item>
+                                <mat-list-item class="list-item-piece-info">
+                                    <p matLine>
+                                        <strong>Délivrée le</strong> : <span> {{acteur.pieceOfficielle?.dateObtention | date:'dd/MM/yyyy'  }}</span>
+                                    </p>
+                                </mat-list-item>
+                                <mat-list-item class="list-item-piece-info">
+                                    <p matLine>
+                                        <strong>Expire le</strong> : <span> {{acteur.pieceOfficielle?.dateExpiration | date:'dd/MM/yyyy' }}</span>
+                                    </p>
+                                </mat-list-item>
+                                <mat-list-item class="list-item-piece-info">
+                                    <p matLine>
+                                        <strong>Délivrée à </strong> : <span> {{acteur.pieceOfficielle?.lieuDeDelivrance}}</span>
+                                    </p>
+                                </mat-list-item>
+                                <mat-list-item class="list-item-piece-info" *ngIf="acteur.pieceOfficielle?.documentPiece">
+                                    <p matLine>
+                                        <span> <a href="{{acteur.pieceOfficielle?.documentPiece | generalDownload}}">Télécharger la pièce jointe</a></span>
+                                    </p>
+                                </mat-list-item>
+                            </mat-list>
+                        </mat-card-content>
+                    </mat-card>
+                    <ng-template ngFor let-pieceIdentite [ngForOf]="acteur.pieceComplementaires">
+
+                        <mat-card class="container-card-contact" click-stop-propagation>
+                            <mat-card-header>
+                                <mat-card-title>{{pieceIdentite.categorie}}</mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start">
+                                <mat-list>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Numéro</strong> : <span> {{pieceIdentite?.numero}}</span>
+                                        </p>
+
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Nip</strong> : <span> {{pieceIdentite?.nip}}</span>
+                                        </p>
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Délivrée par </strong> : <span> {{pieceIdentite?.autoriteDeDelivrance}}</span>
+                                        </p>
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Délivrée le</strong> : <span> {{pieceIdentite?.dateObtention  | date:'dd/MM/yyyy' }}</span>
+                                        </p>
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Expire le</strong> : <span> {{pieceIdentite?.dateExpiration | date:'dd/MM/yyyy' }}</span>
+                                        </p>
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Délivrée à </strong> : <span> {{pieceIdentite?.lieuDeDelivrance}}</span>
+                                        </p>
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info" *ngIf="pieceIdentite.documentPiece">
+                                        <p matLine>
+                                            <span> <a href="{{pieceIdentite.documentPiece | generalDownload}}">Télécharger la pièce jointe</a></span>
+                                        </p>
+                                    </mat-list-item>
+                                </mat-list>
+                            </mat-card-content>
+                        </mat-card>
+
+
+                    </ng-template>
+                </mat-menu>
+
+
+            </p>
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">home</mat-icon>
+                <span>{{acteur.adresses.length}} adresses fournies</span>
+                <ng-template [ngIf]="acteur.adresses.length>0">
+                    <span [matMenuTriggerFor]="listAdresseacteur" class="bouton-voir-plus"> <strong>voir+</strong></span>
+                    <mat-menu #listAdresseacteur="matMenu" class="sycad-menu-panel">
+                        <ng-template ngFor let-adresse [ngForOf]="acteur.adresses">
+                            <mat-card class="container-card-contact" click-stop-propagation>
+                                <mat-card-content fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start">
+                                    <mat-list>
+                                        <mat-list-item>
+                                            <mat-icon matListIcon *ngIf="adresse.principal" color="primary">home</mat-icon>
+                                            <mat-icon matListIcon *ngIf="!adresse.principal">call</mat-icon>
+                                            <h3 matLine>{{ adresse.libelle }}</h3>
+                                            <p matLine> <strong>Localité</strong> : <span>{{ adresse.localite }}</span> </p>
+                                            <p matLine> <strong>Quartier</strong> : <span>{{ adresse.quartier }}</span> </p>
+                                            <p matLine> <strong>Rue</strong> : <span>{{adresse.rue }}</span> </p>
+                                            <p matLine> <strong>Porte</strong> : <span>{{ adresse.porte }}</span> </p>
+                                            <p matLine> <strong>Parcelle</strong> : <span>{{ adresse.parcelle }}</span> </p>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </mat-card-content>
+                            </mat-card>
+                        </ng-template>
+                    </mat-menu>
+                </ng-template>
+
+            </p>
+
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">home</mat-icon>
+                <span>{{acteur.reseauSociaux.length}} reseauSociaux fournies</span>
+                <ng-template [ngIf]="acteur.reseauSociaux.length>0">
+                    <span [matMenuTriggerFor]="listreseauSocialacteur" class="bouton-voir-plus"> <strong>voir+</strong></span>
+                    <mat-menu #listreseauSocialacteur="matMenu" class="sycad-menu-panel">
+                        <ng-template ngFor let-reseauSocial [ngForOf]="acteur.reseauSociaux">
+                            <mat-card class="container-card-contact" click-stop-propagation>
+                                <mat-card-content fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start">
+                                    <mat-list>
+                                        <mat-list-item>
+
+                                            <h3 matLine>{{ reseauSocial.profil }}</h3>
+                                            <p matLine><span>{{ reseauSocial.type }}</span></p>
+
+                                        </mat-list-item>
+                                    </mat-list>
+                                </mat-card-content>
+                            </mat-card>
+                        </ng-template>
+                    </mat-menu>
+                </ng-template>
+
+            </p>
+        </div>
+    </div>
+</mat-card>
+
+<mat-card class="p-0 sycad-card-agent" *ngIf="type == 'list'">
+    <div class="bg-primary" fxLayout="row" fxLayoutAlign="space-between center">
+        <h3 class="user-name">
+            <a [routerLink]="['/acteurs/view-profil/actuer/', acteur.guid]" style="cursor: pointer;">
+            </a>
+            {{ acteur.denomination }} {{ acteur.categorie }}
+        </h3>
+        <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    </div>
+    <mat-menu #menu="matMenu" xPosition="before" overlapTrigger="true">
+        <span (mouseleave)="menuTrigger.closeMenu()">
+      <button mat-menu-item (click)="onEdition(acteur);">
+        <mat-icon>mode_edit</mat-icon>
+        <span>Edit</span>
+        </button>
+        <button mat-menu-item (click)="onDelete(acteur);">
+        <mat-icon>delete</mat-icon>
+        <span>Delete</span>
+      </button>
+        <button mat-menu-item (click)="onViewProfil(acteur.guid);">
+        <mat-icon>account_circle</mat-icon>
+        <span>Profil</span>
+      </button>
+        </span>
+    </mat-menu>
+    <div class="user-content" fxLayout="row" fxLayoutAlign="space-around center">
+        <div fxFlex="20" fxFlex.xs="30" fxLayout="column" fxLayoutAlign="center center">
+            <div class="user-img">
+                <img [src]="acteur | acteurLogo" class="transition-2" [class.blocked]="!acteur.active">
+                <mat-icon *ngIf="!acteur.active" class="warn-color">block</mat-icon>
+            </div>
+            <div class="user-social">
+                <mat-slide-toggle color="primary" [checked]="acteur.active" (change)="acteur.active = !acteur.active"></mat-slide-toggle>
+            </div>
+        </div>
+        <div fxFlex="80" fxFlex.xs="70" fxLayout="row" fxLayout.xs="column" class="user-details transition-2" [class.blocked]="!acteur.active">
+            <div fxFlex="50" fxFlex.xs="100" fxLayout="column">
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">money</mat-icon>
+                    <span>{{ acteur.codeUnique }}</span>
+                </p>
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">work</mat-icon>
+                    <span>{{ acteur.denomination }}</span>
+                </p>
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">calendar_today</mat-icon>
+                    <span>{{ acteur.dateDeCreation | date:'dd/MM/yyyy' }}</span>
+                </p>
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">work</mat-icon>
+                    <span>{{ acteur.statusJuridique }}</span>
+                </p>
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">star</mat-icon>
+                    <span>{{ acteur.nationalite }}</span>
+                </p>
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">business_center</mat-icon>
+                    <span>{{ acteur.regimeFiscal }}</span>
+                </p>
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">looks_3</mat-icon>
+                    <span>{{ acteur.numCNSS }}</span>
+                </p>
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">euro</mat-icon>
+                    <span>{{ acteur.capitalFiscal }}</span>
+                </p>
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">work</mat-icon>
+                    <span>{{ acteur.activitePrincipale }}</span>
+                </p>
+
+            </div>
+
+            <div fxFlex="50" fxFlex.xs="100" fxLayout="column">
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">mail_outline</mat-icon>
+                    <span>{{ acteur.emails | principalContactFilter }}</span>
+                    <ng-template [ngIf]="acteur.emails.length>1">
+                        <span [matMenuTriggerFor]="listEmailActeur" class="bouton-voir-plus"> voir
+                          <strong>voir+</strong></span>
+                        <mat-menu #listEmailActeur="matMenu" class="sycad-menu-panel">
+                            <ng-template ngFor let-email [ngForOf]="acteur.emails | exceptPrincipalFilter">
+                                <p mat-menu-item [class]="'detail-list-resume'" click-stop-propagation>
+                                    <mat-icon>mail_outline</mat-icon>
+                                    <span>({{ email.level }}) {{ email.value }}</span>
+                                </p>
+                            </ng-template>
+                        </mat-menu>
+
+                    </ng-template>
+
+                </p>
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">call</mat-icon>
+                    <span>{{ acteur.telephones | principalContactFilter }}</span>
+                    <ng-template [ngIf]="acteur.telephones.length>1">
+                        <span [matMenuTriggerFor]="listTelephoneActeur" class="bouton-voir-plus">
+                          <strong>voir+</strong> </span>
+                        <mat-menu #listTelephoneActeur="matMenu" class="sycad-menu-panel">
+                            <ng-template ngFor let-telephone [ngForOf]="acteur.telephones | exceptPrincipalFilter">
+                                <p mat-menu-item [class]="'detail-list-resume'" click-stop-propagation>
+                                    <mat-icon>call</mat-icon>
+                                    <span>({{ telephone.level }}) {{ telephone.value }}</span>
+                                </p>
+                            </ng-template>
+                        </mat-menu>
+
+                    </ng-template>
+                </p>
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">perm_contact_calendar</mat-icon>
+                    <span>{{ acteur.contactEntreprises.length }} contact(s)</span>
+                    <ng-template [ngIf]="acteur.contactEntreprises.length>0">
+                        <span [matMenuTriggerFor]="listContactEntrprise" class="bouton-voir-plus">
+                          <strong>voir+</strong> </span>
+                        <mat-menu #listContactEntrprise="matMenu" class="sycad-menu-panel">
+                            <ng-template ngFor let-contactEntreprise [ngForOf]="acteur.contactEntreprises">
+                                <mat-card class="container-card-contact">
+                                    <mat-card-header>
+                                        <mat-card-title>{{ contactEntreprise.prenom }} {{ contactEntreprise.nom }}
+                                        </mat-card-title>
+
+                                    </mat-card-header>
+                                    <mat-card-content>
+
+                                        <mat-grid-list cols="1" rowHeight="30px">
+                                            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                                <mat-icon>call</mat-icon>
+                                                <span>{{ contactEntreprise.telephone }}</span>
+                                            </mat-grid-tile>
+                                            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                                <mat-icon>mail_outline</mat-icon>
+                                                <span>{{ contactEntreprise.email }}</span>
+                                            </mat-grid-tile>
+
+                                            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                                <mat-icon>location_on</mat-icon>
+                                                <span>{{ contactEntreprise.adresse }}</span>
+                                            </mat-grid-tile>
+
+                                            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                                <mat-icon>work</mat-icon>
+                                                <span>{{ contactEntreprise.fonction }}</span>
+                                            </mat-grid-tile>
+
+                                        </mat-grid-list>
+                                    </mat-card-content>
+
+                                </mat-card>
+                            </ng-template>
+                        </mat-menu>
+
+                    </ng-template>
+                </p>
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">payment</mat-icon>
+                    <span>{{acteur.pieceComplementaires.length +1}} Pièces fournies </span>
+
+                    <span [matMenuTriggerFor]="listPieceIdentite" class="bouton-voir-plus"><strong>voir+</strong> </span>
+                    <mat-menu #listPieceIdentite="matMenu" class="sycad-menu-panel">
+
+                        <mat-card class="container-card-contact" click-stop-propagation>
+                            <mat-card-header>
+                                <mat-card-title>
+
+                                    <mat-icon class="muted-text" color="primary" style="font-size: 80%;">verified_user</mat-icon>
+                                    <span>{{acteur.pieceOfficielle?.categorie?.libelle}}</span>
+
+                                </mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start">
+                                <mat-list>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Numéro</strong> : <span> {{acteur.pieceOfficielle?.numero}}</span>
+                                        </p>
+
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Nip</strong> : <span> {{acteur.pieceOfficielle?.nip}}</span>
+                                        </p>
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Délivrée par </strong> : <span> {{acteur.pieceOfficielle?.autoriteDeDelivrance}}</span>
+                                        </p>
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Délivrée le</strong> : <span> {{acteur.pieceOfficielle?.dateObtention | date:'dd/MM/yyyy'  }}</span>
+                                        </p>
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Expire le</strong> : <span> {{acteur.pieceOfficielle?.dateExpiration | date:'dd/MM/yyyy' }}</span>
+                                        </p>
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info">
+                                        <p matLine>
+                                            <strong>Délivrée à </strong> : <span> {{acteur.pieceOfficielle?.lieuDeDelivrance}}</span>
+                                        </p>
+                                    </mat-list-item>
+                                    <mat-list-item class="list-item-piece-info" *ngIf="acteur.pieceOfficielle?.documentPiece">
+                                        <p matLine>
+                                            <span> <a href="{{acteur.pieceOfficielle?.documentPiece | generalDownload}}">Télécharger la pièce jointe</a></span>
+                                        </p>
+                                    </mat-list-item>
+
+                                </mat-list>
+                            </mat-card-content>
+                        </mat-card>
+                        <ng-template ngFor let-pieceIdentite [ngForOf]="acteur.pieceComplementaires">
+
+                            <mat-card class="container-card-contact" click-stop-propagation>
+                                <mat-card-header>
+                                    <mat-card-title>{{pieceIdentite.categorie}}</mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start">
+                                    <mat-list>
+                                        <mat-list-item class="list-item-piece-info">
+                                            <p matLine>
+                                                <strong>Numéro</strong> : <span> {{pieceIdentite.numero}}</span>
+                                            </p>
+
+                                        </mat-list-item>
+                                        <mat-list-item class="list-item-piece-info">
+                                            <p matLine>
+                                                <strong>Nip</strong> : <span> {{pieceIdentite.nip}}</span>
+                                            </p>
+                                        </mat-list-item>
+                                        <mat-list-item class="list-item-piece-info">
+                                            <p matLine>
+                                                <strong>Délivrée par </strong> : <span> {{pieceIdentite.autoriteDeDelivrance}}</span>
+                                            </p>
+                                        </mat-list-item>
+                                        <mat-list-item class="list-item-piece-info">
+                                            <p matLine>
+                                                <strong>Délivrée le</strong> : <span> {{pieceIdentite.dateObtention | date:'dd/MM/yyyy'  }}</span>
+                                            </p>
+                                        </mat-list-item>
+                                        <mat-list-item class="list-item-piece-info">
+                                            <p matLine>
+                                                <strong>Expire le</strong> : <span> {{pieceIdentite.dateExpiration | date:'dd/MM/yyyy' }}</span>
+                                            </p>
+                                        </mat-list-item>
+                                        <mat-list-item class="list-item-piece-info">
+                                            <p matLine>
+                                                <strong>Délivrée à </strong> : <span> {{pieceIdentite.lieuDeDelivrance}}</span>
+                                            </p>
+                                        </mat-list-item>
+                                        <mat-list-item class="list-item-piece-info" *ngIf="pieceIdentite.documentPiece">
+                                            <p matLine>
+                                                <span> <a href="{{pieceIdentite.documentPiece | generalDownload}}">Télécharger la pièce jointe</a></span>
+                                            </p>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </mat-card-content>
+                            </mat-card>
+
+
+                        </ng-template>
+                    </mat-menu>
+
+
+                </p>
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">home</mat-icon>
+                    <span>{{acteur.adresses.length}} adresses fournies</span>
+                    <ng-template [ngIf]="acteur.adresses.length>0">
+                        <span [matMenuTriggerFor]="listAdresseacteur" class="bouton-voir-plus">
+                          <strong>voir+</strong>
+                        </span>
+                        <mat-menu #listAdresseacteur="matMenu" class="sycad-menu-panel">
+                            <ng-template ngFor let-adresse [ngForOf]="acteur.adresses">
+                                <mat-card class="container-card-contact" click-stop-propagation>
+                                    <mat-card-content fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start">
+                                        <mat-list>
+                                            <mat-list-item>
+                                                <mat-icon matListIcon *ngIf="adresse.principal" color="primary">home</mat-icon>
+                                                <mat-icon matListIcon *ngIf="!adresse.principal">call</mat-icon>
+                                                <h3 matLine>{{ adresse.libelle }}</h3>
+                                                <p matLine> <strong>Localité</strong> : <span>{{ adresse.localite }}</span> </p>
+                                                <p matLine> <strong>Quartier</strong> : <span>{{ adresse.quartier }}</span> </p>
+                                                <p matLine> <strong>Rue</strong> : <span>{{adresse.rue }}</span> </p>
+                                                <p matLine> <strong>Porte</strong> : <span>{{ adresse.porte }}</span> </p>
+                                                <p matLine> <strong>Parcelle</strong> : <span>{{ adresse.parcelle }}</span> </p>
+                                            </mat-list-item>
+                                        </mat-list>
+                                    </mat-card-content>
+                                </mat-card>
+                            </ng-template>
+                        </mat-menu>
+                    </ng-template>
+
+                </p>
+
+                <p fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="muted-text">home</mat-icon>
+                    <span>{{acteur.reseauSociaux.length}} reseauSociaux fournies</span>
+                    <ng-template [ngIf]="acteur.reseauSociaux.length>0">
+                        <span [matMenuTriggerFor]="listreseauSocialacteur" class="bouton-voir-plus">
+                          <strong>voir+</strong>
+                        </span>
+                        <mat-menu #listreseauSocialacteur="matMenu" class="sycad-menu-panel">
+                            <ng-template ngFor let-reseauSocial [ngForOf]="acteur.reseauSociaux">
+                                <mat-card class="container-card-contact" click-stop-propagation>
+                                    <mat-card-content fxLayout="row" fxLayout.xs="row wrap" fxLayoutAlign="start">
+                                        <mat-list>
+                                            <mat-list-item>
+
+                                                <h3 matLine>{{ reseauSocial.profil }}</h3>
+                                                <p matLine><span>{{ reseauSocial.type }}</span></p>
+
+                                            </mat-list-item>
+                                        </mat-list>
+                                    </mat-card-content>
+                                </mat-card>
+                            </ng-template>
+                        </mat-menu>
+                    </ng-template>
+
+                </p>
+
+            </div>
+
+        </div>
+    </div>
+
+</mat-card>

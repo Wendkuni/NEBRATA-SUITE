@@ -1,0 +1,100 @@
+<form [formGroup]="formulaire" >
+  <mat-horizontal-stepper linear #stepper>
+
+    <mat-step [editable]="true">
+
+      <ng-template matStepLabel>Information</ng-template>
+
+      <div fxLayout="row" fxLayoutAlign="start">
+        <app-observation-form [formGroup]="dossier"></app-observation-form>
+      </div>
+
+
+      <div class="card-action-form">
+        <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+          <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+          <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+          <button mat-raised-button color="primary" type="button" matStepperNext>Suivant</button>
+          <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+        </div>
+      </div>
+
+    </mat-step>
+  
+    <mat-step [editable]="true">
+
+      <ng-template matStepLabel>Numéroter</ng-template>
+      <ng-template mat-tab-label>
+        <mat-icon>attach_file</mat-icon>
+        Liste parcelles
+      </ng-template> 
+
+      <div class="parcelleTable" fxLayout="row" fxLayout="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+        <table mat-table [dataSource]="dataSourceParcelles" class="mat-elevation-z8" [fxFlex.xs]="100"
+               [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="70">
+          <ng-container matColumnDef="icad">
+            <th mat-header-cell *matHeaderCellDef> ICAD </th>
+            <td mat-cell *matCellDef="let parcelle"> {{parcelle.icad}} </td>
+          </ng-container>
+          <ng-container matColumnDef="numero">
+            <th mat-header-cell *matHeaderCellDef> Numero </th>
+            <td mat-cell *matCellDef="let parcelle"> {{parcelle.numero}} </td>
+          </ng-container>
+          <ng-container matColumnDef="libelle">
+            <th mat-header-cell *matHeaderCellDef>Libelle </th>
+            <td mat-cell *matCellDef="let parcelle"> {{parcelle.libelle}} </td>
+          </ng-container>
+          <ng-container matColumnDef="etatMev">
+            <th mat-header-cell *matHeaderCellDef>Etat Mise-En-Val </th>
+            <td mat-cell *matCellDef="let parcelle"> {{parcelle.etatMev}} </td>
+          </ng-container>
+          <ng-container matColumnDef="destination">
+            <th mat-header-cell *matHeaderCellDef>Destination </th>
+            <td mat-cell *matCellDef="let parcelle"> {{parcelle.destination?.libelle}} </td>
+          </ng-container>
+          <ng-container matColumnDef="superficie">
+            <th mat-header-cell *matHeaderCellDef>Superficie </th>
+            <td mat-cell *matCellDef="let parcelle"> {{parcelle.superficie}} </td>
+          </ng-container>
+          <ng-container matColumnDef="etatAttribution">
+            <th mat-header-cell *matHeaderCellDef>Etat Attribution </th>
+            <td mat-cell *matCellDef="let parcelle"> {{parcelle.etatAttribution}} </td>
+          </ng-container>
+            <ng-container matColumnDef="numeroIlot">
+            <th mat-header-cell *matHeaderCellDef>Numero Ilot </th>
+            <td mat-cell *matCellDef="let parcelle"> {{parcelle.ilot?.numero}} </td>
+          </ng-container>
+          
+           <ng-container matColumnDef="arrondissement">
+            <th mat-header-cell *matHeaderCellDef>Arrondissement </th>
+            <td mat-cell *matCellDef="let parcelle"> {{parcelle.arrondissement?.nom}} </td>
+          </ng-container>
+          <ng-container matColumnDef="commune">
+            <th mat-header-cell *matHeaderCellDef>Commune </th>
+            <td mat-cell *matCellDef="let parcelle"> {{parcelle.arrondissement?.commune?.nom}} </td>
+          </ng-container>  
+          <ng-container matColumnDef="localite">
+            <th mat-header-cell *matHeaderCellDef>Localité </th>
+            <td mat-cell *matCellDef="let parcelle"> {{parcelle.localite?.nom}} </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsParcelle"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsParcelle;"></tr>
+
+       </table>
+      </div> 
+      <!--<app-parcelle-form-fusion formControlName="parcelles" [parcelleChoisie]="fusion?.parcelles"  (change)="onChangeParcelle($event)" [proprietaire]="contribuableBeneficiaireChoisie?.guid" [structure]="structureBeneficiaireChoisie?.id" [touched]="parcelles.touched"></app-parcelle-form-fusion>-->
+      <div class="card-action-form">
+        <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+          <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+          <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+          <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>
+          <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+        </div>
+      </div>
+  </mat-step>
+
+  </mat-horizontal-stepper>
+
+</form>
+

@@ -1,0 +1,120 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+
+
+    <mat-card-header>
+        <mat-card-subtitle>
+            <h3>
+                <span>{{transition.libelle}} : sur le dossier {{compteContribuable.numero}}</span>
+            </h3>
+
+
+            <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+                La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+            </mat-error>
+
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+
+        <mat-tab-group>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">face</mat-icon>
+
+                    <ng-container>Formulaire transition {{transition.libelle}}</ng-container>
+
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+                    <ng-container [ngSwitch]="true">
+
+
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'CREATION_COMPTE_VERIFICATION_TO_REJETE'    ">
+                            <app-annulation-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="compteContribuable" [transition]="transition" [processusService]="compteService" [frontendUrl]="getFrontendTemplate()"></app-annulation-dossier-transition>
+                        </ng-template>
+
+
+
+                        <ng-template [ngSwitchCase]="  transition?.code === 'CREATION_COMPTE_EN_ATTENTE_VAILIDATION_TO_VERIFICATION' ">
+                            <app-envoyer-avec-observation-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="compteContribuable" [transition]="transition" [processusService]="compteService" [frontendUrl]="getFrontendTemplate()"></app-envoyer-avec-observation-dossier-transition>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'CREATION_COMPTE_VERIFICATION_TO_EN_ATTENTE_VALIDATION'   ">
+                            <app-envoie-pour-validation (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [compteContribuable]="compteContribuable" [transition]="transition">
+                            </app-envoie-pour-validation>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'CREATION_COMPTE_VERIFICATION_TO_RENVOIE'  || transition?.code === 'CREATION_COMPTE_RENVOIE_TO_RENVOIE'  ">
+                            <app-renvoyer-vers-contribuable (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [compteContribuable]="compteContribuable" [transition]="transition">
+                            </app-renvoyer-vers-contribuable>
+                        </ng-template>
+
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'CREATION_COMPTE_VERIFICATION_TO_VERIFICATION' || transition?.code === 'CREATION_COMPTE_EN_ATTENTE_VAILIDATION_TO_EN_ATTENTE_VAILIDATION' || transition?.code === 'CREATION_COMPTE_VALIDE_TO_VALIDE'">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [avecPiece]="false" [dossierProcessus]="compteContribuable" [fixedStructures]="false" [processusService]="compteService" [transition]="transition" [frontendUrl]="getFrontendTemplate()"></app-transmission-dossier>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="transition?.code ==='CREATION_COMPTE_EN_ATTENTE_VAILIDATION_TO_VALIDE'">
+                            <app-valider-compte (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [compteContribuable]="compteContribuable" [transition]="transition">
+                            </app-valider-compte>
+                        </ng-template>
+
+
+
+
+
+
+                    </ng-container>
+
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="compteContribuable?.numero">
+                <ng-template mat-tab-label>
+                    <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                </ng-template>
+                <div fxLayout="column" class="flex-p">
+                    <app-historique [numero]="compteContribuable?.numero"></app-historique>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="compteContribuable">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Entête de dossier
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+
+                    <app-entete [numero]="compteContribuable?.numero" [processus]="'WRKFProcessCreationCompte'"></app-entete>
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="compteContribuable">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Détail du dossier
+                </ng-template>
+
+                <div  fxLayout="column" class="flex-p">
+
+                    <app-visualiser-user [noOpenActions]="true"></app-visualiser-user>
+                </div>
+            </mat-tab>
+
+
+        </mat-tab-group>
+    </mat-card-content>
+
+
+
+
+
+
+
+</mat-card>

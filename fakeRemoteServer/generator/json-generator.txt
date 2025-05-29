@@ -1,0 +1,106 @@
+[
+  '{{repeat(100, 100)}}',
+  {
+    guid: '{{guid()}}',
+    matricule: '{{random("A", "B", "C")}}-{{integer(100, 999)}}-{{integer(5555, 9999)}}',
+    workPosition: '{{random("Product designer", "Product manager", "Software Engineer","Software Architect","Sales manager","Office manager","CTO")}}',
+    password : 'user12345',
+    username : 'user{{index()+1}}',
+    avatar : function() {
+     var index = Math.floor(Math.random() * 10)+1;
+
+      
+      return "assets/img/avatars/avatar-"+index+".png";
+    
+    },
+    firstName: function () {
+     var index = Math.floor(Math.random() * 14);
+      var list = ['Abdou', 'Abdoulaye', 'Sophie','Penda','Jean','Macky','Sokhna','Mouhamed','Aida','Samba','Aissatou','Absa','Ousmane','Demba','Joseph'];
+      return list[index];
+    },
+    middleName: function () {
+     var index = Math.floor(Math.random() * 6);
+      var list = ['', '', '','Mbissane','Birima','Latyr','Mbossé'];
+      return list[index];
+    },
+     lastName: function () {
+     var index = Math.floor(Math.random() * 6);
+      var list = ['Fall', 'Diop', 'Gomis','Dieng','Faye','Sall','Ndiaye','Diakhaté','Kane','Bâ','Diallo'];
+      return list[index];
+    },
+    
+    emails :  function () {
+        var index = Math.floor(Math.random() * 4)+1;
+        var list = [];
+       var levels = ["pro","perso"];
+       for(var i =1; i<=index; i++) {
+        var isPrincipal = (i===1)?true:false;
+       list.push({
+      
+        value:this.firstName.toLowerCase()+"."+this.lastName.toLowerCase()+"-"+i+"@sycad.com",
+        level: levels[Math.floor(Math.random() * 2)],
+        type : "EMAIL",
+        isPrincipal: isPrincipal
+      });
+      }
+              return list;
+          },
+    phones: function () {  
+      
+      function getNumber(min,max) {
+      var rand= Math.floor(Math.random() * min)+min;
+        
+        if(rand>max) return rand-(rand-max);
+        
+        return rand;
+      }
+    var index = Math.floor(Math.random() * 4)+1;
+     var levels = ["pro","perso","home"];
+      var list = [];
+       for(var i =1; i<=index; i++) {
+        var isPrincipal = (i===1)?true:false;
+       list.push({
+      
+        value: "(00221) 7"+(getNumber(6,8))+" "+(getNumber(150,950))+" "+(getNumber(11,99))+" "+(getNumber(11,99)),
+        level: levels[Math.floor(Math.random() * 2)],
+        type : "PHONE",
+        isPrincipal: isPrincipal
+      });
+      }
+      return list;
+    },
+    birthDay:'{{date(new Date(1975, 0, 1), new Date(1995, 0, 1), "YYYY-MM-ddThh:mm:ss.fZ")}}',
+    creationDate:'{{date(new Date(2019, 0, 1), new Date(2020, 0, 1), "YYYY-MM-ddThh:mm:ss.fZ")}}',
+    updateDate:'{{date(new Date(2019, 0, 1), new Date(2020, 0, 1), "YYYY-MM-ddThh:mm:ss.fZ")}}',
+    profils : [],
+    roles : [],
+    active: '{{random("true", "false")}}',
+    permissions : [],
+  
+    gender : function () {
+     
+      var sexe = {
+        Abdou:"Man",
+        Sophie : "Woman",
+        Penda : "Woman",
+        Sokhna : "Woman",
+        Aida : "Woman",
+        Aissatou : "Woman",
+        Absa : "Woman",
+        Abdoulaye : "Man",
+        Jean : "Man",
+        Macky : "Man",
+        Mouhamed : "Man",
+        Samba : "Man",
+        Ousmane : "Man",
+        Demba : "Man",
+        Joseph : "Man"
+      };
+      return sexe[this.firstName];
+    },
+      civility :   function () {
+        return this.gender==="Man"?"Mr":"Ms";
+    },
+      address : '{{integer(100, 999)}} {{street()}}, {{random("Dakar", "Thies", "Saint-Louis","Tamba")}}, Sénégal'
+  }
+]

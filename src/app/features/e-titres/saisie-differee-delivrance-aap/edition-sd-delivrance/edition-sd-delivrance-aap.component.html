@@ -1,0 +1,204 @@
+<mat-card>
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+
+
+    <mat-card-header>
+        <mat-card-subtitle>
+            <h3>
+                <span *ngIf="!delivranceAap">Démarrer une saisie différée d'une délivrance d'attestation de parcelle</span>
+                <span *ngIf="delivranceAap?.numero">{{transition.libelle}} : sur le dossier {{delivranceAap.numero}}</span>
+            </h3>
+
+
+            <mat-error class="global-error-valiator" *ngIf="formErrors?.length>0">
+                La saisie du champ "{{formErrors[0]}}" a été détectée comme erronée.
+            </mat-error>
+
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+
+        <mat-tab-group #tabGroup class="tabGroup">
+        <mat-tab *ngIf="!delivranceAap">
+            <ng-template mat-tab-label>
+                <mat-icon class="sycad-form-tab-label-icon">info</mat-icon>
+
+                 <ng-container *ngIf="!delivranceAap">Details du processus</ng-container>
+            </ng-template>
+
+            <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+
+                <ng-container [ngSwitch]="true">
+                  <!-- header -->
+
+                <app-details-processus-tab-pane
+                [processus]="processus"
+
+                >
+                </app-details-processus-tab-pane>
+
+
+                <!-- button commencer, id tabGroup -> mat-tab-group -->
+                  <div style="display: flex;justify-content: space-between; align-items: end;">
+                    <button mat-raised-button color="primary" style=" margin-left: auto;padding:5px 5px" (click)="tabGroup.selectedIndex = tabGroup.selectedIndex + 1">
+                      Commencer
+                      <mat-icon>keyboard_arrow_right</mat-icon>
+                    </button>
+                  </div>
+
+                </ng-container>
+
+            </div>
+        </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">face</mat-icon>
+
+                    <ng-container *ngIf="delivranceAap?.numero">Formulaire transition {{transition.libelle}}</ng-container>
+                    <ng-container *ngIf="!delivranceAap">Création d'une délivrance d'attestation de parcelle</ng-container>
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p" *ngIf="authentificatedUser">
+
+                    <ng-container [ngSwitch]="true">
+
+
+                        <ng-template [ngSwitchCase]="transition?.code === 'DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_TRANSMISSION_BROUILLON'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_TRANSMISSION_VALIDE'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_TRANSMISSION_RETIRE'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_TRANSMISSION_ATTENTE_SIGNATURE'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_TRANSMISSION_ARCHIVE'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_TRANSMISSION_DRAFT_ACTE'">
+                            <app-transmission-dossier (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [codeCommune]="delivranceAap?.parcelle?.ilot?.section?.commune?.code" [dossierProcessus]="delivranceAap" [fixedStructures]="false" [processusService]="delivranceAapService" [transition]="transition" [frontendUrl]="getFrontendTemplate()" >
+
+                            </app-transmission-dossier>
+                        </ng-template>
+
+                        <ng-template *ngIf="delivranceAap?.parcelle" [ngSwitchCase]="transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_BROUILLON_TO_DEPOSE'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_DRAFT_ACTE_TO_ATTENTE_SIGNATURE'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_ARCHIVE_TO_EN_ATTENTE_RETRAIT'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_MANDAT_AJOUTE_TO_EN_ATTENTE_RETRAIT'">
+                            <app-transmission-dossier [hideBureau]=true (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [codeCommune]="delivranceAap?.parcelle?.ilot?.section?.commune?.code" [dossierProcessus]="delivranceAap" [fixedStructures]="false" [processusService]="delivranceAapService" [transition]="transition" [frontendUrl]="getFrontendTemplate()" [codeTransition]="transition.code" [codeArrrondissement]="delivranceAap.parcelle.arrondissement.code">
+
+                            </app-transmission-dossier>
+                        </ng-template>
+
+                        <ng-template *ngIf="delivranceAap?.parcelleInexistante" [ngSwitchCase]="transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_BROUILLON_TO_DEPOSE'">
+                        <app-transmission-dossier [hideBureau]=true (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [codeCommune]="delivranceAap?.parcelleInexistante?.commune?.code" [dossierProcessus]="delivranceAap" [fixedStructures]="false" [processusService]="delivranceAapService" [transition]="transition" [frontendUrl]="getFrontendTemplate()" [codeTransition]="transition.code" [codeArrrondissement]="delivranceAap.parcelleInexistante?.arrondissement?.code">
+
+                        </app-transmission-dossier>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_EN_ATTENTE_RETRAIT_TO_RETIRE'">
+                            <app-retirer-titre-sd-delivrance-aap (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus" [delivranceAap]="delivranceAap" [transition]="transition"></app-retirer-titre-sd-delivrance-aap>
+                        </ng-template>
+
+
+
+                        <ng-template [ngSwitchCase]="transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_BROUILLON_TO_BROUILLON'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_DEPOSE_TO_DEPOSE'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_DRAFT_ACTE_TO_DRAFT_ACTE_SAISIE'">
+
+                            <ng-container *ngIf="authentificatedUser?.typeUser==='AGENT'; else autreContribuableCondition">
+                                <pc-saisie-sd-delivrance-aap-par-agent  (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus" [delivranceAap]="delivranceAap" [transition]="transition"></pc-saisie-sd-delivrance-aap-par-agent>
+                            </ng-container>
+
+                            <ng-template #autreContribuableCondition>
+                                <pc-saisie-sd-delivrance-aap-par-contribuable (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus" [delivranceAap]="delivranceAap" [transition]="transition" [authentificatedUser]="authentificatedUser"></pc-saisie-sd-delivrance-aap-par-contribuable>
+
+                            </ng-template>
+                        </ng-template>
+
+
+
+                        <ng-template [ngSwitchCase]="transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_ARCHIVE_TO_MANDAT_AJOUTE'">
+                            <app-ajout-mandat-sd-delivrance-aap (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus" [delivranceAap]="delivranceAap" [transition]="transition"></app-ajout-mandat-sd-delivrance-aap>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_DRAFT_ACTE_TO_VALIDE'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_BROUILLON_TO_DRAFT_ACTE'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_DEPOSE_TO_DRAFT_ACTE'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_DRAFT_ACTE_TO_DRAFT_ACTE'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_DEPOSE_TO_BROUILLON'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_ATTENTE_SIGNATURE_TO_VALIDE'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_DRAFT_ACTE_TO_DEPOSE'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_ATTENTE_SIGNATURE_TO_DRAFT_ACTE'">
+                            <app-valider-sd-delivrance-aap (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus" [delivranceAap]="delivranceAap" [transition]="transition"></app-valider-sd-delivrance-aap>
+                        </ng-template>
+                        <ng-template [ngSwitchCase]=" transition?.code === 'DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_BROUILLON_TO_ANNULER'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_DEPOSE_TO_ANNULER'
+                                                    || transition?.code==='DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_ATTENTE_SIGNATURE_TO_ANNULER'
+                                                    || transition?.code === 'DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_DRAFT_ACTE_TO_ANNULER'
+                                                    || transition?.code === 'DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_VALIDE_TO_ANNULER'
+                                                    || transition?.code === 'DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_ARCHIVE_TO_ANNULER'
+                                                    || transition?.code === 'DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_EN_ATTENTE_RETRAIT_TO_ANNULER'
+                                                    || transition?.code === 'DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_RETIRE_TO_ANNULER'">
+                            <app-annulation-dossier-transition (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [dossierProcessus]="delivranceAap" [transition]="transition" [processusService]="delivranceAapService" [frontendUrl]="getFrontendTemplate()"></app-annulation-dossier-transition>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]=" transition?.code === 'DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_VALIDE_TO_ARCHIVE'
+                                                    || transition?.code === 'DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_ARCHIVE_TO_ARCHIVE'
+                                                    || transition?.code === 'DELIVRANCE_ATTESTATION_ATTRIBUTION_PARCELLE_RETIRE_TO_ARCHIVE'">
+                            <app-archiver-sd-delivrance-aap (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus" [delivranceAap]="delivranceAap" [transition]="transition"></app-archiver-sd-delivrance-aap>
+                        </ng-template>
+                        <ng-template [ngSwitchDefault]>
+                            <ng-container *ngIf="authentificatedUser?.typeUser==='AGENT' ; else autreContribuableCondition">
+                                <pc-creation-sd-delivrance-aap-par-agent (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus"></pc-creation-sd-delivrance-aap-par-agent>
+                            </ng-container>
+
+
+                            <ng-template #autreContribuableCondition>
+                                <pc-creation-sd-delivrance-aap-par-contribuable (loadingEvent)="loadingEvent($event)" (formErrors)="onFormError($event)" [processus]="processus" [authentificatedUser]="authentificatedUser"></pc-creation-sd-delivrance-aap-par-contribuable>
+                            </ng-template>
+                        </ng-template>
+
+                    </ng-container>
+
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="delivranceAap">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Détail du dossier
+                </ng-template>
+                <div  fxLayout="column" class="flex-p">
+                    <app-vue-sd-delivrance-aap [noOpenActions]="true"></app-vue-sd-delivrance-aap>
+                </div>
+            </mat-tab>
+
+            <mat-tab *ngIf="delivranceAap?.numero">
+                <ng-template mat-tab-label>
+                    <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                </ng-template>
+                <div fxLayout="column" class="flex-p">
+                    <app-historique [numero]="delivranceAap?.numero"></app-historique>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="delivranceAap">
+                <ng-template mat-tab-label>
+                    <mat-icon class="sycad-form-tab-label-icon">payment</mat-icon>
+                    Entête de dossier
+                </ng-template>
+
+                <div fxLayout="column" class="flex-p">
+
+                    <app-entete [numero]="delivranceAap?.numero" [processus]="'WRKFProcessDelivranceAttestationAttributionParcelle'"></app-entete>
+                </div>
+            </mat-tab>
+
+
+        </mat-tab-group>
+    </mat-card-content>
+
+
+
+
+
+
+
+</mat-card>

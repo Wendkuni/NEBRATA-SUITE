@@ -1,0 +1,80 @@
+<form [formGroup]="parcelleDelimitationForm" class="form-container">
+
+  <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+    <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+      <mat-label>Point (*)</mat-label>
+      <mat-select formControlName="point">
+        <mat-option [value]="poin" *ngFor="let poin of pointLimitation">
+          {{poin}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="point.invalid && (point.dirty || point.touched) && point.errors?.required">
+        Le point est obligatoire
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="40" [fxFlex.xl]="35">
+      <mat-label>GPS X (*)</mat-label>
+      <input matInput  formControlName="gpsX" type="number">
+
+      <mat-error *ngIf="gpsX.invalid && (gpsX.dirty || gpsX.touched) && gpsX.errors?.required">
+        Le GPS X est obligatoire
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="40" [fxFlex.xl]="35">
+      <mat-label>GPS Y (*)</mat-label>
+      <input matInput  formControlName="gpsY" type="number">
+      <mat-error *ngIf="gpsY.invalid && (gpsY.dirty || gpsY.touched) && gpsY.errors?.required">
+        Le GPS Y est obligatoire
+      </mat-error>
+    </mat-form-field>
+
+  </div>
+
+  <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+      <mat-label>distance (*)</mat-label>
+      <input matInput formControlName="distance" type="number">
+      <mat-error *ngIf="distance.invalid && (distance.dirty || distance.touched) && distance.errors?.required">
+        La distance est obligatoire
+      </mat-error>
+    </mat-form-field>
+
+  </div>
+
+  <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+      <mat-label>Gissement</mat-label>
+      <input matInput formControlName="gissement">
+    </mat-form-field>
+
+  </div>
+
+  <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+    <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+      <mat-label>Sens (*)</mat-label>
+      <mat-select formControlName="sens">
+        <mat-option [value]="sen" *ngFor="let sen of sensDelimitation">
+          {{sen}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="sens.invalid && (sens.dirty || sens.touched) && sens.errors?.required">
+        Le sens est obligatoire
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+      <mat-label>Limitation</mat-label>
+      <input matInput  formControlName="limitation">
+    </mat-form-field>
+  </div>
+
+</form>

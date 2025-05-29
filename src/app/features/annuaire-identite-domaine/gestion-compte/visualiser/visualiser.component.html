@@ -1,0 +1,24 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{compteContribuable?.etat.libelle}}</mat-card-title>
+        <mat-card-subtitle>{{compteContribuable?.etat.description}}</mat-card-subtitle>
+        <ng-container *ngIf="compteContribuable && !noOpenActions && compteContribuable?.transitions?.length>0">
+            <app-action-detail-dossier [numero]="compteContribuable.numero" [url]="urlAction"
+                [transitions]="compteContribuable.transitions"></app-action-detail-dossier>
+        </ng-container>
+    </mat-card-header>
+
+    <form class="user-form" *ngIf="compteContribuable">
+        <mat-card-content>
+
+            <app-view-agent [compte]="compteContribuable" *ngIf="compteContribuable.typeCompte==='AGENT'">
+            </app-view-agent>
+            <app-view-contribuable-moral [compte]="compteContribuable"
+                *ngIf="compteContribuable.typeCompte=== 'CONTRIBUABLEMORALE'"></app-view-contribuable-moral>
+            <app-view-contribuable-physique [compte]="compteContribuable"
+                *ngIf="compteContribuable.typeCompte=== 'CONTRIBUABLEPHYSIQUE'"></app-view-contribuable-physique>
+            <app-view-acteur [compte]="compteContribuable" *ngIf="compteContribuable.typeCompte=== 'ACTEUR'">
+            </app-view-acteur>
+        </mat-card-content>
+    </form>
+</mat-card>

@@ -1,0 +1,34 @@
+<form [formGroup]="transitions">
+    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+        <div class="sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="25">
+            <ng-select [items]="typePieceIdentiteRemoteAutocomplete.listRessource$ | async" [typeahead]="typePieceIdentiteRemoteAutocomplete.term" [loading]="typePieceIdentiteRemoteAutocomplete.loading" appendTo="body" (search)="onSearchTypePieceIdentite($event)"
+                [selectOnTab]="true" bindLabel="libelle" bindValue="id" formControlName="categoriePiece">
+                <ng-template ng-loadingspinner-tmp>
+                    <div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </ng-template>
+                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                    <div class="ng-value" *ngFor="let categoriePiece of items | slice:0:5">
+                        <span class="ng-value-icon right" (click)="clear(categoriePiece)" aria-hidden="true">× </span>
+                        <span class="ng-value-label"> {{categoriePiece.libelle}}</span>
+                    </div>
+                    <div class="ng-value" *ngIf="items.length > 4">
+                        <span class="ng-value-label">{{items.length - 4}} plus...</span>
+                    </div>
+                </ng-template>
+            </ng-select>
+        </div>
+        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="52" [fxFlex.xl]="20">
+            <mat-label>Nombre d'exemplaire</mat-label>
+            <input matInput formControlName="nbExemplaire" type="number" />
+        </mat-form-field>
+        <div class="container-form-field-radio" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="20" [fxFlex.xl]="20">
+            <label id="obligatoire">Obligatoire</label>
+            <mat-slide-toggle formControlName="obligatoire" aria-labelledby="obligatoire"></mat-slide-toggle>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,15 @@
+<div fxLayout="column">
+    <div class="flex-p">
+        <ng-template #datatable1></ng-template>
+    </div>
+</div>
+
+<ng-template #templateIndivisionQualite let-relation="data">
+    <div class="list-qualites-expand" [ngStyle]="{'padding': relation.qualites.length>0?'15px':'0'}">
+        <mat-chip-list>
+            <mat-chip *ngFor="let qualite of relation.qualites">{{qualite}}</mat-chip>
+        </mat-chip-list>
+    </div>
+
+
+</ng-template>

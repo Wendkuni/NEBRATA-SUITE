@@ -1,0 +1,35 @@
+<mat-accordion class="profil-panel">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title class="panel-header-email" fxLayout="row" fxLayoutAlign="start start">
+                 <h3>Emails</h3>
+
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card-content>
+
+            <mat-list>
+
+                <mat-list-item *ngIf="principalEmail$  | async as principalEmail">
+                  <div matLine>
+                    <h3 > Email {{principalEmail?.level | lowercase}} </h3>
+                    <span> {{principalEmail?.value}}</span>
+                  </div>
+                </mat-list-item>
+                <mat-divider *ngIf="principalEmail$ | async"></mat-divider>
+                <ng-container *ngFor="let email of emails">
+                  <ng-container *ngIf="email.principal === false">
+                    <mat-list-item>
+                      <div  matLine>
+                        <h3>Email {{email?.level | lowercase}}  </h3><span>{{ email?.value ? email?.value : '...'}}</span>
+                      </div> 
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                  </ng-container>
+                </ng-container>
+
+            </mat-list>
+           
+        </mat-card-content>
+    </mat-expansion-panel>
+</mat-accordion>

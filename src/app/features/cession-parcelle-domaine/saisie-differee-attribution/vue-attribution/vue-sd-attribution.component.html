@@ -1,0 +1,276 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{attribution.etat.libelle}}</mat-card-title>
+    <mat-card-subtitle>{{attribution.etat.description}}</mat-card-subtitle>
+    <ng-container *ngIf="attribution && !noOpenActions && attribution?.transitions?.length>0">
+      <app-action-detail-dossier [numero]="attribution.numero" [url]="urlAction" [transitions]="attribution.transitions"></app-action-detail-dossier>
+    </ng-container>
+  </mat-card-header>
+    <form class="user-form" *ngIf="attribution">
+        <mat-card-content>
+            <mat-tab-group class="mat-tab-active-color">
+
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>content_paste</mat-icon>
+                            Formalite
+                        </ng-template>
+                        <mat-tab-group>
+                          <mat-tab>
+                                <form>
+                                    <ng-template mat-tab-label>
+                                        <mat-icon>content_paste</mat-icon>
+                                        Informations de base
+                                    </ng-template>
+                                    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                            [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                            <mat-label>Numéro dossier</mat-label>
+                                            <input matInput value="{{attribution.numero}}" [readonly]="true">
+                                        </mat-form-field>
+                                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                            [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                            <mat-label>Date dossier (*)</mat-label>
+                                            <input matInput value="{{attribution.dateCreationDossier | date:'dd/MM/yyyy'}}"
+                                                [readonly]="true">
+
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+                                      <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                                      [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                                        <mat-label>Source de session </mat-label>
+                                        <input matInput [attr.autocomplete]="'off'"
+                                               value="{{attribution.cessionSource?.libelle}}" [readonly]="true" />
+                                      </mat-form-field>
+                                    </div>
+                                  <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                      <mat-label>Etat du dossier</mat-label>
+                                      <input matInput value="{{attribution?.etat.libelle}}" [readonly]="true">
+                                    </mat-form-field>
+                                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                      <mat-label>Statut du dossier</mat-label>
+                                      <input matInput value="{{attribution?.statusDossier}}" [readonly]="true">
+                                    </mat-form-field>
+
+                                  </div>
+
+                                  <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+                                    <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                                      <mat-label>Motif(Annulé/rejet)</mat-label>
+                                      <input matInput value="{{attribution?.motifRejet?.libelle}}" [readonly]="true">
+                                    </mat-form-field>
+                                  </div>
+                                  <div fxLayout="row" fxLayoutAlign="start">
+                                    <h2>Observation</h2>
+                                  </div>
+                                  <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+
+                                  <div class="editor-container"
+                                       >
+
+                                    <angular-editor [fxFlex]="100"
+                                      [formControl]="formGroup.get('observation')"
+                                      [config]="editorConfig">
+                                    </angular-editor>
+                                  </div>
+                                  </div>
+
+
+                                </form>
+                            </mat-tab>
+                          <mat-tab>
+                            <form>
+                              <ng-template mat-tab-label>
+                                <mat-icon>list_alt</mat-icon>
+                                Document d'attribution
+                              </ng-template>
+                              <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                  <mat-label>Libellé </mat-label>
+                                  <input matInput value="{{attribution.documentDeSortie.libelle}}" [readonly]="true">
+                                </mat-form-field>
+                                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                  <mat-label>Numéro du PV</mat-label>
+                                  <input matInput value="{{attribution.numeroDePV}}" [readonly]="true">
+                                </mat-form-field>
+
+                              </div>
+                              <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                  <mat-label>Numéro d'attribution</mat-label>
+                                  <input matInput value="{{attribution.documentDeSortie.numero}}" [readonly]="true">
+                                </mat-form-field>
+                                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                  <mat-label>Date d'attribution</mat-label>
+                                  <input matInput value="{{attribution.documentDeSortie.dateDoc | date:'dd/MM/yyyy'}}" [readonly]="true">
+
+                                </mat-form-field>
+
+                              </div>
+
+                              <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                                  <span *ngIf="!attribution.documentDeSortie.pieceJointe">Aucune pièce jointe</span>
+                                  <ng-container *ngIf="attribution.documentDeSortie.pieceJointe">
+                                  <span *ngFor="let piece of attribution.documentDeSortie.pieceJointe; let i = index" class="piece-telechargeable">
+                                    <a href="{{piece | generalDownload}}">Télécharger {{i + 1}}</a>
+                                  </span>
+                                  </ng-container>
+                                </div>
+                              </div>
+                            </form>
+                          </mat-tab>
+
+
+                          <mat-tab>
+                              <form>
+                                  <ng-template mat-tab-label>
+                                      <mat-icon>content_paste</mat-icon>
+                                      Propriété
+                                  </ng-template>
+                                  <mat-tab-group>
+                                      <mat-tab>
+                                          <form>
+                                              <ng-template mat-tab-label>
+                                                  <mat-icon>list_alt</mat-icon>
+                                                  Parcelle
+                                              </ng-template>
+
+                                              <app-parcelle-visualiser [attribution]="attribution"></app-parcelle-visualiser>
+                                          </form>
+                                          <app-cycledevie-parcelle [icad]="attribution.parcelle?.icad"></app-cycledevie-parcelle>
+                                      </mat-tab>
+                                  </mat-tab-group>
+                              </form>
+                          </mat-tab>
+                          <mat-tab>
+                            <form>
+                              <ng-template mat-tab-label>
+                                <mat-icon>business</mat-icon>
+                                Structure
+                              </ng-template>
+                              <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px"
+                                   fxLayoutAlign="start">
+
+                                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                                [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                                  <mat-label>Structure</mat-label>
+                                  <input matInput value="{{attribution.transmission?.structure?.nom}}" [readonly]="true">
+                                </mat-form-field>
+
+                              </div>
+                              <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px"
+                                   fxLayoutAlign="start">
+                                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                                [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                                  <mat-label>Service</mat-label>
+                                  <input matInput value="{{attribution.transmission?.service?.nom}}" [readonly]="true">
+                                </mat-form-field>
+                              </div>
+                              <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.xs="row wrap" fxLayoutGap.gt-sm="20px"
+                                   fxLayoutAlign="start">
+                                <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100"
+                                                [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.lg]="50" [fxFlex.xl]="50">
+                                  <mat-label>Bureau</mat-label>
+                                  <input matInput value="{{attribution.transmission?.bureau?.nom}}" [readonly]="true">
+                                </mat-form-field>
+                              </div>
+                            </form>
+                          </mat-tab>
+
+                        </mat-tab-group>
+                      <mat-tab>
+                        <form>
+                          <ng-template mat-tab-label>
+                            <mat-icon>content_paste</mat-icon>
+                            Contribuable
+                          </ng-template>
+                          <mat-tab-group>
+
+                            <mat-tab>
+
+                              <ng-template mat-tab-label>
+                                <mat-icon>person</mat-icon>
+                                Attributaire
+                              </ng-template>
+                              <!-- Affiche les information du carde attribution -->
+                              <div *ngIf="attribution.attributaire" fxLayout="row" fxLayout.lt-md="row wrap"
+                                   fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                                <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="70">
+                                  <mat-card-header>
+                                    <mat-card-title>
+                                      Détail Attributaire
+                                    </mat-card-title>
+                                  </mat-card-header>
+                                  <mat-card-content>
+                                    <app-card-general-contribuable-form [contribuable]="attribution.attributaire">
+                                    </app-card-general-contribuable-form>
+                                  </mat-card-content>
+                                </mat-card>
+                              </div>
+                              <div *ngIf="!isloading">
+
+                                <div *ngFor="let dossier of filteredDossiers"
+                                     fxLayout="row"
+                                     fxLayout.lt-md="row wrap"
+                                     fxLayoutGap.gt-sm="20px"
+                                     fxLayoutAlign="start">
+                                  <mat-card [fxFlex.xs]="100"
+                                            [fxFlex.sm]="100"
+                                            [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="70">
+                                    <mat-card-header>
+                                      <mat-card-title>
+                                        Détail Attributaire actuel
+                                      </mat-card-title>
+                                    </mat-card-header>
+                                    <mat-card-content>
+                                      <app-card-general-dossier-and-contribuable
+                                        [numero]="dossier.numero">
+                                      </app-card-general-dossier-and-contribuable>
+                                    </mat-card-content>
+                                  </mat-card>
+                                </div>
+                              </div>
+
+                            </mat-tab>
+
+
+
+
+                          </mat-tab-group>
+                        </form>
+                      </mat-tab>
+                <mat-tab>
+                    <form>
+                        <ng-template mat-tab-label>
+                            <mat-icon>content_paste</mat-icon>
+                            Fiscalite
+                        </ng-template>
+
+
+                    </form>
+                </mat-tab>
+
+
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon>chrome_reader_mode</mat-icon>&nbsp;Historique
+                    </ng-template>
+                    <div fxLayout="row" fxLayoutAlign="start">
+                        <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="50" [fxFlex.xl]="60">
+                            <app-historique [numero]="attribution.numero"></app-historique>
+                        </div>
+
+                    </div>
+                </mat-tab>
+                    </form>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card-content>
+    </form>
+</mat-card>

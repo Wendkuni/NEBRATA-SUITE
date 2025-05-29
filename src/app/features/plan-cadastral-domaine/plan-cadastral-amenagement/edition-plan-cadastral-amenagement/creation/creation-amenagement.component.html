@@ -1,0 +1,127 @@
+<form [formGroup]="formulaire">
+    <mat-horizontal-stepper linear #stepper>
+        <mat-step [editable]="true">
+            <form [formGroup]="dossier">
+                <ng-template matStepLabel>Informations de base</ng-template>
+                <div fxLayout="row" fxLayoutAlign="start" [formGroup]="formulaire" class="step-creation">
+                    <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="45" [fxFlex.xl]="40">
+                        <ng-select [items]="arrondissementRemoteAutocomplete.listRessource$ | async" [typeahead]="arrondissementRemoteAutocomplete.term" [groupBy]="groupByFnArrondissement" [groupValue]="groupValueFnArrondissement" [loading]="arrondissementRemoteAutocomplete.loading"
+                            (search)="onSearchArrondissement($event)" appendTo="body" [selectOnTab]="true" bindLabel="nom" bindValue="id" labelForId="arrondissement" placeholder="Arrondissement" formControlName="arrondissement">
+                            <ng-template ng-optgroup-tmp let-item="item">
+                                <span style="vertical-align: middle;"> {{item.name}}</span>
+                            </ng-template>
+                            <ng-template ng-loadingspinner-tmp>
+                                <div class="lds-ellipsis">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </ng-template>
+                        </ng-select>
+                        <mat-error *ngIf="arrondissement.invalid && (arrondissement.dirty || arrondissement.touched) && arrondissement.errors?.required">
+                            Un dossier d'aménagement rural doit obligatoire être associé à un arrondissement
+                        </mat-error>
+
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start" [formGroup]="formulaire" class="step-creation">
+                    <div class="sycad-form-line sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="45" [fxFlex.xl]="40">
+                        <ng-select [items]="destinationRemoteAutocomplete.listRessource$ | async" [typeahead]="destinationRemoteAutocomplete.term" [loading]="destinationRemoteAutocomplete.loading" (search)="onSearchDestination($event)" appendTo="body" [selectOnTab]="true" bindLabel="libelle"
+                            bindValue="id" labelForId="Destination" placeholder="Destination" formControlName="destination">
+
+                            <ng-template ng-loadingspinner-tmp>
+                                <div class="lds-ellipsis">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </ng-template>
+                        </ng-select>
+                        <mat-error *ngIf="destination.invalid && (destination.dirty || destination.touched) && destination.errors?.required">
+                            Un dossier d'aménagement rural doit obligatoire être associé à un destination
+                        </mat-error>
+                    </div>
+                </div>
+
+
+                <ng-container [formGroup]="formulaire">
+                    <div fxLayout="row" fxLayout.lt-md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                            <mat-label>Date mise à jour (*)</mat-label>
+                            <input matInput [matDatepicker]="dateMajPlanPicker" placeholder="Date mise à jour" formControlName="dateMajPlan">
+                            <mat-datepicker-toggle matSuffix [for]="dateMajPlanPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #dateMajPlanPicker></mat-datepicker>
+                            <mat-error *ngIf="dateMajPlan.invalid && (dateMajPlan.dirty || dateMajPlan.touched) && dateMajPlan.errors?.required">
+                                La date de mise à jour est obligatoire
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
+                    <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                        <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                            <mat-label>Domaine</mat-label>
+                            <mat-select formControlName="domaine">
+                                <mat-option [value]="domaine" *ngFor="let domaine of domaines">
+                                    {{domaine}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="domaine.invalid && (domaine.dirty || domaine.touched) && domaine.errors?.required">
+                                Le domaine est obligatoire
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </ng-container>
+                <app-dossier-form [formGroup]="dossier"></app-dossier-form>
+                <div class="card-action-form">
+                    <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                        <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                        <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                        <button mat-raised-button color="primary" type="button" matStepperNext>Suivant</button>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+
+
+
+        <mat-step [stepControl]="pieces" [editable]="true">
+            <form [formGroup]="pieces">
+                <ng-template matStepLabel>Pièces jointes</ng-template>
+                <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+                    <div fxLayout="column" class="flex-p" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="50">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <button type="button" mat-flat-button color="primary" [disabled]="categoriePieceProcessus$.length==0" (click)="addNewDossierPiece()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10"
+                                [fxFlex.lg]="50" [fxFlexOffset.md]="10" [fxFlex.xl]="50" [fxFlexOffset]="10">
+                                <mat-icon class="icon-sm">add</mat-icon> Ajouter une nouvelle pièce
+                            </button>
+                        </div>
+                        <ng-template ngFor let-pieces [ngForOf]="pieces.controls" let-i="index">
+                            <div class="card-container-form-element y-1" fxLayout="row" fxLayoutAlign="start">
+                                <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+
+                                    <button mat-icon-button matSuffix color="warn" class="delete-icons" type="button">
+                                        <mat-icon (click)="removeDossierPiece(i)">remove_circle</mat-icon>
+                                    </button>
+                                    <app-dossier-piece-form [formGroup]="pieces" [categoriePieceProcessus]="categoriePieceProcessus$" (changeCategoriePiece)="changeCategoriePiece($event)" [touched]="pieces.touched"></app-dossier-piece-form>
+                                </mat-card>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+
+                <div class="card-action-form">
+                    <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                        <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                        <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                        <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>
+                        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">Créer</button>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+
+    </mat-horizontal-stepper>
+
+</form>

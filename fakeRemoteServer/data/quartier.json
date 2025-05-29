@@ -1,0 +1,31 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "nom": "Benego",
+      "commune": "Saaba"
+    },
+    {
+      "id": 2,
+      "nom": "Dassasgho",
+      "commune": "Zagtouli"
+    },
+    {
+      "id": 3,
+      "nom": "Kossodo"
+    },
+    {
+      "id": 4,
+      "nom": "zogona",
+      "commune": "Ouagadougou"
+    }
+  ]
+}

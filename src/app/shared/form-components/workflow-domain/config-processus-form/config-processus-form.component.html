@@ -1,0 +1,201 @@
+<mat-card>
+  <div class="sycad-loading-shade" *ngIf="loading">
+    <mat-spinner *ngIf="loading"></mat-spinner>
+  </div>
+  <mat-card-header>
+    <mat-card-title>{{processus.libelle}}</mat-card-title>
+    <mat-card-subtitle [innerHTML]="processus.description"></mat-card-subtitle>
+  </mat-card-header>
+  <form class="user-form" *ngIf="processus">
+    <mat-card-content>
+      <mat-tab-group>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>content_paste</mat-icon>&nbsp;
+            Infos de bases
+          </ng-template>
+          <div fxLayout="column" class="flex-p">
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+              <mat-form-field appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                <mat-label>libelle </mat-label>
+                <input matInput  value="{{processus.libelle}}" readonly="true">
+              </mat-form-field>
+              <mat-form-field  appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                <mat-label>Nombre de jours (*)</mat-label>
+                <input matInput readonly="true" value="{{processus.nbJours}}">
+              </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutGap.sm="10px" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start center">
+
+              <div appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                <label>Description </label>
+                <div matInput  readonly="true" [innerHTML]="processus.description"></div>
+              </div>
+
+
+              <mat-form-field class="sycad-form-line" appearance="outline" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="45" [fxFlex.lg]="25" [fxFlex.xl]="20">
+                <mat-label>Actif</mat-label>
+                <input matInput readonly="true" value="{{processus.actif? 'OUI': 'NON'}}">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>tab</mat-icon>&nbsp;
+            Etats
+          </ng-template>
+          <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <table mat-table [dataSource]="dataSourceEtatProcess" class="mat-elevation-z8 sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+              <ng-container matColumnDef="code">
+                <th mat-header-cell *matHeaderCellDef> Code </th>
+                <td mat-cell *matCellDef="let element"> {{element.code}} </td>
+              </ng-container>
+              <ng-container matColumnDef="libelle">
+                <th mat-header-cell *matHeaderCellDef> Libelle</th>
+                <td mat-cell *matCellDef="let element"> {{element.libelle}} </td>
+              </ng-container>
+              <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef>Description</th>
+                <td mat-cell *matCellDef="let element">{{element.description}}</td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsEtat"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsEtat;"></tr>
+            </table>
+          </div>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>tune</mat-icon>&nbsp;
+            Transitions
+          </ng-template>
+          <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <table mat-table [dataSource]="dataSourceTransition" class="mat-elevation-z8 sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+              <ng-container matColumnDef="code">
+                <th mat-header-cell *matHeaderCellDef> Code </th>
+                <td mat-cell *matCellDef="let element"> {{element.code}} </td>
+              </ng-container>
+              <ng-container matColumnDef="libelle">
+                <th mat-header-cell *matHeaderCellDef> Libelle</th>
+                <td mat-cell *matCellDef="let element"> {{element.libelle}} </td>
+              </ng-container>
+              <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef>Description</th>
+                <td mat-cell *matCellDef="let element">{{element.description}}</td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsTransition"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsTransition;"></tr>
+            </table>
+          </div>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>attach_file</mat-icon>&nbsp;
+            Pièces d'entrées
+          </ng-template>
+          <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <table mat-table [dataSource]="dataSourceCategoriePieces" class="mat-elevation-z8 sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+
+              <ng-container matColumnDef="categorie">
+                <th mat-header-cell *matHeaderCellDef> Catégorie pièce </th>
+                <td mat-cell *matCellDef="let element"> {{element.categoriePiece.libelle}} </td>
+              </ng-container>
+              <ng-container matColumnDef="libelle">
+                <th mat-header-cell *matHeaderCellDef> Libellé </th>
+                <td mat-cell *matCellDef="let element"> {{element.libelle}} </td>
+              </ng-container>
+              <ng-container matColumnDef="exemplaire">
+                <th mat-header-cell *matHeaderCellDef> Nombre d'exemplaire</th>
+                <td mat-cell *matCellDef="let element"> {{element.nbExemplaire}} </td>
+              </ng-container>
+              <ng-container matColumnDef="obligatoire">
+                <th mat-header-cell *matHeaderCellDef>Obligatoire</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.obligatoire">OUI</span>
+                  <span *ngIf="!element.obligatoire">NON</span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="estAffiche">
+                <th mat-header-cell *matHeaderCellDef>Est affiché</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.estAffiche">OUI</span>
+                  <span *ngIf="!element.estAffiche">NON</span>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsCategoriePieces"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsCategoriePieces;"></tr>
+            </table>
+          </div>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>list_alt</mat-icon>&nbsp;
+           Type documents sorties
+          </ng-template>
+          <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <table mat-table [dataSource]="dataSourceTypeDocuments" class="mat-elevation-z8 sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+              <ng-container matColumnDef="code">
+                <th mat-header-cell *matHeaderCellDef> Code </th>
+                <td mat-cell *matCellDef="let element"> {{element.code}} </td>
+              </ng-container>
+              <ng-container matColumnDef="libelle">
+                <th mat-header-cell *matHeaderCellDef> Libelle</th>
+                <td mat-cell *matCellDef="let element"> {{element.libelle}} </td>
+              </ng-container>
+              <ng-container matColumnDef="estTitreFoncier">
+                <th mat-header-cell *matHeaderCellDef> Titre foncier</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.estTitreFoncier">OUI</span>
+                  <span *ngIf="!element.estTitreFoncier">NON</span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="estTitreParcelle">
+                <th mat-header-cell *matHeaderCellDef> Titre parcelle</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.estTitreParcelle">OUI</span>
+                  <span *ngIf="!element.estTitreParcelle">NON</span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="actif">
+                <th mat-header-cell *matHeaderCellDef>Actif</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.actif">OUI</span>
+                  <span *ngIf="!element.actif">NON</span>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsTypeDocuements"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsTypeDocuements;"></tr>
+            </table>
+          </div>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>launch</mat-icon>&nbsp;
+            Destinations
+          </ng-template>
+          <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <table mat-table [dataSource]="dataSourceDestinations" class="mat-elevation-z8 sycad-form-ng-select" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="90" [fxFlex.lg]="80" [fxFlex.xl]="70">
+
+              <ng-container matColumnDef="code">
+                <th mat-header-cell *matHeaderCellDef> Code </th>
+                <td mat-cell *matCellDef="let element"> {{element.code}} </td>
+              </ng-container>
+              <ng-container matColumnDef="libelle">
+                <th mat-header-cell *matHeaderCellDef> Libelle</th>
+                <td mat-cell *matCellDef="let element"> {{element.libelle}} </td>
+              </ng-container>
+              <ng-container matColumnDef="tutelle.nom">
+                <th mat-header-cell *matHeaderCellDef> Ministère de tutelle</th>
+                <td mat-cell *matCellDef="let element"> {{element.tutelle.nom}}</td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsDestination"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsDestination;"></tr>
+            </table>
+          </div>
+
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </form>
+</mat-card>

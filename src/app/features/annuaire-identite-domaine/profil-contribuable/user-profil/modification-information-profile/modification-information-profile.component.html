@@ -1,0 +1,87 @@
+<mat-tab-group>
+    <mat-tab>
+        <mat-grid-list cols="3">
+            <mat-grid-tile [colspan]="3" [rowspan]="1">
+                <form [formGroup]="formulaireCredential">
+                    <ng-template mat-tab-label>
+                        <mat-icon class="profile-tab-icon">security</mat-icon>
+                        Mot de passe
+                    </ng-template>
+                    <br>
+                    <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="form-field-outer">
+                        <mat-form-field appearance="fill" fxFlex="45">
+                            <mat-label>Entrer le username</mat-label>
+                            <input matInput formControlName="username">
+                            <mat-error *ngIf="formulaireCredential.controls.username.invalid && (formulaireCredential.controls.existingpassword.dirty || formulaireCredential.controls.username.touched) && formulaireCredential.controls.username.errors?.required">
+                                Le username est obligatoire
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" fxFlex="45">
+                            <mat-label>Mot de passe actuel</mat-label>
+                            <input matInput [type]="hideCurr ? 'password' : 'text'" formControlName="existingpassword">
+                            <button mat-icon-button matSuffix (click)="hideCurr = !hideCurr" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConf">
+                  <mat-icon>{{hideCurr ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                            <mat-error *ngIf="formulaireCredential.controls.existingpassword.invalid && (formulaireCredential.controls.existingpassword.dirty || formulaireCredential.controls.existingpassword.touched) && formulaireCredential.controls.existingpassword.errors?.required">
+                                Le password est obligatoire
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" fxFlex="45">
+                            <mat-label>Entrer le nouveau mot de passe</mat-label>
+                            <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+                            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                            <mat-error *ngIf="formulaireCredential.controls.password.invalid && (formulaireCredential.controls.password.dirty || formulaireCredential.controls.password.touched) && formulaireCredential.controls.password.errors?.required">
+                                Le password est obligatoire
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" fxFlex="45">
+                            <mat-label>Confirmez le mot de passe</mat-label>
+                            <input matInput [type]="hideConf ? 'password' : 'text'" formControlName="confirmpassword">
+                            <button mat-icon-button matSuffix (click)="hideConf = !hideConf" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConf">
+                  <mat-icon>{{hideConf ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                            <mat-error *ngIf="formulaireCredential.controls.confirmpassword.touched && formulaireCredential.controls.confirmpassword.invalid" class="alert alert-danger">
+                                <mat-error *ngIf="formulaireCredential.controls.confirmpassword.invalid && (formulaireCredential.controls.confirmpassword.dirty || formulaireCredential.controls.confirmpassword.touched) && formulaireCredential.controls.confirmpassword.errors?.required">
+                                    Le password est obligatoire
+                                </mat-error>
+                                <mat-error *ngIf="formulaireCredential.controls.confirmpassword.errors.confirmedValidator">Le password courant et le password entré différents</mat-error>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="!formulaireCredential.valid" (click)="onSubmitCredential()">
+                <span>Enregistrer</span>
+              </button>
+                    </div>
+                </form>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-icon class="profile-tab-icon">email</mat-icon>
+            Emails
+        </ng-template>
+        <br>
+        <app-emails-edition (closeFormModal)="closeFormModal()"> </app-emails-edition>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-icon class="profile-tab-icon">location_on</mat-icon>
+            Adresse
+        </ng-template>
+        <br>
+        <app-adresse-edition (closeFormModal)="closeFormModal()"> </app-adresse-edition>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-icon class="profile-tab-icon">call</mat-icon>
+            Telephone
+        </ng-template>
+        <br>
+        <app-telephones-edition (closeFormModal)="closeFormModal()"></app-telephones-edition>
+    </mat-tab>
+</mat-tab-group>

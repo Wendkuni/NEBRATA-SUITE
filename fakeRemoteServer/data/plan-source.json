@@ -1,0 +1,30 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "code": "PS01",
+      "libelle": "VILLA F1",
+      "zone": "Urbain"
+    },
+    {
+      "id": 2,
+      "code": "PS02",
+      "libelle": "VILLA F2",
+      "zone": "Rural"
+    },
+    {
+      "id": 3,
+      "code": "PS03",
+      "libelle": "VILLA F3",
+      "zone": "Suburbain"
+    }
+  ]
+}

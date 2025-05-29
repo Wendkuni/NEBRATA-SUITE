@@ -1,0 +1,49 @@
+
+<button (click)="test()">aaaaa</button>
+<form [formGroup]="formulaire" (ngSubmit)="onSubmit()">
+
+  <mat-horizontal-stepper linear #stepper>
+    
+    <mat-step [editable]="true">
+
+      <form [formGroup]="mandats">
+          <ng-template matStepLabel>Mandats</ng-template>
+          <div fxLayout="row" fxLayout.sm="row wrap" fxLayout.md="row wrap" fxLayoutGap.gt-sm="20px" fxLayoutAlign="start">
+              <div fxLayout="column" class="flex-p" [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="70" [fxFlex.xl]="50">
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                      <button type="button" mat-flat-button color="primary" (click)="addMandat()" [fxFlex.xs]="100" [fxFlexOffset.xs]="0" [fxFlex.sm]="70" [fxFlexOffset.sm]="10" [fxFlex.md]="50" [fxFlexOffset.md]="10" [fxFlex.lg]="50" [fxFlexOffset.md]="10" [fxFlex.xl]="50"
+                          [fxFlexOffset]="10">
+            <mat-icon class="icon-sm">add</mat-icon> Ajouter un mandat
+          </button>
+                  </div>
+                  <ng-template ngFor let-mandat [ngForOf]="mandats.controls" let-i="index">
+                      <div class="card-container-form-element y-1" fxLayout="row" fxLayoutAlign="start">
+                          <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.lg]="100" [fxFlex.xl]="100">
+                              <button mat-icon-button matSuffix color="warn" class="delete-icons" type="button">
+                <mat-icon (click)="removeMandat(i)">remove_circle</mat-icon>
+              </button>
+                              <app-mandat-form [formGroup]="mandat" (changeMandat)="changeMandat($event)" [filteredListMandat]="filteredListMandat" [choixMandant]="delivranceAap.contribuableBeneficiaire" [withMandant]="false" [withMandat]="true" [withMandataire]="true"></app-mandat-form>
+
+
+
+                          </mat-card>
+                      </div>
+                  </ng-template>
+              </div>
+          </div>
+          <div class="card-action-form">
+              <div fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center">
+                  <button mat-raised-button type="button" mat-button (click)="stepper.reset()">Reinitialiser</button>
+                  <button mat-raised-button color="warn" (click)="resetForm()" type="button">Annuler</button>
+                  <button mat-raised-button type="button" mat-button matStepperPrevious>Précédent</button>
+                  <button mat-raised-button color="primary" type="button" matStepperNext>Suivant</button>
+                  <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!formulaire.valid">{{transition.libelle}}</button>
+              </div>
+          </div>
+      </form>
+  </mat-step>
+
+
+    
+  </mat-horizontal-stepper>
+</form>

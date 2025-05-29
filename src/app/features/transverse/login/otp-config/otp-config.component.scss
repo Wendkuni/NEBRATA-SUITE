@@ -1,0 +1,40 @@
+.login_page_wrapper {
+    padding-top: 48px;
+}
+
+.logo-app img {
+    width: 100px;
+}
+
+.box-content-header {
+    font-size: 16px;
+    text-transform: none!important;
+    font-weight: 500;
+}
+
+.container-otp {
+    position: relative;
+    width: 70%;
+    left: 15%;
+    .mat-card {
+        margin: 5px;
+        box-shadow: 1px 0px 6px 2px rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 1px 3px 0 rgba(0, 0, 0, .12)!important;
+    }
+}
+
+.text-code {
+    text-align: center;
+}
+
+.secret-code {
+    color: red;
+    padding-left: 5px;
+}
+
+.name-attribute {
+    padding-right: 5px;
+}
+
+.decallage-bouton {
+    margin-top: 12px;
+}

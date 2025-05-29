@@ -1,0 +1,22 @@
+<div fxLayout="column">
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <div class="flex-p">
+        <ng-template #datatable1></ng-template>
+    </div>
+</div>
+<ng-template #templateProfile let-profile="data">
+    <div class="list-profiles" [ngStyle]="{'padding': profile.permissions.length>0?'15px':'0'}">
+        <h3> Les permissions</h3>
+        <mat-chip-list>
+            <mat-chip *ngFor="let permission of profile.permissions">{{permission}}</mat-chip>
+        </mat-chip-list>
+    </div>
+    <div class="list-profiles" [ngStyle]="{'padding': profile.roles.length>0?'15px':'0'}">
+        <h3> Les roles</h3>
+        <mat-chip-list>
+            <mat-chip *ngFor="let role of profile.roles">{{role}}</mat-chip>
+        </mat-chip-list>
+    </div>
+</ng-template>

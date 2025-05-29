@@ -1,0 +1,14 @@
+<div fxLayout="row" fxLayoutAlign="start center">
+    <div class="sycad-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <div class="flex-p">
+        <button mat-raised-button color="primary" type="button" (click)="openFormModal()">Génération contribution foncière</button>
+    </div>
+
+</div>
+<div fxLayout="column">
+    <div class="flex-p">
+        <ng-template #datatable1></ng-template>
+    </div>
+</div>

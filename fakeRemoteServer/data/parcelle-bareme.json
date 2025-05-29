@@ -1,0 +1,29 @@
+{
+  "page": 0,
+  "limit": 10,
+  "totalCount": 13,
+  "order": null,
+  "search": "",
+  "filters": {
+  },
+  "sort": null,
+  "items": [
+    {
+      "id": 1,
+      "valeur": "15",
+      "commune": "Ouagadougou",
+      "arrondissment": "Boulmiougou",
+      "arrondissementZone": "Zone agricole",
+       "destination": "Agriculture"
+
+    },
+    {
+      "id": 2,
+      "valeur": "25",
+      "commune": "Ouagadougou",
+      "arrondissment": "Saaba",
+      "arrondissementZone": "Zone élevage",
+      "destination": "élevage"
+    }
+  ]
+}

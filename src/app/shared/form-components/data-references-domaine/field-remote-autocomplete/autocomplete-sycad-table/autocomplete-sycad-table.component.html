@@ -1,0 +1,108 @@
+<div class="modal-header mb-0 bg-dark">
+    <h4 class="modal-title">{{dataForm.tableDescription.title}}</h4>
+</div>
+
+<div class="modal-body">
+    <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutAlign="space-between center" class="flex-p entete-sycad-table">
+
+        <div class="sycad-loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+            <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+            <div class="sycad-rate-limit-reached pulse-button-yellow" *ngIf="isRateLimitReached">
+                Le serveur n'a pas pu traiter la demande. Merci de réessayer plus tard.
+            </div>
+        </div>
+
+        <div [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="50" [fxFlex.lg]="35" [fxFlex.xl]="25">
+            <div fxFlex="100" fxLayoutAlign="start center">
+                <div class="user-search show">
+                    <mat-form-field class="user-search-input">
+                        <mat-icon matPrefix>search</mat-icon>
+                        <input matInput placeholder="Faites une recherche global sur les données..." autocomplete="off" (keyup)="applyFilter($event)" [(ngModel)]="dataForm.tableDescription.globalFilter" [ngModelOptions]="{standalone: true}">
+                        <mat-icon matSuffix class="sycad-element-clickable" (click)="dataForm.tableDescription.globalFilter = '';clearGlobalFilter()">clear</mat-icon>
+                    </mat-form-field>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <perfect-scrollbar class="sycad-table-container mat-elevation-z8" [config]="{useBothWheelAxes: true,  suppressScrollX: false, suppressScrollY: true}">
+        <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort matSortDirection="asc" matSortDisableClear="true">
+
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    Selectionner
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-checkbox name="checkbox" *ngIf="dataForm.customNgSelectConfig.multiple" (change)="$event ? selectionColonne.toggle(element) : null" color="primary" [checked]="selectionColonne.isSelected(element)" [aria-label]="checkboxLabel(element)"></mat-checkbox>
+                    <mat-checkbox name="checkbox" *ngIf="!dataForm.customNgSelectConfig.multiple" color="primary" [checked]="selected === element" (change)="selectItem(element)"></mat-checkbox>
+                </td>
+            </ng-container>
+
+            <ng-container *ngFor="let colonne of dataForm.tableDescription.colonnes | filterColonne " matColumnDef="{{colonne.name}}">
+                <ng-container>
+                    <th mat-header-cell *matHeaderCellDef>{{colonne.label}}</th>
+                </ng-container>
+
+
+                <ng-container [ngSwitch]="colonne.type">
+                    <ng-template [ngSwitchCase]="'STRING'">
+                        <td mat-cell *matCellDef="let element">
+
+                            {{element | ShowColonneValue:colonne.name}}
+                        </td>
+                    </ng-template>
+
+                    <ng-template [ngSwitchCase]="'DATE'">
+                        <td mat-cell *matCellDef="let element">
+                            {{element | ShowColonneValue:colonne.name | date : 'dd/MM/yyyy'}}
+                        </td>
+                    </ng-template>
+
+                    <ng-template [ngSwitchCase]="'DATETIME'">
+                      <td mat-cell *matCellDef="let element">
+                          {{element | ShowColonneValue:colonne.name | date : 'dd/MM/yyyy HH:mm'}}
+                      </td>
+                  </ng-template>
+
+                    <ng-template [ngSwitchCase]="'BOOLEAN'">
+                        <td mat-cell *matCellDef="let element">
+                            {{element[colonne.name] | showBooleanValue }}
+                        </td>
+                    </ng-template>
+
+                    <ng-template [ngSwitchDefault]>
+                        <td mat-cell *matCellDef="let element"> type inconnu </td>
+                    </ng-template>
+
+                </ng-container>
+
+            </ng-container>
+
+            <ng-container *ngFor="let colonne of dataForm.tableDescription.colonnes ">
+                <ng-container matColumnDef="filter-{{colonne.name}}">
+                    <th mat-header-cell *matHeaderCellDef> </th>
+                </ng-container>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="dataForm.tableDescription.colonnes | transFormDisplayedColumns:actions; sticky: true" class="sycad-table-first-header-row"></tr>
+
+            <tr mat-row *matRowDef="let element; columns: dataForm.tableDescription.colonnes | transFormDisplayedColumns:actions;" class="sycad-table-element-row">
+            </tr>
+
+
+        </table>
+    </perfect-scrollbar>
+</div>
+
+<div class="modal__footer">
+    <div fxLayout="row" fxLayout="row" [fxLayoutGap]="'20px'" fxLayoutAlign="end center" class="footer">
+        <button mat-raised-button color="warn" type="button" (click)="AnnulerModal()">Annuler</button>
+
+        <button mat-raised-button color="primary" (click)="SelectItem()">
+      <span >Valider</span>
+    </button>
+    </div>
+</div>

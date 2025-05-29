@@ -1,0 +1,66 @@
+<button class="close" mat-button mat-dialog-close><mat-icon>close</mat-icon></button>
+<h1 mat-dialog-title class="modifier-text"><span *ngIf="!indivisionrelation.id">Créer une indivision relation </span><span *ngIf="indivisionrelation.id">Modifier: {{indivisionrelation.libelle}}</span></h1>
+<div class="sycad-loading-shade" *ngIf="isLoadingResults">
+  <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
+<form [formGroup]="formulaire" class="service-form" (ngSubmit)="onSubmit()">
+    <div class="sycad-zone-modal-form-edition" mat-dialog-content perfectScrollbar>
+        <mat-grid-list cols="1" rowHeight="100px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <mat-form-field appearance="outline" fxFlex="90">
+                    <mat-label>Libelle</mat-label>
+                    <input matInput placeholder="libelle" [attr.autocomplete]="'off'" formControlName="libelle" />
+                    <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && libelle.errors?.required">
+                        Le libelle est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && ( libelle.errors?.minlength || libelle.errors?.maxlength )">
+                        La taille du libelle est limité entre 2 et 150 caractères
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <mat-grid-list cols="1" rowHeight="100px">
+            <mat-grid-tile [colspan]="1">
+                <button fxFlex="90" type="button" mat-flat-button color="primary" (click)="addNewQualite()"> <mat-icon class="icon-sm">add</mat-icon> Ajouter une qualité indivision</button>
+            </mat-grid-tile>
+        </mat-grid-list>
+            <ng-container formArrayName="qualites"  *ngFor="let qualite of qualites.controls; index as idx">
+                  <mat-card class="container-card-contact">
+                    <button type="button" mat-icon-button matSuffix color="warn" class="delete-icons">
+                      <mat-icon (click)="removeQualite(idx)">remove_circle</mat-icon>
+                    </button>
+                    <mat-grid-list cols="2" rowHeight="100px">
+                      <div [formGroupName]="idx" fxFlex="100">
+                    <mat-grid-tile [colspan]="1" [rowspan]="1" >
+                    <mat-form-field appearance="outline" fxFlex="100">
+                      <mat-label>Libelle (*) </mat-label>
+                      <input matInput placeholder="Libelle" [attr.autocomplete]="'off'" formControlName="libelle">
+                      <input type="hidden" formControlName="id">
+                      <mat-hint>Qualité ({{idx+1}})</mat-hint>
+                      <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && libelle.errors?.required">
+                        Le libelle est obligatoire
+                      </mat-error>
+                      <mat-error *ngIf="libelle.invalid && (libelle.dirty || libelle.touched) && ( libelle.errors?.minlength || libelle.errors?.maxlength )">
+                        La taille du libelle est limité entre 2 et 150 caractères
+                      </mat-error>
+                    </mat-form-field>
+                    </mat-grid-tile>
+                      <mat-grid-tile [colspan]="1" [rowspan]="1" >
+                    <div fxFlex="90" fxLayoutAlign="center center" class="sycad-sizing-small-box">
+                      <mat-slide-toggle formControlName="multiple" fxFlex="100" class="multiple-button">Multiple</mat-slide-toggle>
+                    </div>
+
+                </mat-grid-tile>
+                      </div>
+              </mat-grid-list>
+                  </mat-card>
+            </ng-container>
+
+    </div>
+    <div mat-dialog-actions fxLayout="row" align="end">
+        <button mat-raised-button color="warn" type="button" (click)="closeFormModal()">Annuler</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formulaire.valid">
+          <span *ngIf="!indivisionrelation.id">Enregistrer</span><span *ngIf="indivisionrelation.id">Mettre à jour</span>
+        </button>
+    </div>
+</form>

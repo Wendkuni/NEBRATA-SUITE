@@ -1,0 +1,59 @@
+<form [formGroup]="formulaireTelephones" (ngSubmit)="onSubmitTelephones()">
+    <mat-grid-list cols="4" rowHeight="80px">
+        <mat-grid-tile [colspan]="2" class="list-grid-contact">
+            <div fxFlex="80" class="select-button">
+                <button mat-raised-button type="button" color="primary" (click)="addNewTelephone()"> <mat-icon class="icon-sm">add_circle_outline</mat-icon>
+        </button>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="3" rowHeight="80px" *ngIf="getFormTelephones.controls.length>0">
+        <ng-template ngFor let-telephones [ngForOf]="getFormTelephones.controls" let-i="index">
+            <mat-grid-tile [colspan]="3" [rowspan]="1" [formGroup]="telephones">
+                <mat-form-field appearance="fill" fxFlex="40" class="field">
+                    <mat-label>Telephone (*)</mat-label>
+                    <input type="hidden" formControlName="id">
+                    <input [textMask]="{mask: maskTelephone, guide: true}" matInput placeholder="Telephone" [attr.autocomplete]="'off'" formControlName="numero">
+                    <button mat-icon-button matSuffix color="warn">
+            <mat-icon (click)="removeTelephones(i,telephones)">remove_circle</mat-icon>
+          </button>
+                    <mat-hint>Contact Telephone ({{i+1}})</mat-hint>
+
+                    <mat-error *ngIf="telephones.controls.numero.invalid && (telephones.controls.numero.dirty || telephones.controls.numero.touched) && telephones.controls.numero.errors?.required">
+                        Le numéro de téléphone est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="telephones.controls.numero.invalid && (telephones.controls.numero.dirty || telephones.controls.numero.touched) && telephones.controls.numero.errors?.pattern">
+                        Exemple (00226) XX XX XX XX ou (00226)XXXXXXXX ou 00226XXXXXXXX ou +226XXXXXXXX
+                    </mat-error>
+
+                </mat-form-field>
+
+                <div fxFlex="40" class="container-form-field-radio">
+                    <ng-select formControlName="level" placeholder="Type de Telephone" appendTo="body" [searchable]="false" [clearable]="false">
+                        <ng-option value="PROFESSIONAL">
+                            Professionnel
+                        </ng-option>
+                        <ng-option value="PERSONNAL">
+                            Personnel
+                        </ng-option>
+                        <ng-option value="HOME">
+                            Maison
+                        </ng-option>
+                    </ng-select>
+                    <mat-error *ngIf="telephones.controls.level.invalid && (telephones.controls.level.dirty || telephones.controls.level.touched) && telephones.controls.level.errors?.required">
+                        Le type est obligatoire
+                    </mat-error>
+                </div>
+                <div fxFlex="30" class="container-form-field-radio">
+                    <mat-slide-toggle formControlName="principal" fxFlex="100" (change)="onChangePhonePrincipal(telephones)">Principale ?</mat-slide-toggle>
+                </div>
+            </mat-grid-tile>
+        </ng-template>
+    </mat-grid-list>
+
+    <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formulaireTelephones.valid">
+      <span>Enregistrer</span>
+    </button>
+    </div>
+</form>

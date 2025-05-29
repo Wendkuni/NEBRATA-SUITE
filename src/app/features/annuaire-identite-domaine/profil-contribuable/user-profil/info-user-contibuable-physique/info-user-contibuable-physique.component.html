@@ -1,0 +1,25 @@
+<mat-accordion class="list-profil-infos">
+  <mat-expansion-panel>
+    
+        <mat-expansion-panel-header>
+          <mat-panel-title class="panel-header-adresse" fxLayout="row" fxLayoutAlign="start start">
+            <h3>Informations</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+    <mat-card-content perfectScrollbar>  
+      <mat-list>
+        <app-profil-list-item-icon [value]="userData?.codeUnique" label="IFU-Code" ></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.typeUser" label="Type utilisateur"></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.dateNaissance | date : 'longDate'" label="Date de naissance" ></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.lieuNaissance" label="Lieu de naissance"></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.genre" label="Genre" icon="wc"></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.nationalite?.libelle" label="Nationalité"></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.situationMatrimoniale?.libelle" label="Situation Matrimoniale"></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.profession?.nom" label="Profession" ></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.nomMere" label="Nom de la mère"></app-profil-list-item-icon>
+        <app-profil-list-item-icon [value]="userData?.nomPere" label="Nom du père"></app-profil-list-item-icon> 
+        <br>
+      </mat-list>
+    </mat-card-content>
+  </mat-expansion-panel>
+</mat-accordion>

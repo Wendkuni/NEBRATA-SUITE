@@ -1,0 +1,170 @@
+
+.sycad-form-ng-select {
+  width: 100%;
+  max-width: 300px; /* Ajustez en fonction de la taille souhaitée */
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.ng-select {
+  width: 100%;
+}
+
+.ng-select.ng-select-single .ng-select-container {
+  min-height: 40px; /* Ajustez la hauteur si nécessaire */
+}
+
+.ng-select .ng-select-container .ng-value-container .ng-input input {
+  padding: 0 10px;
+}
+
+
+#ilot-parcelles .table-container {
+  width: 100%;
+  overflow-x: auto; /* Ajoute une barre de défilement horizontale si nécessaire */
+  margin-top: 20px; /* Espace au-dessus du tableau */
+}
+
+#ilot-parcelles table.mat-elevation-z8 {
+  width: 100%;
+  border-collapse: collapse; /* Fusionne les bordures pour un meilleur affichage */
+}
+
+#ilot-parcelles table.mat-elevation-z8 th,
+table.mat-elevation-z8 td {
+  //padding: 8px 16px;
+  text-align: left;
+}
+
+#ilot-parcelles table.mat-elevation-z8 th {
+  background-color: #f5f5f5; /* Couleur de fond pour les en-têtes */
+  border-bottom: 2px solid #ddd; /* Bordure en bas des en-têtes */
+}
+
+#ilot-parcelles table.mat-elevation-z8 td {
+  border-bottom: 1px solid #ddd; /* Bordure en bas des cellules */
+}
+
+#ilot-parcelles .table-container mat-paginator {
+  margin-top: 15px; /* Espace au-dessus de la pagination */
+}
+
+
+#ilot-parcelles .nested-table-element-detail {
+  background-color: #f9f9f9; /* Fond pour la partie des détails étendus */
+  padding: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Légère ombre */
+
+  //animation: expandDetail 0.1ms ease-in-out;
+  overflow: hidden;
+  display: flex;
+}
+
+#ilot-parcelles .nested-table-element-row {
+  cursor: pointer;
+}
+
+
+@keyframes expandDetail {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 1000px;
+    opacity: 1;
+  }
+}
+
+
+#ilot-parcelles .nested-table-detail-row {
+  height: 0;
+}
+
+
+
+
+
+
+
+#ilot-parcelles tr.nested-table-element-row:not(.nested-table-expanded-row):hover {
+  background: #f5f5f5;
+}
+
+#ilot-parcelles tr.nested-table-element-row:not(.nested-table-expanded-row):active {
+  background: #efefef;
+}
+
+#ilot-parcelles .nested-table-element-row td {
+  border-bottom-width: 0;
+}
+
+
+#ilot-parcelles .nested-table-element-diagram {
+  min-width: 80px;
+  border: 1px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+#ilot-parcelles .nested-table-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+#ilot-parcelles .nested-table-element-description {
+  padding: 16px;
+}
+
+#ilot-parcelles .nested-table-element-description-attribution {
+  opacity: 0.5;
+}
+.ajoutParc{
+  margin-bottom: 10px;
+  margin-top:10px;
+}
+
+
+#ilot-parcelles table {
+  width: 100%;
+}
+
+#ilot-parcelles tr.nested-table-detail-row {
+  height: 0;
+}
+
+
+
+.ilot-container {
+  position: relative;
+  min-height: 200px;
+  padding: 20px;
+
+  .loading-shade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  mat-form-field {
+    margin-right: 16px;
+  }
+
+  .error {
+    color: red;
+    margin: 16px 0;
+  }
+}
+
+mat-table {
+  margin-top: 16px;
+}

@@ -1,0 +1,60 @@
+<div fxLayout="row" perfectScrollbar class="user-profile-container">
+
+  <div fxFlex="80">
+    <ng-template #profilUserComponent></ng-template>
+  </div>
+
+  <div fxFlex="20" class="flex-p">
+
+    <!--  Info profil user  -->
+    <ng-template #loadingProfile>
+      <div class="app-spinner-element">
+        <mat-progress-spinner diameter="20" color="warn" mode="indeterminate">
+        </mat-progress-spinner>
+      </div>
+    </ng-template>
+
+    <ng-container *ngIf="userCurrent$  | async as userToShow ; else loadingProfile">
+      <div fxLayout="column" fxLayoutAlign="space-between stretch" class="grid-user-infos">
+        <!-- user avatar -->
+        <div fxFlex="auto">
+          <app-avatar-show [userOnline]="userToShow" [readonly]="true"></app-avatar-show>
+        </div>
+        <!-- end user avatar -->
+
+        <!-- user info -->
+
+        <div fxFlex="auto">
+          <app-info-user-contibuable-morale [userData]="userToShow"></app-info-user-contibuable-morale>
+        </div>
+        <div fxFlex="auto">
+          <app-info-user-emails [emails]="userToShow?.emails"> </app-info-user-emails>
+        </div>
+        <div fxFlex="auto">
+          <app-info-user-telephone [telephones]="userToShow?.telephones"></app-info-user-telephone>
+        </div>
+        <div fxFlex="auto">
+          <app-info-user-adresse [adresses]="userToShow?.adresses"></app-info-user-adresse>
+        </div>
+        <div fxFlex="auto">
+          <app-info-user-piece-officiellle [piece]="userToShow?.pieceOfficielle"></app-info-user-piece-officiellle>
+        </div>
+        <div fxFlex="auto">
+          <app-info-user-piece-complementaires [pieces]="userToShow?.pieceComplementaires"></app-info-user-piece-complementaires>
+        </div>
+        <div fxFlex="auto">
+          <app-info-user-reseaux-sociaux [reseauxSociaux]="userToShow?.reseauSociaux"></app-info-user-reseaux-sociaux>
+        </div>
+        <div fxFlex="auto">
+          <app-info-user-contact-entreprises [contactEntreprises]="userToShow?.contactEntreprises"></app-info-user-contact-entreprises>
+        </div>
+        <div fxFlex="auto">
+          <app-info-user-activites [activitePrincipale]="userToShow?.activitePrincipale" [activitesSecondaires]="userToShow?.activiteSecondaires"></app-info-user-activites>
+        </div>
+        <!-- end user info -->
+      </div>
+    </ng-container>
+
+    <!-- end  Info profil user  -->
+  </div>
+</div>

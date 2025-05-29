@@ -1,0 +1,27 @@
+[{
+        "id": 4,
+        "libelle": "service 4",
+        "structure": "structure 1"
+
+    },
+    {
+        "id": 5,
+        "libelle": "service 5",
+        "structure": "structure 1"
+    },
+    {
+        "id": 6,
+        "libelle": "service 6",
+        "structure": "structure 3"
+    },
+    {
+        "id": 7,
+        "libelle": "service 7",
+        "structure": "structure 2"
+    },
+    {
+        "id": 8,
+        "libelle": "service 8",
+        "structure": "structure 2"
+    }
+]
